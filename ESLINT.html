@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="eslint" href="#eslint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESLINT</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">ESLint provides a CLI with commands to lint files and directories, configurable via flags (--config, --ext, --fix, --format, --ignore-path, --cache, etc.). Configuration is defined in .eslintrc.* files supporting env, parserOptions, extends, rules, overrides. The Node.js API exports class ESLint with constructor options for cwd, config overrides, extensions, ignore behavior, fix settings. Methods include lintText, lintFiles, loadFormatter, outputFixes. LintResult includes filePath, messages with ruleId, severity, location, and optional fix data.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">CLI Usage</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration File</p>
+</li>
+<li class="md-github">
+<p class="md-github">Node.js API</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Usage
+npx eslint [options] [files/globs]
+Options with types and defaults:
+--config <string> (default .eslintrc.*)
+--env &lt;string[]&gt;
+--parser <string>
+--ext &lt;string[]&gt; (default ['.js'])
+--ignore-path <string> (default .eslintignore)
+--no-ignore
+--rule <string>:&lt;string|array&gt;
+--format <string>
+--output-file <string>
+--fix
+--cache
+--cache-location <string> (default .eslintcache)
+--max-warnings <number>
+--quiet
+-v/--version
+-h/--help</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration File (.eslintrc.js)
+env: Record&lt;string, boolean&gt;
+parserOptions: { ecmaVersion: number; sourceType: 'script'|'module'; ecmaFeatures?: Record&lt;string, boolean&gt; }
+extends: string[]
+rules: Record&lt;string, 'off'|'warn'|'error'|[ 'off'|'warn'|'error', ...any[] ]&gt;
+overrides: [{ files: string|string[]; parser?: string; plugins?: string[]; rules?: Record&lt;string, any&gt; }]</p>
+</li>
+<li class="md-github">
+<p class="md-github">Node.js API
+import { ESLint } from 'eslint'
+new ESLint(options?: {
+cwd?: string;
+overrideConfigFile?: string;
+overrideConfig?: object;
+extensions?: string[];
+ignore?: boolean;
+ignorePath?: string;
+ignorePattern?: string[];
+fix?: boolean;
+fixTypes?: ('problem'|'suggestion'|'layout')[];
+allowInlineConfig?: boolean;
+useEslintrc?: boolean;
+})
+Methods:
+lintText(text: string, options?: { filePath?: string; warnIgnored?: boolean }): Promise&lt;LintResult[]&gt;
+lintFiles(patterns: string|string[]): Promise&lt;LintResult[]&gt;
+loadFormatter(name?: string): Promise<Formatter>
+static outputFixes(results: LintResult|LintResult[]): Promise<void>
+LintResult fields:
+filePath, messages[], errorCount, warningCount, fixableErrorCount, fixableWarningCount, source?
+Message fields:
+ruleId, severity (1=warning,2=error), message, line, column, nodeType, fix?</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default behaviors and effects:</p>
+<ul class="md-github">
+<li class="md-github">CLI uses .eslintrc.* and .eslintignore in cwd unless overridden</li>
+<li class="md-github">--fix applies all fixable rules; use --fix-types to limit to problem|suggestion|layout</li>
+<li class="md-github">--cache stores lint results at .eslintcache; subsequent runs only re-lint changed files</li>
+<li class="md-github">Configuration file supports extends inheritance top-down; later extends override earlier</li>
+<li class="md-github">Overrides allow per-glob rule customization; parser and plugins can differ per override</li>
+<li class="md-github">Node API resolves config and ignore patterns relative to cwd; overrideConfig bypasses file-based config</li>
+<li class="md-github">loadFormatter(name) accepts built-in names or absolute modules exporting Formatter interface</li>
+<li class="md-github">outputFixes writes fixed files to disk synchronously per file result.fix.range and text</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specification:
+class ESLint
+constructor(options?: ESLint.Options)
+ESLint.Options:
+cwd?: string (default process.cwd())
+overrideConfigFile?: string
+overrideConfig?: Linter.Config
+extensions?: string[] (default ['.js'])
+ignore?: boolean (default true)
+ignorePath?: string
+ignorePattern?: string[]
+fix?: boolean (default false)
+fixTypes?: ('problem'|'suggestion'|'layout')[] (default ['problem','suggestion','layout'])
+allowInlineConfig?: boolean (default true)
+useEslintrc?: boolean (default true)
+async lintText(text: string, options?: { filePath?: string; warnIgnored?: boolean }): Promise&lt;ESLint.LintResult[]&gt;
+async lintFiles(patterns: string|string[]): Promise&lt;ESLint.LintResult[]&gt;
+async loadFormatter(name?: string): Promise&lt;ESLint.Formatter&gt;
+static async outputFixes(results: ESLint.LintResult|ESLint.LintResult[]): Promise<void></p>
+<p class="md-github">LintResult:
+filePath: string
+messages: Array&lt;{ ruleId: string|null; severity: 1|2; message: string; line: number; column: number; nodeType: string; fix?: { range: [number,number]; text: string } }&gt;
+errorCount: number
+warningCount: number
+fixableErrorCount: number
+fixableWarningCount: number
+source?: string</p>
+<p class="md-github">Formatter:
+(results: ESLint.LintResult[]) =&gt; string</p>
+<p class="md-github">Configuration (.eslintrc.js):</p>
+<ul class="md-github">
+<li class="md-github">env: { [envName: string]: boolean }</li>
+<li class="md-github">parserOptions: { ecmaVersion: number; sourceType: 'script'|'module'; ecmaFeatures?: object }</li>
+<li class="md-github">extends: string[]</li>
+<li class="md-github">plugins: string[]</li>
+<li class="md-github">settings: object</li>
+<li class="md-github">rules: { [ruleName: string]: 'off'|'warn'|'error'|[ 'off'|'warn'|'error', ...any[] ] }</li>
+<li class="md-github">overrides: Array&lt;{ files: string|string[]; excludedFiles?: string|string[]; parser?: string; parserOptions?: object; plugins?: string[]; rules?: object }&gt;</li>
+</ul>
+<p class="md-github">Examples:
+const eslint = new ESLint({ fix: true, extensions: ['.js','.ts'] });
+const results = await eslint.lintFiles(['src/**/*.js']);
+await ESLint.outputFixes(results);
+const formatter = await eslint.loadFormatter('stylish');
+const output = formatter.format(results);
+console.log(output);</p>
+<p class="md-github">Troubleshooting:</p>
+<ul class="md-github">
+<li class="md-github">&quot;No ESLint configuration found&quot; =&gt; ensure .eslintrc.js exists or pass --config</li>
+<li class="md-github">Exit code 1 indicates errors found; use --max-warnings 0 to treat warnings as errors</li>
+<li class="md-github">Use --debug to print internal resolution paths: npx eslint --debug file.js</li>
+<li class="md-github">Cache corruption: delete .eslintcache</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">CLI: npx eslint [files] --config<string> --env&lt;string[]&gt; --parser<string> --ext&lt;string[]&gt; --ignore-path<string> --no-ignore --rule<a href="string:config" class="md-github">string:config</a> --format<string> --output-file<string> --fix --fix-types&lt;string[]&gt; --cache --cache-location<string> --max-warnings<number> --quiet
+Config: .eslintrc.js exports env:{browser,node,es2021}, parserOptions:{ecmaVersion(12),sourceType(module)}, extends:[...], rules:{'no-console':'warn','indent':['error',2]}, overrides:[{files:'**/*.ts',parser:'@typescript-eslint/parser',rules:{...}}]
+API: import { ESLint } from 'eslint'; new ESLint({cwd?,overrideConfigFile?,overrideConfig?,extensions?,ignore?,ignorePath?,ignorePattern?,fix?,fixTypes?,allowInlineConfig?,useEslintrc?}); methods: lintText(string,{filePath?,warnIgnored?}):Promise&lt;LintResult[]&gt;, lintFiles(string|string[]):Promise&lt;LintResult[]&gt;, loadFormatter(string?):Promise<Formatter>, static outputFixes(LintResult|LintResult[]):Promise<void>; LintResult: {filePath,messages[{ruleId,severity(1|2),message,line,column,nodeType,fix?}],errorCount,warningCount,fixableErrorCount,fixableWarningCount,source?}; Formatter: function returning string; Troubleshoot with --debug, delete .eslintcache.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">CLI Usage</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration File</p>
+</li>
+<li class="md-github">
+<p class="md-github">Node.js API</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Usage
+npx eslint [options] [files/globs]
+Options with types and defaults:
+--config <string> (default .eslintrc.*)
+--env &lt;string[]&gt;
+--parser <string>
+--ext &lt;string[]&gt; (default ['.js'])
+--ignore-path <string> (default .eslintignore)
+--no-ignore
+--rule <string>:&lt;string|array&gt;
+--format <string>
+--output-file <string>
+--fix
+--cache
+--cache-location <string> (default .eslintcache)
+--max-warnings <number>
+--quiet
+-v/--version
+-h/--help</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration File (.eslintrc.js)
+env: Record&lt;string, boolean&gt;
+parserOptions: { ecmaVersion: number; sourceType: 'script'|'module'; ecmaFeatures?: Record&lt;string, boolean&gt; }
+extends: string[]
+rules: Record&lt;string, 'off'|'warn'|'error'|[ 'off'|'warn'|'error', ...any[] ]&gt;
+overrides: [{ files: string|string[]; parser?: string; plugins?: string[]; rules?: Record&lt;string, any&gt; }]</p>
+</li>
+<li class="md-github">
+<p class="md-github">Node.js API
+import { ESLint } from 'eslint'
+new ESLint(options?: {
+cwd?: string;
+overrideConfigFile?: string;
+overrideConfig?: object;
+extensions?: string[];
+ignore?: boolean;
+ignorePath?: string;
+ignorePattern?: string[];
+fix?: boolean;
+fixTypes?: ('problem'|'suggestion'|'layout')[];
+allowInlineConfig?: boolean;
+useEslintrc?: boolean;
+})
+Methods:
+lintText(text: string, options?: { filePath?: string; warnIgnored?: boolean }): Promise&lt;LintResult[]&gt;
+lintFiles(patterns: string|string[]): Promise&lt;LintResult[]&gt;
+loadFormatter(name?: string): Promise<Formatter>
+static outputFixes(results: LintResult|LintResult[]): Promise<void>
+LintResult fields:
+filePath, messages[], errorCount, warningCount, fixableErrorCount, fixableWarningCount, source?
+Message fields:
+ruleId, severity (1=warning,2=error), message, line, column, nodeType, fix?</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">ESLint
+https://eslint.org/docs/latest/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-eslint" href="#digest-of-eslint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of ESLINT</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="eslint-cli-usage" href="#eslint-cli-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESLint CLI Usage</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<p class="md-github">npx eslint [options] [files/globs]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="core-cli-options" href="#core-cli-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core CLI Options</h2>
+<p class="md-github">--config <file>             Path to configuration file (default: .eslintrc.*)
+--env &lt;env1,env2,...&gt;       Enable environments by name (browser,node,es2021)
+--parser <module>           Specify a custom parser module
+--ext &lt;.js,.jsx,.ts&gt;        Define file extensions to lint (default: .js)
+--ignore-path <file>        Path to file with patterns to ignore (default: .eslintignore)
+--no-ignore                 Disable use of ignore files and patterns
+--rule <ruleName>:<config>  Override rule severity or options (e.g. no-console:warn)
+--format <formatter>        Use a specific output format (stylish, json, checkstyle)
+--output-file <file>        Specify file to write report to
+--fix                       Automatically fix problems (syntax-aware fixes)
+--cache                     Only check changed files (stores cache at .eslintcache)
+--cache-location <path>     Path to the cache file or directory (default .eslintcache)
+--max-warnings <number>     Number of warnings to allow before non-zero exit code
+--quiet                     Report errors only (ignore warnings)
+-v, --version               Output the version number
+-h, --help                  Show help</p>
+<h1 class="md-github"><a class="md-github__anchor" name="eslint-configuration-file-eslintrcjs" href="#eslint-configuration-file-eslintrcjs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESLint Configuration File (.eslintrc.js)</h1>
+<p class="md-github">module.exports = {
+env: {
+browser: true,
+node:    true,
+es2021:  true
+},
+parserOptions: {
+ecmaVersion: 12,
+sourceType: 'module'
+},
+extends: [
+'eslint:recommended',
+'plugin:react/recommended'
+],
+rules: {
+'no-console':       'warn',
+'indent':           ['error', 2],
+'quotes':           ['error', 'single'],
+'semi':             ['error', 'always']
+},
+overrides: [
+{
+files: ['**/*.ts'],
+parser: '@typescript-eslint/parser',
+plugins: ['@typescript-eslint'],
+rules: {
+'@typescript-eslint/no-unused-vars': ['error']
+}
+}
+]
+};</p>
+<h1 class="md-github"><a class="md-github__anchor" name="nodejs-api-import--eslint-" href="#nodejs-api-import--eslint-"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Node.js API (import { ESLint })</h1>
+<p class="md-github">import { ESLint } from 'eslint';</p>
+<h3 class="md-github"><a class="md-github__anchor" name="constructor" href="#constructor"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constructor</h3>
+<p class="md-github">new ESLint(options?: ESLint.Options)</p>
+<p class="md-github">Options:
+cwd?                string    Working directory for resolution (default process.cwd())
+overrideConfigFile? string    Path to config file
+overrideConfig?     object    Inline configuration (overrides file-based config)
+extensions?         string[]  File extensions to lint (default ['.js'])
+ignore?             boolean   Use ignore files (default true)
+ignorePath?         string    Path to ignore file
+ignorePattern?      string[]  Additional glob patterns to ignore
+fix?                boolean   Apply fixes (default false)
+fixTypes?           ('problem'|'suggestion'|'layout')[] Types of fixes to apply
+allowInlineConfig?  boolean   Allow /* eslint-disable <em class="md-github">/ comments (default true)
+useEslintrc?        boolean   Use .eslintrc.</em> files (default true)
+cwd?                string    Working directory</p>
+<h3 class="md-github"><a class="md-github__anchor" name="methods" href="#methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h3>
+<p class="md-github">async lintText(text: string, options?: { filePath?: string; warnIgnored?: boolean }): Promise&lt;ESLint.LintResult[]&gt;
+async lintFiles(patterns: string | string[]): Promise&lt;ESLint.LintResult[]&gt;
+async loadFormatter(name?: string): Promise&lt;ESLint.Formatter&gt;
+static async outputFixes(results: ESLint.LintResult | ESLint.LintResult[]): Promise<void></p>
+<p class="md-github">type LintResult = {
+filePath:       string;
+messages:       { ruleId: string | null; severity: number; message: string; line: number; column: number; nodeType: string; fix?: { range: [number, number]; text: string } }[];
+errorCount:     number;
+warningCount:   number;
+fixableErrorCount: number;
+fixableWarningCount: number;
+source?:        string;
+};</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: ESLint</li>
+<li class="md-github">URL: https://eslint.org/docs/latest/</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-04T17:31:57.574Z</li>
+<li class="md-github">Data Size: 2193889 bytes</li>
+<li class="md-github">Links Found: 5063</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-04</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-04T18:22:21.970Z</p>
+  </footer>
+</body>
+</html>
