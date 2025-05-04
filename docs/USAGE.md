@@ -9,7 +9,7 @@ npm install -g @xn-intenton-z2a/repository0-crucible
 ## Commands
 
 ```bash
-node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--help]
+node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--serve] [--port P] [--help]
 ```
 
 ### Options
@@ -18,6 +18,8 @@ node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--he
 - `--category`, `-C`: emotion category (`happy`, `sad`, `angry`, `surprised`, `all`) (default: `all`)
 - `--seed`, `-s`: nonnegative integer seed for reproducible output
 - `--json`, `-j`: output JSON payload
+- `--serve`, `-S`: start HTTP server mode
+- `--port`, `-p`: port for HTTP server (default: `3000`)
 - `--help`, `-h`: show this help message
 
 ### Examples
