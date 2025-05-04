@@ -1,5 +1,5 @@
 # Description
-Implement a unified ASCII face CLI that outputs one or more random ascii faces grouped by emotion categories and supports reproducible scripted usage.
+Implement a unified ASCII face CLI that outputs one or more random ascii faces grouped by emotion categories, supports reproducible scripted usage via an optional seed flag, and provides a help message listing available options.
 
 # Usage
 Run the CLI tool with no options to display a single random face
@@ -8,31 +8,31 @@ Run the CLI tool with no options to display a single random face
 Display three happy faces
     node src/lib/main.js --count 3 --category happy
 
-Display two faces from any category
-    node src/lib/main.js --count 2 --category all
+Display two faces from any category with a specific seed for reproducibility
+    node src/lib/main.js --count 2 --category all --seed 42
 
-Get a help message listing available flags and categories
+Get a help message listing usage, available flags, and categories
     node src/lib/main.js --help
 
 # Implementation
 1. Update src/lib/main.js
    - Define an object mapping emotion categories (happy, sad, angry, surprised) to arrays of ascii face strings.
-   - Create helper function getRandomFaceFromList(list) that returns a random element from the list.
-   - Use yargs or a minimal parser to extract flags: --count (integer >=1) and --category (string in allowed set plus all).
-   - Use zod to validate count and category values.
-   - Compute the pool of faces based on category, defaulting to the combined list for all.
-   - Loop count times, call getRandomFaceFromList, and console.log each face.
-   - Preserve backward compatibility: main(args) where args is an array, map raw argv into an options object.
+   - Use zod to validate options: count (integer >=1 default 1), category (enum of allowed categories plus all default all), seed (optional nonnegative integer).
+   - Parse arguments for --count/-c, --category/-C, --seed/-s, and --help/-h.
+   - If help flag is present, output usage lines and available categories, then exit.
+   - Initialize rng: if seed is provided, call seedrandom(String(seed)); otherwise use Math.random.
+   - Build face pool: flatten all categories for "all" or select specific category list.
+   - Loop count times, select a random face via getRandomFaceFromList(list, rng), and console.log each face.
 
 # Testing
 - In tests/unit/main.test.js
-  - Stub console.log and verify main logs exactly count faces for various count values.
-  - Test category filtering: ensure only faces from the requested category appear.
-  - Validate parseOptions rejects invalid count or unknown category inputs.
-  - Test getRandomFaceFromList returns an element from the provided list.
+  - Stub console.log and verify that default invocation logs exactly one face.
+  - Test count and category combinations to ensure correct number and filtering of faces.
+  - Test seed reproducibility by running main twice with the same seed and comparing logged sequences.
+  - Test parseOptions rejects invalid count, category, or seed values with zod parsing errors.
 
 # Documentation
-- Update README.md
-  - Add Features section describing --count and --category flags.
-  - List available categories and default behaviors.
-  - Provide usage examples for default and flagged invocations.
+- Update README.md under Features:
+  - Describe --count/-c, --category/-C, and --seed/-s flags and default behaviors.
+  - List available categories and note the reproducible output when using --seed.
+  - Provide usage examples for default, flagged, and seeded invocations.
