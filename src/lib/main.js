@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { readFileSync } from "fs";
 import seedrandom from "seedrandom";
+import { createServer as createNativeServer } from "http";
 
 export const ASCII_FACES = [
   `(ಠ_ಠ)`,
@@ -129,18 +130,121 @@ export function main(args = process.argv.slice(2)) {
   }
 }
 
+/**
+ * Create an HTTP server exposing ASCII face endpoints
+ */
+export function createHttpServer() {
+  const handler = (req, res) => {
+    const { method, url, headers } = req;
+    const parsedUrl = new URL(url, `http://${headers.host}`);
+    const pathname = parsedUrl.pathname;
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const pkgPath = join(__dirname, "../..", "package.json");
+    const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+    const deps = pkg.dependencies || {};
+
+    if (method === "GET" && pathname === "/face") {
+      const face = ASCII_FACES[Math.floor(Math.random() * ASCII_FACES.length)];
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "text/plain");
+      res.end(face);
+    } else if (method === "GET" && pathname === "/faces") {
+      const arr = ASCII_FACES.map((face, i) => `${i}: ${face}`);
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(arr));
+    } else if (method === "GET" && pathname === "/names") {
+      const names = Object.keys(FACE_MAP).sort();
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(names));
+    } else if (method === "GET" && pathname.startsWith("/seed/")) {
+      const value = decodeURIComponent(pathname.slice(6));
+      const num = Number(value);
+      if (!Number.isFinite(num)) {
+        res.statusCode = 400;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Invalid seed value" }));
+      } else {
+        const rng = seedrandom(value);
+        const face = ASCII_FACES[Math.floor(rng() * ASCII_FACES.length)];
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/plain");
+        res.end(face);
+      }
+    } else if (method === "GET" && pathname.startsWith("/name/")) {
+      const name = decodeURIComponent(pathname.slice(6)).toLowerCase();
+      if (name in FACE_MAP) {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/plain");
+        res.end(FACE_MAP[name]);
+      } else {
+        res.statusCode = 404;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Face not found" }));
+      }
+    } else if (method === "GET" && pathname === "/diagnostics") {
+      const diagnostics = {
+        nodeVersion: process.version,
+        appVersion: pkg.version,
+        faceCount: ASCII_FACES.length,
+        faceNames: Object.keys(FACE_MAP).sort(),
+        dependencies: deps,
+      };
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(diagnostics));
+    } else {
+      res.statusCode = 404;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify({ error: "Not Found" }));
+    }
+  };
+  return createNativeServer(handler);
+}
+
 // CLI invocation
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  try {
-    const result = main();
-    if (Array.isArray(result)) {
-      result.forEach((line) => console.log(line));
-    } else {
-      console.log(result);
+  const args = process.argv.slice(2);
+  if (args[0] === "--serve" || args[0] === "-S") {
+    let port = 3000;
+    if (args[1] === "--port" || args[1] === "-p") {
+      if (args.length < 3 || isNaN(Number(args[2]))) {
+        console.error("Error: --port requires a number");
+        process.exitCode = 1;
+        return;
+      }
+      port = Number(args[2]);
+      if (args.length > 3) {
+        console.error(`Error: unknown flag '${args[3]}'`);
+        process.exitCode = 1;
+        return;
+      }
+    } else if (args.length > 1) {
+      console.error(`Error: unknown flag '${args[1]}'`);
+      process.exitCode = 1;
+      return;
     }
-    process.exitCode = 0;
-  } catch (err) {
-    console.error(err.message);
-    process.exitCode = 1;
+    const server = createHttpServer();
+    server.listen(port, () => {
+      console.log(`Serving HTTP API on port ${port}`);
+    });
+    process.on("SIGINT", () => {
+      server.close(() => process.exit(0));
+    });
+  } else {
+    try {
+      const result = main(process.argv.slice(2));
+      if (Array.isArray(result)) {
+        result.forEach((line) => console.log(line));
+      } else {
+        console.log(result);
+      }
+      process.exitCode = 0;
+    } catch (err) {
+      console.error(err.message);
+      process.exitCode = 1;
+    }
   }
 }
