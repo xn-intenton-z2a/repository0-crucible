@@ -122,3 +122,27 @@ describe("ASCII_FACE main function", () => {
       .toThrow("Error: unknown flag 'extra'");
   });
 });
+
+// Help mode tests
+describe("ASCII_FACE help mode", () => {
+  test("main with --help returns help array", () => {
+    const help = main(["--help"]);
+    expect(Array.isArray(help)).toBe(true);
+    expect(help[0]).toMatch(/^Usage:.*\[options\]/);
+    expect(help).toContain("Options:");
+    expect(help).toContain("--help, -h            Show this help message and exit");
+  });
+
+  test("main with -h returns same help array", () => {
+    const helpShort = main(["-h"]);
+    const helpLong = main(["--help"]);
+    expect(helpShort).toEqual(helpLong);
+  });
+
+  test("extra args after help are ignored", () => {
+    expect(() => main(["--help", "extra"]))
+      .not.toThrow();
+    const helpExtra = main(["--help", "extra"]);
+    expect(helpExtra).toEqual(main(["--help"]));
+  });
+});
