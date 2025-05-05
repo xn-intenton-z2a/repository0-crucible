@@ -15,9 +15,7 @@ describe("ASCII_FACE main function", () => {
   test("--list-faces returns indexed list", () => {
     const list = main(["--list-faces"]);
     expect(Array.isArray(list)).toBe(true);
-    expect(list).toEqual(
-      ASCII_FACES.map((f, i) => `${i}: ${f}`)
-    );
+    expect(list).toEqual(ASCII_FACES.map((f, i) => `${i}: ${f}`));
   });
 
   test("--seed with numeric makes deterministic selection", () => {
@@ -78,6 +76,30 @@ describe("ASCII_FACE main function", () => {
 
   test("extra flag after --seed throws error", () => {
     expect(() => main(["--seed", "1", "extra"]))
+      .toThrow("Error: unknown flag 'extra'");
+  });
+
+  // Named mode tests
+  test("valid named mode returns correct face", () => {
+    expect(main(["--name", "frown"]) ).toBe(ASCII_FACES[0]);
+  });
+
+  test("short -n alias returns correct face", () => {
+    expect(main(["-n", "smile"]) ).toBe(ASCII_FACES[3]);
+  });
+
+  test("invalid name throws error", () => {
+    expect(() => main(["--name", "foo"]))
+      .toThrow("Error: 'foo' is not a valid face name.");
+  });
+
+  test("missing name throws error", () => {
+    expect(() => main(["--name"]))
+      .toThrow("Error: '--name' requires a face name.");
+  });
+
+  test("extra flag after named mode throws error", () => {
+    expect(() => main(["--name", "frown", "extra"]))
       .toThrow("Error: unknown flag 'extra'");
   });
 });
