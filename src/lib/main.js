@@ -57,12 +57,17 @@ export function main(args = process.argv.slice(2)) {
   }
 
   // Determine effective color level
+  let computedLevel = supportsColor?.level ?? 0;
+  // if explicit color requested and not disabled, force at least level 1 when no terminal support
+  if (explicitColor && !noColorFlag && colorLevelArg === null && computedLevel === 0) {
+    computedLevel = 1;
+  }
   const effectiveLevel = explicitColor
     ? noColorFlag
       ? 0
       : colorLevelArg !== null
       ? colorLevelArg
-      : supportsColor?.level || 0
+      : computedLevel
     : 0;
   const chalk = new Chalk({ level: effectiveLevel });
   const styleMap = {
@@ -322,8 +327,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       }
     } else if (args.length > 1) {
       console.error(`Error: unknown flag '${args[1]}'`);
-      process.exitCode = 1;
-      process.exit(1);
+        process.exitCode = 1;
+        process.exit(1);
     }
     const server = createHttpServer();
     server.listen(port, () => {
