@@ -2,50 +2,54 @@
 
 ## Description
 
-This CLI application outputs facial expressions using ASCII art with the following modes:
-
-1. **Default/Single Face Mode** (`--face` or no flag): Prints one random ASCII face.
-2. **List Faces Mode** (`--list-faces`): Prints all available faces in order, each prefixed with its zero-based index.
-3. **List Names Mode** (`--list-names` or `-l`): Prints all available face identifiers sorted alphabetically.
-4. **Seed Mode** (`--seed <value>` or `-s <value>`): Uses a seeded pseudo-random generator for deterministic face selection.
-5. **Named Mode** (`--name <face>` or `-n <face>`): Prints the specified ASCII face by its name (case-insensitive).
-6. **Help Mode** (`--help` or `-h`): Displays this help message and exits.
-7. **Diagnostics Mode** (`--diagnostics` or `-d`): Prints runtime and application diagnostics information and exits.
+The CLI application outputs facial expressions using ASCII art in various modes.
 
 ## CLI Options
 
-- `--face`             Print a single random face (default behavior).
-- `--list-faces`       List all faces with indices.
-- `--list-names`, `-l` List all face identifiers sorted alphabetically.
-- `--seed <value>`, `-s <value>`  Select a face deterministically using the provided numeric seed.
-- `--name <face>`, `-n <face>`    Print the specified ASCII face by its name (case-insensitive).
-- `--help`, `-h`       Show this help message and exit.
-- `--diagnostics`, `-d` Show diagnostics information and exit.
+- `--face` (default)  
+  Print a single random ASCII face.
 
-## Usage
+- `--list-faces`  
+  List all available faces with zero-based indices.
 
-### Default/Single Face Mode
+- `--list-names`, `-l`  
+  List all available face identifiers sorted alphabetically.
 
-```bash
-repository0-crucible
-# or
-node src/lib/main.js
+- `--seed <value>`, `-s <value>`  
+  Use a numeric seed for deterministic face selection.  
+  An empty seed string (`""`) falls back to random selection.
+
+- `--name <face>`, `-n <face>`  
+  Print the specified ASCII face by its name (case-insensitive).
+
+- `--help`, `-h`  
+  Show usage information and exit.
+
+- `--diagnostics`, `-d`  
+  Show runtime and application diagnostics and exit.
+
+## Usage Examples
+
+### Default / Single Face Mode
+
+```
+$ repository0-crucible
+<face>
 ```
 
-Prints one random face, for example:
+Example:
 ```
+$ repository0-crucible
 (╯°□°）╯
 ```
 
 ### List Faces Mode
 
-```bash
-repository0-crucible --list-faces
-# or
-node src/lib/main.js --list-faces
+```
+$ repository0-crucible --list-faces
 ```
 
-Prints all faces with indices:
+Example:
 ```
 0: (ಠ_ಠ)
 1: (╯°□°）╯
@@ -55,15 +59,16 @@ Prints all faces with indices:
 
 ### List Names Mode
 
-```bash
-repository0-crucible --list-names
-# or
-repository0-crucible -l
-# or
-node src/lib/main.js --list-names
+```
+$ repository0-crucible --list-names
 ```
 
-Prints all face identifiers alphabetically, for example:
+Or with alias `-l`:
+```
+$ repository0-crucible -l
+```
+
+Example:
 ```
 frown
 smile
@@ -73,39 +78,62 @@ wink
 
 ### Seed Mode
 
-```bash
-repository0-crucible --seed 42
-# or
-repository0-crucible -s 42
+```
+$ repository0-crucible --seed 42
 ```
 
-Prints a deterministic face, for example:
+Or with alias `-s`:
 ```
-(╯°□°）╯
+$ repository0-crucible -s 42
+```
+
+Example:
+```
+(¬_¬)
+```
+
+Deterministic with same seed:
+```
+$ repository0-crucible --seed 1
+(ಠ_ಠ)
+$ repository0-crucible -s 1
+(ಠ_ಠ)
+```
+
+Empty seed:
+```
+$ repository0-crucible --seed ""
+<random face>
 ```
 
 ### Named Mode
 
-```bash
-repository0-crucible --name frown
-# or
-repository0-crucible -n smile
+```
+$ repository0-crucible --name frown
 ```
 
-Prints the specified face, for example:
+Or with alias `-n`:
 ```
-(ಠ_ಠ)
+$ repository0-crucible -n surprised
+```
+
+Example:
+```
+(¬_¬)
 ```
 
 ### Help Mode
 
-```bash
-repository0-crucible --help
-# or
-repository0-crucible -h
+```
+$ repository0-crucible --help
 ```
 
-Displays usage information, for example:
+Or with alias `-h`:
+```
+$ repository0-crucible -h
+```
+
+Displays:
 ```
 Usage: repository0-crucible [options]
 
@@ -121,13 +149,16 @@ Options:
 
 ### Diagnostics Mode
 
-```bash
-repository0-crucible --diagnostics
-# or
-node src/lib/main.js --diagnostics
+```
+$ repository0-crucible --diagnostics
 ```
 
-Prints diagnostic information, for example:
+Or with alias `-d`:
+```
+$ repository0-crucible -d
+```
+
+Example:
 ```
 Diagnostics:
 Node.js version: v20.5.0
@@ -135,11 +166,37 @@ Application version: 1.4.0
 Face count: 4
 Face names: frown, smile, surprised, wink
 Dependencies:
+- seedrandom@3.0.5
 - dotenv@16.5.0
 - ejs@3.1.10
 - js-yaml@4.1.0
 - minimatch@9.0.5
 - openai@4.96.2
-- seedrandom@3.0.5
 - zod@3.24.4
+```
+
+## Error Conditions
+
+- Missing or non-numeric seed:
+
+```
+$ repository0-crucible --seed
+Error: seed value must be a number.
+
+$ repository0-crucible -s foo
+Error: seed value must be a number.
+```
+
+- Invalid face name:
+
+```
+$ repository0-crucible --name foo
+Error: 'foo' is not a valid face name.
+```
+
+- Unknown flags:
+
+```
+$ repository0-crucible --unknown
+Error: unknown flag '--unknown'.
 ```
