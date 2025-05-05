@@ -1,36 +1,35 @@
 # ASCII_FACE
 
 ## Description
-Extend the CLI application to support colored ASCII face output. Users can enable or disable color and choose a color depth level, applying expressive hues that match each face’s emotional tone.
+Extend the CLI application to support colored ASCII face output and machine readable JSON output for integration. JSON mode formats any output as an object with keys face, faces, names, indexedFaces or diagnostics.
 
 ## CLI Options
---color, -C                Enable colored output even if auto-detection would disable
---no-color                 Disable colored output regardless of terminal support
---color-level <level>      Force color support level (0 to disable, 1 basic, 2 256, 3 truecolor)
-(Other existing flags remain unchanged: --count/-c, --face, --list-faces, --list/-l, --seed/-s, --name/-n, --diagnostics/-d, --help/-h)
+- --color or -C                enable colored output
+- --no-color                   disable colored output
+- --color-level <level>        force a color level from 0 to 3
+- --json or -j                 output results as JSON instead of plain text
+(Other existing flags remain unchanged: --count/-c, --face, --list-faces, --list-names/-l, --seed/-s, --name/-n, --diagnostics/-d, --help/-h, --serve/-S, --port/-p)
 
 ## Implementation Details
-1. Add chalk dependency in package.json and import new Chalk from chalk in src/lib/main.js.
-2. Parse --color, --no-color, --color-level flags before other options. Validate color-level is integer between 0 and 3, else throw Error: "Error: --color-level requires a number between 0 and 3".
-3. Determine effective level by combining forced level flag with chalk.supportsColor. If --no-color set, level is zero.
-4. Instantiate a Chalk instance with the computed level.
-5. Define a style map:
-   - frown -> chalk.red
-   - surprised -> chalk.yellow
-   - wink -> chalk.blue
-   - smile -> chalk.green
-6. After selecting a single face or batch, apply the style corresponding to each face’s name when level > 0; otherwise return plain ASCII.
-7. Ensure existing behavior for random, list, name, seed, diagnostics, help, and count works unchanged.
+1. Detect the json flag before other options and remove it from the argument list. If json is used with serve mode, throw an error.
+2. After computing results in main, if json mode is active wrap results into an appropriate JS object:
+   - face mode: object with key face mapping to the face string
+   - batch mode: if count is set, wrap into key faces mapping to an array of face strings
+   - list names mode: wrap sorted face identifiers under key names
+   - list faces mode: wrap indexed face strings under key indexedFaces
+   - diagnostics mode: wrap the existing diagnostics object under key diagnostics
+3. In CLI invocation, if result is an object, use JSON stringify to output on a single line to stdout
+4. Ensure colored output may be retained inside the JSON values when color level is greater than zero
 
 ## Testing
-1. Add tests in tests/unit/main.test.js for colored output:
-   - main(["--color"]) returns ANSI codes around face
-   - main(["--no-color"]) returns plain face without ANSI codes
-   - main(["--color-level","0"]) disables coloring
-   - Invalid --color-level values throw expected error
-2. Combine --count with color flags and seeded sequences for deterministic colored batches.
-3. Verify that existing tests for single face, list, seed, name, help, diagnostics continue to pass unchanged.
+Add tests in tests/unit/main.test.js for JSON mode:
+- main with face and json flag returns an object with key face and valid face string
+- main with count and json returns object with key faces and array of correct length
+- main with list names and json returns object with key names and correct sorted identifiers
+- main with list faces and json returns object with key indexedFaces and correct entries
+- invalid combinations such as serve with json produce an error
+Ensure existing tests for plain output and HTTP API continue to pass unchanged
 
 ## Documentation
-1. Update README.md under Features: list new color flags and show usage examples for single and multiple faces.
-2. Update docs/ascii_face.md: add Color Mode section with descriptions of flags, default behavior, style mapping, and examples.
+1. Update README.md under Features to include the new json flag description and examples for each mode
+2. Update docs/ascii_face.md with a JSON Output section explaining usage examples, object structure, and behavior
