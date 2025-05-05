@@ -11,8 +11,31 @@ export const FACES = {
 };
 
 export function main(args = process.argv.slice(2)) {
-  const hasList = args.includes("--list");
+  const hasList = args.includes("--list") || args.includes("--list-faces");
   const nameIndex = args.findIndex(arg => arg === "--name" || arg === "-n");
+  const seedIndex = args.findIndex(arg => arg === "--seed" || arg === "-s");
+
+  // Setup RNG, seeded or default
+  let rng = Math.random;
+  if (seedIndex !== -1) {
+    const seedValue = args[seedIndex + 1];
+    const seed = Number(seedValue);
+    if (!seedValue || Number.isNaN(seed)) {
+      throw new Error(`Error: '${seedValue}' is not a valid seed value.`);
+    }
+    // Simple deterministic RNG (Mulberry32)
+    function mulberry32(a) {
+      let t = a;
+      return function() {
+        t += 0x6D2B79F5;
+        let r = t;
+        r = Math.imul(r ^ (r >>> 15), r | 1);
+        r ^= r + Math.imul(r ^ (r >>> 7), r | 61);
+        return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    rng = mulberry32(seed);
+  }
 
   if (hasList) {
     const names = Object.keys(FACES).sort();
@@ -25,7 +48,7 @@ export function main(args = process.argv.slice(2)) {
     return FACES[faceName];
   } else {
     const keys = Object.keys(FACES);
-    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    const randomKey = keys[Math.floor(rng() * keys.length)];
     return FACES[randomKey];
   }
 }

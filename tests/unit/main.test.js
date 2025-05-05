@@ -27,4 +27,23 @@ describe("ASCII_FACE main function", () => {
     expect(() => main(["--name", "foo"]))
       .toThrow("Error: 'foo' is not a valid face name.");
   });
+
+  test("seed mode returns deterministic face for same seed", () => {
+    const face1 = main(["--seed", "1"]);
+    const face2 = main(["--seed", "1"]);
+    expect(face1).toBe(face2);
+    expect(Object.values(FACES)).toContain(face1);
+  });
+
+  test("short seed flag -s returns deterministic face for same seed", () => {
+    const face1 = main(["-s", "2"]);
+    const face2 = main(["-s", "2"]);
+    expect(face1).toBe(face2);
+    expect(Object.values(FACES)).toContain(face1);
+  });
+
+  test("seed mode with invalid seed throws error", () => {
+    expect(() => main(["--seed", "foo"]))
+      .toThrow("Error: 'foo' is not a valid seed value.");
+  });
 });
