@@ -122,6 +122,17 @@ describe("ASCII_FACE main function", () => {
     expect(() => main(["--list-names", "extra"]))
       .toThrow("Error: unknown flag 'extra'");
   });
+
+  test("--list alias returns sorted face identifiers", () => {
+    const names = main(["--list"]);
+    const expected = Object.keys(FACE_MAP).sort();
+    expect(names).toEqual(expected);
+  });
+
+  test("extra flag after --list throws error", () => {
+    expect(() => main(["--list", "extra"]))
+      .toThrow("Error: unknown flag 'extra'");
+  });
 });
 
 // Help mode tests
@@ -161,7 +172,6 @@ describe("Diagnostics mode", () => {
         `Face count: ${ASCII_FACES.length}`,
         expect.stringMatching(/^Face names: /),
         "Dependencies:",
-        // at least one dependency line
         expect.stringMatching(/^\- .+@.+$/),
       ])
     );

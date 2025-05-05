@@ -8,7 +8,7 @@ This CLI application outputs facial expressions using ASCII art with the followi
 2. **List Mode** (`--list-faces`): Prints all available faces in order, each prefixed with its zero-based index.
 3. **Seed Mode** (`--seed <value>` or `-s <value>`): Uses a seeded pseudo-random generator for deterministic face selection.
 4. **Named Mode** (`--name <face>` or `-n <face>`): Prints the specified ASCII face by name (case-insensitive).
-5. **List Names Mode** (`--list-names` or `-l`): Prints all available face identifiers sorted alphabetically.
+5. **List Names Mode** (`--list`, `--list-names`, `-l`): Prints all available face identifiers sorted alphabetically.
 6. **Help Mode** (`--help` or `-h`): Displays this help message and exits.
 
 ## CLI Options
@@ -17,7 +17,7 @@ This CLI application outputs facial expressions using ASCII art with the followi
 - `--list-faces`       List all faces with indices.
 - `--seed <value>`, `-s <value>`     Select a face deterministically using the provided numeric seed.
 - `--name <face>`, `-n <face>`       Print the specified ASCII face by its name (case-insensitive).
-- `--list-names`, `-l`               List all face identifiers sorted alphabetically.
+- `--list`, `--list-names`, `-l`               List all face identifiers sorted alphabetically.
 - `--help`, `-h`                      Show this help message and exit.
 
 ## Usage
@@ -80,6 +80,8 @@ Prints the specified face, for example:
 ### List Names Mode
 
 ```bash
+repository0-crucible --list
+# or
 repository0-crucible --list-names
 # or
 repository0-crucible -l
@@ -108,7 +110,7 @@ Usage: repository0-crucible [options]
 Options:
 --face                 Print a single random ASCII face (default behavior)
 --list-faces           List all available ASCII faces with indices
---list-names, -l       List all available face identifiers sorted alphabetically
+--list, --list-names, -l       List all available face identifiers sorted alphabetically
 --seed <value>, -s <value>     Select a face deterministically using the provided numeric seed
 --name <face>, -n <face>       Print the specified ASCII face by its name (case-insensitive)
 --help, -h            Show this help message and exit
