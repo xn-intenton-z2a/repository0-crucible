@@ -133,7 +133,17 @@ describe("ASCII_FACE main function", () => {
     expect(() => main(["--list", "extra"]))
       .toThrow("Error: unknown flag 'extra'");
   });
-});
 
-// Help mode tests
-...
+  // Help mode tests
+  test("--help shows usage information", () => {
+    const res = main(["--help"]);
+    expect(Array.isArray(res)).toBe(true);
+    expect(res[0]).toMatch(/^Usage:/);
+  });
+
+  test("-h alias shows usage information", () => {
+    const res = main(["-h"]);
+    expect(Array.isArray(res)).toBe(true);
+    expect(res[0]).toMatch(/^Usage:/);
+  });
+});
