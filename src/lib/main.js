@@ -2,6 +2,7 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import seedrandom from "seedrandom";
 
 export const ASCII_FACES = [
   `(ಠ_ಠ)`,
@@ -9,15 +10,6 @@ export const ASCII_FACES = [
   `(¬_¬)`,
   `(^_^)/`,
 ];
-
-function createSeededRNG(seed) {
-  let s = seed >>> 0;
-  return function() {
-    // LCG parameters from Numerical Recipes
-    s = (s * 1664525 + 1013904223) % 0x100000000;
-    return s / 0x100000000;
-  };
-}
 
 export function main(args = process.argv.slice(2)) {
   let mode = 'face';
@@ -33,15 +25,18 @@ export function main(args = process.argv.slice(2)) {
     if (args.length > 1) {
       throw new Error(`Error: unknown flag '${args[1]}'`);
     }
-  } else if (args[0] === '--seed') {
+  } else if (args[0] === '--seed' || args[0] === '-s') {
     if (args.length < 2) {
       throw new Error(`Error: seed value must be a number.`);
     }
-    const v = Number(args[1]);
-    if (!Number.isFinite(v)) {
-      throw new Error(`Error: seed value must be a number.`);
+    const raw = args[1];
+    if (raw !== '') {
+      const num = Number(raw);
+      if (!Number.isFinite(num)) {
+        throw new Error(`Error: seed value must be a number.`);
+      }
+      seedValue = raw;
     }
-    seedValue = v;
     if (args.length > 2) {
       throw new Error(`Error: unknown flag '${args[2]}'`);
     }
@@ -50,10 +45,9 @@ export function main(args = process.argv.slice(2)) {
     throw new Error(`Error: unknown flag '${args[0]}'`);
   }
 
-  // Determine RNG
   let rng = Math.random;
   if (seedValue !== null) {
-    rng = createSeededRNG(seedValue);
+    rng = seedrandom(seedValue);
   }
 
   if (mode === 'face') {
