@@ -27,7 +27,7 @@ The CLI application outputs facial expressions using ASCII art in various modes.
 - `--serve`, `-S`
   Start the HTTP API server (default port 3000).
 
-- `--port <number>`, `-p <number>`
+- `--port <number>`, `-p`
   Specify a custom server port.
 
 - `--help`, `-h`
@@ -35,6 +35,15 @@ The CLI application outputs facial expressions using ASCII art in various modes.
 
 - `--diagnostics`, `-d`
   Show runtime and application diagnostics information and exit.
+
+- `--color`, `-C`
+  Enable colored output.
+
+- `--no-color`
+  Disable colored output.
+
+- `--color-level <level>`
+  Force ANSI color level (0-3).
 
 ## Usage Examples
 
@@ -155,6 +164,16 @@ Example:
 (ಠ_ಠ)
 ```
 
+### Color Output
+
+```bash
+$ repository0-crucible --color
+```
+
+Example (colored):
+```[32m(^_^)\u001b[39m
+```
+
 ### Help Mode
 
 ```bash
@@ -169,9 +188,6 @@ $ repository0-crucible -h
 Displays:
 ```
 Usage: repository0-crucible [options]
-
-Options:
-... (help listing)
 ```
 
 ### Diagnostics Mode
@@ -188,11 +204,5 @@ $ repository0-crucible -d
 Example:
 ```
 Diagnostics:
-Node.js version: v<version>
-Application version: <version>
-Face count: <number>
-Face names: <names>
-Dependencies:
-- <package>@<version>
-...
+... lines ...
 ```

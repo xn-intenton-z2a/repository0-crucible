@@ -6,6 +6,7 @@ import { dirname, join } from "path";
 import { readFileSync } from "fs";
 import seedrandom from "seedrandom";
 import { createServer as createNativeServer } from "http";
+import { Chalk, supportsColor } from "chalk";
 
 export const ASCII_FACES = [
   `(ಠ_ಠ)`,
@@ -22,6 +23,65 @@ export const FACE_MAP = {
 };
 
 export function main(args = process.argv.slice(2)) {
+  args = [...args];
+
+  // Parse color flags
+  let explicitColor = false;
+  let colorEnabled = false;
+  let noColorFlag = false;
+  let colorLevelArg = null;
+  for (let i = 0; i < args.length; ) {
+    const a = args[i];
+    if (a === "--color" || a === "-C") {
+      explicitColor = true;
+      colorEnabled = true;
+      args.splice(i, 1);
+    } else if (a === "--no-color") {
+      explicitColor = true;
+      noColorFlag = true;
+      args.splice(i, 1);
+    } else if (a === "--color-level") {
+      if (i + 1 >= args.length) {
+        throw new Error("Error: --color-level requires a number between 0 and 3");
+      }
+      const lvl = Number(args[i + 1]);
+      if (!Number.isInteger(lvl) || lvl < 0 || lvl > 3) {
+        throw new Error("Error: --color-level requires a number between 0 and 3");
+      }
+      explicitColor = true;
+      colorLevelArg = lvl;
+      args.splice(i, 2);
+    } else {
+      i++;
+    }
+  }
+
+  // Determine effective color level
+  const effectiveLevel = explicitColor
+    ? noColorFlag
+      ? 0
+      : colorLevelArg !== null
+      ? colorLevelArg
+      : supportsColor?.level || 0
+    : 0;
+  const chalk = new Chalk({ level: effectiveLevel });
+  const styleMap = {
+    frown: chalk.red,
+    surprised: chalk.yellow,
+    wink: chalk.blue,
+    smile: chalk.green,
+  };
+  const stylize = (face) => {
+    if (effectiveLevel > 0) {
+      for (const [name, val] of Object.entries(FACE_MAP)) {
+        if (val === face) {
+          return styleMap[name](face);
+        }
+      }
+    }
+    return face;
+  };
+
   // Parse count option if provided
   let count = null;
   const countFlagIndex = args.findIndex(
@@ -83,6 +143,9 @@ export function main(args = process.argv.slice(2)) {
       "--port <number>, -p           Specify a custom server port",
       "--diagnostics, -d             Show diagnostics information and exit",
       "--help, -h                    Show this help message and exit",
+      "--color, -C                   Enable colored output",
+      "--no-color                    Disable colored output",
+      "--color-level <level>         Force ANSI color level (0-3)",
     ];
   }
 
@@ -138,7 +201,7 @@ export function main(args = process.argv.slice(2)) {
     if (args.length > 2) {
       throw new Error(`Error: unknown flag '${args[2]}'`);
     }
-    return FACE_MAP[name];
+    return stylize(FACE_MAP[name]);
   } else if (args[0] === "--unknown-route-check") {
     throw new Error(`Error: unknown flag '${args[0]}'`);
   } else {
@@ -157,10 +220,10 @@ export function main(args = process.argv.slice(2)) {
         const idx = Math.floor(rng() * ASCII_FACES.length);
         results.push(ASCII_FACES[idx]);
       }
-      return results;
+      return results.map(stylize);
     }
     const idx = Math.floor(rng() * ASCII_FACES.length);
-    return ASCII_FACES[idx];
+    return stylize(ASCII_FACES[idx]);
   } else if (mode === "list") {
     return ASCII_FACES.map((face, i) => `${i}: ${face}`);
   }

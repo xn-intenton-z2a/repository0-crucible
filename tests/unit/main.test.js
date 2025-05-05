@@ -146,4 +146,49 @@ describe("ASCII_FACE main function", () => {
     expect(Array.isArray(res)).toBe(true);
     expect(res[0]).toMatch(/^Usage:/);
   });
+
+  // Color mode tests
+  test("--color returns colored face", () => {
+    const face = main(["--color"]);
+    expect(face).toMatch(/\u001b\[\d+m/);
+    // underlying stripped face should be valid
+    const stripped = face.replace(/\u001b\[[0-9;]*m/g, "");
+    expect(ASCII_FACES).toContain(stripped);
+  });
+
+  test("-C alias returns colored face", () => {
+    const face = main(["-C"]);
+    expect(face).toMatch(/\u001b\[\d+m/);
+  });
+
+  test("--no-color returns plain face without ANSI codes", () => {
+    const face = main(["--no-color"]);
+    expect(face).not.toMatch(/\u001b\[\d+m/);
+    expect(ASCII_FACES).toContain(face);
+  });
+
+  test("--color-level 0 produces unstyled output", () => {
+    const face = main(["--color-level", "0"]);
+    expect(face).not.toMatch(/\u001b\[\d+m/);
+    expect(ASCII_FACES).toContain(face);
+  });
+
+  test("--color-level 3 produces styled output with ANSI codes", () => {
+    const face = main(["--color-level", "3"]);
+    expect(face).toMatch(/\u001b\[\d+m/);
+  });
+
+  test("batch mode with --color returns array of colored faces", () => {
+    const arr = main(["--color", "--count", "3"]);
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr).toHaveLength(3);
+    arr.forEach((f) => expect(f).toMatch(/\u001b\[\d+m/));
+  });
+
+  test("--seed with --color yields deterministic colored output", () => {
+    const a = main(["--seed", "2", "--color"]);
+    const b = main(["--seed", "2", "--color"]);
+    expect(a).toBe(b);
+    expect(a).toMatch(/\u001b\[\d+m/);
+  });
 });
