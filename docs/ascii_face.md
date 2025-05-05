@@ -6,35 +6,34 @@ The CLI application outputs facial expressions using ASCII art in various modes.
 
 ## CLI Options
 
-- `--face` (default)  
+- `--face` (default)
   Print a single random ASCII face.
 
-- `--list-faces`  
+- `--list-faces`
   List all available faces with zero-based indices.
 
-- `--list-names`, `-l`  
+- `--list-names`, `-l`
   List all available face identifiers sorted alphabetically.
 
-- `--seed <value>`, `-s <value>`  
-  Use a numeric seed for deterministic face selection.  
-  An empty seed string (`""`) falls back to random selection.
+- `--seed <value>`, `-s <value>`
+  Select a face deterministically using the provided numeric seed. An empty seed string (`""`) falls back to random selection.
 
-- `--name <face>`, `-n <face>`  
+- `--name <face>`, `-n <face>`
   Print the specified ASCII face by its name (case-insensitive).
 
-- `--help`, `-h`  
+- `--help`, `-h`
   Show usage information and exit.
 
-- `--diagnostics`, `-d`  
-  Show runtime and application diagnostics and exit.
+- `--diagnostics`, `-d`
+  Show runtime and application diagnostics information and exit.
 
 ## Usage Examples
 
 ### Default / Single Face Mode
 
-```
+```bash
 $ repository0-crucible
-<face>
+<random face>
 ```
 
 Example:
@@ -45,7 +44,7 @@ $ repository0-crucible
 
 ### List Faces Mode
 
-```
+```bash
 $ repository0-crucible --list-faces
 ```
 
@@ -59,11 +58,11 @@ Example:
 
 ### List Names Mode
 
-```
+```bash
 $ repository0-crucible --list-names
 ```
 
-Or with alias `-l`:
+Or with alias:
 ```
 $ repository0-crucible -l
 ```
@@ -78,11 +77,11 @@ wink
 
 ### Seed Mode
 
-```
+```bash
 $ repository0-crucible --seed 42
 ```
 
-Or with alias `-s`:
+Or with alias:
 ```
 $ repository0-crucible -s 42
 ```
@@ -108,27 +107,27 @@ $ repository0-crucible --seed ""
 
 ### Named Mode
 
-```
+```bash
 $ repository0-crucible --name frown
 ```
 
-Or with alias `-n`:
+Or with alias:
 ```
 $ repository0-crucible -n surprised
 ```
 
 Example:
 ```
-(¬_¬)
+(ಠ_ಠ)
 ```
 
 ### Help Mode
 
-```
+```bash
 $ repository0-crucible --help
 ```
 
-Or with alias `-h`:
+Or with alias:
 ```
 $ repository0-crucible -h
 ```
@@ -138,22 +137,16 @@ Displays:
 Usage: repository0-crucible [options]
 
 Options:
---face                 Print a single random ASCII face (default behavior)
---list-faces           List all available ASCII faces with indices
---list-names, -l       List all available face identifiers sorted alphabetically
---seed <value>, -s <value>     Select a face deterministically using the provided numeric seed
---name <face>, -n <face>       Print the specified ASCII face by its name (case-insensitive)
---diagnostics, -d      Show diagnostics information and exit
---help, -h             Show this help message and exit
+... (help listing)
 ```
 
 ### Diagnostics Mode
 
-```
+```bash
 $ repository0-crucible --diagnostics
 ```
 
-Or with alias `-d`:
+Or with alias:
 ```
 $ repository0-crucible -d
 ```
@@ -161,42 +154,44 @@ $ repository0-crucible -d
 Example:
 ```
 Diagnostics:
-Node.js version: v20.5.0
-Application version: 1.4.0
-Face count: 4
-Face names: frown, smile, surprised, wink
+Node.js version: v<version>
+Application version: <version>
+Face count: <number>
+Face names: <names>
 Dependencies:
-- seedrandom@3.0.5
-- dotenv@16.5.0
-- ejs@3.1.10
-- js-yaml@4.1.0
-- minimatch@9.0.5
-- openai@4.96.2
-- zod@3.24.4
+- <package>@<version>
+...
 ```
 
 ## Error Conditions
 
 - Missing or non-numeric seed:
 
-```
+```bash
 $ repository0-crucible --seed
 Error: seed value must be a number.
+```
 
+```bash
 $ repository0-crucible -s foo
 Error: seed value must be a number.
 ```
 
 - Invalid face name:
 
-```
+```bash
 $ repository0-crucible --name foo
 Error: 'foo' is not a valid face name.
 ```
 
 - Unknown flags:
 
-```
+```bash
 $ repository0-crucible --unknown
 Error: unknown flag '--unknown'.
+```
+
+```bash
+$ repository0-crucible --face extra
+Error: unknown flag 'extra'.
 ```
