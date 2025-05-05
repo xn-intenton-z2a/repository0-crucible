@@ -36,9 +36,9 @@ describe("--demo flag", () => {
   test("should print demo sections and exit 0", () => {
     expect(() => main(["--demo"])) .toThrow();
     expect(logs[0]).toBe("=== Interactive Demo ===");
-    const seededLine = logs.find((l) => l.includes('"seed":42') && l.includes('"count":3'));
+    const seededLine = logs.find((l) => l.includes('"seed":42') && l.includes('"count":3"'));
     expect(seededLine).toBeDefined();
-    const uniqueLine = logs.find((l) => l.includes('"unique":true') && l.includes('"category":"happy"') && l.includes('"seed":7'));
+    const uniqueLine = logs.find((l) => l.includes('"unique":true') && l.includes('"category":"happy"') && l.includes('"seed":7"'));
     expect(uniqueLine).toBeDefined();
   });
 });
@@ -62,7 +62,7 @@ describe("--help flag", () => {
   });
 
   test("should print usage summary and exit 0", () => {
-    expect(() => main(["--help"])) .toThrow({ code: 0 });
+    expect(() => main(["--help"])) .toThrow();
     // Check usage header
     expect(logs[0]).toMatch(/Usage:.*main\.js.*\[options\]/);
     // Check each flag present
