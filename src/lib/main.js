@@ -2,6 +2,8 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import { readFileSync } from "fs";
 import seedrandom from "seedrandom";
 
 export const ASCII_FACES = [
@@ -19,6 +21,31 @@ export const FACE_MAP = {
 };
 
 export function main(args = process.argv.slice(2)) {
+  // Diagnostics mode
+  if (args[0] === "--diagnostics" || args[0] === "-d") {
+    if (args.length > 1) {
+      throw new Error(`Error: unknown flag '${args[1]}'`);
+    }
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const pkgPath = join(__dirname, "../..", "package.json");
+    const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+    const lines = [];
+    lines.push("Diagnostics:");
+    lines.push(`Node.js version: ${process.version}`);
+    lines.push(`Application version: ${pkg.version}`);
+    lines.push(`Face count: ${ASCII_FACES.length}`);
+    lines.push(`Face names: ${Object.keys(FACE_MAP).sort().join(", ")}`);
+    lines.push("Dependencies:");
+    const deps = pkg.dependencies || {};
+    Object.keys(deps)
+      .sort()
+      .forEach((name) => {
+        lines.push(`- ${name}@${deps[name]}`);
+      });
+    return lines;
+  }
+
   // Help mode
   if (args[0] === "--help" || args[0] === "-h") {
     return [
