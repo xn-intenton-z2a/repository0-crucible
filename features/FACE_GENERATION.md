@@ -1,33 +1,49 @@
 # Overview
+Improve the stubbed generateFacesCore implementation in src/lib/main.js into a full ASCII face generation engine with deterministic seeding, category filtering, and optional uniqueness.
 
-Replace the stub implementation of generateFacesCore in src/lib/main.js with a full ASCII face generation engine. Support seeded pseudo random output, filtering by category, and optional uniqueness without replacement. Validate inputs and provide clear errors.
+# Input Validation
+Use zod to define a schema for options:
+- count: positive integer
+- seed: integer
+- category: literal union of happy, sad, angry, surprised, all
+- unique: optional boolean (default false)
+Validate inputs at the start of generateFacesCore and throw descriptive errors on failure.
 
-# Seeded Pseudo Random Generator
+# Seeded Random Generator
+Implement a linear congruential generator:
+- Function seededRandom(seed) returns a function that yields a uniform number in [0,1)
+- Use constants for multiplier, increment, and modulus to ensure reproducible sequences.
 
-Define a function seededRandom that takes an integer seed and returns a function producing uniform random values in [0,1). Use a linear congruential generator or similar deterministic algorithm. Ensure the same seed yields identical sequences.
-
-# Category Pools and Validation
-
-Maintain face pools for categories happy sad angry surprised and a combined pool for all. In generateFacesCore options, validate that count is a positive integer, seed is an integer, category is one of the allowed values, and unique is boolean if provided. Throw descriptive errors for invalid inputs.
+# Category Pools
+Define pools of ASCII faces in src/lib/main.js:
+- happy, sad, angry, surprised
+- all combines all categories
+Ensure each pool is a constant array of strings.
 
 # Face Generation Logic
-
 In generateFacesCore:
-  • Initialize the random generator with the given seed.
-  • Select the pool matching the category.
-  • If unique is true ensure count does not exceed the pool size or throw an error.
-  • Loop count times: draw a random index to pick a face string, track used indices when unique is true, and record id starting at 1.
-  • Return an array of objects with id and face fields.
+1. Validate options against the zod schema.
+2. Initialize rng = seededRandom(seed).
+3. Select pool for category.
+4. If unique true, ensure count does not exceed pool length or throw an error.
+5. Generate faces:
+   - Loop count times
+   - Use rng to pick an index
+   - Track used indices if unique
+   - Build objects with id (1-based) and face string
+6. Return array of { id, face }.
 
 # Tests
-
-In tests/unit/main.test.js add tests for generateFacesCore:
-  • Valid count seed category unique options return correct array length and shape.
-  • Repeated calls with same seed and options produce identical outputs.
-  • Category filtering only yields faces from the selected category pool.
-  • Unique true ensures no duplicate face values and throws when count exceeds pool size.
-  • Invalid count seed category or unique parameters throw errors with clear messages.
+In tests/unit/main.test.js add:
+- Valid inputs produce correct array length and shape
+- Same seed and options yield identical arrays on multiple calls
+- Filtering by category only returns faces from that pool
+- unique true yields no duplicates and errors when count too high
+- Invalid inputs (non-integer count, invalid category, non-boolean unique) throw clear errors
+Use vitest and zod for assertion.
 
 # Documentation
-
-Update docs/USAGE.md and README.md to document generateFacesCore API parameters count seed category unique and return format. Provide inline code and CLI or HTTP examples showing sample responses.
+Update docs/USAGE.md and README.md:
+- Document generateFacesCore API parameters and return format
+- Provide CLI examples using --demo and HTTP requests showing sample ASCII faces
+- Include error examples for invalid inputs
