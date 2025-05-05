@@ -22,6 +22,24 @@ export const FACE_MAP = {
 };
 
 export function main(args = process.argv.slice(2)) {
+  // Parse count option if provided
+  let count = null;
+  const countFlagIndex = args.findIndex(
+    (a) => a === "--count" || a === "-c"
+  );
+  if (countFlagIndex !== -1) {
+    if (countFlagIndex + 1 >= args.length) {
+      throw new Error("Error: --count requires a positive integer.");
+    }
+    const rawCount = args[countFlagIndex + 1];
+    const num = Number(rawCount);
+    if (!Number.isInteger(num) || num < 1) {
+      throw new Error("Error: --count requires a positive integer.");
+    }
+    count = num;
+    args.splice(countFlagIndex, 2);
+  }
+
   // Diagnostics mode
   if (args[0] === "--diagnostics" || args[0] === "-d") {
     if (args.length > 1) {
@@ -36,7 +54,9 @@ export function main(args = process.argv.slice(2)) {
     lines.push(`Node.js version: ${process.version}`);
     lines.push(`Application version: ${pkg.version}`);
     lines.push(`Face count: ${ASCII_FACES.length}`);
-    lines.push(`Face names: ${Object.keys(FACE_MAP).sort().join(", ")}`);
+    lines.push(
+      `Face names: ${Object.keys(FACE_MAP).sort().join(", ")}`
+    );
     lines.push("Dependencies:");
     const deps = pkg.dependencies || {};
     Object.keys(deps)
@@ -58,6 +78,7 @@ export function main(args = process.argv.slice(2)) {
       "--list, --list-names, -l       List all available face identifiers sorted alphabetically",
       "--seed <value>, -s <value>     Select a face deterministically using the provided numeric seed",
       "--name <face>, -n <face>       Print the specified ASCII face by its name (case-insensitive)",
+      "--count <number>, -c <number>  Specify how many faces to print (must be positive integer)",
       "--diagnostics, -d      Show diagnostics information and exit",
       "--help, -h            Show this help message and exit",
     ];
@@ -123,6 +144,14 @@ export function main(args = process.argv.slice(2)) {
   }
 
   if (mode === "face") {
+    if (count !== null) {
+      const results = [];
+      for (let i = 0; i < count; i++) {
+        const idx = Math.floor(rng() * ASCII_FACES.length);
+        results.push(ASCII_FACES[idx]);
+      }
+      return results;
+    }
     const idx = Math.floor(rng() * ASCII_FACES.length);
     return ASCII_FACES[idx];
   } else if (mode === "list") {

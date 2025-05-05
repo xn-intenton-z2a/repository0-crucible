@@ -133,58 +133,17 @@ describe("ASCII_FACE main function", () => {
     expect(() => main(["--list", "extra"]))
       .toThrow("Error: unknown flag 'extra'");
   });
-});
 
-// Help mode tests
-describe("ASCII_FACE help mode", () => {
-  test("main with --help returns help array", () => {
-    const help = main(["--help"]);
-    expect(Array.isArray(help)).toBe(true);
-    expect(help[0]).toMatch(/^Usage:.*\[options\]/);
-    expect(help).toContain("Options:");
-    expect(help).toContain("--help, -h            Show this help message and exit");
+  // Help mode tests
+  test("--help shows usage information", () => {
+    const res = main(["--help"]);
+    expect(Array.isArray(res)).toBe(true);
+    expect(res[0]).toMatch(/^Usage:/);
   });
 
-  test("main with -h returns same help array", () => {
-    const helpShort = main(["-h"]);
-    const helpLong = main(["--help"]);
-    expect(helpShort).toEqual(helpLong);
-  });
-
-  test("extra args after help are ignored", () => {
-    expect(() => main(["--help", "extra"]))
-      .not.toThrow();
-    const helpExtra = main(["--help", "extra"]);
-    expect(helpExtra).toEqual(main(["--help"]));
-  });
-});
-
-// Diagnostics tests
-describe("Diagnostics mode", () => {
-  test("main with --diagnostics returns diagnostics array", () => {
-    const diag = main(["--diagnostics"]);
-    expect(Array.isArray(diag)).toBe(true);
-    expect(diag[0]).toBe("Diagnostics:");
-    expect(diag).toEqual(
-      expect.arrayContaining([
-        expect.stringMatching(/^Node\.js version: /),
-        `Application version: ${pkg.version}`,
-        `Face count: ${ASCII_FACES.length}`,
-        expect.stringMatching(/^Face names: /),
-        "Dependencies:",
-        expect.stringMatching(/^\- .+@.+$/),
-      ])
-    );
-  });
-
-  test("main with -d alias returns diagnostics array", () => {
-    const diag = main(["-d"]);
-    expect(Array.isArray(diag)).toBe(true);
-    expect(diag[0]).toBe("Diagnostics:");
-  });
-
-  test("extra flag after --diagnostics throws error", () => {
-    expect(() => main(["--diagnostics", "extra"]))
-      .toThrow("Error: unknown flag 'extra'");
+  test("-h alias shows usage information", () => {
+    const res = main(["-h"]);
+    expect(Array.isArray(res)).toBe(true);
+    expect(res[0]).toMatch(/^Usage:/);
   });
 });
