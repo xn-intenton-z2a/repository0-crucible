@@ -15,7 +15,9 @@ describe("ASCII_FACE main function", () => {
   test("--list-faces returns indexed list", () => {
     const list = main(["--list-faces"]);
     expect(Array.isArray(list)).toBe(true);
-    expect(list).toEqual(ASCII_FACES.map((f, i) => `${i}: ${f}`));
+    expect(list).toEqual(
+      ASCII_FACES.map((f, i) => `${i}: ${f}`)
+    );
   });
 
   test("--seed with numeric makes deterministic selection", () => {
@@ -23,6 +25,30 @@ describe("ASCII_FACE main function", () => {
     const second = main(["--seed", "1"]);
     expect(first).toBe(second);
     expect(ASCII_FACES).toContain(first);
+  });
+
+  test("short -s flag deterministic selection", () => {
+    const first = main(["-s", "3"]);
+    const second = main(["-s", "3"]);
+    expect(first).toBe(second);
+    expect(ASCII_FACES).toContain(first);
+  });
+
+  test("different seeds produce different faces", () => {
+    const a = main(["--seed", "1"]);
+    const b = main(["--seed", "2"]);
+    expect(a).toBe(main(["--seed", "1"]));
+    expect(a).not.toBe(b);
+  });
+
+  test("empty seed string falls back to random", () => {
+    const face = main(["--seed", ""]);
+    expect(ASCII_FACES).toContain(face);
+  });
+
+  test("empty seed with short flag falls back to random", () => {
+    const face = main(["-s", ""]);
+    expect(ASCII_FACES).toContain(face);
   });
 
   test("invalid seed throws error", () => {
