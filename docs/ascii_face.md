@@ -8,6 +8,7 @@ This CLI application outputs facial expressions using ASCII art with the followi
 2. **List Mode** (`--list-faces`): Prints all available faces in order, each prefixed with its zero-based index.
 3. **Seed Mode** (`--seed <value>` or `-s <value>`): Uses a seeded pseudo-random generator for deterministic face selection.
 4. **Named Mode** (`--name <face>` or `-n <face>`): Prints the specified ASCII face by name (case-insensitive).
+5. **List Names Mode** (`--list-names` or `-l`): Prints all available face identifiers sorted alphabetically.
 
 ## CLI Options
 
@@ -15,6 +16,7 @@ This CLI application outputs facial expressions using ASCII art with the followi
 - `--list-faces`       List all faces with indices.
 - `--seed <value>`, `-s <value>`     Select a face deterministically using the provided numeric seed.
 - `--name <face>`, `-n <face>`       Print the specified ASCII face by its name.
+- `--list-names`, `-l`               List all face identifiers sorted alphabetically.
 
 ## Usage
 
@@ -58,9 +60,20 @@ Prints the specified face, for example:
 (ಠ_ಠ)
 ```
 
-If an invalid name is given, the CLI prints an error and exits with code 1:
+### List Names Mode
+
+```bash
+node src/lib/main.js --list-names
+# or
+node src/lib/main.js -l
 ```
-Error: 'foo' is not a valid face name.
+
+Prints all face identifiers alphabetically, for example:
+```
+frown
+smile
+surprised
+wink
 ```
 
 ## Error Conditions
