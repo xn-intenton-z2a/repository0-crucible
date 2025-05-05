@@ -57,6 +57,7 @@ export function main(args = process.argv.slice(2)) {
       "--list-names, -l       List all available face identifiers sorted alphabetically",
       "--seed <value>, -s <value>     Select a face deterministically using the provided numeric seed",
       "--name <face>, -n <face>       Print the specified ASCII face by its name (case-insensitive)",
+      "--diagnostics, -d      Show diagnostics information and exit",
       "--help, -h            Show this help message and exit",
     ];
   }
