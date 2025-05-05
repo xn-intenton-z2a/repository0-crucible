@@ -18,6 +18,9 @@ The CLI application outputs facial expressions using ASCII art in various modes.
 - `--seed <value>`, `-s <value>`
   Select a face deterministically using the provided numeric seed. An empty seed string (`""`) falls back to random selection.
 
+- `--count <number>`, `-c <number>`
+  Specify how many faces to print (must be positive integer).
+
 - `--name <face>`, `-n <face>`
   Print the specified ASCII face by its name (case-insensitive).
 
@@ -105,6 +108,31 @@ $ repository0-crucible --seed ""
 <random face>
 ```
 
+### Batch Mode (Multiple Faces)
+
+```bash
+$ repository0-crucible --count 3
+```
+
+Example:
+```
+(¬_¬)
+(ಠ_ಠ)
+(^_^)/
+```
+
+Combining seed and count:
+```bash
+$ repository0-crucible --seed 2 --count 3
+```
+
+Example:
+```
+(╯°□°）╯
+(¬_¬)
+(ಠ_ಠ)
+```
+
 ### Named Mode
 
 ```bash
@@ -161,37 +189,4 @@ Face names: <names>
 Dependencies:
 - <package>@<version>
 ...
-```
-
-## Error Conditions
-
-- Missing or non-numeric seed:
-
-```bash
-$ repository0-crucible --seed
-Error: seed value must be a number.
-```
-
-```bash
-$ repository0-crucible -s foo
-Error: seed value must be a number.
-```
-
-- Invalid face name:
-
-```bash
-$ repository0-crucible --name foo
-Error: 'foo' is not a valid face name.
-```
-
-- Unknown flags:
-
-```bash
-$ repository0-crucible --unknown
-Error: unknown flag '--unknown'.
-```
-
-```bash
-$ repository0-crucible --face extra
-Error: unknown flag 'extra'.
 ```
