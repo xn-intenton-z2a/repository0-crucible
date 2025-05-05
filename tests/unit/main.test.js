@@ -89,3 +89,125 @@ describe("--help flag", () => {
     });
   });
 });
+
+describe("--diagnostics flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print diagnostics and exit 0", () => {
+    expect(() => main(["--diagnostics"])) .toThrow();
+    expect(logs[0]).toMatch(/^Node Version:/);
+    expect(logs[1]).toMatch(/^Platform:/);
+    expect(logs[2]).toBe('Args: ["--diagnostics"]');
+  });
+});
+
+describe("--build-intermediate flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print building intermediate and exit 0", () => {
+    expect(() => main(["--build-intermediate"])) .toThrow();
+    expect(logs[0]).toBe("Building intermediate stage");
+  });
+});
+
+describe("--build-enhanced flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print building enhanced and exit 0", () => {
+    expect(() => main(["--build-enhanced"])) .toThrow();
+    expect(logs[0]).toBe("Building enhanced stage");
+  });
+});
+
+describe("--refresh flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print refreshing data and exit 0", () => {
+    expect(() => main(["--refresh"])) .toThrow();
+    expect(logs[0]).toBe("Refreshing data");
+  });
+});
+
+describe("--merge-persist flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print merging and persisting and exit 0", () => {
+    expect(() => main(["--merge-persist"])) .toThrow();
+    expect(logs[0]).toBe("Merging and persisting changes");
+  });
+});
