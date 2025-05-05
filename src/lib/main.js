@@ -54,7 +54,7 @@ export function main(args = process.argv.slice(2)) {
       "Options:",
       "--face                 Print a single random ASCII face (default behavior)",
       "--list-faces           List all available ASCII faces with indices",
-      "--list-names, -l       List all available face identifiers sorted alphabetically",
+      "--list, --list-names, -l       List all available face identifiers sorted alphabetically",
       "--seed <value>, -s <value>     Select a face deterministically using the provided numeric seed",
       "--name <face>, -n <face>       Print the specified ASCII face by its name (case-insensitive)",
       "--diagnostics, -d      Show diagnostics information and exit",
@@ -75,7 +75,11 @@ export function main(args = process.argv.slice(2)) {
     if (args.length > 1) {
       throw new Error(`Error: unknown flag '${args[1]}'`);
     }
-  } else if (args[0] === "--list-names" || args[0] === "-l") {
+  } else if (
+    args[0] === "--list" ||
+    args[0] === "--list-names" ||
+    args[0] === "-l"
+  ) {
     if (args.length > 1) {
       throw new Error(`Error: unknown flag '${args[1]}'`);
     }
