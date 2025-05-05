@@ -1,30 +1,31 @@
 # Overview
 
-Implement the core ASCII face generation functionality. Replace the stub in generateFacesCore so that it produces a list of face objects based on the provided options. Support reproducible outputs via a seeded random generator, category filtering, and optional uniqueness constraints.
+Implement full ASCII face generation functionality in generateFacesCore to replace stub behavior. Provide reproducible outputs via a seeded pseudo random generator, allow filtering by category, and support optional uniqueness without replacement.
 
 # Implementation
 
 In src/lib/main.js
-  Define pools of ASCII face strings for categories happy sad angry and all
-  Add a seeded pseudo random function that takes an integer seed and returns a uniform generator
-  In generateFacesCore:
-    Validate that count is a positive integer
-    Validate that category is one of the allowed values
-    If unique is true ensure count does not exceed the pool size for the selected category
-    Generate faces by drawing random elements from the selected pool and tracking duplicates when unique is true
-    Build and return an array of objects each with id and face fields
+- Define face pools for categories happy, sad, angry, surprised and combine all for category all
+- Implement a seeded pseudo random generator function that accepts an integer seed and returns a function returning uniform random values in range [0,1)
+- In generateFacesCore
+  - Validate that count is a positive integer and seed is an integer
+  - Validate category is one of allowed values happy sad angry surprised all
+  - If unique is true ensure count does not exceed the pool size for selected category or throw an error
+  - Generate faces by drawing random values to select elements from the pool and track drawn indices when unique is true
+  - Assign sequential id starting at 1 for each face and return an array of objects with id and face fields
 
 # Tests
 
 In tests/unit/main.test.js
-  Test that generateFacesCore returns an array of the requested length
-  Test reproducibility by comparing outputs from two calls with the same seed and options
-  Test that specifying a valid category filters to that pool
-  Test that unique true yields no duplicate faces and that requesting more unique faces than available triggers an error
+- Add tests for generateFacesCore with valid options verifying array length and correct shape
+- Test reproducibility by calling generateFacesCore twice with same seed and options and comparing outputs
+- Test category filtering yields only faces from selected pool
+- Test unique true yields no duplicate face values and error thrown when count exceeds pool size
+- Test invalid count seed or category parameters throw descriptive errors
 
 # Documentation
 
-In docs/USAGE.md and README.md
-  Document the behavior of generateFacesCore and its parameters
-  Provide examples of calling the function in code and via CLI or HTTP mode
-  Show sample output listing id and face fields
+Update docs/USAGE.md and README.md
+- Document generateFacesCore api parameters count seed category unique and return value format
+- Provide examples of calling generateFacesCore in code and via CLI or HTTP server
+- Show sample response payload with ids and faces
