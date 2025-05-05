@@ -1,5 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { main, ASCII_FACES, FACE_MAP } from "@src/lib/main.js";
+import pkg from "../../package.json" assert { type: "json" };
 
 describe("ASCII_FACE main function", () => {
   test("default (random) mode returns a valid face", () => {
@@ -144,5 +145,36 @@ describe("ASCII_FACE help mode", () => {
       .not.toThrow();
     const helpExtra = main(["--help", "extra"]);
     expect(helpExtra).toEqual(main(["--help"]));
+  });
+});
+
+// Diagnostics tests
+describe("Diagnostics mode", () => {
+  test("main with --diagnostics returns diagnostics array", () => {
+    const diag = main(["--diagnostics"]);
+    expect(Array.isArray(diag)).toBe(true);
+    expect(diag[0]).toBe("Diagnostics:");
+    expect(diag).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(/^Node\.js version: /),
+        `Application version: ${pkg.version}`,
+        `Face count: ${ASCII_FACES.length}`,
+        expect.stringMatching(/^Face names: /),
+        "Dependencies:",
+        // at least one dependency line
+        expect.stringMatching(/^\- .+@.+$/),
+      ])
+    );
+  });
+
+  test("main with -d alias returns diagnostics array", () => {
+    const diag = main(["-d"]);
+    expect(Array.isArray(diag)).toBe(true);
+    expect(diag[0]).toBe("Diagnostics:");
+  });
+
+  test("extra flag after --diagnostics throws error", () => {
+    expect(() => main(["--diagnostics", "extra"]))
+      .toThrow("Error: unknown flag 'extra'");
   });
 });
