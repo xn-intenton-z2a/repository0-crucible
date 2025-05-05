@@ -32,6 +32,11 @@ export function main(args = process.argv.slice(2)) {
     if (args.length > 1) {
       throw new Error(`Error: unknown flag '${args[1]}'`);
     }
+  } else if (args[0] === "--list-names" || args[0] === "-l") {
+    if (args.length > 1) {
+      throw new Error(`Error: unknown flag '${args[1]}'`);
+    }
+    return Object.keys(FACE_MAP).sort();
   } else if (args[0] === "--seed" || args[0] === "-s") {
     if (args.length < 2) {
       throw new Error(`Error: seed value must be a number.`);

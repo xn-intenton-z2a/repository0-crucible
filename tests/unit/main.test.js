@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { main, ASCII_FACES } from "@src/lib/main.js";
+import { main, ASCII_FACES, FACE_MAP } from "@src/lib/main.js";
 
 describe("ASCII_FACE main function", () => {
   test("default (random) mode returns a valid face", () => {
@@ -100,6 +100,25 @@ describe("ASCII_FACE main function", () => {
 
   test("extra flag after named mode throws error", () => {
     expect(() => main(["--name", "frown", "extra"]))
+      .toThrow("Error: unknown flag 'extra'");
+  });
+
+  // List names mode tests
+  test("--list-names returns sorted face identifiers", () => {
+    const names = main(["--list-names"]);
+    expect(Array.isArray(names)).toBe(true);
+    const expected = Object.keys(FACE_MAP).sort();
+    expect(names).toEqual(expected);
+  });
+
+  test("-l alias returns sorted face identifiers", () => {
+    const names = main(["-l"]);
+    const expected = Object.keys(FACE_MAP).sort();
+    expect(names).toEqual(expected);
+  });
+
+  test("extra flag after --list-names throws error", () => {
+    expect(() => main(["--list-names", "extra"]))
       .toThrow("Error: unknown flag 'extra'");
   });
 });
