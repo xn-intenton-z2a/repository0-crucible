@@ -64,11 +64,6 @@ Comprehensive guide to Vitest, covering test definitions, mocking, snapshot test
 A TypeScript-first schema declaration and validation library. Demonstrates parsing of CLI flags, environment variables, and JSON inputs with strong typing, ensuring robust validation of user options and helpful error messages. Actively maintained with frequent releases and extensive examples. Last updated 2024.
 ## MIT License
 
-# Node.js ECMAScript Modules Guide
-## https://nodejs.org/api/esm.html
-Official Node.js documentation on ECMAScript Modules, covering `import`/`export`, `import.meta`, package exports, conditional exports, and loader hooks. Essential for authoring and distributing modern ESM-based CLI tools. Last updated June 2024; authoritative from the Node.js Foundation.
-## Node.js Foundation (MIT-like)
-
 # arg (CLI Argument Parser)
 ## https://github.com/vercel/arg#readme
 A minimal, declarative CLI argument parsing library for Node.js. Supports positional arguments, flags, and custom parsing, enabling lightweight flag handling patterns. Useful for alternatives to Commander or Yargs when performance and minimal footprint are priorities. Last updated 2024.
@@ -129,11 +124,6 @@ Official registry of HTTP status codes maintained by IANA, covering standard and
 The language-agnostic OpenAPI Specification for designing, documenting, and generating code for RESTful APIs. Covers path parameters, request/response schemas, security schemes, and server bindings. Useful for future HTTP extensions to the CLI. Latest version 3.1.0; maintained by the OpenAPI Initiative.
 ## Apache-2.0
 
-# Node.js Readline & REPL Modules
-## https://nodejs.org/api/readline.html
-Detailed documentation for interactive input via the Readline module and built-in REPL. Describes line-level event handling, history management, and custom evaluators—essential for interactive CLI modes. Last updated June 2024; authoritative.
-## Node.js Foundation (MIT-like)
-
 # npm publish Documentation
 ## https://docs.npmjs.com/cli/v10/commands/npm-publish
 Explains the `npm publish` command, package versioning requirements, access scopes, and distribution channels. Guides configuration for public and scoped npm package releases, including cross-platform considerations and `publishConfig` overrides. Last updated 2024.
@@ -147,4 +137,19 @@ A fully automated release workflow that integrates Conventional Commits, changel
 # EJS Templating Documentation
 ## https://ejs.co/#docs
 Official EJS (Embedded JavaScript) documentation detailing template syntax, includes, and custom delimiters. Useful for generating dynamic ASCII-art templates and customizable layouts. Covers performance considerations and caching strategies. Last updated 2023.
+## MIT License
+
+# MDN Web Docs – HTTP
+## https://developer.mozilla.org/en-US/docs/Web/HTTP
+Comprehensive MDN coverage of the HTTP protocol, including methods, headers, status codes, and CORS, offering practical examples and security notes. Useful for designing and implementing HTTP API endpoints, understanding preflight requests, error handling, and header management. Reviewed 2024; authoritative by MDN.
+## Open Content License
+
+# Node.js HTTP Module Reference
+## https://nodejs.org/api/http.html
+Detailed reference for Node.js HTTP server and client API, covering `http.createServer`, `IncomingMessage`, `ServerResponse`, header manipulation, status codes, and streaming. Essential for implementing REST endpoints in the CLI HTTP server mode, parsing requests, routing logic, and robust error handling. Last updated June 2024; authoritative from the Node.js Foundation.
+## Node.js Foundation (MIT-like)
+
+# Express Framework Documentation
+## https://expressjs.com/en/4x/api.html
+Official API reference for Express.js, covering routing, middleware, response methods, error handling, and integration with Node.js HTTP server. Provides actionable patterns for structuring scalable APIs, request parameter parsing, and JSON responses. Latest version 4.x; maintained by the Express.js community.
 ## MIT License
