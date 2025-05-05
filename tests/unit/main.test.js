@@ -1,16 +1,30 @@
 import { describe, test, expect } from "vitest";
-import * as mainModule from "@src/lib/main.js";
-import { main } from "@src/lib/main.js";
+import { main, FACES } from "@src/lib/main.js";
 
-describe("Main Module Import", () => {
-  test("should be non-null", () => {
-    expect(mainModule).not.toBeNull();
+describe("ASCII_FACE main function", () => {
+  test("random mode returns a valid face", () => {
+    const face = main([]);
+    expect(Object.values(FACES)).toContain(face);
   });
-});
 
-describe("Main Output", () => {
-  test("should terminate without error", () => {
-    process.argv = ["node", "src/lib/main.js"];
-    main();
+  test("list mode returns sorted list of face names", () => {
+    const list = main(["--list"]);
+    expect(Array.isArray(list)).toBe(true);
+    expect(list).toEqual(Object.keys(FACES).sort());
+  });
+
+  test("named mode with valid name returns correct face", () => {
+    const face = main(["--name", "wink"]);
+    expect(face).toBe(FACES["wink"]);
+  });
+
+  test("named mode short flag returns correct face", () => {
+    const face = main(["-n", "smile"]);
+    expect(face).toBe(FACES["smile"]);
+  });
+
+  test("named mode with invalid name throws error", () => {
+    expect(() => main(["--name", "foo"]))
+      .toThrow("Error: 'foo' is not a valid face name.");
   });
 });
