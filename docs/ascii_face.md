@@ -25,23 +25,38 @@ This CLI application outputs facial expressions using ASCII art with the followi
 ### Default/Single Face Mode
 
 ```bash
-node src/lib/main.js
-# or
 repository0-crucible
+# or
+node src/lib/main.js
+```
+
+Prints one random face, for example:
+```
+(╯°□°）╯
 ```
 
 ### List Mode
 
 ```bash
+repository0-crucible --list-faces
+# or
 node src/lib/main.js --list-faces
+```
+
+Prints all faces with indices:
+```
+0: (ಠ_ಠ)
+1: (╯°□°）╯
+2: (¬_¬)
+3: (^_^)/
 ```
 
 ### Seed Mode
 
 ```bash
-node src/lib/main.js --seed 42
+repository0-crucible --seed 42
 # or
-node src/lib/main.js -s 42
+repository0-crucible -s 42
 ```
 
 Prints a deterministic face, for example:
@@ -52,9 +67,9 @@ Prints a deterministic face, for example:
 ### Named Mode
 
 ```bash
-node src/lib/main.js --name frown
+repository0-crucible --name frown
 # or
-node src/lib/main.js -n smile
+repository0-crucible -n smile
 ```
 
 Prints the specified face, for example:
@@ -65,9 +80,9 @@ Prints the specified face, for example:
 ### List Names Mode
 
 ```bash
-node src/lib/main.js --list-names
+repository0-crucible --list-names
 # or
-node src/lib/main.js -l
+repository0-crucible -l
 ```
 
 Prints all face identifiers alphabetically, for example:
@@ -81,9 +96,9 @@ wink
 ### Help Mode
 
 ```bash
-node src/lib/main.js --help
+repository0-crucible --help
 # or
-node src/lib/main.js -h
+repository0-crucible -h
 ```
 
 Displays usage information, for example:
@@ -103,25 +118,25 @@ Options:
 
 - Non-numeric or missing seed:
 ```bash
-node src/lib/main.js --seed foo
-node src/lib/main.js -s 
+repository0-crucible --seed foo
+repository0-crucible -s
 ```
 Prints: `Error: seed value must be a number.` and exits with code 1.
 
 - Unknown flag:
 ```bash
-node src/lib/main.js --unknown
+repository0-crucible --unknown
 ```
 Prints: `Error: unknown flag '--unknown'` and exits with code 1.
 
 - Missing face name in named mode:
 ```bash
-node src/lib/main.js --name
+repository0-crucible --name
 ```
 Prints: `Error: '--name' requires a face name.` and exits with code 1.
 
 - Invalid face name in named mode:
 ```bash
-node src/lib/main.js --name foo
+repository0-crucible --name foo
 ```
 Prints: `Error: 'foo' is not a valid face name.` and exits with code 1.
