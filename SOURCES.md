@@ -1,6 +1,6 @@
 # Node.js Core API Reference
 ## https://nodejs.org/api/
-Comprehensive API reference for Node.js covering modules such as `process`, `fs`, `http`, `path`, `url`, `console`, `readline`, `tty`, `esm`, `assert`, and more, including ES Module behaviors, loader hooks, and package scope rules. Essential for implementing CLI flag parsing, file I/O, HTTP server patterns via Express or native http module, and ESM module resolution across script and module contexts. Includes platform-specific notes, migration paths from CommonJS, and detailed examples for robust production usage. Last updated June 2024; authoritative from the Node.js Foundation.
+Comprehensive API reference for Node.js covering modules such as `process`, `fs`, `http`, `path`, `url`, `console`, `readline`, `tty`, `esm`, `assert`, and more, including ES Module behaviors, loader hooks, and package scope rules. Essential for implementing CLI flag parsing, file I/O, HTTP server patterns via Express or native `http` module, and ESM module resolution across script and module contexts. Includes platform-specific notes, migration paths from CommonJS, and detailed examples for robust production usage. Last updated June 2024; authoritative from the Node.js Foundation.
 ## Node.js Foundation (MIT-like)
 
 # ANSI Escape Codes Reference
@@ -13,14 +13,15 @@ An authoritative overview of ANSI escape sequences for text styling, cursor posi
 A popular terminal string styling library for Node.js, offering intuitive APIs to apply colors, bolding, underlines, and nested styling. Enhances readability, contrast, and theming of CLI outputs, ASCII-art headers, and HTTP log coloring. Demonstrates performance benchmarks and workaround patterns for Windows and legacy terminals. Last published May 2023; comprehensive TypeScript definitions.
 ## MIT License
 
-# Commander.js
+# CLI Argument Parsing Libraries
 ## https://github.com/tj/commander.js#readme
-A robust Node.js module for building CLI applications, covering command definitions, option parsing, help generation, and subcommands. Provides best-practice examples for scalable CLI interfaces, custom flags like `--seed` and `--list`, and automatic documentation. Widely adopted in open-source projects and integrates with custom help formatters. Last updated April 2024.
+## https://yargs.js.org/docs/
+A combined reference covering two of the most widely adopted CLI argument parsers: Commander.js and Yargs. Includes command definitions, option parsing, subcommands, help generation, middleware, validation, and custom flag handling patterns. Provides best-practice examples for scalable CLI interfaces, consistent help outputs, declarative and imperative APIs, and JSON schema integration. Last updated 2024; both libraries under active maintenance.
 ## MIT License
 
 # Conventional Commits Specification
 ## https://www.conventionalcommits.org/en/v1.0.0/
-Defines a lightweight convention for commit message formatting, enabling automated changelog generation, semantic-release workflows, and consistent versioning. Guides integration with Commitizen and semantic-release to enforce change classification, breaking-change alerts, and release automation. Published January 2020; maintained by community.
+Defines a lightweight convention for commit message formatting, enabling automated changelog generation, semantic-release workflows, and consistent versioning. Guides integration with Commitizen and `semantic-release` to enforce change classification, breaking-change alerts, and release automation. Published January 2020; maintained by community.
 ## CC0 Public Domain
 
 # ESLint
@@ -56,11 +57,6 @@ A SuperAgent-driven library for testing HTTP servers in Node.js. Demonstrates pa
 # Vitest Documentation
 ## https://vitest.dev/guide/
 Comprehensive guide to Vitest including test definitions, mocking, snapshot testing, and coverage reporting. Covers configuration options, plugins, and watch modes to ensure robust unit and integration tests for CLI logic. Released March 2023; maintained by Vitest team.
-## MIT License
-
-# Yargs
-## https://yargs.js.org/docs/
-A declarative CLI argument parser supporting commands, options, middleware, and validation. Offers both imperative and builder APIs with examples for maintaining consistent help output and advanced flag handling patterns. Over 3 million weekly downloads; regularly updated. Last reviewed 2024.
 ## MIT License
 
 # Zod Schema Validation
@@ -103,20 +99,16 @@ A glob-matching library for file path pattern matching. Provides minimatch, micr
 Official GitHub Actions workflow syntax reference covering triggers, jobs, steps, reusable workflows, contexts, and expressions. Essential for customizing CI/CD pipelines, scheduling, and environment variable management within GitHub workflows. Last updated 2024.
 ## CC BY 4.0
 
-# seedrandom Package
+# Deterministic Randomness & Shuffling
 ## https://github.com/davidbau/seedrandom#readme
-Documentation for the `seedrandom` library, detailing initialization options for various algorithms, reproducible pseudorandom number generation, global override patterns, and security considerations. Essential for implementing deterministic face selection via seeded RNG and ensuring reproducibility across CLI and HTTP modes. Last updated 2023; widely adopted for JavaScript RNG.
-## MIT License
+## https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+Guidance on achieving reproducible pseudo-random sequences using `seedrandom` and implementing unbiased shuffling via the Fisher-Yates algorithm. Crucial for deterministic face selection, ensuring reproducibility across CLI and HTTP modes and avoiding selection biases. Includes usage patterns, performance considerations, and seed initialization details. Updated 2023; licensed under MIT / CC BY-SA 3.0.
+## MIT & CC BY-SA 3.0
 
 # Node.js HTTP Module
 ## https://nodejs.org/api/http.html
 Detailed reference for Node.js's built-in HTTP module, covering the `http.createServer`, request and response objects, streaming paradigms, and keep-alive handling. Provides foundational knowledge for HTTP server behavior and low-level integrations under Express or custom servers. Last updated June 2024; authoritative.
 ## Node.js Foundation (MIT-like)
-
-# Fisher-Yates Shuffle Algorithm
-## https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-Detailed description of the Fisher-Yates shuffle algorithm for unbiased random permutations of arrays. Essential for implementing robust and reproducible unique-selection logic in `generateFacesCore`, ensuring no biases in shuffled face pools. Includes complexity analysis and implementation pseudocode. Last reviewed 2024.
-## CC BY-SA 3.0
 
 # Node.js Streams API Reference
 ## https://nodejs.org/api/stream.html
@@ -146,6 +138,16 @@ Official EJS (Embedded JavaScript) documentation detailing template syntax, incl
 # ASCII-art Library
 ## https://github.com/khrome/ascii-art#readme
 Documentation for the `ascii-art` Node.js library, offering modules for text-to-ASCII conversion, font loading, image-to-ASCII rendering, and animations. Enables generation of expressive ASCII faces and banners with configurable fonts, layout, and color support. Includes code examples and plugin patterns. Last updated 2024.
+## MIT License
+
+# Figlet
+## https://www.npmjs.com/package/figlet
+A font-based ASCII text generator for creating ASCII banners in Node.js applications. Provides programmable font loading, custom kerning, and synchronous/asynchronous APIs. Useful for stylized CLI headers, dynamic ASCII-art titles, and promotional displays. Widely used in CLI projects; MIT licensed.
+## MIT License
+
+# Cowsay
+## https://www.npmjs.com/package/cowsay
+A whimsical ASCII-art tool that renders a cow (or custom characters) saying your text. Offers both CLI and programmatic APIs, with support for custom templates and speech bubble styles. Useful for playful demo outputs, user prompts, and terminal Easter eggs. Last updated 2024; MIT licensed.
 ## MIT License
 
 # Inquirer.js
