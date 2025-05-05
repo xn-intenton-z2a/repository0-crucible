@@ -24,301 +24,228 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="chalk" href="#chalk"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CHALK</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">npm install chalk; import chalk from 'chalk'; chalk.<style><a href="string,...string%5B%5D" class="md-github">.<style>...</a>:string; chalk.level:0-3; per-instance new Chalk({level}); supportsColor object with level and flags; use FORCE_COLOR env or --color flags to override; separate stderr instance: chalkStderr and supportsColorStderr; exposed arrays: modifierNames, foregroundColorNames, backgroundColorNames, colorNames; style names lists; color models: rgb, hex, ansi256 with bg variants; downsampling levels: 16,256,truecolor; theme definitions via function assignments; string substitution via %s; no dependencies; nestable; high adoption.</p>
+<p class="md-github">Installation: npm install chalk
+Import: import chalk from 'chalk'
+Usage: console.log(chalk.blue('Hello world!'))
+API: chalk.styles(...)(string,...):string; chalk.level:number; new Chalk({level}):Chalk; supportsColor,supportsColorStderr:{level,hasBasic,has256,has16m}; chalkStderr:Chalk; modifierNames,foregroundColorNames,backgroundColorNames,colorNames: string[]
+Styles: modifiers, foreground, background color lists
+Color models: rgb, hex, ansi256 with bg prefixes
+Environment: FORCE_COLOR env and --color flags override detection
+Template literals and string substitution support</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
 <p class="md-github">Table of Contents:
 1 Installation
-2 Importing
-3 Basic Usage
-4 Composable API
-5 Theme Definition
+2 Import and Basic Usage
+3 Style Chaining and Nesting
+4 Template Literals
+5 Custom Themes
 6 String Substitution
-7 Color Level Configuration
-8 Color Detection &amp; Forcing
-9 stderr Instance
-10 Style Name Arrays
-11 Styles List
-12 Color Models &amp; Levels</p>
+7 Color Support Levels
+8 Color Detection Overrides
+9 stderr Stream Styling
+10 Available Styles
+11 Color Models</p>
 <p class="md-github">1 Installation
 npm install chalk</p>
-<p class="md-github">2 Importing
+<p class="md-github">2 Import and Basic Usage
 import chalk from 'chalk'
-import {Chalk} from 'chalk'</p>
-<p class="md-github">3 Basic Usage
 console.log(chalk.blue('Hello world!'))</p>
-<p class="md-github">4 Composable API
-Signature: chalk.<style>[.<style>...](input:string, ...inputs:string[]):string
-Chain order irrelevant; last style overrides
-Multi-arg: separated by spaces</p>
-<p class="md-github">5 Theme Definition
+<p class="md-github">3 Style Chaining and Nesting
+chalk.red.bgBlue.bold('text') → styled string
+chalk.green('outer', chalk.blue('inner'))</p>
+<p class="md-github">4 Template Literals
+console.log(<code class="md-github">CPU: ${chalk.red('90%')}</code>)</p>
+<p class="md-github">5 Custom Themes
 const error=chalk.bold.red
-const warning=chalk.hex('#FFA500')
-error('Error!')
-warning('Warning!')</p>
+console.log(error('Error!'))</p>
 <p class="md-github">6 String Substitution
 console.log(chalk.green('Hello %s'), name)</p>
-<p class="md-github">7 Color Level Configuration
+<p class="md-github">7 Color Support Levels
 chalk.level = 0|1|2|3
-const custom=new Chalk({level:0})</p>
-<p class="md-github">8 Color Detection &amp; Forcing
-supportsColor: {level, hasBasic, has256, has16m}
-FORCE_COLOR=0|1|2|3
+new Chalk({level})</p>
+<p class="md-github">8 Color Detection Overrides
+Environment: FORCE_COLOR=0|1|2|3
 Flags: --color, --no-color, --color=256, --color=16m</p>
-<p class="md-github">9 stderr Instance
-chalkStderr: Chalk instance configured per stderr support detection
-supportsColorStderr: supportsColor for stderr</p>
-<p class="md-github">10 Style Name Arrays
-modifierNames: [reset,bold,dim,italic,underline,overline,inverse,hidden,strikethrough,visible]
-foregroundColorNames: [black,red,green,yellow,blue,magenta,cyan,white,blackBright,redBright,greenBright,yellowBright,blueBright,magentaBright,cyanBright,whiteBright]
-backgroundColorNames: [bgBlack,bgRed,bgGreen,bgYellow,bgBlue,bgMagenta,bgCyan,bgWhite,bgBlackBright,bgRedBright,bgGreenBright,bgYellowBright,bgBlueBright,bgMagentaBright,bgCyanBright,bgWhiteBright]
-colorNames: combination of both</p>
-<p class="md-github">11 Styles List
-Modifiers and color names as above</p>
-<p class="md-github">12 Color Models &amp; Levels
-rgb(r,g,b), hex('#rrggbb'), ansi256(n)
-bgRgb, bgHex, bgAnsi256
-Level1: 16 colors; Level2: 256; Level3: truecolor</p>
+<p class="md-github">9 stderr Stream Styling
+console.error(chalkStderr.red('Error message'))</p>
+<p class="md-github">10 Available Styles
+Modifiers: reset,bold,dim,italic,underline,overline,inverse,hidden,strikethrough,visible
+Foreground: black,red,green,yellow,blue,magenta,cyan,white,blackBright,redBright,greenBright,yellowBright,blueBright,magentaBright,cyanBright,whiteBright
+Background: bgBlack,...,bgWhiteBright</p>
+<p class="md-github">11 Color Models
+rgb(r,g,b), hex('#RRGGBB'), ansi256(code)
+bgRgb, bgHex, bgAnsi256</p>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">Function Signatures and Types:</p>
-<ul class="md-github">
-<li class="md-github">chalk.<style>[.<style>...](input:string, ...inputs:string[]):string</li>
-<li class="md-github">chalk.rgb(r:number,g:number,b:number):Chalk</li>
-<li class="md-github">chalk.hex(hex:string):Chalk</li>
-<li class="md-github">chalk.ansi256(code:number):Chalk</li>
-<li class="md-github">chalk.bgRgb(r:number,g:number,b:number):Chalk</li>
-<li class="md-github">chalk.bgHex(hex:string):Chalk</li>
-<li class="md-github">chalk.bgAnsi256(code:number):Chalk</li>
-<li class="md-github">Chalk constructor: new Chalk(options:{level:number})</li>
-</ul>
-<p class="md-github">Properties:</p>
-<ul class="md-github">
-<li class="md-github">chalk.level: number default auto-detected (0-3)</li>
-<li class="md-github">supportsColor: {level:number,hasBasic:boolean,has256:boolean,has16m:boolean}</li>
-<li class="md-github">supportsColorStderr: same structure for stderr</li>
-<li class="md-github">chalkStderr: Chalk</li>
-<li class="md-github">modifierNames: string[]</li>
-<li class="md-github">foregroundColorNames: string[]</li>
-<li class="md-github">backgroundColorNames: string[]</li>
-<li class="md-github">colorNames: string[]</li>
-</ul>
-<p class="md-github">Environment Variables and CLI Flags:</p>
-<ul class="md-github">
-<li class="md-github">FORCE_COLOR: 0 (disable),1 (basic),2 (256),3 (truecolor)</li>
-<li class="md-github">--color, --no-color (boolean mode)</li>
-<li class="md-github">--color=256, --color=16m (explicit modes)</li>
-</ul>
-<p class="md-github">Implementation Steps:
-1 install via npm
-2 import module
-3 apply styles via chainable API
-4 override global level or create custom Chalk instance
-5 use supportsColor to branch logic
-6 define theme constants via style combinations</p>
+<p class="md-github">Global configuration: chalk.level defaults to auto-detected level from supportsColor.
+SupportsColor detection reads env vars FORCE_COLOR and CLI flags, returns object {level:0-3,hasBasic,has256,has16m}.
+To isolate modules: use new Chalk({level:0-3}).
+Force enable colors in CI: FORCE_COLOR=1 or CLI flag --color=1.
+Force disable in logs: FORCE_COLOR=0 or --no-color.
+Chalk instances are immutable; chaining returns new styled string.
+Templates can be nested; ensure closing tags auto-reset.
+For stderr, import {chalkStderr} or custom instance: new Chalk({level:2}).</p>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
 <p class="md-github">API Specifications:
-function chalk.<style>[.<style>...](input:string, ...inputs:string[]):string</p>
+function chalk.<style>[.<style>...](string text, string... extra): string
+Parameters: text:string, extra: string[].
+Return: string with ANSI codes.</p>
+<p class="md-github">Property chalk.level: number (0 to 3). Default from supportsColor.level.
+Assignment overrides global.</p>
+<p class="md-github">Constructor: new Chalk(options: {level?: number})
+Options.level: 0–3. Returns Chalk instance with isolated level and no global side effects.</p>
+<p class="md-github">Property supportsColor: {level:number,hasBasic:boolean,has256:boolean,has16m:boolean}
+Property supportsColorStderr: same shape.
+Property chalkStderr: Chalk instance using supportsColorStderr.</p>
+<p class="md-github">Constants:
+modifierNames: [&quot;reset&quot;,&quot;bold&quot;,&quot;dim&quot;,&quot;italic&quot;,&quot;underline&quot;,&quot;overline&quot;,&quot;inverse&quot;,&quot;hidden&quot;,&quot;strikethrough&quot;,&quot;visible&quot;]
+foregroundColorNames: [&quot;black&quot;,&quot;red&quot;,&quot;green&quot;,&quot;yellow&quot;,&quot;blue&quot;,&quot;magenta&quot;,&quot;cyan&quot;,&quot;white&quot;,&quot;blackBright&quot;,&quot;redBright&quot;,&quot;greenBright&quot;,&quot;yellowBright&quot;,&quot;blueBright&quot;,&quot;magentaBright&quot;,&quot;cyanBright&quot;,&quot;whiteBright&quot;]
+backgroundColorNames: similar with bg prefix
+colorNames: combination of above.</p>
+<p class="md-github">Color Models:</p>
 <ul class="md-github">
-<li class="md-github">Applies ANSI escape codes for each style in chain; returns concatenated styled string</li>
+<li class="md-github">chalk.rgb(r:number,g:number,b:number)</li>
+<li class="md-github">chalk.hex(hexString:string)</li>
+<li class="md-github">chalk.ansi256(code:number)</li>
+<li class="md-github">bgcolor: bgRgb(r,g,b), bgHex(hexString), bgAnsi256(code)
+Return type: Chalk</li>
 </ul>
-<p class="md-github">property chalk.level:number</p>
-<ul class="md-github">
-<li class="md-github">0: disable all color</li>
-<li class="md-github">1: basic (16 colors)</li>
-<li class="md-github">2: 256 colors</li>
-<li class="md-github">3: truecolor (16 million)</li>
-</ul>
-<p class="md-github">class Chalk
-constructor(options:{level:number})
-methods returning Chalk instance for further chaining:</p>
-<ul class="md-github">
-<li class="md-github">rgb(r:number,g:number,b:number)</li>
-<li class="md-github">hex(hex:string)</li>
-<li class="md-github">ansi256(code:number)</li>
-<li class="md-github">bgRgb(r:number,g:number,b:number)</li>
-<li class="md-github">bgHex(hex:string)</li>
-<li class="md-github">bgAnsi256(code:number)</li>
-<li class="md-github">reset(), bold(), dim(), italic(), underline(), overline(), inverse(), hidden(), strikethrough(), visible()</li>
-</ul>
-<p class="md-github">properties:</p>
-<ul class="md-github">
-<li class="md-github">level:number</li>
-</ul>
-<p class="md-github">object supportsColor and supportsColorStderr
-type: {level:number,hasBasic:boolean,has256:boolean,has16m:boolean}</p>
-<p class="md-github">utility arrays:</p>
-<ul class="md-github">
-<li class="md-github">modifierNames:string[] length 11</li>
-<li class="md-github">foregroundColorNames:string[] length 16</li>
-<li class="md-github">backgroundColorNames:string[] length 16</li>
-<li class="md-github">colorNames:string[] length 32</li>
-</ul>
-<p class="md-github">Exact Code Examples:
+<p class="md-github">Examples:
+// Basic
 import chalk from 'chalk'
-console.log(chalk.blue('Hello','World!')) // yields ESC[34mHello World!ESC[39m
-console.log(chalk.red.bgWhite.bold('Alert'))
-const custom=new Chalk({level:2})
-console.log(custom.rgb(0,255,0)('OK'))</p>
-<p class="md-github">Implementation Patterns:</p>
-<ul class="md-github">
-<li class="md-github">Create theme constants: const info=chalk.blue; info('Info message')</li>
-<li class="md-github">Nest styles: chalk.green('green', chalk.red('red'), 'green again')</li>
-<li class="md-github">Template literals: console.log(<code class="md-github">Status: ${chalk.yellow('pending')}</code>)</li>
-</ul>
-<p class="md-github">Configuration Options:</p>
-<ul class="md-github">
-<li class="md-github">Global override: chalk.level=0|1|2|3</li>
-<li class="md-github">Env override: FORCE_COLOR=...</li>
-<li class="md-github">CLI flags as described</li>
-</ul>
-<p class="md-github">Best Practices:</p>
-<ul class="md-github">
-<li class="md-github">Use new Chalk for reusable modules to avoid global side effects</li>
-<li class="md-github">Check supportsColor before printing color-specific output</li>
-<li class="md-github">Define and reuse theme constants for consistency</li>
-</ul>
-<p class="md-github">Troubleshooting Procedures:</p>
-<ul class="md-github">
-<li class="md-github">No colors: verify supportsColor.level; run node with --color or set FORCE_COLOR</li>
-<li class="md-github">stderr color missing: use chalkStderr in console.error</li>
-<li class="md-github">Windows no color: switch to Windows Terminal or use external ANSI support</li>
-<li class="md-github">To strip ANSI codes: pipe output through strip-ansi
-Commands:
-$ FORCE_COLOR=1 node app.js
-$ node --color=256 app.js
-$ env | grep FORCE_COLOR</li>
-</ul>
+console.log(chalk.blue('Info message'))</p>
+<p class="md-github">// Chaining
+console.log(chalk.red.bgBlack.bold.underline('Alert'))</p>
+<p class="md-github">// Nesting
+console.log(chalk.green('Start', chalk.yellow('mid'), 'end'))</p>
+<p class="md-github">// Template Literal
+console.log(<code class="md-github">Status: ${chalk.green('OK')}</code>)</p>
+<p class="md-github">// Custom Instance
+import {Chalk} from 'chalk'
+const custom= new Chalk({level:2})
+console.log(custom.rgb(200,100,50)('Colored text'))</p>
+<p class="md-github">// Force color env
+// Linux shell:
+// FORCE_COLOR=3 node app.js</p>
+<p class="md-github">// CLI flags:
+// node app.js --color=256</p>
+<p class="md-github">Best Practices:
+• Use new Chalk in libraries to avoid overriding global chalk.level.
+• Always check supportsColor before heavy styling loops.
+• Use colorNames arrays to validate dynamic styles.</p>
+<p class="md-github">Troubleshooting:
+Command: node script.js
+Expected: styled output
+If no color, run:
+echo $FORCE_COLOR  # expect 1|2|3
+node script.js --color
+If still plain, check supportsColor.level via:
+console.log(chalk.supportsColor)</p>
 <h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">npm install chalk; import chalk from 'chalk'; chalk.<style><a href="input:string,...inputs:string%5B%5D" class="md-github">.<style>...</a>:string; styles: reset,bold,dim,italic,underline,overline,inverse,hidden,strikethrough,visible; colors: black,red,green,yellow,blue,magenta,cyan,white,blackBright,redBright,greenBright,yellowBright,blueBright,magentaBright,cyanBright,whiteBright; backgrounds: bgBlack,...,bgWhiteBright; color models: rgb(r,g,b), hex('#rrggbb'), ansi256(n) with bg variants; chalk.level:0-3; new Chalk({level}); supportsColor/supportsColorStderr: {level,hasBasic,has256,has16m}; FORCE_COLOR=0-3; --color flags; theme constants; template literal usage; nesting; new Chalk for libraries; check supportsColor before styling; troubleshooting via env flags and Windows Terminal.</p>
+<p class="md-github">chalk.styles(...)(string,...):string  chalk.level:number(0-3)  new Chalk({level}):Chalk  supportsColor/sColorStderr:{level,hasBasic,has256,has16m}  chalkStderr:Chalk  modifierNames,foregroundColorNames,backgroundColorNames,colorNames arrays  rgb(r,g,b),hex('#RRGGBB'),ansi256(code),bgRgb,bgHex,bgAnsi256  FORCE_COLOR env0-3 and flags --color[=level],--no-color override  custom themes via const t=chalk.bold.blue; t('msg')  string substitution chalk.green('Hello %s',name)  template literals embed chalk in backticks  use new Chalk in modules  validate dynamic style names via colorNames  troubleshoot via console.log(supportsColor) and env/flags</p>
 <h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
 <p class="md-github">Table of Contents:
 1 Installation
-2 Importing
-3 Basic Usage
-4 Composable API
-5 Theme Definition
+2 Import and Basic Usage
+3 Style Chaining and Nesting
+4 Template Literals
+5 Custom Themes
 6 String Substitution
-7 Color Level Configuration
-8 Color Detection &amp; Forcing
-9 stderr Instance
-10 Style Name Arrays
-11 Styles List
-12 Color Models &amp; Levels</p>
+7 Color Support Levels
+8 Color Detection Overrides
+9 stderr Stream Styling
+10 Available Styles
+11 Color Models</p>
 <p class="md-github">1 Installation
 npm install chalk</p>
-<p class="md-github">2 Importing
+<p class="md-github">2 Import and Basic Usage
 import chalk from 'chalk'
-import {Chalk} from 'chalk'</p>
-<p class="md-github">3 Basic Usage
 console.log(chalk.blue('Hello world!'))</p>
-<p class="md-github">4 Composable API
-Signature: chalk.<style>[.<style>...](input:string, ...inputs:string[]):string
-Chain order irrelevant; last style overrides
-Multi-arg: separated by spaces</p>
-<p class="md-github">5 Theme Definition
+<p class="md-github">3 Style Chaining and Nesting
+chalk.red.bgBlue.bold('text')  styled string
+chalk.green('outer', chalk.blue('inner'))</p>
+<p class="md-github">4 Template Literals
+console.log('CPU: ${chalk.red('90%')}')</p>
+<p class="md-github">5 Custom Themes
 const error=chalk.bold.red
-const warning=chalk.hex('#FFA500')
-error('Error!')
-warning('Warning!')</p>
+console.log(error('Error!'))</p>
 <p class="md-github">6 String Substitution
 console.log(chalk.green('Hello %s'), name)</p>
-<p class="md-github">7 Color Level Configuration
+<p class="md-github">7 Color Support Levels
 chalk.level = 0|1|2|3
-const custom=new Chalk({level:0})</p>
-<p class="md-github">8 Color Detection &amp; Forcing
-supportsColor: {level, hasBasic, has256, has16m}
-FORCE_COLOR=0|1|2|3
+new Chalk({level})</p>
+<p class="md-github">8 Color Detection Overrides
+Environment: FORCE_COLOR=0|1|2|3
 Flags: --color, --no-color, --color=256, --color=16m</p>
-<p class="md-github">9 stderr Instance
-chalkStderr: Chalk instance configured per stderr support detection
-supportsColorStderr: supportsColor for stderr</p>
-<p class="md-github">10 Style Name Arrays
-modifierNames: [reset,bold,dim,italic,underline,overline,inverse,hidden,strikethrough,visible]
-foregroundColorNames: [black,red,green,yellow,blue,magenta,cyan,white,blackBright,redBright,greenBright,yellowBright,blueBright,magentaBright,cyanBright,whiteBright]
-backgroundColorNames: [bgBlack,bgRed,bgGreen,bgYellow,bgBlue,bgMagenta,bgCyan,bgWhite,bgBlackBright,bgRedBright,bgGreenBright,bgYellowBright,bgBlueBright,bgMagentaBright,bgCyanBright,bgWhiteBright]
-colorNames: combination of both</p>
-<p class="md-github">11 Styles List
-Modifiers and color names as above</p>
-<p class="md-github">12 Color Models &amp; Levels
-rgb(r,g,b), hex('#rrggbb'), ansi256(n)
-bgRgb, bgHex, bgAnsi256
-Level1: 16 colors; Level2: 256; Level3: truecolor</p>
+<p class="md-github">9 stderr Stream Styling
+console.error(chalkStderr.red('Error message'))</p>
+<p class="md-github">10 Available Styles
+Modifiers: reset,bold,dim,italic,underline,overline,inverse,hidden,strikethrough,visible
+Foreground: black,red,green,yellow,blue,magenta,cyan,white,blackBright,redBright,greenBright,yellowBright,blueBright,magentaBright,cyanBright,whiteBright
+Background: bgBlack,...,bgWhiteBright</p>
+<p class="md-github">11 Color Models
+rgb(r,g,b), hex('#RRGGBB'), ansi256(code)
+bgRgb, bgHex, bgAnsi256</p>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
 <p class="md-github">Chalk
 https://github.com/chalk/chalk#readme</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-chalk" href="#digest-of-chalk"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of CHALK</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="chalk-technical-digest-retrieved-2024-07-05" href="#chalk-technical-digest-retrieved-2024-07-05"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chalk Technical Digest (Retrieved 2024-07-05)</h1>
-<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<h1 class="md-github"><a class="md-github__anchor" name="chalk-1" href="#chalk-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chalk</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="install" href="#install"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install</h2>
 <p class="md-github">npm install chalk</p>
-<h1 class="md-github"><a class="md-github__anchor" name="importing" href="#importing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Importing</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">import chalk from 'chalk';
-import {Chalk} from 'chalk';</p>
-<h1 class="md-github"><a class="md-github__anchor" name="basic-usage" href="#basic-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic Usage</h1>
-<p class="md-github">console.log(chalk.blue('Hello world!'));</p>
-<h1 class="md-github"><a class="md-github__anchor" name="composable-api" href="#composable-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Composable API</h1>
-<p class="md-github"><strong class="md-github">Signature</strong></p>
-<p class="md-github">chalk.<style>[.<style>...](input:string, ...inputs:string[]): string</p>
-<p class="md-github"><strong class="md-github">Behavior</strong></p>
-<ul class="md-github">
-<li class="md-github">Chain any number of style properties; last one wins on conflict</li>
-<li class="md-github">Multiple arguments are joined by spaces</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="theme-definition" href="#theme-definition"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Theme Definition</h1>
-<p class="md-github">const error = chalk.bold.red
-const warning = chalk.hex('#FFA500')
-console.log(error('Error!'))
-console.log(warning('Warning!'))</p>
-<h1 class="md-github"><a class="md-github__anchor" name="string-substitution" href="#string-substitution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>String Substitution</h1>
-<p class="md-github">console.log(chalk.green('Hello %s'), name)</p>
-<h1 class="md-github"><a class="md-github__anchor" name="color-level-configuration" href="#color-level-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Color Level Configuration</h1>
-<p class="md-github">chalk.level: number (0-3)
-new Chalk({level:number}) // per-instance override</p>
-<h1 class="md-github"><a class="md-github__anchor" name="color-detection--forcing" href="#color-detection--forcing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Color Detection &amp; Forcing</h1>
-<ul class="md-github">
-<li class="md-github">supportsColor: {level, hasBasic, has256, has16m}</li>
-<li class="md-github">FORCE_COLOR=0|1|2|3 overrides all</li>
-<li class="md-github">CLI flags: --color, --no-color, --color=256, --color=16m</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="stderr-instance" href="#stderr-instance"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>stderr Instance</h1>
-<p class="md-github">chalkStderr: Chalk // color support based on stderr
-supportsColorStderr: supportsColor object</p>
-<h1 class="md-github"><a class="md-github__anchor" name="exposed-style-name-arrays" href="#exposed-style-name-arrays"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Exposed Style Name Arrays</h1>
-<p class="md-github">modifierNames: string[]
-foregroundColorNames: string[]
-backgroundColorNames: string[]
-colorNames: string[]</p>
-<h1 class="md-github"><a class="md-github__anchor" name="styles" href="#styles"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Styles</h1>
-<p class="md-github">Modifiers: reset, bold, dim, italic, underline, overline, inverse, hidden, strikethrough, visible
-Colors: black, red, green, yellow, blue, magenta, cyan, white, blackBright, redBright, greenBright, yellowBright, blueBright, magentaBright, cyanBright, whiteBright
-Backgrounds: bgBlack, bgRed, bgGreen, bgYellow, bgBlue, bgMagenta, bgCyan, bgWhite, bgBlackBright, bgRedBright, bgGreenBright, bgYellowBright, bgBlueBright, bgMagentaBright, bgCyanBright, bgWhiteBright</p>
-<h1 class="md-github"><a class="md-github__anchor" name="color-models--downsampling" href="#color-models--downsampling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Color Models &amp; Downsampling</h1>
-<ul class="md-github">
-<li class="md-github">rgb(r:number,g:number,b:number)</li>
-<li class="md-github">hex(hex:string)</li>
-<li class="md-github">ansi256(code:number)</li>
-<li class="md-github">bgRgb, bgHex, bgAnsi256 variants</li>
-<li class="md-github">Level1 downsampling: 16 colors; Level2: 256; Level3: truecolor</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="performance--adoption" href="#performance--adoption"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Performance &amp; Adoption</h1>
-<ul class="md-github">
-<li class="md-github">No dependencies</li>
-<li class="md-github">High performance</li>
-<li class="md-github">Used by ~115,000 packages</li>
-</ul>
+console.log(chalk.blue('Hello world!'));</p>
+<h2 class="md-github"><a class="md-github__anchor" name="api" href="#api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="chalkstylestylestring-string--string" href="#chalkstylestylestring-string--string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>chalk.<style>[.<style>...](string, [string...]) → string</h3>
+<p class="md-github">Chain styles and call as method with string arguments. Multiple args are space-separated. Later styles override earlier on conflict.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="chalklevel-number" href="#chalklevel-number"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>chalk.level: number</h3>
+<p class="md-github">Global color support level (0 – no color, 1 – basic, 2 – 256, 3 – truecolor).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="new-chalkoptions-levelnumber--chalk" href="#new-chalkoptions-levelnumber--chalk"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new Chalk(options: {level?:number}) → Chalk</h3>
+<p class="md-github">Create isolated instance. Options.level: 0–3.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="supportscolor-object" href="#supportscolor-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>supportsColor: object</h3>
+<p class="md-github">Properties: level:number, hasBasic:boolean, has256:boolean, has16m:boolean.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="chalkstderr-chalk" href="#chalkstderr-chalk"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>chalkStderr: Chalk</h3>
+<p class="md-github">Instance for stderr with supportsColorStderr.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="supportscolorstderr-object" href="#supportscolorstderr-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>supportsColorStderr: object</h3>
+<p class="md-github">Same shape as supportsColor for stderr stream.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="modifiernames-string" href="#modifiernames-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>modifierNames: string[]</h3>
+<p class="md-github">List of modifier identifiers.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="foregroundcolornames-string" href="#foregroundcolornames-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>foregroundColorNames: string[]</h3>
+<p class="md-github">List of foreground color identifiers.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="backgroundcolornames-string" href="#backgroundcolornames-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>backgroundColorNames: string[]</h3>
+<p class="md-github">List of background color identifiers.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="colornames-string" href="#colornames-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>colorNames: string[]</h3>
+<p class="md-github">Union of foreground and background names.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="styles" href="#styles"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Styles</h2>
+<p class="md-github">Modifiers: reset, bold, dim, italic, underline, overline, inverse, hidden, strikethrough, visible</p>
+<p class="md-github">Foreground colors: black, red, green, yellow, blue, magenta, cyan, white, blackBright, redBright, greenBright, yellowBright, blueBright, magentaBright, cyanBright, whiteBright</p>
+<p class="md-github">Background colors: bgBlack, bgRed, bgGreen, bgYellow, bgBlue, bgMagenta, bgCyan, bgWhite, bgBlackBright, bgRedBright, bgGreenBright, bgYellowBright, bgBlueBright, bgMagentaBright, bgCyanBright, bgWhiteBright</p>
+<h2 class="md-github"><a class="md-github__anchor" name="color-models" href="#color-models"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Color Models</h2>
+<p class="md-github">rgb(r:number,g:number,b:number), hex(color:string), ansi256(code:number)
+Background prefix: bgRgb, bgHex, bgAnsi256</p>
+<h2 class="md-github"><a class="md-github__anchor" name="environment-overrides" href="#environment-overrides"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Overrides</h2>
+<p class="md-github">FORCE_COLOR=0|1|2|3 to disable/enable levels. Flags: --color, --no-color, --color=256, --color=16m</p>
+<h2 class="md-github"><a class="md-github__anchor" name="template-literals" href="#template-literals"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Template Literals</h2>
+<p class="md-github">Use inside backticks: <code class="md-github">Value: ${chalk.yellow('text')}</code></p>
+<h2 class="md-github"><a class="md-github__anchor" name="custom-themes" href="#custom-themes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom Themes</h2>
+<p class="md-github">const error=chalk.bold.red; console.log(error('Error!'));</p>
+<h2 class="md-github"><a class="md-github__anchor" name="string-substitution" href="#string-substitution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>String Substitution</h2>
+<p class="md-github">console.log(chalk.green('Hello %s'), name);</p>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
 <li class="md-github">Source: Chalk</li>
 <li class="md-github">URL: https://github.com/chalk/chalk#readme</li>
 <li class="md-github">License: MIT License</li>
-<li class="md-github">Crawl Date: 2025-05-03T08:50:11.740Z</li>
-<li class="md-github">Data Size: 703582 bytes</li>
-<li class="md-github">Links Found: 5476</li>
+<li class="md-github">Crawl Date: 2025-05-05T20:46:55.361Z</li>
+<li class="md-github">Data Size: 644569 bytes</li>
+<li class="md-github">Links Found: 5226</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
-<p class="md-github">2025-05-03</p>
+<p class="md-github">2025-05-05</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-03T23:21:04.950Z</p>
+    <p>Generated on 2025-05-05T21:21:07.523Z</p>
   </footer>
 </body>
 </html>
