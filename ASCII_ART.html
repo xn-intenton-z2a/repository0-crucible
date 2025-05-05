@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="ascii_art" href="#ascii_art"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ASCII_ART</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation: npm install --save ascii-art | CLI: npm install -g ascii-art | Web: install ascii-art-webcomponents. API: art.style(text,style,reset)=&gt;String; art.font(text,font,[sync|cb],cb?)=&gt;Promise<String> or callback; art.image({src,rows,cols,alphabet,lineart,stipple,posterize,blended,threshold},cb); art.table(data,cb); art.graph(data,cb); art.artwork(options,cb) with request module. Chain: .lines(width), .overlay(buf), .border(opts), .strip(), .join(). Color: default 8bit; set is256 or isTrueColor; distance algs listed; merge algs. Testing: npm run test, browser-test, chalk-test. Dev: clone, dev_setup scripts, fonts path, module-auto-link. Deprecations: .toPromise-&gt;.completed, .artwork() pending.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 API Call Styles
+3 Styling Text (art.style)
+4 Figlet Fonts (art.font)
+5 Image Rendering (art.image)
+6 Color Modes &amp; Algorithms
+7 Tables &amp; Graphs (art.table, art.graph)
+8 Artwork Fetching (art.artwork)
+9 Compositing Chains
+10 CLI Usage
+11 Testing &amp; Development
+12 Troubleshooting</p>
+<p class="md-github">1 Installation
+In Code: npm install --save ascii-art
+CLI global: npm install -g ascii-art or ascii-art-cl
+Web components: npm install --save ascii-art-webcomponents</p>
+<p class="md-github">2 API Call Styles
+Callback: art.font('Some Text','doom',cb)
+Promise: art.font('Some Text','doom').then(text).catch(err)
+Await: await art.font('Some Text','doom').completed()</p>
+<p class="md-github">3 Styling Text
+Signature: art.style(text,style,resetAll)
+Styles: italic, bold, underline, framed, encircled, overline, blink, inverse
+Colors: ANSI names
+resetAll: true appends reset at end</p>
+<p class="md-github">4 Figlet Fonts
+Signature: art.font(text,font,syncOrCb,cb?)
+Default font dir: /Fonts
+Batch: art.font.strings([texts],font,cb)
+Web: <ascii-art-font font='doom'>Text</ascii-art-font></p>
+<p class="md-github">5 Image Rendering
+Signature: art.image(options,cb)
+Required: src
+Optional: rows, cols, alphabet, lineart, stipple, posterize, blended, threshold
+alphabet default: block characters</p>
+<p class="md-github">6 Color Modes &amp; Algorithms
+bit-depths: 4,8,32
+set via: Color.is256, Color.isTrueColor
+Algorithms: list above; combine with '+'</p>
+<p class="md-github">7 Tables &amp; Graphs
+art.table(data,cb) returns aligned ANSI table
+art.graph({ series,labels},cb) returns ASCII graph</p>
+<p class="md-github">8 Artwork Fetching
+art.artwork(options,cb)
+Requires request module via ENV or art.setRequest(module)</p>
+<p class="md-github">9 Compositing Chains
+.lines(width) splits buffer into lines
+.overlay(buffer) compositing overlay
+.border({color,style}) wraps border
+.strip() remove ANSI
+.join() combine into string</p>
+<p class="md-github">10 CLI Usage
+text: ascii-art text -s <style> 'Text'
+font: ascii-art font -F <font> 'Text'
+image: ascii-art image -B <bit> -C <alg> -a <alphabet> --rows --cols <file></p>
+<p class="md-github">11 Testing &amp; Development
+npm run test
+npm run browser-test
+npm run chalk-test
+clone &amp; setup scripts as above</p>
+<p class="md-github">12 Troubleshooting
+Font load: check node_modules/ascii-art/Fonts
+Image errors: install canvas shim
+CLI missing: verify global install and PATH</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default figlet font path: node_modules/ascii-art/Fonts. ANSI style codes managed by ascii-art-ansi/colors. Canvas shim for Node: install 'canvas'. Webpack &amp; AMD support via UMD wrapper. Recommended distance functions per image type: use 'closestByIntensity' for grayscale, 'CIE76Difference' for color. Environment var ASCII_ART_REQUEST_MODULE=url module name. Use art.setRequest(requestModule) to inject custom HTTP client. Chain execution is asynchronous; call .completed() to await final output. UMD packaging ensures compatibility across CommonJS, AMD, globals. CLI global bin installed to /usr/local/bin/ascii-art. CI: include ./test/dev_setup.sh step. Use npx module-auto-link to fix symlinks after lockfile changes.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Function Signatures:
+art.style(text: string, style: string|string[], resetAll: boolean): string
+art.font(text: string, font: string, sync?: boolean, cb?: (err: Error, rendered: string)=&gt;void): Promise<string>
+art.font.strings(texts: string[], font: string, cb: (err: Error, rendered: string[])=&gt;void): Promise&lt;string[]&gt;
+art.image(options: {
+src: string;
+rows?: number;
+cols?: number;
+alphabet?: string;
+lineart?: boolean;
+stipple?: boolean|string;
+posterize?: boolean;
+blended?: boolean;
+threshold?: number;
+}, cb: (err: Error, rendered: string)=&gt;void): Promise<string>
+art.table(data: any[], cb: (err: Error, rendered: string)=&gt;void): Promise<string>
+art.graph(data: { series: number[]; labels?: string[] }, cb: (err: Error, rendered: string)=&gt;void): Promise<string>
+art.artwork(options: { url: string; width?: number; height?: number }, cb: (err: Error, rendered: string)=&gt;void): Promise<string>
+Chain Methods:
+.lines(width?: number): AsciiArtChain
+.overlay(buffer: string[]): AsciiArtChain
+.border(options: { color?: string; style?: string }): AsciiArtChain
+.strip(): AsciiArtChain
+.join(): string</p>
+<p class="md-github">Configuration Options:
+Color.is256: boolean = false(default)
+Color.isTrueColor: boolean = false(default)
+Default rows, cols for image: derived from terminal size
+Default alphabet: 'block'
+Default threshold: 128</p>
+<p class="md-github">CLI Syntax:
+ascii-art text -s <style> [-r] <text>
+ascii-art font -F <font> [--sync] <text>
+ascii-art image [-B <bit-depth>] [-C <distance>] [-a <alphabet>] [--rows=<n>] [--cols=<n>] [--stipple=<hex>] [--threshold=<n>] [--posterize] [--lineart] [--blended] <file>
+ascii-art table <jsonData>
+ascii-art graph <jsonData>
+ascii-art artwork --url <url></p>
+<p class="md-github">Best Practices:
+Use await art.font(...).completed() for sequential compositions
+Preload heavy figlet fonts to reduce I/O latency
+Tune Color distance per image type: append '+algorithm2' to combine
+Use chain methods to overlay dynamic data on static ASCII backdrops</p>
+<p class="md-github">Troubleshooting Procedures:</p>
+<ol class="md-github">
+<li class="md-github">Error: Cannot find font: doom.flf
+Command: ls node_modules/ascii-art/Fonts/doom.flf; Expected: file exists</li>
+<li class="md-github">Error: Canvas not found
+Command: npm install canvas; verify require('canvas') succeeds</li>
+<li class="md-github">CLI: command not found: ascii-art
+Command: npm install -g ascii-art; then which ascii-art =&gt; /usr/local/bin/ascii-art</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">install: npm install ascii-art; global: -g ascii-art; web: ascii-art-webcomponents
+art.style(text,style[],reset)-&gt;string
+art.font(text,font,[sync],cb?)-&gt;Promise<string>; batch: font.strings()
+art.image({src,rows,cols,alphabet,lineart,stipple,posterize,blended,threshold},cb)-&gt;Promise<string>
+art.table(data,cb); art.graph(data,cb); art.artwork({url},cb) with request module
+chain: .lines(), .overlay(), .border(), .strip(), .join()
+Color.is256/isTrueColor toggles bit-depth; algorithms: euclideanDistance,classic,ratioDistance,CIE76Difference,closestByIntensity,rankedChannel,simple,minDeviation,luminosity,saturation,hue,original; merge '+'
+CLI: text -s style text; font -F font; image -B bit -C alg -a alphabet file
+defaults: fonts/path node_modules/ascii-art/Fonts; alphabet 'block'; threshold=128
+use .completed() not .toPromise(); .artwork() pending plugin
+test: npm run test/browser-test/chalk-test
+dev: git clone; ./dev_setup.sh; npx module-auto-link</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 API Call Styles
+3 Styling Text (art.style)
+4 Figlet Fonts (art.font)
+5 Image Rendering (art.image)
+6 Color Modes &amp; Algorithms
+7 Tables &amp; Graphs (art.table, art.graph)
+8 Artwork Fetching (art.artwork)
+9 Compositing Chains
+10 CLI Usage
+11 Testing &amp; Development
+12 Troubleshooting</p>
+<p class="md-github">1 Installation
+In Code: npm install --save ascii-art
+CLI global: npm install -g ascii-art or ascii-art-cl
+Web components: npm install --save ascii-art-webcomponents</p>
+<p class="md-github">2 API Call Styles
+Callback: art.font('Some Text','doom',cb)
+Promise: art.font('Some Text','doom').then(text).catch(err)
+Await: await art.font('Some Text','doom').completed()</p>
+<p class="md-github">3 Styling Text
+Signature: art.style(text,style,resetAll)
+Styles: italic, bold, underline, framed, encircled, overline, blink, inverse
+Colors: ANSI names
+resetAll: true appends reset at end</p>
+<p class="md-github">4 Figlet Fonts
+Signature: art.font(text,font,syncOrCb,cb?)
+Default font dir: /Fonts
+Batch: art.font.strings([texts],font,cb)
+Web: <ascii-art-font font='doom'>Text</ascii-art-font></p>
+<p class="md-github">5 Image Rendering
+Signature: art.image(options,cb)
+Required: src
+Optional: rows, cols, alphabet, lineart, stipple, posterize, blended, threshold
+alphabet default: block characters</p>
+<p class="md-github">6 Color Modes &amp; Algorithms
+bit-depths: 4,8,32
+set via: Color.is256, Color.isTrueColor
+Algorithms: list above; combine with '+'</p>
+<p class="md-github">7 Tables &amp; Graphs
+art.table(data,cb) returns aligned ANSI table
+art.graph({ series,labels},cb) returns ASCII graph</p>
+<p class="md-github">8 Artwork Fetching
+art.artwork(options,cb)
+Requires request module via ENV or art.setRequest(module)</p>
+<p class="md-github">9 Compositing Chains
+.lines(width) splits buffer into lines
+.overlay(buffer) compositing overlay
+.border({color,style}) wraps border
+.strip() remove ANSI
+.join() combine into string</p>
+<p class="md-github">10 CLI Usage
+text: ascii-art text -s <style> 'Text'
+font: ascii-art font -F <font> 'Text'
+image: ascii-art image -B <bit> -C <alg> -a <alphabet> --rows --cols <file></p>
+<p class="md-github">11 Testing &amp; Development
+npm run test
+npm run browser-test
+npm run chalk-test
+clone &amp; setup scripts as above</p>
+<p class="md-github">12 Troubleshooting
+Font load: check node_modules/ascii-art/Fonts
+Image errors: install canvas shim
+CLI missing: verify global install and PATH</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">ASCII-art Library
+https://github.com/khrome/ascii-art#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-ascii_art" href="#digest-of-ascii_art"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of ASCII_ART</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="ascii-art-js-library-retrieved-2024-06-10" href="#ascii-art-js-library-retrieved-2024-06-10"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ASCII Art JS Library (retrieved 2024-06-10)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<p class="md-github">In Code:
+npm install --save ascii-art</p>
+<p class="md-github">CLI:
+npm install -g ascii-art
+npm install -g ascii-art-cl    (beta)</p>
+<p class="md-github">Web:
+npm install --save ascii-art-webcomponents</p>
+<h2 class="md-github"><a class="md-github__anchor" name="api-call-styles" href="#api-call-styles"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Call Styles</h2>
+<p class="md-github">Callback:
+art.font('Some Text','doom',cb)</p>
+<p class="md-github">Promise:
+art.font('Some Text','doom').then(rendered).catch(err)</p>
+<p class="md-github">Await:
+let rendered = await art.font('Some Text','doom').completed()</p>
+<h2 class="md-github"><a class="md-github__anchor" name="methods" href="#methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="artstyle" href="#artstyle"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>art.style</h3>
+<p class="md-github">Signature: art.style(text,style,resetAll) -&gt; String
+Purpose: add ANSI styles to a string
+Parameters:
+text (String)
+style (String or Array of Strings)
+resetAll (Boolean) — append reset code at end
+Returns: styled string</p>
+<h3 class="md-github"><a class="md-github__anchor" name="artfont" href="#artfont"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>art.font</h3>
+<p class="md-github">Signature: art.font(text,font,syncOrCb,cb?) -&gt; Promise<String> or calls cb
+Parameters:
+text (String)
+font (String) — figlet font name
+syncOrCb (Boolean or Function) — true for sync, or callback
+cb (Function) — optional callback(err,rendered)
+Returns: Promise resolving to rendered ASCII
+default font path: /Fonts</p>
+<h3 class="md-github"><a class="md-github__anchor" name="artimage" href="#artimage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>art.image</h3>
+<p class="md-github">Signature: art.image(options,cb) -&gt; Promise<String> or calls cb
+Options Object:
+src (String) — image file path or URL
+rows (Number) — number of text rows
+cols (Number) — number of text columns
+alphabet (String) — character set, e.g. 'blocks','solid'
+lineart (Boolean)
+stipple (Boolean or String) — true for braille, or color hex
+posterize (Boolean)
+blended (Boolean)
+threshold (Number 0–255)
+Callback: cb(err,rendered)</p>
+<h3 class="md-github"><a class="md-github__anchor" name="arttable" href="#arttable"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>art.table</h3>
+<p class="md-github">Signature: art.table(data,cb) -&gt; Promise<String> or calls cb
+Parameters:
+data (Array of Objects)
+cb (Function)
+Returns: Promise<String> or calls cb(err,rendered)</p>
+<h3 class="md-github"><a class="md-github__anchor" name="artgraph" href="#artgraph"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>art.graph</h3>
+<p class="md-github">Signature: art.graph(data,cb) -&gt; Promise<String> or calls cb
+Parameters:
+data (Object with series,labels,options)</p>
+<h3 class="md-github"><a class="md-github__anchor" name="artartwork" href="#artartwork"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>art.artwork</h3>
+<p class="md-github">Signature: art.artwork(options,cb)
+Requirements: set ENV ASCII_ART_REQUEST_MODULE or call art.setRequest(module)</p>
+<h3 class="md-github"><a class="md-github__anchor" name="chain-methods" href="#chain-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chain Methods</h3>
+<p class="md-github">.lines(width)
+.overlay(buffer)
+.border(options)
+.strip()
+.join() -&gt; String</p>
+<h2 class="md-github"><a class="md-github__anchor" name="color-options" href="#color-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Color Options</h2>
+<p class="md-github">Default: 8-bit output. To change:
+require('ascii-art-ansi/colors').is256 = true
+require('ascii-art-ansi/colors').isTrueColor = true</p>
+<p class="md-github">Supported distance algorithms:
+euclideanDistance
+classic
+ratioDistance
+classicByValue
+CIE76Difference
+closestByIntensity
+rankedChannel
+simple
+minDeviation
+luminosity
+saturation
+hue
+original
+Merge: 'alg1+alg2'</p>
+<h2 class="md-github"><a class="md-github__anchor" name="cli-examples" href="#cli-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Examples</h2>
+<p class="md-github">ascii-art text -s green 'Some Text'
+ascii-art font -F doom 'Some Text'
+ascii-art image -B 8 -C closestByIntensity -a solid --rows=80 --cols=80 myImage.jpg</p>
+<h2 class="md-github"><a class="md-github__anchor" name="testing" href="#testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing</h2>
+<p class="md-github">npm run test
+npm run browser-test
+npm run chalk-test</p>
+<h2 class="md-github"><a class="md-github__anchor" name="development" href="#development"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Development</h2>
+<p class="md-github">git clone git@github.com:<USER>/ascii-art.git
+./test/dev_setup.sh
+default fonts path: node_modules/ascii-art/Fonts
+npx module-auto-link -c 'npm-auto-link'</p>
+<h2 class="md-github"><a class="md-github__anchor" name="deprecations" href="#deprecations"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deprecations</h2>
+<p class="md-github">.artwork() non-functional until plugin standard arrives
+.toPromise() deprecated; use .completed()</p>
+<h2 class="md-github"><a class="md-github__anchor" name="troubleshooting" href="#troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h2>
+<p class="md-github">Font load error:
+ls node_modules/ascii-art/Fonts/doom.flf</p>
+<p class="md-github">Image processing error:
+npm install canvas
+verify src path</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: ASCII-art Library</li>
+<li class="md-github">URL: https://github.com/khrome/ascii-art#readme</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-05T16:50:37.543Z</li>
+<li class="md-github">Data Size: 902395 bytes</li>
+<li class="md-github">Links Found: 5062</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-05</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-05T17:21:05.703Z</p>
+  </footer>
+</body>
+</html>
