@@ -1,0 +1,263 @@
+tests/unit/main.test.js
+# tests/unit/main.test.js
+import { describe, test, expect, beforeEach, afterEach } from "vitest";
+import * as mainModule from "@src/lib/main.js";
+import { main } from "@src/lib/main.js";
+
+describe("Main Module Import", () => {
+  test("should be non-null", () => {
+    expect(mainModule).not.toBeNull();
+  });
+});
+
+describe("Main Output", () => {
+  test("should terminate without error", () => {
+    process.argv = ["node", "src/lib/main.js"];
+    main();
+  });
+});
+
+describe("--demo flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print demo sections and exit 0", () => {
+    expect(() => main(["--demo"])) .toThrow();
+    expect(logs[0]).toBe("=== Interactive Demo ===");
+    // Check seeded output is array of length 3
+    const seededArray = JSON.parse(logs[1]);
+    expect(Array.isArray(seededArray)).toBe(true);
+    expect(seededArray).toHaveLength(3);
+    // Check unique output is array of length 3
+    const uniqueArray = JSON.parse(logs[2]);
+    expect(Array.isArray(uniqueArray)).toBe(true);
+    expect(uniqueArray).toHaveLength(3);
+    // Check subsequent lines
+    expect(logs[3]).toBe('To launch HTTP server: node src/lib/main.js --serve');
+    expect(logs[4]).toBe('curl "http://localhost:3000/faces?count=2&seed=7"');
+  });
+});
+
+describe("--help flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print usage summary and exit 0", () => {
+    expect(() => main(["--help"])) .toThrow();
+    // Check usage header
+    expect(logs[0]).toMatch(/Usage:.*main\.js.*\[options\]/);
+    // Check each flag present
+    const expectedFlags = [
+      "--help",
+      "--demo",
+      "--serve",
+      "--port",
+      "--diagnostics",
+      "--build-intermediate",
+      "--build-enhanced",
+      "--refresh",
+      "--merge-persist"
+    ];
+    expectedFlags.forEach((flag) => {
+      expect(logs.some((l) => l.includes(flag))).toBe(true);
+    });
+  });
+});
+
+describe("--diagnostics flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print diagnostics and exit 0", () => {
+    expect(() => main(["--diagnostics"])) .toThrow();
+    expect(logs[0]).toMatch(/^Node Version:/);
+    expect(logs[1]).toMatch(/^Platform:/);
+    expect(logs[2]).toBe('Args: ["--diagnostics"]');
+  });
+});
+
+describe("--build-intermediate flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print building intermediate and exit 0", () => {
+    expect(() => main(["--build-intermediate"])) .toThrow();
+    expect(logs[0]).toBe("Building intermediate stage");
+  });
+});
+
+describe("--build-enhanced flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print building enhanced and exit 0", () => {
+    expect(() => main(["--build-enhanced"])) .toThrow();
+    expect(logs[0]).toBe("Building enhanced stage");
+  });
+});
+
+describe("--refresh flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print refreshing data and exit 0", () => {
+    expect(() => main(["--refresh"])) .toThrow();
+    expect(logs[0]).toBe("Refreshing data");
+  });
+});
+
+describe("--merge-persist flag", () => {
+  let logs = [];
+  let originalLog;
+  let originalExit;
+
+  beforeEach(() => {
+    logs = [];
+    originalLog = console.log;
+    console.log = (msg) => logs.push(msg);
+    originalExit = process.exit;
+    process.exit = (code) => { throw { code }; };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+    process.exit = originalExit;
+  });
+
+  test("should print merging and persisting and exit 0", () => {
+    expect(() => main(["--merge-persist"])) .toThrow();
+    expect(logs[0]).toBe("Merging and persisting changes");
+  });
+});
+tests/unit/generateFacesCore.test.js
+# tests/unit/generateFacesCore.test.js
+import { describe, test, expect } from "vitest";
+import { generateFacesCore, FACE_POOLS } from "@src/lib/main.js";
+
+describe("generateFacesCore", () => {
+  test("returns correct array shape and is reproducible", () => {
+    const opts = { count: 3, seed: 42, category: "all", unique: false };
+    const result1 = generateFacesCore(opts);
+    const result2 = generateFacesCore(opts);
+    expect(result1).toHaveLength(3);
+    expect(result1).toEqual(result2);
+    expect(result1[0]).toHaveProperty("id", 1);
+  });
+
+  test("category filtering only returns faces from that pool", () => {
+    const result = generateFacesCore({ count: 5, seed: 7, category: "happy" });
+    result.forEach(item => {
+      expect(FACE_POOLS.happy).toContain(item.face);
+    });
+  });
+
+  test("unique yields no duplicates and throws when too many requested", () => {
+    const poolSize = FACE_POOLS.sad.length;
+    expect(() => generateFacesCore({ count: poolSize + 1, seed: 0, category: "sad", unique: true })).toThrow(RangeError);
+    const uniqueResult = generateFacesCore({ count: 3, seed: 1, category: "sad", unique: true });
+    const faces = uniqueResult.map(f => f.face);
+    expect(new Set(faces).size).toBe(3);
+  });
+
+  test("invalid inputs throw descriptive errors", () => {
+    expect(() => generateFacesCore({ count: 0, seed: 1, category: "all" }))
+      .toThrow(/count must be a positive integer/);
+    expect(() => generateFacesCore({ count: 1.5, seed: 1, category: "all" }))
+      .toThrow(/count must be a positive integer/);
+    expect(() => generateFacesCore({ count: 1, seed: 1.2, category: "all" }))
+      .toThrow(/seed must be an integer/);
+    expect(() => generateFacesCore({ count: 1, seed: 1, category: "unknown" }))
+      .toThrow();
+    expect(() => generateFacesCore({ count: 1, seed: 1, category: "all", unique: "yes" }))
+      .toThrow();
+  });
+
+  test("unique defaults to false when not provided", () => {
+    const result = generateFacesCore({ count: 2, seed: 3, category: "angry" });
+    expect(result).toHaveLength(2);
+  });
+});
