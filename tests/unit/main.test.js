@@ -36,17 +36,17 @@ describe("--demo flag", () => {
   test("should print demo sections and exit 0", () => {
     expect(() => main(["--demo"])) .toThrow();
     expect(logs[0]).toBe("=== Interactive Demo ===");
-    const seededLine = logs.find(
-      (l) => l.includes('"seed":42') && l.includes('"count":3')
-    );
-    expect(seededLine).toBeDefined();
-    const uniqueLine = logs.find(
-      (l) =>
-        l.includes('"unique":true') &&
-        l.includes('"category":"happy"') &&
-        l.includes('"seed":7')
-    );
-    expect(uniqueLine).toBeDefined();
+    // Check seeded output is array of length 3
+    const seededArray = JSON.parse(logs[1]);
+    expect(Array.isArray(seededArray)).toBe(true);
+    expect(seededArray).toHaveLength(3);
+    // Check unique output is array of length 3
+    const uniqueArray = JSON.parse(logs[2]);
+    expect(Array.isArray(uniqueArray)).toBe(true);
+    expect(uniqueArray).toHaveLength(3);
+    // Check subsequent lines
+    expect(logs[3]).toBe('To launch HTTP server: node src/lib/main.js --serve');
+    expect(logs[4]).toBe('curl "http://localhost:3000/faces?count=2&seed=7"');
   });
 });
 

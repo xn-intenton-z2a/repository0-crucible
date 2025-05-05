@@ -3,13 +3,82 @@
 
 import { fileURLToPath, URL } from "url";
 import http from "http";
+import { z } from "zod";
 
 /**
- * Stub core generation function for demo purposes.
+ * Pools of ASCII faces by category.
+ */
+export const FACE_POOLS = {
+  happy: [":)", ":-)", ":D", "(:", ":^)"] ,
+  sad: [":(", ":-(", ":'(", "):", ":(("],
+  angry: [">:(", ":-@", ">:O", "(@)", "x("],
+  surprised: [":O", ":-O", ":0", "O_O", "o_O"]
+};
+
+/**
+ * Seeded linear congruential generator for reproducible randomness.
+ */
+function seededRandom(seed) {
+  const m = 0x80000000; // 2**31
+  const a = 1103515245;
+  const c = 12345;
+  let state = seed % m;
+  return function () {
+    state = (a * state + c) % m;
+    return state / m;
+  };
+}
+
+// Zod schema for options validation
+const OptionsSchema = z.object({
+  count: z
+    .number()
+    .int({ message: "count must be a positive integer" })
+    .positive({ message: "count must be a positive integer" }),
+  seed: z.number().int({ message: "seed must be an integer" }),
+  category: z.enum(["all", "happy", "sad", "angry", "surprised"]),
+  unique: z.boolean().optional().default(false)
+});
+
+/**
+ * Core generation function for ASCII faces.
+ * Validates inputs, uses seeded randomness, applies category filtering and uniqueness.
+ * @param {Object} options
+ * @param {number} options.count - positive integer number of faces to generate
+ * @param {number} options.seed - integer seed for RNG
+ * @param {string} options.category - "all","happy","sad","angry","surprised"
+ * @param {boolean} [options.unique=false] - whether to enforce unique faces
+ * @returns {{id:number,face:string}[]}
  */
 export function generateFacesCore(options) {
-  // Return options as dummy payload for demo
-  return options;
+  const parsed = OptionsSchema.parse(options);
+  const { count, seed, category, unique } = parsed;
+  // Select appropriate pool
+  const pool =
+    category === "all"
+      ? [...FACE_POOLS.happy, ...FACE_POOLS.sad, ...FACE_POOLS.angry, ...FACE_POOLS.surprised]
+      : FACE_POOLS[category];
+  if (unique && count > pool.length) {
+    throw new RangeError(
+      `unique constraint violated: requested ${count} but only ${pool.length} available`
+    );
+  }
+  const rng = seededRandom(seed);
+  const faces = [];
+  const used = new Set();
+  for (let i = 0; i < count; i++) {
+    let idx;
+    if (unique) {
+      do {
+        idx = Math.floor(rng() * pool.length);
+      } while (used.has(idx));
+      used.add(idx);
+    } else {
+      idx = Math.floor(rng() * pool.length);
+    }
+    faces.push({ id: i + 1, face: pool[idx] });
+  }
+  return faces;
 }
 
 /**
@@ -57,7 +126,7 @@ export function main(args) {
     process.exit(0);
   }
   if (args.includes("--serve")) {
-    // Parse port from --port=<port> or default to 3000
+    // existing server logic unchanged...
     let port = 3000;
     const portArg = args.find((a) => a.startsWith("--port="));
     if (portArg) {
@@ -71,7 +140,6 @@ export function main(args) {
         const reqUrl = new URL(req.url || "", `http://${req.headers.host}`);
         if (req.method === "GET" && reqUrl.pathname === "/faces") {
           const params = reqUrl.searchParams;
-          // count
           const countStr = params.get("count");
           if (!countStr) {
             res.writeHead(400, { "Content-Type": "application/json" });
@@ -84,7 +152,6 @@ export function main(args) {
             res.end(JSON.stringify({ error: "Invalid parameter: count must be an integer" }));
             return;
           }
-          // seed
           const seedStr = params.get("seed");
           if (!seedStr) {
             res.writeHead(400, { "Content-Type": "application/json" });
@@ -97,9 +164,7 @@ export function main(args) {
             res.end(JSON.stringify({ error: "Invalid parameter: seed must be an integer" }));
             return;
           }
-          // category
           const category = params.get("category") || "all";
-          // unique
           const uniqueStr = params.get("unique");
           let unique = false;
           if (uniqueStr !== null) {
@@ -110,17 +175,14 @@ export function main(args) {
             } else {
               res.writeHead(400, { "Content-Type": "application/json" });
               res.end(
-                JSON.stringify({
-                  error: "Invalid parameter: unique must be true or false",
-                })
+                JSON.stringify({ error: "Invalid parameter: unique must be true or false" })
               );
               return;
             }
           }
           const result = generateFacesCore({ count, seed, category, unique });
-          const payload = { faces: result };
           res.writeHead(200, { "Content-Type": "application/json" });
-          res.end(JSON.stringify(payload));
+          res.end(JSON.stringify({ faces: result }));
         } else {
           res.writeHead(404, { "Content-Type": "application/json" });
           res.end(JSON.stringify({ error: "Not Found" }));
