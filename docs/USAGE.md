@@ -80,7 +80,7 @@ Examples of errors thrown by invalid options:
 
 > generateFacesCore({ count: 10, seed: 1, category: "sad", unique: true });
 // RangeError: unique constraint violated: requested 10 but only 5 available
-``` 
+```
 
 ## Demo
 
@@ -94,8 +94,8 @@ Example output:
 
 ```
 === Interactive Demo ===
-[{"id":1,"face":":)"},{"id":2,"face":"-:)"},{"id":3,"face":":D"}]
-[{"id":1,"face":":)"},{"id":2,"face":":-\)"},{"id":3,"face":"(:"}]
+[{"id":1,"face":":)"},{"id":2,"face":":-)"},{"id":3,"face":":D"}]
+[{"id":1,"face":":)"},{"id":2,"face":":-)"},{"id":3,"face":"(:"}]
 To launch HTTP server: node src/lib/main.js --serve
 curl "http://localhost:3000/faces?count=2&seed=7"
 Response: {"faces":[{"id":1,"face":":)"}]}
@@ -119,4 +119,35 @@ Example JSON response:
 
 ```json
 {"faces":[{"id":1,"face":":)"},{"id":2,"face":":D"}]}
+```
+
+## Additional Examples
+
+### Diagnostics
+
+```bash
+node src/lib/main.js --diagnostics
+# Node Version: vX.Y.Z
+# Platform: your_platform
+# Args: ["--diagnostics"]
+```
+
+### Build Commands
+
+```bash
+node src/lib/main.js --build-intermediate
+Building intermediate stage
+
+node src/lib/main.js --build-enhanced
+Building enhanced stage
+```
+
+### Refresh and Merge
+
+```bash
+node src/lib/main.js --refresh
+Refreshing data
+
+node src/lib/main.js --merge-persist
+Merging and persisting changes
 ```

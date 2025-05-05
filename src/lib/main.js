@@ -115,6 +115,43 @@ export function runDemo() {
 }
 
 /**
+ * Print diagnostics information.
+ */
+export function printDiagnostics(args) {
+  console.log(`Node Version: ${process.version}`);
+  console.log(`Platform: ${process.platform}`);
+  console.log(`Args: ${JSON.stringify(args)}`);
+}
+
+/**
+ * Stub for building intermediate stage.
+ */
+export function buildIntermediate() {
+  console.log("Building intermediate stage");
+}
+
+/**
+ * Stub for building enhanced stage.
+ */
+export function buildEnhanced() {
+  console.log("Building enhanced stage");
+}
+
+/**
+ * Stub for refreshing data.
+ */
+export function refreshData() {
+  console.log("Refreshing data");
+}
+
+/**
+ * Stub for merging and persisting changes.
+ */
+export function mergePersist() {
+  console.log("Merging and persisting changes");
+}
+
+/**
  * Main entry point.
  * @param {string[]} args CLI arguments
  */
@@ -125,8 +162,13 @@ export function main(args) {
     printUsage();
     process.exit(0);
   }
+
+  if (args.includes("--demo")) {
+    runDemo();
+    return;
+  }
+
   if (args.includes("--serve")) {
-    // existing server logic unchanged...
     let port = 3000;
     const portArg = args.find((a) => a.startsWith("--port="));
     if (portArg) {
@@ -196,10 +238,33 @@ export function main(args) {
       console.log(`Listening on port ${port}`);
     });
     return server;
-  } else if (args.includes("--demo")) {
-    runDemo();
-    return;
   }
+
+  if (args.includes("--diagnostics")) {
+    printDiagnostics(args);
+    process.exit(0);
+  }
+
+  if (args.includes("--build-intermediate")) {
+    buildIntermediate();
+    process.exit(0);
+  }
+
+  if (args.includes("--build-enhanced")) {
+    buildEnhanced();
+    process.exit(0);
+  }
+
+  if (args.includes("--refresh")) {
+    refreshData();
+    process.exit(0);
+  }
+
+  if (args.includes("--merge-persist")) {
+    mergePersist();
+    process.exit(0);
+  }
+
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
