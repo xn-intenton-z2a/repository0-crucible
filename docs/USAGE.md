@@ -8,13 +8,40 @@ node src/lib/main.js [options]
 
 ## Options
 
+- `--help`: Show help and exit.
 - `--demo`: Run the interactive demo showcasing seeded generation, uniqueness without replacement, and HTTP integration.
 - `--serve`: Launch the HTTP server on port 3000 (use `--port=<port>` to override).
+- `--port=<port>`: Specify the port for the HTTP server (default: 3000).
 - `--diagnostics`: Show diagnostics.
 - `--build-intermediate`: Build intermediate stage.
 - `--build-enhanced`: Build enhanced stage.
 - `--refresh`: Refresh data.
 - `--merge-persist`: Merge and persist changes.
+
+## Help
+
+To view usage instructions:
+
+```bash
+node src/lib/main.js --help
+```
+
+Example output:
+
+```
+Usage: node src/lib/main.js [options]
+
+Options:
+  --help                Show help and exit
+  --demo                Run the interactive demo
+  --serve               Launch the HTTP server
+  --port=<port>         Specify the port for HTTP server (default: 3000)
+  --diagnostics         Show diagnostics
+  --build-intermediate  Build intermediate stage
+  --build-enhanced      Build enhanced stage
+  --refresh             Refresh data
+  --merge-persist       Merge and persist changes
+```
 
 ## Demo
 
@@ -54,5 +81,5 @@ curl "http://localhost:3000/faces?count=2&seed=7"
 Example JSON response:
 
 ```json
-{"faces":{"count":2,"seed":7,"category":"all","unique":false}}
+{"faces":[{"id":1,"face":":)"}]}
 ```

@@ -13,6 +13,24 @@ export function generateFacesCore(options) {
 }
 
 /**
+ * Print CLI usage information.
+ */
+export function printUsage() {
+  console.log("Usage: node src/lib/main.js [options]");
+  console.log("");
+  console.log("Options:");
+  console.log("  --help                Show help and exit");
+  console.log("  --demo                Run the interactive demo");
+  console.log("  --serve               Launch the HTTP server");
+  console.log("  --port=<port>         Specify the port for HTTP server (default: 3000)");
+  console.log("  --diagnostics         Show diagnostics");
+  console.log("  --build-intermediate  Build intermediate stage");
+  console.log("  --build-enhanced      Build enhanced stage");
+  console.log("  --refresh             Refresh data");
+  console.log("  --merge-persist       Merge and persist changes");
+}
+
+/**
  * Run the interactive demo showcasing core features.
  */
 export function runDemo() {
@@ -33,6 +51,11 @@ export function runDemo() {
  */
 export function main(args) {
   args = args || [];
+
+  if (args.includes("--help")) {
+    printUsage();
+    process.exit(0);
+  }
   if (args.includes("--serve")) {
     // Parse port from --port=<port> or default to 3000
     let port = 3000;
@@ -111,8 +134,7 @@ export function main(args) {
       console.log(`Listening on port ${port}`);
     });
     return server;
-  }
-  if (args.includes("--demo")) {
+  } else if (args.includes("--demo")) {
     runDemo();
     return;
   }
