@@ -2,53 +2,73 @@
 
 ## Description
 
-This CLI application outputs random facial expressions using ASCII art. It supports three modes:
+This CLI application outputs facial expressions using ASCII art with the following modes:
 
-1. **Random Mode (default)**: Prints one random ASCII face.
-2. **List Mode** (`--list`): Prints all available face names in alphabetical order.
-3. **Named Mode** (`--name <face>` or `-n <face>`): Prints the specified ASCII face.
+1. **Default/Single Face Mode** (`--face` or no flag): Prints one random ASCII face.
+2. **List Mode** (`--list-faces`): Prints all available faces in order, each prefixed with its zero-based index.
+3. **Seed Mode** (`--seed <value>`): Uses a seeded pseudo-random generator for deterministic face selection.
+
+## CLI Options
+
+- `--face`             Print a single random face (default behavior).
+- `--list-faces`       List all faces with indices.
+- `--seed <value>`     Select a face deterministically using the provided numeric seed.
 
 ## Usage
 
-### Random Mode
+### Default/Single Face Mode
 
 ```bash
 node src/lib/main.js
+# or
+repository0-crucible
 ```
-
 Prints one random face, e.g.:
 ```
-(◕‿◕)
+(¬_-_¬)
+``` (one of the faces)
+
+### Explicit Face Mode
+
+```bash
+node src/lib/main.js --face
 ```
 
 ### List Mode
 
 ```bash
-node src/lib/main.js --list
+node src/lib/main.js --list-faces
 ```
 
-Prints all face names:
+Prints all face entries:
 ```
-frown
-smile
-surprised
-wink
+0: (ಠ_ಠ)
+1: (╯°□°）╯
+2: (¬_¬)
+3: (^_^)/
 ```
 
-### Named Mode
+### Seed Mode
 
 ```bash
-node src/lib/main.js --name wink
-# or
-node src/lib/main.js -n smile
+node src/lib/main.js --seed 1
 ```
 
-Prints the specified face:
+Prints a deterministic face for the given seed, e.g.:
 ```
-(;^_^)
+(╯°□°）╯
 ```
 
-If an invalid name is given, it prints an error and exits with code 1:
-```
-Error: 'foo' is not a valid face name.
-```
+### Error Conditions
+
+- Non-numeric or missing seed:
+  ```bash
+  node src/lib/main.js --seed foo
+  ```
+  Prints: `Error: seed value must be a number.` and exits with code 1.
+
+- Unknown flag:
+  ```bash
+  node src/lib/main.js --unknown
+  ```
+  Prints: `Error: unknown flag '--unknown'` and exits with code 1.
