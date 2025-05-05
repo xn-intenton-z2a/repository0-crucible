@@ -19,6 +19,21 @@ export const FACE_MAP = {
 };
 
 export function main(args = process.argv.slice(2)) {
+  // Help mode
+  if (args[0] === "--help" || args[0] === "-h") {
+    return [
+      "Usage: repository0-crucible [options]",
+      "",
+      "Options:",
+      "--face                 Print a single random ASCII face (default behavior)",
+      "--list-faces           List all available ASCII faces with indices",
+      "--list-names, -l       List all available face identifiers sorted alphabetically",
+      "--seed <value>, -s <value>     Select a face deterministically using the provided numeric seed",
+      "--name <face>, -n <face>       Print the specified ASCII face by its name (case-insensitive)",
+      "--help, -h            Show this help message and exit",
+    ];
+  }
+
   let mode = "face";
   let seedValue = null;
 
