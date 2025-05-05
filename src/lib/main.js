@@ -213,18 +213,18 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       if (args.length < 3 || isNaN(Number(args[2]))) {
         console.error("Error: --port requires a number");
         process.exitCode = 1;
-        return;
+        process.exit(1);
       }
       port = Number(args[2]);
       if (args.length > 3) {
         console.error(`Error: unknown flag '${args[3]}'`);
         process.exitCode = 1;
-        return;
+        process.exit(1);
       }
     } else if (args.length > 1) {
       console.error(`Error: unknown flag '${args[1]}'`);
       process.exitCode = 1;
-      return;
+      process.exit(1);
     }
     const server = createHttpServer();
     server.listen(port, () => {
