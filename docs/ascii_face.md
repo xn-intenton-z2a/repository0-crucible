@@ -2,12 +2,11 @@
 
 ## Description
 
-This CLI application outputs random facial expressions using ASCII art.
-It supports three modes:
+This CLI application outputs random facial expressions using ASCII art. It supports three modes:
 
 1. **Random Mode (default)**: Prints one random ASCII face.
-2. **List Mode (`--list`)**: Prints all available face names in alphabetical order.
-3. **Named Mode (`--name <face>` or `-n <face>`)**: Prints the specified ASCII face.
+2. **List Mode** (`--list`): Prints all available face names in alphabetical order.
+3. **Named Mode** (`--name <face>` or `-n <face>`): Prints the specified ASCII face.
 
 ## Usage
 
@@ -15,9 +14,8 @@ It supports three modes:
 
 ```bash
 node src/lib/main.js
-# or
-node src/lib/main.js --face
 ```
+
 Prints one random face, e.g.:
 ```
 (◕‿◕)
@@ -28,6 +26,7 @@ Prints one random face, e.g.:
 ```bash
 node src/lib/main.js --list
 ```
+
 Prints all face names:
 ```
 frown
@@ -43,12 +42,13 @@ node src/lib/main.js --name wink
 # or
 node src/lib/main.js -n smile
 ```
+
 Prints the specified face:
 ```
 (;^_^)
 ```
 
-If an invalid name is given, prints an error and exits with code 1:
+If an invalid name is given, it prints an error and exits with code 1:
 ```
 Error: 'foo' is not a valid face name.
 ```
