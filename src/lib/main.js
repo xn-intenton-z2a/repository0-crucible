@@ -79,6 +79,8 @@ export function main(args = process.argv.slice(2)) {
       "--seed <value>, -s <value>     Select a face deterministically using the provided numeric seed",
       "--name <face>, -n <face>       Print the specified ASCII face by its name (case-insensitive)",
       "--count <number>, -c <number>  Specify how many faces to print (must be positive integer)",
+      "--serve, -S             Start the HTTP API server (default port 3000)",
+      "--port <number>, -p     Specify a custom server port",
       "--diagnostics, -d      Show diagnostics information and exit",
       "--help, -h            Show this help message and exit",
     ];
@@ -92,6 +94,9 @@ export function main(args = process.argv.slice(2)) {
     if (args.length > 1) {
       throw new Error(`Error: unknown flag '${args[1]}'`);
     }
+  } else if (args[0] === "--serve" || args[0] === "-S") {
+    // serve handled in CLI invocation section
+    throw new Error("Error: invalid combination: --serve must be used at CLI, not inside main");
   } else if (args[0] === "--list-faces") {
     mode = "list";
     if (args.length > 1) {
@@ -134,6 +139,8 @@ export function main(args = process.argv.slice(2)) {
       throw new Error(`Error: unknown flag '${args[2]}'`);
     }
     return FACE_MAP[name];
+  } else if (args[0] === "--unknown-route-check") {
+    throw new Error(`Error: unknown flag '${args[0]}'`);
   } else {
     throw new Error(`Error: unknown flag '${args[0]}'`);
   }
