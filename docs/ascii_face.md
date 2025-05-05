@@ -24,6 +24,12 @@ The CLI application outputs facial expressions using ASCII art in various modes.
 - `--name <face>`, `-n <face>`
   Print the specified ASCII face by its name (case-insensitive).
 
+- `--serve`, `-S`
+  Start the HTTP API server (default port 3000).
+
+- `--port <number>`, `-p <number>`
+  Specify a custom server port.
+
 - `--help`, `-h`
   Show usage information and exit.
 
