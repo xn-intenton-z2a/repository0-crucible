@@ -71,12 +71,13 @@ Official documentation for GitHub Actions YAML syntax, covering triggers, jobs, 
 Combined reference for HTTP endpoint testing (Supertest), unit/integration testing (Vitest), and DOM emulation (JSDOM). Includes request simulation, assertion patterns, coverage reporting, and testing interactive UI sessions. Essential for verifying CLI behaviors, HTTP API endpoints, and REPL interfaces. Updated 2024.
 ## MIT License (Supertest, Vitest, JSDOM)
 
-# Node.js HTTP Module
-## https://nodejs.org/api/http.html
-Authoritative documentation for Node.js `http` and `https` modules—server/client APIs, request/response objects, headers, status codes, and streaming interfaces. Critical for building built-in HTTP JSON endpoints (`/face`, `/diagnostics`), serving static files (`/ui.js`), and error handling. Last updated June 2024.
-## Node.js Foundation (MIT-like)
-
-# Fetch API Documentation
+# Fetch API and CORS Documentation
 ## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-Comprehensive guide to the browser Fetch API—request construction, streaming responses, JSON parsing, headers, and error handling. Essential for client-side UI scripts fetching `/face` and `/diagnostics`, handling network errors, and integrating with the DOM. Last reviewed 2024; maintained by MDN.
+## https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+Comprehensive guide to the browser Fetch API—request construction, streaming responses, JSON parsing, headers, and error handling—paired with an authoritative overview of Cross-Origin Resource Sharing (CORS) headers and policies. Essential for client-side UI scripts fetching `/face` and `/diagnostics`, handling network errors, and configuring CORS for HTTP JSON endpoints. Last reviewed 2024; maintained by MDN Web Docs.
 ## CC BY-SA 3.0
+
+# OpenAPI Specification
+## https://spec.openapis.org/oas/v3.0.3
+The formal specification for OpenAPI 3.0.3, detailing the structure and syntax for defining RESTful APIs, including `info` objects, `servers`, `paths`, `components` (schemas, parameters, responses), and security definitions. Crucial for generating and serving an accurate OpenAPI document at `/openapi.json`, validating query parameters, and integrating with API tooling. Published under CC0 1.0 Universal by the OpenAPI Initiative.
+## CC0 1.0 Universal
