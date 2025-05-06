@@ -1,26 +1,45 @@
 # Summary
-
-Implement HTTP API server mode that allows clients to request ASCII face output over HTTP. When invoked with --serve, the CLI starts an HTTP server on a configurable port and handles requests concurrently.
+Add HTTP server mode with configurable port via --serve and --port flags to serve ASCII faces over HTTP.
 
 # Specification
+- Introduce --serve flag to start an HTTP server mode.
+- Introduce --port <number> flag to select listening port. Resolve port in order: --port flag, PORT environment variable, default 8080.
+- Server must handle concurrent connections and respond to HTTP requests.
+- Support GET /face endpoint with query parameters:
+  • count: positive integer number of faces to return
+  • seed: nonnegative integer for reproducible results
+  • category: filter faces by category
+  • facesFile: path to JSON or YAML file for custom faces
+  • mergeFaces: boolean flag to append custom faces
+- On valid requests respond with JSON object { faces: [string, ...] } and Content-Type application/json.
+- On unsupported routes respond with status 404 and JSON { error: "Not Found" }.
+- On invalid query parameters respond with status 400 and JSON { error: "<description>" }.
+- Log server start with chosen port and log each incoming request method and URL.
+- Gracefully shut down server on SIGINT and SIGTERM.
 
-The CLI accepts a --serve flag optionally followed by a port number or using a --port flag. When --serve is present:
-1. Determine port from --port <number> or environment variable PORT or default to 8080.
-2. Start an HTTP server listening on the chosen port.
-3. Handle GET requests to the /face endpoint with optional query parameters count, seed, category, custom, and mergeCustom matching existing CLI flags. Validate parameters using the existing face generation logic.
-4. On a valid request, return a JSON response containing an array of face strings and set Content-Type to application/json.
-5. For invalid paths or query parameters, return 404 or 400 status codes with an error message in JSON format.
-6. Log server start and each request handling to the console.
-7. Gracefully shut down the server on SIGINT and SIGTERM signals.
+# CLI Usage
+node src/lib/main.js --serve
+node src/lib/main.js --serve --port 3000
+PORT=4000 node src/lib/main.js --serve
 
 # Testing
-
-Update tests in tests/unit/main.test.js to:
-- Verify that invoking main with ["--serve"] and a custom port starts the server and logs the listening port.
-- Perform HTTP requests to /face and assert response status, headers, and body contain valid faces.
-- Test query parameters count, seed, and category work correctly over HTTP.
-- Test invalid routes and parameters return the correct status code and error body.
+- Write tests that launch the server with --serve and --port and verify console log includes listening port.
+- Perform HTTP requests to /face?count=2&seed=42 and assert status 200, Content-Type application/json, and two faces in response.
+- Test category filtering via /face?category=happy and validate returned faces.
+- Test facesFile and mergeFaces query parameters to verify custom face loading over HTTP.
+- Verify invalid routes return 404 JSON and invalid parameters return 400 JSON with descriptive error.
+- Simulate SIGINT or SIGTERM in tests and confirm server shuts down without hanging.
 
 # Documentation
+- Update README.md under Features to document --serve and --port flags with examples for HTTP API.
+- Create or update docs/HTTP_API.md describing endpoint, query parameters, response format, error handling, and graceful shutdown.
 
-Update README.md under Features to describe HTTP API mode, include usage examples for starting the server, and show how to request faces via curl or other HTTP clients.
+# Implementation Details
+- In src/lib/main.js, extend argument parsing to detect --serve and --port before face generation logic.
+- Determine port from parsed flag, then process.env.PORT, then default 8080.
+- Import http module and on --serve instantiate http.createServer. Use URL module to parse path and query string.
+- For GET /face calls, reuse existing face generation internal functions instead of console.log, collect results into array.
+- Send JSON response with two-space indentation. Set appropriate status and headers.
+- Handle errors in parameter parsing by responding with 400 and error JSON.
+- On any other path respond with 404 and JSON error message.
+- Attach listeners for SIGINT and SIGTERM to call server.close and exit process.
