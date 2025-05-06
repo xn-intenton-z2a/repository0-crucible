@@ -1,103 +1,49 @@
 # repository0-crucible
 
-`repository0-crucible` is a CLI application that outputs random facial expressions using ASCII art, serving as an emotional feedback mechanism for an AI agent. It also showcases automated CI/CD workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib).
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
 
-To create a self-evolving agentic coding system of your own based on this one, see https://github.com/xn-intenton-z2a/agentic-lib.
+To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
 
-This README will continue to evolve as this project grows.
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+
+## Repository Template
+
+The repository is intended as a template that includes:
+* A Template Base: A starting point for new projects.
+* A Running Experiment: An example implementation that demonstrates one way to use the template.
+* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
 
 ## Installation
 
-Install globally via npm:
+Install via npm:
 
 ```bash
-npm install -g @xn-intenton-z2a/repository0-crucible
-```
-
-Or install locally:
-
-```bash
-npm install @xn-intenton-z2a/repository0-crucible
+npm install repository0-crucible
 ```
 
 ## Features
 
-- **Random Mode (default)**: Prints one random ASCII face
-- **List Mode** (`--list`): Prints all available face names in alphabetical order
-- **Named Mode** (`--name <face>` or `-n <face>`): Prints the specified ASCII face
+TODO: Add features here.
 
 ## Usage
 
-After installation, you can invoke the CLI directly or via Node:
+To run the CLI tool and see help instructions:
 
 ```bash
-repository0-crucible
-# or
-node src/lib/main.js
+node src/lib/main.js --help
 ```
 
-### Random Mode
+### Example Commands
 
-```bash
-repository0-crucible
-```
-
-Prints one random face, e.g.:
-```
-(◕‿◕)
-```
-
-### List Mode
-
-```bash
-repository0-crucible --list
-```
-
-Prints all face names:
-```
-frown
-smile
-surprised
-wink
-```
-
-### Named Mode
-
-```bash
-repository0-crucible --name wink
-# or
-repository0-crucible -n smile
-```
-
-Prints the specified face:
-```
-(;^_^)
-```
-
-If an invalid name is given, the CLI prints an error and exits with code 1:
-```
-Error: 'foo' is not a valid face name.
-```
-
-## CLI Options
-
-- `--list`        List all available face names
-- `--name`, `-n`  Select a specific face by name
-
-## Development
-
-- Run tests:
-  ```bash
-  npm test
-  ```
-- Quick start:
+- **Default Demo Output:**
   ```bash
   npm run start
   ```
 
+
 ## Incremental Changes Plan
 
-- v1.0.0: Release ASCII_FACE feature with random, list, and named modes
+TODO: Add forthcoming changes here.
 
 ## Contributing
 
