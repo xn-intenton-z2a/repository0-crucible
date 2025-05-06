@@ -13,6 +13,7 @@ A CLI tool that outputs random ASCII facial expressions as emotional feedback.
 - Interactive REPL mode (`--interactive`)
 - Use custom face definitions from a JSON or YAML file (`--faces-file <path>`)
 - Merge custom faces with built-in library (`--merge-faces`)
+- Serve HTTP API (`--serve` flag) with endpoints for `/face`, `/list-faces`, `/list-categories`, and `/diagnostics` (default port 3000, configurable with `--port` flag or `PORT` environment variable)
 
 ## Installation
 
@@ -88,6 +89,7 @@ Inside the REPL, you can run commands such as:
 - `list-faces [--category <category>]`
 - `list-categories`
 - `category <name>`
+- `seed <number>`
 - `custom <path> [--merge]`
 - `help`
 - `exit` or `quit`
@@ -100,6 +102,36 @@ Load custom face definitions from a file or merge them with built-in faces:
 node src/lib/main.js --face --faces-file ./customFaces.json
 node src/lib/main.js --face --faces-file ./customFaces.yaml --merge-faces
 ```
+
+### HTTP API (Serve Mode)
+
+Start the built-in HTTP server to serve JSON endpoints for face generation, listing, and diagnostics:
+
+```bash
+# Start on default port 3000
+node src/lib/main.js --serve
+
+# Specify port explicitly
+node src/lib/main.js --serve --port 8080
+
+# Or set via environment variable
+PORT=5000 node src/lib/main.js --serve
+```
+
+Once running, you can query:
+
+```bash
+# Generate faces
+curl "http://localhost:3000/face?count=3&seed=42"
+
+# List all categories
+curl "http://localhost:3000/list-categories"
+
+# Retrieve diagnostics information
+curl "http://localhost:3000/diagnostics"
+```
+
+For full details on the HTTP API, see [docs/HTTP_API.md](docs/HTTP_API.md).
 
 ## Library API
 
