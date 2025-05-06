@@ -3,51 +3,10 @@ src/lib/main.js
 #!/usr/bin/env node
 // src/lib/main.js
 
-import minimist from 'minimist';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 
-export const faces = [
-  { label: 'smile', art: `  ^_^  ` },
-  { label: 'frown', art: `  -_-  ` },
-  { label: 'wink', art: `  ^_~  ` },
-  { label: 'surprise', art: `  O_O  ` },
-];
-
-function createSeededRandom(seed) {
-  let state = Number(seed) % 2147483647;
-  if (state <= 0) state += 2147483646;
-  return function () {
-    state = (state * 16807) % 2147483647;
-    return (state - 1) / 2147483646;
-  };
-}
-
-/**
- * Main CLI entry point for the ASCII face generator.
- * @param {string[]} args - CLI arguments
- */
-export function main(args = []) {
-  const opts = minimist(args, {
-    boolean: ['random', 'list'],
-    string: ['seed'],
-    default: {},
-  });
-
-  if (opts.list) {
-    const list = faces.map((f, i) => ({ index: i, label: f.label }));
-    console.log(JSON.stringify(list));
-    return;
-  }
-
-  let index;
-  if (opts.seed !== undefined) {
-    const rnd = createSeededRandom(opts.seed);
-    index = Math.floor(rnd() * faces.length);
-  } else {
-    index = Math.floor(Math.random() * faces.length);
-  }
-
-  console.log(faces[index].art);
+export function main(args) {
+  console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

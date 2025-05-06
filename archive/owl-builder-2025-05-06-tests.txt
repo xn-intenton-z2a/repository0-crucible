@@ -1,47 +1,18 @@
 tests/unit/main.test.js
 # tests/unit/main.test.js
-import { describe, test, expect, vi } from 'vitest';
-import { main, faces } from '../../src/lib/main.js';
+import { describe, test, expect } from "vitest";
+import * as mainModule from "@src/lib/main.js";
+import { main } from "@src/lib/main.js";
 
-describe('Main Module Import', () => {
-  test('main function should be defined', () => {
-    expect(main).toBeDefined();
+describe("Main Module Import", () => {
+  test("should be non-null", () => {
+    expect(mainModule).not.toBeNull();
   });
 });
 
-describe('CLI Behavior', () => {
-  test('list mode outputs all faces', () => {
-    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    main(['--list']);
-    expect(spy).toHaveBeenCalledTimes(1);
-    const output = spy.mock.calls[0][0];
-    const list = JSON.parse(output);
-    expect(Array.isArray(list)).toBe(true);
-    expect(list.length).toBe(faces.length);
-    list.forEach((item, idx) => {
-      expect(item).toHaveProperty('index', idx);
-      expect(item).toHaveProperty('label', faces[idx].label);
-    });
-    spy.mockRestore();
-  });
-
-  test('seed mode produces consistent output', () => {
-    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    main(['--seed', '42']);
-    const first = spy.mock.calls[0][0];
-    spy.mockClear();
-    main(['--seed', '42']);
-    const second = spy.mock.calls[0][0];
-    expect(first).toBe(second);
-    spy.mockRestore();
-  });
-
-  test('random mode outputs a valid face', () => {
-    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    main([]);
-    const output = spy.mock.calls[0][0];
-    const arts = faces.map(f => f.art);
-    expect(arts).toContain(output);
-    spy.mockRestore();
+describe("Main Output", () => {
+  test("should terminate without error", () => {
+    process.argv = ["node", "src/lib/main.js"];
+    main();
   });
 });
