@@ -1,54 +1,77 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
-
-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
-
-## Repository Template
-
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
-
-## Installation
-
-Install via npm:
-
-```bash
-npm install repository0-crucible
-```
+A CLI tool that outputs random ASCII facial expressions as emotional feedback.
 
 ## Features
 
-TODO: Add features here.
+- Generate random ASCII faces (`--face` flag)
+- Specify number of faces to output (`--face <count>`)
+- Reproducible sequences with `--seed <seed>`
+- Filter faces by category (`--category <category>`)
+- Supported categories: `happy`, `sad`, `angry`, `surprise`, `playful`
+- Use custom face definitions from a JSON or YAML file (`--faces-file <path>`)
+- Merge custom faces with built-in library (`--merge-faces`)
+  
+## Installation
+
+Install locally:
+
+```bash
+npm install
+```
+
+Or install globally:
+
+```bash
+npm install -g @xn-intenton-z2a/repository0-crucible
+```
 
 ## Usage
 
-To run the CLI tool and see help instructions:
-
 ```bash
-node src/lib/main.js --help
+node src/lib/main.js --face [<count>] [--seed <seed>] [--category <category>] [--faces-file <path>] [--merge-faces]
 ```
 
-### Example Commands
+### Examples
 
-- **Default Demo Output:**
+- Output one random face:
   ```bash
-  npm run start
+  node src/lib/main.js --face
   ```
 
+- Output three random faces:
+  ```bash
+  node src/lib/main.js --face 3
+  ```
 
-## Incremental Changes Plan
+- Reproducible output with a seed:
+  ```bash
+  node src/lib/main.js --face 5 --seed 123
+  ```
 
-TODO: Add forthcoming changes here.
+- Filter faces by category:
+  ```bash
+  node src/lib/main.js --face --category playful
+  ```
+
+- Use custom faces file:
+  ```bash
+  node src/lib/main.js --face --faces-file ./customFaces.json
+  ```
+
+- Merge custom faces with built-in library:
+  ```bash
+  node src/lib/main.js --face 5 --faces-file ./customFaces.yaml --merge-faces
+  ```
+
+## Repository Template
+
+This repository was initially generated as a template to demonstrate CI/CD workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib).
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
+We welcome contributions! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
 
 ## License
 
-Released under the MIT License (see [LICENSE](./LICENSE)).
+Released under the MIT License. See [LICENSE](./LICENSE) for details.
