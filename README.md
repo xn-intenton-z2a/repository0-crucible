@@ -8,10 +8,12 @@ A CLI tool that outputs random ASCII facial expressions as emotional feedback.
 - Specify number of faces to output (`--face <count>`)
 - Reproducible sequences with `--seed <seed>`
 - Filter faces by category (`--category <category>`)
-- Supported categories: `happy`, `sad`, `angry`, `surprise`, `playful`
+- List all faces in the library (`--list-faces`)
+- List available categories (`--list-categories`)
+- Interactive REPL mode (`--interactive`)
 - Use custom face definitions from a JSON or YAML file (`--faces-file <path>`)
 - Merge custom faces with built-in library (`--merge-faces`)
-  
+
 ## Installation
 
 Install locally:
@@ -28,41 +30,76 @@ npm install -g @xn-intenton-z2a/repository0-crucible
 
 ## Usage
 
+Invoke the CLI with one of the supported commands and options:
+
 ```bash
-node src/lib/main.js --face [<count>] [--seed <seed>] [--category <category>] [--faces-file <path>] [--merge-faces]
+node src/lib/main.js [command] [options]
 ```
 
-### Examples
+### Basic Face Generation
 
 - Output one random face:
   ```bash
   node src/lib/main.js --face
   ```
-
 - Output three random faces:
   ```bash
   node src/lib/main.js --face 3
   ```
-
 - Reproducible output with a seed:
   ```bash
-  node src/lib/main.js --face 5 --seed 123
+  node src/lib/main.js --face --seed 123
   ```
-
 - Filter faces by category:
   ```bash
   node src/lib/main.js --face --category playful
   ```
-
-- Use custom faces file:
+- Combine count, category, and seed:
   ```bash
-  node src/lib/main.js --face --faces-file ./customFaces.json
+  node src/lib/main.js --face 2 --category playful --seed 42
   ```
 
-- Merge custom faces with built-in library:
+### Listing Faces and Categories
+
+- List all faces in the current library:
   ```bash
-  node src/lib/main.js --face 5 --faces-file ./customFaces.yaml --merge-faces
+  node src/lib/main.js --list-faces
   ```
+- List faces filtered by category:
+  ```bash
+  node src/lib/main.js --list-faces --category happy
+  ```
+- List available categories:
+  ```bash
+  node src/lib/main.js --list-categories
+  ```
+
+### Interactive Mode
+
+Start an interactive REPL session to explore available commands without restarting the CLI:
+
+```bash
+node src/lib/main.js --interactive
+```
+
+Inside the REPL, you can run commands such as:
+
+- `face [count] [--seed <seed>] [--category <category>]`
+- `list-faces [--category <category>]`
+- `list-categories`
+- `category <name>`
+- `custom <path> [--merge]`
+- `help`
+- `exit` or `quit`
+
+### Custom Faces
+
+Load custom face definitions from a file or merge them with built-in faces:
+
+```bash
+node src/lib/main.js --face --faces-file ./customFaces.json
+node src/lib/main.js --face --faces-file ./customFaces.yaml --merge-faces
+```
 
 ## Repository Template
 
