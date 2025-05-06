@@ -38,12 +38,12 @@ Query parameters:
 - `facesFile` (string filepath)
 - `mergeFaces` (boolean `true` or `false`)
 
-Success (200):
+**Success** (200):
 ```json
 { "faces": ["( ͡° ͜ʖ ͡°)", "(ᵔ ͜ʖᵔ)"] }
 ```
 
-Error (400):
+**Error** (400):
 ```json
 { "error": "<descriptive message>" }
 ```
@@ -52,7 +52,7 @@ Error (400):
 
 Query parameters: `category`, `facesFile`, `mergeFaces`.
 
-Success (200):
+**Success** (200):
 ```json
 { "faces": ["( ͡° ͜ʖ ͡°)", "( ಠ ͜ʖ ಠ)"] }
 ```
@@ -61,7 +61,7 @@ Success (200):
 
 Query parameters: `facesFile`, `mergeFaces`.
 
-Success (200):
+**Success** (200):
 ```json
 { "categories": ["happy", "angry", "sad"] }
 ```
@@ -70,7 +70,7 @@ Success (200):
 
 Query parameters: `facesFile`, `mergeFaces`, `seed`.
 
-Success (200): JSON object with:
+**Success** (200): JSON object with:
 
 - `nodeVersion`: Node.js version
 - `cliVersion`: CLI version from package.json
@@ -89,7 +89,7 @@ On file errors (400), the response includes an `error` field:
 
 ### All Other Routes
 
-404 Not Found (400):
+**404 Not Found** (404):
 ```json
 { "error": "Not Found" }
 ```
