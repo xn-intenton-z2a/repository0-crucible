@@ -28,7 +28,7 @@ Or install globally:
 npm install -g @xn-intenton-z2a/repository0-crucible
 ```
 
-## Usage
+## CLI Usage
 
 Invoke the CLI with one of the supported commands and options:
 
@@ -99,6 +99,26 @@ Load custom face definitions from a file or merge them with built-in faces:
 ```bash
 node src/lib/main.js --face --faces-file ./customFaces.json
 node src/lib/main.js --face --faces-file ./customFaces.yaml --merge-faces
+```
+
+## Library API
+
+The package also exposes a programmatic API for face generation and listing.
+
+```js
+import { generateFaces, listFaces, listCategories } from '@xn-intenton-z2a/repository0-crucible';
+
+// Generate 3 faces with a seed
+const faces = generateFaces({ count: 3, seed: 42 });
+console.log(faces);
+
+// List all built-in faces
+const allFaces = listFaces();
+console.log(allFaces);
+
+// List categories from a custom faces file
+const categories = listCategories({ facesFile: './custom.json', mergeFaces: true });
+console.log(categories);
 ```
 
 ## Repository Template
