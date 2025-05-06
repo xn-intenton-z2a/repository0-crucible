@@ -1,28 +1,20 @@
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
-import * as mainModule from "@src/lib/main.js";
-import { main } from "@src/lib/main.js";
+import { main, builtInFaces } from "@src/lib/main.js";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
-    expect(mainModule).not.toBeNull();
+    expect(main).not.toBeNull();
   });
 });
 
 describe("Main Output", () => {
-  test("should terminate without error", () => {
-    process.argv = ["node", "src/lib/main.js"];
-    main();
-  });
-});
-
-describe("ASCII_FACES Feature", () => {
   let logs = [];
   const originalLog = console.log;
 
   beforeEach(() => {
     logs = [];
     console.log = (...args) => {
-      logs.push(args.join(' '));
+      logs.push(args.join(" "));
     };
   });
 
@@ -30,10 +22,17 @@ describe("ASCII_FACES Feature", () => {
     console.log = originalLog;
   });
 
+  test("should terminate without error without --face", () => {
+    expect(() => main([])).not.toThrow();
+    expect(logs).toHaveLength(1);
+    expect(logs[0]).toBe("Run with: []");
+  });
+
   test("should log one random face with --face", () => {
     main(["--face"]);
     expect(logs).toHaveLength(1);
-    expect(mainModule.asciiFaces).toContain(logs[0]);
+    const allFaces = builtInFaces.map((item) => item.face);
+    expect(allFaces).toContain(logs[0]);
   });
 
   test("should log three distinct faces with --face 3", () => {
@@ -41,8 +40,9 @@ describe("ASCII_FACES Feature", () => {
     expect(logs).toHaveLength(3);
     const unique = new Set(logs);
     expect(unique.size).toBe(3);
-    logs.forEach(face => {
-      expect(mainModule.asciiFaces).toContain(face);
+    const allFaces = builtInFaces.map((item) => item.face);
+    logs.forEach((face) => {
+      expect(allFaces).toContain(face);
     });
   });
 
@@ -53,10 +53,42 @@ describe("ASCII_FACES Feature", () => {
     main(["--face", "--seed", "42"]);
     expect(logs).toEqual(firstRun);
   });
+});
 
-  test("should preserve default behavior without --face", () => {
-    main([]);
+describe("Category Filtering", () => {
+  let logs = [];
+  const originalLog = console.log;
+
+  beforeEach(() => {
+    logs = [];
+    console.log = (...args) => {
+      logs.push(args.join(" "));
+    };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+  });
+
+  test("should log one face from happy category", () => {
+    main(["--face", "--category", "happy"]);
     expect(logs).toHaveLength(1);
-    expect(logs[0]).toBe("Run with: []");
+    const happyFaces = builtInFaces
+      .filter((item) => item.categories.includes("happy"))
+      .map((item) => item.face);
+    expect(happyFaces).toContain(logs[0]);
+  });
+
+  test("invalid category should throw error", () => {
+    expect(() =>
+      main(["--face", "--category", "unknown"])
+    ).toThrow(/Invalid category/);
+  });
+
+  test("count exceeds category available should throw error", () => {
+    // 'sad' category has only one face
+    expect(() =>
+      main(["--face", "2", "--category", "sad"])
+    ).toThrow(/only \d+ available/);
   });
 });
