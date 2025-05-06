@@ -389,6 +389,9 @@ export function main(args) {
   let category;
   let facesFile;
   let mergeFaces = false;
+  const supportedColors = { black: 30, red: 31, green: 32, yellow: 33, blue: 34, magenta: 35, cyan: 36, white: 37 };
+  let colorFlag = false;
+  let colorName;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -413,6 +416,17 @@ export function main(args) {
       listFacesFlag = true;
     } else if (arg === '--list-categories') {
       listCategoriesFlag = true;
+    } else if (arg === '--color') {
+      colorFlag = true;
+      const next = args[i + 1];
+      if (next && !next.startsWith('--')) {
+        colorName = args[++i].toLowerCase();
+      } else {
+        colorName = 'green';
+      }
+      if (!supportedColors[colorName]) {
+        errorExit(`Unsupported color '${colorName}'. Supported colors: ${Object.keys(supportedColors).join(', ')}.`);
+      }
     }
   }
 
@@ -439,9 +453,14 @@ export function main(args) {
     return;
   }
   if (faceFlag) {
-    generateFaces({ count, seed, category, facesFile, mergeFaces }).forEach((item) =>
-      console.log(item)
-    );
+    generateFaces({ count, seed, category, facesFile, mergeFaces }).forEach((item) => {
+      if (colorFlag) {
+        const code = supportedColors[colorName];
+        console.log(`\x1b[${code}m${item}\x1b[0m`);
+      } else {
+        console.log(item);
+      }
+    });
     return;
   }
 }
