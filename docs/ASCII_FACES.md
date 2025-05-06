@@ -18,6 +18,23 @@ node src/lib/main.js --face --seed 12345
 node src/lib/main.js --face --category happy  
 node src/lib/main.js --face 2 --category playful --seed 42  
 
+### Listing Faces and Categories
+
+List all faces in the current library:  
+```bash
+node src/lib/main.js --list-faces
+```
+
+List faces filtered by category:  
+```bash
+node src/lib/main.js --list-faces --category happy
+```
+
+List available categories:  
+```bash
+node src/lib/main.js --list-categories
+```
+
 ## Valid Categories
 
 - happy  
