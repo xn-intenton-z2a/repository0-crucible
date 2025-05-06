@@ -18,15 +18,6 @@ export const builtInFaces = [
   { face: "( ͡ಥ ͜ʖ ͡ಥ)", categories: ["sad"] }
 ];
 
-const validCategories = Object.keys(
-  builtInFaces.reduce((acc, item) => {
-    item.categories.forEach((cat) => {
-      acc[cat] = true;
-    });
-    return acc;
-  }, {})
-);
-
 function createSeededRandom(seedVal) {
   let state = seedVal % 2147483647;
   if (state <= 0) state += 2147483646;
@@ -34,7 +25,7 @@ function createSeededRandom(seedVal) {
     next: () => {
       state = (state * 16807) % 2147483647;
       return (state - 1) / 2147483646;
-    },
+    }
   };
 }
 
@@ -132,19 +123,25 @@ export function main(args) {
       }
       return {
         face: item.face,
-        categories: Array.isArray(item.categories) ? item.categories : [],
+        categories: Array.isArray(item.categories) ? item.categories : []
       };
     });
     faceSet = mergeFaces ? faceSet.concat(custom) : custom;
   }
 
+  // Dynamically compute valid categories from current face set
+  const validCategories = Array.from(
+    faceSet.reduce((acc, item) => {
+      item.categories.forEach((cat) => acc.add(cat));
+      return acc;
+    }, new Set())
+  );
+
   // Category filtering
   if (category) {
     if (!validCategories.includes(category)) {
       errorExit(
-        `Invalid category '${category}'. Valid categories: ${validCategories.join(
-          ", "
-        )}`
+        `Invalid category '${category}'. Valid categories: ${validCategories.join(", ")}`
       );
     }
     faceSet = faceSet.filter((item) => item.categories.includes(category));

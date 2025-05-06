@@ -25,3 +25,5 @@ node src/lib/main.js --face 2 --category playful --seed 42
 - angry  
 - surprise  
 - playful  
+
+Note: Categories defined in a custom faces file (`--faces-file`) are also recognized for filtering.
