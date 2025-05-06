@@ -6,6 +6,7 @@ import { readFileSync } from "fs";
 import yaml from "js-yaml";
 import readline from "readline";
 
+// Built-in ASCII faces with categories
 export const builtInFaces = [
   { face: "( ͡° ͜ʖ ͡°)", categories: ["happy"] },
   { face: "( ಠ ͜ʖ ಠ)", categories: ["angry"] },
@@ -19,6 +20,7 @@ export const builtInFaces = [
   { face: "( ͡ಥ ͜ʖ ͡ಥ)", categories: ["sad"] }
 ];
 
+// Create a seeded random number generator
 function createSeededRandom(seedVal) {
   let state = seedVal % 2147483647;
   if (state <= 0) state += 2147483646;
@@ -30,6 +32,7 @@ function createSeededRandom(seedVal) {
   };
 }
 
+// Shuffle an array using a provided random function
 function shuffleArray(array, randomFn) {
   const arr = [...array];
   for (let i = arr.length - 1; i > 0; i--) {
@@ -39,11 +42,132 @@ function shuffleArray(array, randomFn) {
   return arr;
 }
 
-function errorExit(message) {
-  console.error(message);
-  throw new Error(message);
+// Internal: load face definitions from built-in and optional custom file
+function loadFaceSet({ facesFile, mergeFaces } = {}) {
+  let faceSet = builtInFaces.slice();
+  if (facesFile) {
+    let content;
+    try {
+      content = readFileSync(facesFile, "utf8");
+    } catch (err) {
+      throw new Error(`Cannot read file: ${facesFile}`);
+    }
+    let parsed;
+    try {
+      if (facesFile.endsWith(".yaml") || facesFile.endsWith(".yml")) {
+        parsed = yaml.load(content);
+      } else {
+        parsed = JSON.parse(content);
+      }
+    } catch (err) {
+      throw new Error(`Failed to parse faces file: ${err.message}`);
+    }
+    if (!parsed || !Array.isArray(parsed.faces)) {
+      throw new Error("Faces file must export an object with a 'faces' array");
+    }
+    const custom = parsed.faces.map((item) => {
+      if (!item.face || typeof item.face !== "string") {
+        throw new Error("Each face must have a non-empty 'face' string");
+      }
+      if (item.categories && !Array.isArray(item.categories)) {
+        throw new Error("'categories' must be an array of strings");
+      }
+      return {
+        face: item.face,
+        categories: Array.isArray(item.categories) ? item.categories : []
+      };
+    });
+    faceSet = mergeFaces ? faceSet.concat(custom) : custom;
+  }
+  return faceSet;
 }
 
+/**
+ * List all unique category names from the face library.
+ * @param {Object} options
+ * @param {string} [options.facesFile]
+ * @param {boolean} [options.mergeFaces]
+ * @returns {string[]} Array of category names
+ */
+export function listCategories(options = {}) {
+  const faceSet = loadFaceSet(options);
+  const categories = Array.from(
+    faceSet.reduce((acc, { categories }) => {
+      categories.forEach((cat) => acc.add(cat));
+      return acc;
+    }, new Set())
+  );
+  return categories;
+}
+
+/**
+ * List all face strings in the library, optionally filtered by category.
+ * @param {Object} options
+ * @param {string} [options.category]
+ * @param {string} [options.facesFile]
+ * @param {boolean} [options.mergeFaces]
+ * @returns {string[]} Array of face strings
+ */
+export function listFaces(options = {}) {
+  const { category } = options;
+  const faceSet = loadFaceSet(options);
+  const validCategories = listCategories(options);
+  let filtered = faceSet;
+  if (category) {
+    if (!validCategories.includes(category)) {
+      throw new Error(
+        `Invalid category '${category}'. Valid categories: ${validCategories.join(", ")}`
+      );
+    }
+    filtered = faceSet.filter((item) => item.categories.includes(category));
+    if (filtered.length === 0) {
+      throw new Error(
+        `No faces found for category '${category}'. Try a different category.`
+      );
+    }
+  }
+  return filtered.map((item) => item.face);
+}
+
+/**
+ * Generate a random selection of faces.
+ * @param {Object} options
+ * @param {number} [options.count=1]
+ * @param {number} [options.seed]
+ * @param {string} [options.category]
+ * @param {string} [options.facesFile]
+ * @param {boolean} [options.mergeFaces]
+ * @returns {string[]} Array of generated face strings
+ */
+export function generateFaces(options = {}) {
+  let { count = 1, seed, category, facesFile, mergeFaces } = options;
+  if (!Number.isInteger(count) || count < 1) {
+    throw new Error(`Invalid count: ${count}. Must be a positive integer.`);
+  }
+  if (seed !== undefined && (typeof seed !== "number" || isNaN(seed))) {
+    throw new Error(`Invalid seed value: ${seed}`);
+  }
+  const allFaces = listFaces({ category, facesFile, mergeFaces });
+  if (count > allFaces.length) {
+    throw new Error(
+      `Requested ${count} faces but only ${allFaces.length} available. Reduce count or change category.`
+    );
+  }
+  let randomFn = Math.random;
+  if (seed !== undefined) {
+    const gen = createSeededRandom(seed);
+    randomFn = () => gen.next();
+  }
+  return shuffleArray(allFaces, randomFn).slice(0, count);
+}
+
+// CLI error handler
+function errorExit(message) {
+  console.error(message);
+  process.exit(1);
+}
+
+// Print help for interactive mode
 function printInteractiveHelp() {
   console.log('Available commands:');
   console.log('  face [count] [--seed <seed>] [--category <category>]');
@@ -55,6 +179,7 @@ function printInteractiveHelp() {
   console.log('  exit, quit');
 }
 
+// Interactive REPL mode
 function interactiveMode() {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   let defaultCategory;
@@ -63,9 +188,7 @@ function interactiveMode() {
   printInteractiveHelp();
   rl.on('line', (line) => {
     const input = line.trim();
-    if (!input) {
-      return;
-    }
+    if (!input) return;
     const parts = input.split(' ').filter(Boolean);
     const cmd = parts[0];
     let args = parts.slice(1);
@@ -101,7 +224,9 @@ function interactiveMode() {
         if (args[0]) {
           facesFileSession = args[0];
           mergeFacesSession = args.includes('--merge');
-          console.log(`Custom faces ${mergeFacesSession ? 'merged from' : 'loaded from'} ${facesFileSession}`);
+          console.log(
+            `Custom faces ${mergeFacesSession ? 'merged from' : 'loaded from'} ${facesFileSession}`
+          );
         } else {
           console.log('Usage: custom <path> [--merge]');
         }
@@ -131,6 +256,10 @@ function interactiveMode() {
   });
 }
 
+/**
+ * Main CLI entry point parsing arguments and invoking API functions.
+ * @param {string[]} args
+ */
 export function main(args) {
   if (!Array.isArray(args)) {
     args = process.argv.slice(2);
@@ -148,7 +277,7 @@ export function main(args) {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === '--interactive') {
-      // ignore here
+      // handled later
     } else if (arg === '--face') {
       faceFlag = true;
       const next = args[i + 1];
@@ -157,23 +286,11 @@ export function main(args) {
         i++;
       }
     } else if (arg === '--seed') {
-      const next = args[++i];
-      if (next === undefined || isNaN(Number(next))) {
-        errorExit(`Invalid seed value: ${next}`);
-      }
-      seed = Number(next);
+      seed = Number(args[++i]);
     } else if (arg === '--category') {
-      const next = args[++i];
-      if (!next) {
-        errorExit("Missing category value");
-      }
-      category = next;
+      category = args[++i];
     } else if (arg === '--faces-file') {
-      const next = args[++i];
-      if (!next) {
-        errorExit("Missing faces file path");
-      }
-      facesFile = next;
+      facesFile = args[++i];
     } else if (arg === '--merge-faces') {
       mergeFaces = true;
     } else if (arg === '--list-faces') {
@@ -183,113 +300,39 @@ export function main(args) {
     }
   }
 
-  // If only interactive flag, start REPL
+  // Interactive mode
   if (args.includes('--interactive')) {
     interactiveMode();
     return;
   }
 
+  // No actionable flags
   if (!faceFlag && !listFacesFlag && !listCategoriesFlag) {
     console.log(`Run with: ${JSON.stringify(args)}`);
     return;
   }
 
-  // Load faces
-  let faceSet = builtInFaces.slice();
-  if (facesFile) {
-    let content;
-    try {
-      content = readFileSync(facesFile, 'utf8');
-    } catch (err) {
-      errorExit(`Cannot read file: ${facesFile}`);
+  try {
+    if (listCategoriesFlag) {
+      listCategories({ facesFile, mergeFaces }).forEach(console.log);
+      return;
     }
-    let parsed;
-    try {
-      if (facesFile.endsWith('.yaml') || facesFile.endsWith('.yml')) {
-        parsed = yaml.load(content);
-      } else {
-        parsed = JSON.parse(content);
-      }
-    } catch (err) {
-      errorExit(`Failed to parse faces file: ${err.message}`);
+    if (listFacesFlag) {
+      listFaces({ category, facesFile, mergeFaces }).forEach(console.log);
+      return;
     }
-    if (!parsed || !Array.isArray(parsed.faces)) {
-      errorExit("Faces file must export an object with a 'faces' array");
-    }
-    const custom = parsed.faces.map((item) => {
-      if (!item.face || typeof item.face !== 'string') {
-        errorExit("Each face must have a non-empty 'face' string");
-      }
-      if (item.categories && !Array.isArray(item.categories)) {
-        errorExit("'categories' must be an array of strings");
-      }
-      return {
-        face: item.face,
-        categories: Array.isArray(item.categories) ? item.categories : []
-      };
-    });
-    faceSet = mergeFaces ? faceSet.concat(custom) : custom;
-  }
-
-  // Dynamically compute valid categories from current face set
-  const validCategories = Array.from(
-    faceSet.reduce((acc, item) => {
-      item.categories.forEach((cat) => acc.add(cat));
-      return acc;
-    }, new Set())
-  );
-
-  // list-categories
-  if (listCategoriesFlag) {
-    validCategories.forEach((cat) => console.log(cat));
-    return;
-  }
-
-  // Category filtering
-  if (category) {
-    if (!validCategories.includes(category)) {
-      errorExit(
-        `Invalid category '${category}'. Valid categories: ${validCategories.join(', ')}`
+    if (faceFlag) {
+      generateFaces({ count, seed, category, facesFile, mergeFaces }).forEach(
+        console.log
       );
+      return;
     }
-    faceSet = faceSet.filter((item) => item.categories.includes(category));
-    if (faceSet.length === 0) {
-      errorExit(
-        `No faces found for category '${category}'. Try a different category.`
-      );
-    }
-  }
-
-  // list-faces
-  if (listFacesFlag) {
-    faceSet.map((item) => item.face).forEach((f) => console.log(f));
-    return;
-  }
-
-  if (!Number.isInteger(count) || count < 1) {
-    errorExit(`Invalid count: ${count}. Must be a positive integer.`);
-  }
-  if (count > faceSet.length) {
-    errorExit(
-      `Requested ${count} faces but only ${faceSet.length} available. Reduce count or change category.`
-    );
-  }
-
-  // Random selection
-  let randomFn = Math.random;
-  if (seed !== undefined) {
-    const gen = createSeededRandom(seed);
-    randomFn = () => gen.next();
-  }
-
-  const faces = faceSet.map((item) => item.face);
-  const selection = shuffleArray(faces, randomFn).slice(0, count);
-
-  for (const f of selection) {
-    console.log(f);
+  } catch (err) {
+    errorExit(err.message);
   }
 }
 
+// Execute when invoked directly
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const cliArgs = process.argv.slice(2);
   if (cliArgs.includes('--interactive')) {
