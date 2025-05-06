@@ -153,3 +153,13 @@ Detailed reference for Node.js HTTP server and client API, covering `http.create
 ## https://expressjs.com/en/4x/api.html
 Official API reference for Express.js, covering routing, middleware, response methods, error handling, and integration with Node.js HTTP server. Provides actionable patterns for structuring scalable APIs, request parameter parsing, and JSON responses. Latest version 4.x; maintained by the Express.js community.
 ## MIT License
+
+# cli-spinners
+## https://github.com/sindresorhus/cli-spinners#readme
+A curated collection of CLI spinner animations with JSON definitions for various loading and processing states. Useful for adding visual feedback during emoticon generation or asynchronous operations. Includes frame timing, color patterns, and fallbacks for terminal compatibility. Last updated November 2023; widely adopted in the Node.js community.
+## MIT License
+
+# figlet.js
+## https://github.com/patorjk/figlet.js#readme
+JavaScript implementation of FIGlet for generating ASCII-art fonts and text banners. Enables creation of stylized ASCII faces, titles, and dynamic layouts in the CLI. Supports custom font loading, synchronous and asynchronous rendering, and caching strategies. Last updated 2023; MIT License.
+## MIT License
