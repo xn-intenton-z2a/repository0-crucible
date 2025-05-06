@@ -56,15 +56,16 @@ function printInteractiveHelp() {
 }
 
 function interactiveMode() {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout, prompt: '> ' });
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   let defaultCategory;
   let facesFileSession;
   let mergeFacesSession = false;
   printInteractiveHelp();
-  rl.prompt();
   rl.on('line', (line) => {
     const input = line.trim();
-    if (!input) { rl.prompt(); return; }
+    if (!input) {
+      return;
+    }
     const parts = input.split(' ').filter(Boolean);
     const cmd = parts[0];
     let args = parts.slice(1);
@@ -76,7 +77,6 @@ function interactiveMode() {
         return;
       case 'help':
         printInteractiveHelp();
-        rl.prompt();
         return;
       case 'face':
         cliArgs.push('--face');
@@ -96,7 +96,6 @@ function interactiveMode() {
         } else {
           console.log('Usage: category <name>');
         }
-        rl.prompt();
         return;
       case 'custom':
         if (args[0]) {
@@ -106,11 +105,9 @@ function interactiveMode() {
         } else {
           console.log('Usage: custom <path> [--merge]');
         }
-        rl.prompt();
         return;
       default:
         console.log(`Unknown command: ${cmd}`);
-        rl.prompt();
         return;
     }
     // apply session defaults
@@ -128,7 +125,6 @@ function interactiveMode() {
     } catch (err) {
       console.error(err.message);
     }
-    rl.prompt();
   }).on('close', () => {
     console.log('Goodbye!');
     process.exit(0);
