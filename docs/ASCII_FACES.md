@@ -35,6 +35,22 @@ List available categories:
 node src/lib/main.js --list-categories
 ```
 
+## Color Output
+
+Enable colored output for `--face` results using the `--color` flag. By default, faces will be printed in green if no color name is provided.
+
+Supported colors: `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`.
+
+Examples:
+```bash
+# Default green color
+node src/lib/main.js --face --color
+
+# Red colored faces, count of 3
+node src/lib/main.js --face 3 --color red
+```
+Each face is wrapped in ANSI escape sequences: `\x1b[3Xm` to start the color and `\x1b[0m` to reset.
+
 ## Valid Categories
 
 - happy  
