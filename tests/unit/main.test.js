@@ -114,7 +114,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  try { unlinkSync(tempPath); } catch {}
+  try { unlinkSync(tempPath); } catch {};
 });
 
 describe("Custom Faces Integration", () => {
@@ -141,5 +141,59 @@ describe("Custom Faces Integration", () => {
     expect(() =>
       main(["--face", "--faces-file", tempPath, "--category", "foo"])
     ).toThrow(/Valid categories:.*excited/);
+  });
+});
+
+// Listing Flags Tests
+import { describe as describeList, test as testList, expect as expectList, beforeEach as beforeEachList, afterEach as afterEachList } from 'vitest';
+describeList("Listing Flags", () => {
+  let logs = [];
+  const originalLog = console.log;
+
+  beforeEachList(() => {
+    logs = [];
+    console.log = (...args) => { logs.push(args.join(" ")); };
+  });
+
+  afterEachList(() => {
+    console.log = originalLog;
+  });
+
+  testList("list-categories prints all built-in categories", () => {
+    main(["--list-categories"]);
+    const expected = Array.from(new Set(builtInFaces.flatMap(f => f.categories)));
+    expectList(logs).toEqual(expected);
+  });
+
+  testList("list-faces prints all built-in faces in order", () => {
+    main(["--list-faces"]);
+    const expected = builtInFaces.map(f => f.face);
+    expectList(logs).toEqual(expected);
+  });
+
+  testList("list-faces --category happy prints only happy faces", () => {
+    main(["--list-faces", "--category", "happy"]);
+    const expected = builtInFaces
+      .filter(f => f.categories.includes("happy"))
+      .map(f => f.face);
+    expectList(logs).toEqual(expected);
+  });
+
+  testList("list-faces with invalid category throws error", () => {
+    expect(() =>
+      main(["--list-faces", "--category", "foo"])
+    ).toThrow(/Invalid category 'foo'/);
+  });
+
+  testList("list-faces with custom faces file replaces built-in faces", () => {
+    main(["--list-faces", "--faces-file", tempPath]);
+    const customFaces = ["(^_^)", "(>_<)"];
+    expectList(logs).toEqual(customFaces);
+  });
+
+  testList("list-faces with custom faces and merge-faces appends to built-in faces", () => {
+    main(["--list-faces", "--faces-file", tempPath, "--merge-faces"]);
+    const expected = builtInFaces.map(f => f.face).concat(["(^_^)", "(>_<)"]);
+    expectList(logs).toEqual(expected);
   });
 });
