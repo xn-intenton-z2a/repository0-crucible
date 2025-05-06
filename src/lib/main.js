@@ -160,9 +160,11 @@ function printInteractiveHelp() {
   console.log('  list-faces [--category <category>]');
   console.log('  list-categories');
   console.log('  category <name>');
+  console.log('  seed <number>');
   console.log('  custom <path> [--merge]');
   console.log('  help');
   console.log('  exit, quit');
+  console.log('Note: Defaults for seed, category, and custom apply automatically to subsequent commands.');
 }
 
 // Serve mode handler
@@ -267,6 +269,7 @@ function serveMode(port) {
 function interactiveMode() {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   let defaultCategory;
+  let defaultSeed;
   let facesFileSession;
   let mergeFacesSession = false;
   printInteractiveHelp();
@@ -304,6 +307,14 @@ function interactiveMode() {
           console.log('Usage: category <name>');
         }
         return;
+      case 'seed':
+        if (args[0] && !isNaN(Number(args[0])) && Number.isInteger(Number(args[0]))) {
+          defaultSeed = Number(args[0]);
+          console.log(`Default seed set to ${defaultSeed}`);
+        } else {
+          console.log(`Invalid seed value: ${args[0]}`);
+        }
+        return;
       case 'custom':
         if (args[0]) {
           facesFileSession = args[0];
@@ -322,6 +333,9 @@ function interactiveMode() {
     // apply session defaults
     if (defaultCategory && !cliArgs.includes('--category')) {
       cliArgs.push('--category', defaultCategory);
+    }
+    if (defaultSeed !== undefined && !cliArgs.includes('--seed')) {
+      cliArgs.push('--seed', String(defaultSeed));
     }
     if (facesFileSession && !cliArgs.includes('--faces-file')) {
       cliArgs.push('--faces-file', facesFileSession);

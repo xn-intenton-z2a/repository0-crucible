@@ -2,7 +2,7 @@
 
 ## Summary
 
-Introduce a REPL-based interactive mode (`--interactive`) that allows users to generate ASCII faces and manage settings in a live session without restarting the CLI for each action.
+Introduce a REPL-based interactive mode (`--interactive`) that allows users to generate ASCII faces and manage settings in a live session without restarting the CLI for each action. Session defaults for seed, category, and custom faces persist across commands.
 
 ## Commands
 
@@ -18,6 +18,9 @@ Introduce a REPL-based interactive mode (`--interactive`) that allows users to g
 - `category <name>`  
   Set a session-wide default category for subsequent commands.
 
+- `seed <number>`  
+  Set a session-wide default seed for subsequent commands to produce reproducible faces.
+
 - `custom <path> [--merge]`  
   Load a JSON or YAML faces file. Use `--merge` to append to the built-in library.
 
@@ -26,6 +29,8 @@ Introduce a REPL-based interactive mode (`--interactive`) that allows users to g
 
 - `exit` or `quit`  
   Leave the interactive session and exit with code 0.
+
+**Note:** Defaults for seed, category, and custom apply automatically to subsequent commands.
 
 ## Usage
 
@@ -42,9 +47,15 @@ Available commands:
   list-faces [--category <category>]
   list-categories
   category <name>
+  seed <number>
   custom <path> [--merge]
   help
   exit, quit
+Note: Defaults for seed, category, and custom apply automatically to subsequent commands.
+> seed 123
+Default seed set to 123
+> face
+( ͡° ͜ʖ ͡°)
 > face
 ( ͡° ͜ʖ ͡°)
 > category sad
@@ -52,14 +63,11 @@ Default category set to sad
 > face 2
 ( ͡ಥ ͜ʖ ͡ಥ)
 ( ͡ಥ ͜ʖ ͡ಥ)
-> list-categories
-happy
-angry
-playful
-surprise
-sad
+> custom ./customFaces.json --merge
+Custom faces merged from ./customFaces.json
 > list-faces
-( ͡ಥ ͜ʖ ͡ಥ)
+( ͡° ͜ʖ ͡°)
+... (built-in and custom faces)
 > exit
 Goodbye!
 ```
