@@ -312,23 +312,19 @@ export function main(args) {
     return;
   }
 
-  try {
-    if (listCategoriesFlag) {
-      listCategories({ facesFile, mergeFaces }).forEach(console.log);
-      return;
-    }
-    if (listFacesFlag) {
-      listFaces({ category, facesFile, mergeFaces }).forEach(console.log);
-      return;
-    }
-    if (faceFlag) {
-      generateFaces({ count, seed, category, facesFile, mergeFaces }).forEach(
-        console.log
-      );
-      return;
-    }
-  } catch (err) {
-    errorExit(err.message);
+  if (listCategoriesFlag) {
+    listCategories({ facesFile, mergeFaces }).forEach(item => console.log(item));
+    return;
+  }
+  if (listFacesFlag) {
+    listFaces({ category, facesFile, mergeFaces }).forEach(item => console.log(item));
+    return;
+  }
+  if (faceFlag) {
+    generateFaces({ count, seed, category, facesFile, mergeFaces }).forEach(item =>
+      console.log(item)
+    );
+    return;
   }
 }
 
