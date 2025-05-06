@@ -1,39 +1,53 @@
 # Summary
-Allow users to supply an external file containing custom ASCII faces and optional category tags, enabling extension or replacement of the built-in face library.
+
+Allow users to supply external custom ASCII face lists via a unified --custom flag and optionally merge them with the built-in library.
 
 # Specification
-1. CLI Flag
-   - Add a new flag --faces-file <path> that accepts a filesystem path to a JSON or YAML file defining faces.
-   - Support file extensions .json, .yaml, and .yml.
-2. File Format
-   - The file must define a top-level object with a key faces whose value is an array of face definitions.
-   - Each face definition is an object with:
-     • face: a string containing the ASCII art
-     • categories: optional array of strings tagging emotions or contexts
+
+1. CLI Flags
+   - Introduce --custom <path> to specify a JSON or YAML file containing face definitions.
+   - Introduce --merge-custom as an optional flag to append custom faces instead of replacing the default set.
+
+2. Supported File Formats and Structure
+   - Accept files with extensions .json, .yaml, or .yml.
+   - File must contain a top-level object with key faces whose value is an array of definitions.
+   - Each definition is an object with:
+     • face: non-empty string of ASCII art
+     • categories: optional array of strings for emotion or context tags
+
 3. Behavior
-   - If --faces-file is provided without --merge-faces, the CLI uses the custom file as the sole source of faces.
-   - If the flag --merge-faces is also present, the custom faces are appended to the built-in library.
-   - Existing flags (--face, count, --seed, --category) apply to the resulting face set.
-   - On missing or unreadable file, invalid JSON/YAML, or malformed structure, print a descriptive error and exit with nonzero status.
-4. Validation
-   - Verify the file exists and is readable.
-   - Parse JSON or YAML using js-yaml for .yaml/.yml and JSON.parse for .json.
-   - Validate the presence of the faces array and that each entry has a non-empty face string.
-5. Integration
-   - In src/lib/main.js, import js-yaml, read and parse the file before selecting faces.
-   - Merge or override the default library based on flags.
+   - Without --merge-custom, the CLI uses only the custom file as the face library.
+   - With --merge-custom, the CLI appends custom faces to the built-in asciiFaces array.
+   - Existing flags --face, numeric count, --seed, and --category apply to the resulting face set.
+
+4. Validation and Error Handling
+   - Verify the file exists, is readable, and matches the required format.
+   - On missing file, unreadable path, parse errors, or missing faces array, log a descriptive error and exit with nonzero status.
+   - Validate each face entry has a non-empty face string; invalid entries produce an error listing offending indexes.
 
 # CLI Usage
-node src/lib/main.js --face --faces-file ./myfaces.yaml
-node src/lib/main.js --face 5 --seed 123 --faces-file ./custom.json --merge-faces
+
+node src/lib/main.js --face --custom ./myfaces.json
+node src/lib/main.js --face 5 --seed 123 --custom ./myfaces.yaml --merge-custom
+node src/lib/main.js --face --category happy --custom ./customFaces.yml
 
 # Testing
+
 - Add tests in tests/unit/main.test.js to verify:
-  • Loading a valid JSON file replaces the default set.
-  • Loading a valid YAML file merges when --merge-faces is passed.
-  • Invalid file path or parse errors produce an error exit.
-  • Category filtering works on custom sets.
+  • Providing --custom <valid JSON> replaces the default library.
+  • Providing --custom <valid YAML> and --merge-custom appends to built-in asciiFaces.
+  • Invalid file path or parsing errors produce descriptive errors with nonzero exit.
+  • Category filtering, count, and seed options operate on the custom or merged set.
 
 # Documentation
-- Update README.md under Features to describe --faces-file and --merge-faces flags.
-- Provide example JSON/YAML file structures and inline usage examples.
+
+- Update README.md under Features to describe --custom and --merge-custom flags.
+- Provide example JSON and YAML file formats and usage scenarios.
+
+# Implementation Details
+
+In src/lib/main.js:
+- Import js-yaml for YAML parsing and use JSON.parse for JSON.
+- Parse and validate the custom file before face selection.
+- Alias --custom to the existing file-reading logic and replace or merge with asciiFaces.
+- Maintain error handling consistency with other CLI flags.
