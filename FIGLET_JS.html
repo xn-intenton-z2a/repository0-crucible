@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="figlet_js" href="#figlet_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FIGLET_JS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation via npm; import figlet; asynchronous method figlet(text, options, callback) returns Promise<string>; synchronous method figlet.textSync(text, options); global defaults() for fontPath; preloadFonts() for browser sync; parseFont(name,data) to add fonts; metadata(name) returns Promise&lt;[options,header]&gt;; fonts() and fontsSync() list fonts; FigletOptions: font:string('Standard'), horizontalLayout:string('default'|'full'|'fitted'|'controlled smushing'|'universal smushing'), verticalLayout:same, width:number, whitespaceBreak:boolean; kerning modes explained; browser usage requires fetch shim; CLI via figlet-cli.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 API Methods
+3 Options Interface
+4 Kerning Modes
+5 Browser Integration
+6 Command Line Usage
+7 Release History</p>
+<p class="md-github">1 Installation
+npm install figlet</p>
+<p class="md-github">2 API Methods
+2.1 figlet(text: string, options?: string|FigletOptions, callback?: (err: Error|null, data: string) =&gt; void): Promise<string>
+2.2 figlet.text(text: string, options?: string|FigletOptions, callback?: (err: Error|null, data: string) =&gt; void): Promise<string>
+2.3 figlet.textSync(text: string, options?: string|FigletOptions): string
+2.4 figlet.defaults(settings: {fontPath?: string}): void
+2.5 figlet.preloadFonts(fonts: string[], callback: () =&gt; void): void
+2.6 figlet.parseFont(name: string, data: string): void
+2.7 figlet.metadata(name: string, callback: (err: Error|null, options: FigletOptions, headerComment: string) =&gt; void): Promise&lt;[FigletOptions, string]&gt;
+2.8 figlet.fonts(callback: (err: Error|null, fonts: string[]) =&gt; void): void
+2.9 figlet.fontsSync(): string[]</p>
+<p class="md-github">3 Options Interface
+font: String, default 'Standard'
+horizontalLayout: 'default'|'full'|'fitted'|'controlled smushing'|'universal smushing', default 'default'
+verticalLayout: same as horizontalLayout, default 'default'
+width: Number, default unlimited
+whitespaceBreak: Boolean, default false</p>
+<p class="md-github">4 Kerning Modes
+default, full, fitted, controlled smushing, universal smushing</p>
+<p class="md-github">5 Browser Integration
+Requires fetch API
+Use figlet.defaults({fontPath}) and figlet.preloadFonts([...], callback)
+Call figlet or figlet.textSync</p>
+<p class="md-github">6 Command Line Usage
+Install figlet-cli globally
+Usage: figlet -f <font> <text></p>
+<p class="md-github">7 Release History
+List of versions and dates</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Require and import patterns:</p>
+<ul class="md-github">
+<li class="md-github">Node.js: var figlet=require('figlet')</li>
+<li class="md-github">ES Modules: import figlet from 'figlet'</li>
+<li class="md-github">Webpack/React: import standard from 'figlet/importable-fonts/Standard.js'; figlet.parseFont('Standard',standard)</li>
+</ul>
+<p class="md-github">Implementation Steps:
+1 Install npm package
+2 Import figlet
+3 Call figlet methods with appropriate options
+4 For custom fonts, read .flf file and pass content to parseFont
+5 In browser, set fontPath and preload fonts before sync calls</p>
+<p class="md-github">Error Handling:</p>
+<ul class="md-github">
+<li class="md-github">All async methods accept callback(err,data). err is instance of Error</li>
+<li class="md-github">Promise rejections return Error</li>
+</ul>
+<p class="md-github">Loading Custom Font:
+const data=fs.readFileSync(path,'utf8');
+figlet.parseFont('myfont', data)</p>
+<p class="md-github">Metadata Retrieval:
+await figlet.metadata('Standard') returns [options,headerComment]</p>
+<p class="md-github">Fonts List:
+figlet.fonts(callback) -&gt; fonts:string[]
+figlet.fontsSync() -&gt; string[]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">figlet(text: string, options?: string|FigletOptions, callback?: (err:Error|null, data:string)=&gt;void): Promise<string></p>
+<ul class="md-github">
+<li class="md-github">text: input string</li>
+<li class="md-github">options: string|FigletOptions</li>
+<li class="md-github">callback: optional</li>
+</ul>
+<p class="md-github">figlet.text(text: string, options?: string|FigletOptions, callback?: (err:Error|null, data:string)=&gt;void): Promise<string></p>
+<ul class="md-github">
+<li class="md-github">identical to above</li>
+</ul>
+<p class="md-github">figlet.textSync(text: string, options?: string|FigletOptions): string</p>
+<p class="md-github">figlet.defaults(settings: { fontPath?: string }): void</p>
+<ul class="md-github">
+<li class="md-github">fontPath: directory for font files in browser</li>
+</ul>
+<p class="md-github">figlet.preloadFonts(fonts: string[], callback: () =&gt; void): void</p>
+<ul class="md-github">
+<li class="md-github">fonts: list of font names</li>
+<li class="md-github">callback: invoked when loaded</li>
+</ul>
+<p class="md-github">figlet.parseFont(name: string, data: string): void</p>
+<ul class="md-github">
+<li class="md-github">name: font identifier</li>
+<li class="md-github">data: FLF font file content as string</li>
+</ul>
+<p class="md-github">figlet.metadata(name: string, callback: (err:Error|null, options:FigletOptions, headerComment:string)=&gt;void): Promise&lt;[FigletOptions,string]&gt;</p>
+<p class="md-github">figlet.fonts(callback: (err:Error|null, fonts:string[])=&gt;void): void
+figlet.fontsSync(): string[]</p>
+<p class="md-github">Options:
+{
+font: 'Standard',
+horizontalLayout: 'default',
+verticalLayout: 'default',
+width: undefined,
+whitespaceBreak: false
+}</p>
+<p class="md-github">Best Practices:
+Use Promise API for async calls; handle rejections. Preload fonts in browser for synchronous rendering. Use parseFont to bundle custom fonts.</p>
+<p class="md-github">Troubleshooting:
+Command: npm ls figlet
+Expected: figlet@&gt;=1.0.0
+Error: ENOENT means missing installation</p>
+<p class="md-github">Browser: missing fetch polyfill triggers ReferenceError: fetch is not defined
+Solution: include fetch.min.js before figlet.js</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">install:npm install figlet; import:require('figlet')|import figlet; API:figlet(text,options?,cb?):Promise<string>;figlet.text(text,options?,cb?):Promise<string>;figlet.textSync(text,options?):string;figlet.defaults({fontPath});figlet.preloadFonts(fonts[],cb);figlet.parseFont(name,data);figlet.metadata(name,cb):Promise&lt;[options,header]&gt;;figlet.fonts(cb):string[];figlet.fontsSync():string[];Options:{font:'Standard';horizontalLayout:'default'|'full'|'fitted'|'controlled smushing'|'universal smushing';verticalLayout:same;width?:number;whitespaceBreak?:boolean};Kerning:modes;Browser:requires fetch; use defaults+preloadFonts;CLI:npm install -g figlet-cli;figlet -f <font> <text>;Errors:async methods reject Error; sync methods throw;custom fonts:parseFont;metadata returns [options,header]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 API Methods
+3 Options Interface
+4 Kerning Modes
+5 Browser Integration
+6 Command Line Usage
+7 Release History</p>
+<p class="md-github">1 Installation
+npm install figlet</p>
+<p class="md-github">2 API Methods
+2.1 figlet(text: string, options?: string|FigletOptions, callback?: (err: Error|null, data: string) =&gt; void): Promise<string>
+2.2 figlet.text(text: string, options?: string|FigletOptions, callback?: (err: Error|null, data: string) =&gt; void): Promise<string>
+2.3 figlet.textSync(text: string, options?: string|FigletOptions): string
+2.4 figlet.defaults(settings: {fontPath?: string}): void
+2.5 figlet.preloadFonts(fonts: string[], callback: () =&gt; void): void
+2.6 figlet.parseFont(name: string, data: string): void
+2.7 figlet.metadata(name: string, callback: (err: Error|null, options: FigletOptions, headerComment: string) =&gt; void): Promise&lt;[FigletOptions, string]&gt;
+2.8 figlet.fonts(callback: (err: Error|null, fonts: string[]) =&gt; void): void
+2.9 figlet.fontsSync(): string[]</p>
+<p class="md-github">3 Options Interface
+font: String, default 'Standard'
+horizontalLayout: 'default'|'full'|'fitted'|'controlled smushing'|'universal smushing', default 'default'
+verticalLayout: same as horizontalLayout, default 'default'
+width: Number, default unlimited
+whitespaceBreak: Boolean, default false</p>
+<p class="md-github">4 Kerning Modes
+default, full, fitted, controlled smushing, universal smushing</p>
+<p class="md-github">5 Browser Integration
+Requires fetch API
+Use figlet.defaults({fontPath}) and figlet.preloadFonts([...], callback)
+Call figlet or figlet.textSync</p>
+<p class="md-github">6 Command Line Usage
+Install figlet-cli globally
+Usage: figlet -f <font> <text></p>
+<p class="md-github">7 Release History
+List of versions and dates</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">figlet.js
+https://github.com/patorjk/figlet.js</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-figlet_js" href="#digest-of-figlet_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of FIGLET_JS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="figletjs" href="#figletjs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FIGLET.JS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="quick-start---nodejs" href="#quick-start---nodejs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Quick Start - Node.js</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h3>
+<pre class="md-github"><code class="md-github language-bash">npm install figlet
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="simple-usage" href="#simple-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Simple Usage</h3>
+<pre class="md-github"><code class="md-github language-js">var figlet = require(&quot;figlet&quot;);
+figlet(&quot;Hello World!!&quot;, function(err, data) {
+  if (err) {
+    console.log(&quot;Something went wrong...&quot;);
+    console.dir(err);
+    return;
+  }
+  console.log(data);
+});
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="core-api-methods" href="#core-api-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core API Methods</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="figlettext-string-options-stringfigletoptions-callback-err-errornull-data-string--void-promisestring" href="#figlettext-string-options-stringfigletoptions-callback-err-errornull-data-string--void-promisestring"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>figlet(text: string, options?: string|FigletOptions, callback?: (err: Error|null, data: string) =&gt; void): Promise<string></h3>
+<p class="md-github">Shorthand for figlet.text.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="figlettexttext-string-options-stringfigletoptions-callback-err-errornull-data-string--void-promisestring" href="#figlettexttext-string-options-stringfigletoptions-callback-err-errornull-data-string--void-promisestring"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>figlet.text(text: string, options?: string|FigletOptions, callback?: (err: Error|null, data: string) =&gt; void): Promise<string></h3>
+<p class="md-github">Generate ASCII art from text.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="figlettextsynctext-string-options-stringfigletoptions-string" href="#figlettextsynctext-string-options-stringfigletoptions-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>figlet.textSync(text: string, options?: string|FigletOptions): string</h3>
+<p class="md-github">Synchronous version.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="figletdefaultssettings-" href="#figletdefaultssettings-"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>figlet.defaults(settings: {</h3>
+<p class="md-github">fontPath?: string;
+}): void
+Set global default fontPath.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="figletpreloadfontsfonts-string-callback---void-void" href="#figletpreloadfontsfonts-string-callback---void-void"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>figlet.preloadFonts(fonts: string[], callback: () =&gt; void): void</h3>
+<p class="md-github">Preload fonts in browser for synchronous textSync.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="figletparsefontname-string-data-string-void" href="#figletparsefontname-string-data-string-void"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>figlet.parseFont(name: string, data: string): void</h3>
+<p class="md-github">Load custom FLF font data under given name.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="figletmetadataname-string-callback-err-errornull-options-figletoptions-headercomment-string--void-promisefigletoptions-string" href="#figletmetadataname-string-callback-err-errornull-options-figletoptions-headercomment-string--void-promisefigletoptions-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>figlet.metadata(name: string, callback: (err: Error|null, options: FigletOptions, headerComment: string) =&gt; void): Promise&lt;[FigletOptions, string]&gt;</h3>
+<p class="md-github">Retrieve font default options and header comment.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="figletfontscallback-err-errornull-fonts-string--void-void" href="#figletfontscallback-err-errornull-fonts-string--void-void"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>figlet.fonts(callback: (err: Error|null, fonts: string[]) =&gt; void): void</h3>
+<p class="md-github">List available fonts (Node.js only).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="figletfontssync-string" href="#figletfontssync-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>figlet.fontsSync(): string[]</h3>
+<p class="md-github">Synchronous version of fonts.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="options-interface" href="#options-interface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options Interface</h2>
+<pre class="md-github"><code class="md-github language-ts">interface FigletOptions {
+  font?: string // default: 'Standard'
+  horizontalLayout?: 'default'|'full'|'fitted'|'controlled smushing'|'universal smushing' // default: 'default'
+  verticalLayout?: 'default'|'full'|'fitted'|'controlled smushing'|'universal smushing' // default: 'default'
+  width?: number // default: no limit
+  whitespaceBreak?: boolean // default: false
+}
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="understanding-kerning" href="#understanding-kerning"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Understanding Kerning</h2>
+<p class="md-github">Five layout modes:</p>
+<ul class="md-github">
+<li class="md-github">&quot;default&quot;: font designer kerning</li>
+<li class="md-github">&quot;full&quot;: full spacing</li>
+<li class="md-github">&quot;fitted&quot;: letters nearly touch</li>
+<li class="md-github">&quot;controlled smushing&quot;: common smushing</li>
+<li class="md-github">&quot;universal smushing&quot;: aggressive smushing</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="browser-usage" href="#browser-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Browser Usage</h2>
+<p class="md-github">Include fetch shim and figlet.js, then:</p>
+<pre class="md-github"><code class="md-github language-html">&lt;script src=&quot;fetch.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;figlet.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  figlet(&quot;text&quot;,&quot;Standard&quot;,function(err,text){ ... });
+&lt;/script&gt;
+</code></pre>
+<p class="md-github">Preload &amp; defaults for sync:</p>
+<pre class="md-github"><code class="md-github language-js">figlet.defaults({ fontPath: &quot;assets/fonts&quot; });
+figlet.preloadFonts([&quot;Standard&quot;,&quot;Ghost&quot;], ready);
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="command-line" href="#command-line"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Command Line</h2>
+<p class="md-github">Install globally:</p>
+<pre class="md-github"><code class="md-github language-bash">npm install -g figlet-cli
+</code></pre>
+<p class="md-github">Usage:</p>
+<pre class="md-github"><code class="md-github language-bash">figlet -f &quot;Dancing Font&quot; &quot;Hi&quot;
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="release-history" href="#release-history"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Release History</h2>
+<ul class="md-github">
+<li class="md-github">v1.8.1 (2025.04.11): Added miniwi font</li>
+<li class="md-github">v1.8.0 (2024.10.08): Promises support for loadFont, preloadedFonts, metadata; added 5 fonts</li>
+<li class="md-github">v1.7.0 (2023.10.01): Promises support for text</li>
+<li class="md-github">...</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: figlet.js</li>
+<li class="md-github">URL: https://github.com/patorjk/figlet.js</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-06T06:32:17.918Z</li>
+<li class="md-github">Data Size: 561695 bytes</li>
+<li class="md-github">Links Found: 4536</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-06</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-06T10:40:51.240Z</p>
+  </footer>
+</body>
+</html>
