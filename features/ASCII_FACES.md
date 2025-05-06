@@ -1,38 +1,21 @@
 # Summary
-
-This feature enables the CLI application to output random ASCII facial expressions as emotional feedback for an AI. It introduces a built-in library of ASCII faces and a new flag to display them on demand.
+Add support for categorical filtering of ASCII faces to target specific emotional feedback scenarios.
 
 # Specification
-
-The CLI will support a new flag `--face` that when provided prints one or more random ASCII faces to the console. An optional numeric argument after the flag defines how many unique faces to output in sequence. A `--seed` option allows callers to provide a numeric seed for the random generator so the output sequence can be repeatable.
-
-An internal array of at least ten distinct ASCII art facial expressions will be defined in src/lib/main.js. When `--face` is invoked without arguments, one random face is printed. When given a count, that many unique faces are printed in separate lines. When a `--seed` flag is provided, the generation uses a simple pseudo random algorithm seeded by the given value.
+The CLI will support a new flag --category that takes a category name argument. When used with the face output mode, only faces tagged with the specified category are considered. Recognized categories include happy, sad, angry, surprise, and playful. If the specified category is not recognized, the CLI prints an error with a list of valid categories and exits with a nonzero status. Category filtering works alongside the existing --face flag, numeric count argument, and --seed option. After filtering, the random selection logic picks faces from the filtered subset. If the requested count exceeds the number of available faces in the chosen category, the CLI returns an error and suggests reducing the count or choosing a different category.
 
 # CLI Usage
-
-node src/lib/main.js --face
-node src/lib/main.js --face 3
-node src/lib/main.js --face --seed 12345
+node src/lib/main.js --face --category happy
+node src/lib/main.js --face 3 --category sad --seed 42
 
 # Testing
-
 Update tests in tests/unit/main.test.js to:
-- Verify that calling main with `["--face"]` logs a string matching one of the predefined faces.
-- Verify that a request for multiple faces logs the correct number of distinct lines, each a valid face.
-- Verify that using the same seed produces the same sequence of faces across calls.
+- Verify that invoking main with ["--face", "--category", "happy"] logs only faces from the happy category.
+- Verify that an invalid category returns an error listing valid categories and exits nonzero.
+- Verify that combining --category, count, and --seed yields a repeatable sequence within that category.
 
 # Documentation
-
-Update README.md to:
-- Add a bullet under Features describing the new ASCII face output capability.
-- Provide example invocations for `--face`, count and `--seed` without code fences.
+Update README.md under Features to describe the --category flag and valid categories. Provide inline usage examples for category filtering alongside faces.
 
 # Implementation Details
-
-Modify src/lib/main.js to:
-- Define the array of ASCII faces.
-- Parse arguments for `--face`, optional count, and `--seed`.
-- Implement or import a minimal seeded random generator for reproducible output.
-- Loop to select and print faces according to count and seed.
-
-No external dependencies beyond existing runtime libraries are required for this feature.
+In src/lib/main.js: Maintain a mapping of categories to arrays of ASCII faces. Extend argument parsing to detect --category and validate it against mapping keys. Filter the face library before random selection. Implement error handling for unrecognized categories and count overflows.
