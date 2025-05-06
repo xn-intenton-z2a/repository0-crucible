@@ -141,6 +141,7 @@ export function generateFaces(options = {}) {
   }
   let randomFn = Math.random;
   if (seed !== undefined) {
+
     const gen = createSeededRandom(seed);
     randomFn = () => gen.next();
   }
@@ -181,6 +182,74 @@ function serveMode(port) {
       res.end(JSON.stringify(body));
     };
     try {
+      // OpenAPI specification endpoint
+      if (pathname === '/openapi.json') {
+        // load version
+        let pkg;
+        try {
+          pkg = JSON.parse(
+            readFileSync(new URL('../../package.json', import.meta.url), 'utf8')
+          );
+        } catch {
+          pkg = { version: null, description: null };
+        }
+        const spec = {
+          openapi: '3.0.3',
+          info: {
+            title: pkg.name || 'ASCII Face API',
+            version: pkg.version,
+            description: pkg.description || ''
+          },
+          servers: [{ url: `http://localhost:${port}` }],
+          paths: {
+            '/face': {
+              get: {
+                summary: 'Generate random faces',
+                parameters: [
+                  { name: 'count', in: 'query', schema: { type: 'integer', minimum: 1 } },
+                  { name: 'seed', in: 'query', schema: { type: 'integer', minimum: 0 } },
+                  { name: 'category', in: 'query', schema: { type: 'string' } },
+                  { name: 'facesFile', in: 'query', schema: { type: 'string' } },
+                  { name: 'mergeFaces', in: 'query', schema: { type: 'boolean' } }
+                ],
+                responses: {
+                  '200': { description: 'Successful response', content: { 'application/json': { schema: { type: 'object', properties: { faces: { type: 'array', items: { type: 'string' } } } } } } },
+                  '400': { description: 'Bad request', content: { 'application/json': { schema: { type: 'object', properties: { error: { type: 'string' } } } } } }
+                }
+              }
+            },
+            '/list-faces': {
+              get: {
+                summary: 'List all faces',
+                parameters: [
+                  { name: 'category', in: 'query', schema: { type: 'string' } },
+                  { name: 'facesFile', in: 'query', schema: { type: 'string' } },
+                  { name: 'mergeFaces', in: 'query', schema: { type: 'boolean' } }
+                ],
+                responses: {
+                  '200': { description: 'Successful response', content: { 'application/json': { schema: { type: 'object', properties: { faces: { type: 'array', items: { type: 'string' } } } } } } },
+                  '400': { description: 'Bad request', content: { 'application/json': { schema: { type: 'object', properties: { error: { type: 'string' } } } } } }
+                }
+              }
+            },
+            '/list-categories': {
+              get: {
+                summary: 'List all categories',
+                parameters: [
+                  { name: 'facesFile', in: 'query', schema: { type: 'string' } },
+                  { name: 'mergeFaces', in: 'query', schema: { type: 'boolean' } }
+                ],
+                responses: {
+                  '200': { description: 'Successful response', content: { 'application/json': { schema: { type: 'object', properties: { categories: { type: 'array', items: { type: 'string' } } } } } } }
+                }
+              }
+            },
+            '/diagnostics': { /* existing spec for diagnostics */ get: { summary: 'Diagnostics info', parameters: [ { name: 'facesFile', in: 'query', schema: { type: 'string' } }, { name: 'mergeFaces', in: 'query', schema: { type: 'boolean' } }, { name: 'seed', in: 'query', schema: { type: 'integer', minimum:0 } } ], responses: { '200': { description:'Successful response', content:{ 'application/json':{ schema:{ type:'object' } } } }, '400':{ description:'Error response', content:{ 'application/json':{ schema:{ type:'object', properties:{ error:{ type:'string' } } } } } } } } },
+            '/openapi.json': { get: { summary: 'OpenAPI specification', responses: { '200': { description: 'OpenAPI JSON', content: { 'application/json': { schema: { type: 'object' } } } } } } }
+          }
+        };
+        return sendJSON(200, spec);
+      }
       if (pathname === '/face') {
         const count = params.has('count') ? Number(params.get('count')) : 1;
         if (!Number.isInteger(count) || count < 1) throw new Error('Invalid count');

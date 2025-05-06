@@ -71,7 +71,6 @@ Query parameters: `facesFile`, `mergeFaces`.
 Query parameters: `facesFile`, `mergeFaces`, `seed`.
 
 **Success** (200): JSON object with:
-
 - `nodeVersion`: Node.js version
 - `cliVersion`: CLI version from package.json
 - `builtInFacesCount`: number of built-in faces
@@ -86,6 +85,21 @@ On file errors (400), the response includes an `error` field:
 ```json
 { "error": "Cannot read file: ..." }
 ```
+
+### GET /openapi.json
+
+Returns an OpenAPI 3.0.3 specification for the API.
+
+**Usage Example:**
+```bash
+curl "http://localhost:3000/openapi.json"
+```
+
+**Success** (200): JSON object with keys:
+- `openapi`: "3.0.3"
+- `info`: contains `title`, `version`, `description`
+- `servers`: list of server URLs
+- `paths`: definitions for `/face`, `/list-faces`, `/list-categories`, `/diagnostics`, and `/openapi.json`
 
 ### All Other Routes
 
