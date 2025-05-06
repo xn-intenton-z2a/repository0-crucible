@@ -1,5 +1,11 @@
-import { describe, test, expect, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import { main, builtInFaces } from "@src/lib/main.js";
+import { writeFileSync, unlinkSync } from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const tempPath = path.join(__dirname, "temp_faces.json");
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -50,6 +56,9 @@ describe("Main Output", () => {
     main(["--face", "--seed", "42"]);
     const firstRun = [...logs];
     logs = [];
+    console.log = (...args) => {
+      logs.push(args.join(" "));
+    };
     main(["--face", "--seed", "42"]);
     expect(logs).toEqual(firstRun);
   });
@@ -90,5 +99,47 @@ describe("Category Filtering", () => {
     expect(() =>
       main(["--face", "2", "--category", "sad"])
     ).toThrow(/only \d+ available/);
+  });
+});
+
+// Tests for custom faces and dynamic category recognition
+beforeAll(() => {
+  const custom = {
+    faces: [
+      { face: "(^_^)", categories: ["excited"] },
+      { face: "(>_<)", categories: ["excited", "angry"] }
+    ]
+  };
+  writeFileSync(tempPath, JSON.stringify(custom));
+});
+
+afterAll(() => {
+  try { unlinkSync(tempPath); } catch {}
+});
+
+describe("Custom Faces Integration", () => {
+  let logs = [];
+  const originalLog = console.log;
+
+  beforeEach(() => {
+    logs = [];
+    console.log = (...args) => { logs.push(args.join(" ")); };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+  });
+
+  test("should recognize custom category 'excited' after loading custom file", () => {
+    main(["--face", "--faces-file", tempPath, "--category", "excited"]);
+    expect(logs).toHaveLength(1);
+    const possible = ["(^_^)", "(>_<)"];
+    expect(possible).toContain(logs[0]);
+  });
+
+  test("invalid custom category should report custom categories in error", () => {
+    expect(() =>
+      main(["--face", "--faces-file", tempPath, "--category", "foo"])
+    ).toThrow(/Valid categories:.*excited/);
   });
 });

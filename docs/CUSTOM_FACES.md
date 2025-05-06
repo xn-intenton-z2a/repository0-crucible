@@ -52,6 +52,7 @@ node src/lib/main.js --face 5 --seed 123 --faces-file ./customFaces.yaml --merge
 - Without `--merge-faces`, the provided file replaces the built-in face library.
 - With `--merge-faces`, custom faces are appended to the built-in library.
 - Existing flags (`--face`, count, `--seed`, `--category`) apply to the resulting set.
+- Custom categories defined in the file become available for use with the `--category` flag.
 
 ## Error Handling
 
