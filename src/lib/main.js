@@ -5,6 +5,8 @@ import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
 import yaml from "js-yaml";
 import readline from "readline";
+import http from "http";
+import { URL } from "url";
 
 // Built-in ASCII faces with categories
 export const builtInFaces = [
@@ -84,10 +86,6 @@ function loadFaceSet({ facesFile, mergeFaces } = {}) {
 
 /**
  * List all unique category names from the face library.
- * @param {Object} options
- * @param {string} [options.facesFile]
- * @param {boolean} [options.mergeFaces]
- * @returns {string[]} Array of category names
  */
 export function listCategories(options = {}) {
   const faceSet = loadFaceSet(options);
@@ -102,11 +100,6 @@ export function listCategories(options = {}) {
 
 /**
  * List all face strings in the library, optionally filtered by category.
- * @param {Object} options
- * @param {string} [options.category]
- * @param {string} [options.facesFile]
- * @param {boolean} [options.mergeFaces]
- * @returns {string[]} Array of face strings
  */
 export function listFaces(options = {}) {
   const { category } = options;
@@ -131,13 +124,6 @@ export function listFaces(options = {}) {
 
 /**
  * Generate a random selection of faces.
- * @param {Object} options
- * @param {number} [options.count=1]
- * @param {number} [options.seed]
- * @param {string} [options.category]
- * @param {string} [options.facesFile]
- * @param {boolean} [options.mergeFaces]
- * @returns {string[]} Array of generated face strings
  */
 export function generateFaces(options = {}) {
   let { count = 1, seed, category, facesFile, mergeFaces } = options;
@@ -177,6 +163,104 @@ function printInteractiveHelp() {
   console.log('  custom <path> [--merge]');
   console.log('  help');
   console.log('  exit, quit');
+}
+
+// Serve mode handler
+function serveMode(port) {
+  const server = http.createServer((req, res) => {
+    const reqUrl = new URL(req.url || '/', `http://localhost`);
+    const pathname = reqUrl.pathname;
+    const params = reqUrl.searchParams;
+    const sendJSON = (status, body) => {
+      res.writeHead(status, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      });
+      res.end(JSON.stringify(body));
+    };
+    try {
+      if (pathname === '/face') {
+        const count = params.has('count') ? Number(params.get('count')) : 1;
+        if (!Number.isInteger(count) || count < 1) throw new Error('Invalid count');
+        let seed;
+        if (params.has('seed')) {
+          seed = Number(params.get('seed'));
+          if (!Number.isInteger(seed) || seed < 0) throw new Error('Invalid seed');
+        }
+        const category = params.get('category') || undefined;
+        const facesFile = params.get('facesFile') || undefined;
+        const mergeFaces = params.has('mergeFaces') && params.get('mergeFaces') === 'true';
+        const faces = generateFaces({ count, seed, category, facesFile, mergeFaces });
+        return sendJSON(200, { faces });
+      }
+      if (pathname === '/list-faces') {
+        const category = params.get('category') || undefined;
+        const facesFile = params.get('facesFile') || undefined;
+        const mergeFaces = params.has('mergeFaces') && params.get('mergeFaces') === 'true';
+        const faces = listFaces({ category, facesFile, mergeFaces });
+        return sendJSON(200, { faces });
+      }
+      if (pathname === '/list-categories') {
+        const facesFile = params.get('facesFile') || undefined;
+        const mergeFaces = params.has('mergeFaces') && params.get('mergeFaces') === 'true';
+        const categories = listCategories({ facesFile, mergeFaces });
+        return sendJSON(200, { categories });
+      }
+      if (pathname === '/diagnostics') {
+        const facesFile = params.get('facesFile') || undefined;
+        const mergeFaces = params.has('mergeFaces') && params.get('mergeFaces') === 'true';
+        let seedVal;
+        if (params.has('seed')) {
+          seedVal = Number(params.get('seed'));
+          if (!Number.isInteger(seedVal) || seedVal < 0) throw new Error('Invalid seed');
+        }
+        // load version
+        let cliVersion = null;
+        try {
+          const pkg = JSON.parse(
+            readFileSync(new URL('../../package.json', import.meta.url), 'utf8')
+          );
+          cliVersion = pkg.version;
+        } catch {}
+        const diagnostics = {
+          nodeVersion: process.version,
+          cliVersion,
+          builtInFacesCount: builtInFaces.length,
+          categories: listCategories({ facesFile, mergeFaces }).sort(),
+          customLoaded: !!facesFile,
+          customFacesCount: 0,
+          mergeMode: facesFile ? (mergeFaces ? 'merge' : 'replace') : 'none',
+          seed: seedVal !== undefined ? seedVal : null,
+          timestamp: new Date().toISOString()
+        };
+        try {
+          const fullSet = loadFaceSet({ facesFile, mergeFaces });
+          if (facesFile) {
+            diagnostics.customFacesCount = mergeFaces
+              ? fullSet.length - builtInFaces.length
+              : fullSet.length;
+          }
+        } catch (err) {
+          diagnostics.error = err.message;
+          return sendJSON(400, diagnostics);
+        }
+        return sendJSON(200, diagnostics);
+      }
+      return sendJSON(404, { error: 'Not Found' });
+    } catch (err) {
+      return sendJSON(400, { error: err.message });
+    }
+  });
+  server.listen(port, () => {
+    const addr = server.address();
+    const actual = typeof addr === 'object' && addr ? addr.port : port;
+    console.log(`Listening on http://localhost:${actual}`);
+  });
+  const shutdown = () => {
+    server.close(() => process.exit(0));
+  };
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
 }
 
 // Interactive REPL mode
@@ -258,11 +342,29 @@ function interactiveMode() {
 
 /**
  * Main CLI entry point parsing arguments and invoking API functions.
- * @param {string[]} args
  */
 export function main(args) {
   if (!Array.isArray(args)) {
     args = process.argv.slice(2);
+  }
+
+  // Serve mode detection
+  const serveIndex = args.indexOf('--serve');
+  const serveFlag = serveIndex !== -1;
+  let port = 3000;
+  if (serveFlag) {
+    const portIndex = args.indexOf('--port');
+    if (portIndex !== -1 && args[portIndex + 1] && !args[portIndex + 1].startsWith('--')) {
+      const p = Number(args[portIndex + 1]);
+      if (!Number.isInteger(p) || p < 0) errorExit(`Invalid port: ${args[portIndex + 1]}`);
+      port = p;
+    } else if (process.env.PORT) {
+      const p2 = Number(process.env.PORT);
+      if (!Number.isInteger(p2) || p2 < 0) errorExit(`Invalid port: ${process.env.PORT}`);
+      port = p2;
+    }
+    serveMode(port);
+    return;
   }
 
   let faceFlag = false;
@@ -313,15 +415,17 @@ export function main(args) {
   }
 
   if (listCategoriesFlag) {
-    listCategories({ facesFile, mergeFaces }).forEach(item => console.log(item));
+    listCategories({ facesFile, mergeFaces }).forEach((item) => console.log(item));
     return;
   }
   if (listFacesFlag) {
-    listFaces({ category, facesFile, mergeFaces }).forEach(item => console.log(item));
+    listFaces({ category, facesFile, mergeFaces }).forEach((item) =>
+      console.log(item)
+    );
     return;
   }
   if (faceFlag) {
-    generateFaces({ count, seed, category, facesFile, mergeFaces }).forEach(item =>
+    generateFaces({ count, seed, category, facesFile, mergeFaces }).forEach((item) =>
       console.log(item)
     );
     return;
@@ -333,6 +437,15 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const cliArgs = process.argv.slice(2);
   if (cliArgs.includes('--interactive')) {
     interactiveMode();
+  } else if (cliArgs.includes('--serve')) {
+    const portArgIndex = cliArgs.indexOf('--port');
+    let port = 3000;
+    if (portArgIndex !== -1) {
+      port = Number(cliArgs[portArgIndex + 1]);
+    } else if (process.env.PORT) {
+      port = Number(process.env.PORT);
+    }
+    serveMode(port);
   } else {
     try {
       main(cliArgs);
