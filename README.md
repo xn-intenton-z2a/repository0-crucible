@@ -1,17 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
-
-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
-
-## Repository Template
-
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+`repository0-crucible` is a simple CLI tool that outputs random ASCII art facial expressions for emotional feedback.
 
 ## Installation
 
@@ -23,27 +12,36 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+- **--face**        Display a random ASCII face
+- **--config <path>**  Load additional faces from a JSON or YAML config file
+- **--help**        Show help message
 
 ## Usage
 
-To run the CLI tool and see help instructions:
+### Show help
 
 ```bash
 node src/lib/main.js --help
 ```
 
-### Example Commands
+### Display a random face
 
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
+```bash
+node src/lib/main.js --face
+# Outputs a random face, e.g. (^_^)
+```
 
+### Load custom faces
 
-## Incremental Changes Plan
+```bash
+node src/lib/main.js --face --config path/to/faces.yaml
+# Outputs a random face from built-in and custom lists
+```
 
-TODO: Add forthcoming changes here.
+## NPM Scripts
+
+- **start**: `npm run start` (invokes `node src/lib/main.js`)
+- **test**: `npm test` (runs unit tests via Vitest)
 
 ## Contributing
 
@@ -51,4 +49,4 @@ We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## License
 
-Released under the MIT License (see [LICENSE](./LICENSE)).
+Released under the MIT License (see [LICENSE](./LICENSE)) .
