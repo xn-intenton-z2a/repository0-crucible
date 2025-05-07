@@ -21,6 +21,15 @@ export const asciiFaces = [
 ];
 
 /**
+ * Predefined themed sets of ASCII faces.
+ */
+export const faceThemes = {
+  happy: ["(^_^)", "(^3^)"] ,
+  sad: ["(T_T)", "(o_O)"],
+  surprised: ["(*_*)", ">_<"]
+};
+
+/**
  * Loads custom faces from a YAML or JSON configuration file.
  * @param {string} configPath - Path to the config file.
  * @returns {string[]} Array of face strings.
@@ -71,23 +80,34 @@ export function getRandomFace(faces = asciiFaces) {
  * @param {string[]} args - Command-line arguments.
  */
 export function main(args = process.argv.slice(2)) {
+  const themeNames = Object.keys(faceThemes).join(", ");
   const helpMessage =
-    "Usage: node src/lib/main.js [--face] [--count <n>] [--config <path>] [--help]\n" +
+    "Usage: node src/lib/main.js [--face] [--count <n>] [--config <path>] [--theme <theme>] [--help]\n" +
     "Options:\n" +
-    "  --face            Display random ASCII face(s)\n" +
-    "  --count, -c <n>   Number of faces to output (default: 1)\n" +
-    "  --config <path>   Load additional faces from config file (YAML or JSON)\n" +
-    "  --help            Show this help message";
+    "  --face              Display random ASCII face(s)\n" +
+    "  --count, -c <n>     Number of faces to output (default: 1)\n" +
+    "  --config <path>     Load additional faces from config file (YAML or JSON)\n" +
+    "  --theme, -t <theme> Predefined face theme (" + themeNames + ")\n" +
+    "  --help              Show this help message";
 
   const flags = minimist(args, {
     boolean: ["face", "help"],
-    string: ["config"],
-    alias: { h: "help", c: "count" },
+    string: ["config", "theme"],
+    alias: { h: "help", c: "count", t: "theme" },
     default: { count: 1 }
   });
 
   // Validate unknown flags
-  const knownFlags = ["--face", "--count", "--config", "--help", "-h", "-c"];
+  const knownFlags = [
+    "--face",
+    "--count",
+    "--config",
+    "--theme",
+    "--help",
+    "-h",
+    "-c",
+    "-t"
+  ];
   const unknownFlags = args.filter(
     (arg) => (arg.startsWith("--") || arg.startsWith("-")) && !knownFlags.includes(arg)
   );
@@ -112,7 +132,18 @@ export function main(args = process.argv.slice(2)) {
     return;
   }
 
-  let faces = asciiFaces;
+  // Theme validation
+  if (flags.theme) {
+    if (!faceThemes[flags.theme]) {
+      console.log(helpMessage);
+      return;
+    }
+  }
+
+  // Prepare faces list based on theme or default
+  let faces = flags.theme ? [...faceThemes[flags.theme]] : [...asciiFaces];
+
+  // Append custom faces if provided
   if (flags.config) {
     try {
       const customFaces = loadFaces(flags.config);
