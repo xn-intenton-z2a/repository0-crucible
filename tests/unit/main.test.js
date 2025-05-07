@@ -91,12 +91,14 @@ describe("HTTP Server Mode", () => {
   let server;
   let port;
 
-  beforeAll((done) => {
+  beforeAll(() => {
     server = main(["--serve", "--port", "0"]);
-    server.on("listening", () => {
-      const addr = server.address();
-      port = addr.port;
-      done();
+    return new Promise((resolve) => {
+      server.on("listening", () => {
+        const addr = server.address();
+        port = addr.port;
+        resolve();
+      });
     });
   });
 
