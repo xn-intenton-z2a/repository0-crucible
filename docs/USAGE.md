@@ -1,105 +1,83 @@
-# Features
-
-- Random ASCII face generation (`--face`)
-- Batch output (`--count`, `-c`)
-- Custom faces configuration (`--config <path>`)
-- Theme selection (`--theme`, `-t`)
-
 # Usage
 
-Use the CLI commands to generate ASCII faces:
+## Installation
+
+Install via npm:
 
 ```bash
-# Single random face
-device/node src/lib/main.js --face
+npm install repository0-crucible
+```
 
-# Batch output of 3 faces
+## Features
+
+- Random ASCII face generation (`--face`): Output a single random ASCII face.
+- Batch output (`--count`, `-c`): Output multiple faces in one invocation.
+- Custom faces configuration (`--config <path>`): Load additional faces from a YAML or JSON file.
+- Theme selection (`--theme`, `-t`): Select a predefined face theme (`happy`, `sad`, `surprised`).
+- HTTP server mode (`--serve`, `-s`) with port override (`--port`, `-p`): Serve faces over HTTP.
+- HTTP output formats: JSON (default) and plain text (`Accept: text/plain` header).
+
+## CLI Usage Examples
+
+```bash
+node src/lib/main.js --face
 node src/lib/main.js --face --count 3
-
-# Custom faces from a YAML/JSON config file
+node src/lib/main.js --face --theme happy -c 2
 node src/lib/main.js --face --config faces.yaml
-
-# Shortcut via npm script
-npm run ascii-face
 ```
 
-## Additional Options
+## HTTP Server Mode
 
-### Help
-
-Show help instructions:
-
-```bash
-node src/lib/main.js --help
-```
-
-### Theme Selection with `--theme` / `-t`
-
-Select faces from a predefined theme (`happy`, `sad`, `surprised`):
-
-```bash
-node src/lib/main.js --face --theme happy
-node src/lib/main.js --face -t surprised -c 2
-```
-
-### Batch Generation with `--count` / `-c`
-
-Generate multiple faces in one invocation:
-
-```bash
-node src/lib/main.js --face --count 5
-node src/lib/main.js --face -c 4
-```
-
-### Custom Faces with `--config`
-
-Load additional faces from a YAML or JSON file:
-
-```bash
-node src/lib/main.js --face --config path/to/faces.yaml
-```
-
-## HTTP Server Mode with `--serve` / `-s`
-
-Start the HTTP server (default port 3000):
+Start the HTTP server on the default port (3000):
 
 ```bash
 node src/lib/main.js --serve
+```
+
+Start the HTTP server on a custom port:
+
+```bash
 node src/lib/main.js --serve --port 8080
 ```
 
-### Endpoints
+### HTTP Endpoints
 
 #### GET /face
 
-- `count` query parameter (default 1)
+- Default response (JSON):
 
-JSON response:
+  ```bash
+  curl localhost:3000/face
+  ```
 
-```bash
-curl localhost:3000/face
-curl localhost:3000/face?count=3
-```
+- Batch count (JSON):
 
-Plain text response:
+  ```bash
+  curl localhost:3000/face?count=2
+  ```
 
-```bash
-curl -H "Accept: text/plain" localhost:3000/face
-```
+- Plain text response:
+
+  ```bash
+  curl -H "Accept: text/plain" localhost:3000/face
+  ```
 
 #### GET /faces
 
-- `includeCustom` query parameter (`true`|`false`, default `true`)
+- Default response (JSON):
 
-JSON response:
+  ```bash
+  curl localhost:3000/faces
+  ```
 
-```bash
-curl localhost:3000/faces
-curl localhost:3000/faces?includeCustom=false
-```
+- Exclude custom faces:
 
-Plain text response:
+  ```bash
+  curl localhost:3000/faces?includeCustom=false
+  ```
 
-```bash
-curl -H "Accept: text/plain" localhost:3000/faces
-```
+- Plain text response:
+
+  ```bash
+  curl -H "Accept: text/plain" localhost:3000/faces
+  ```
