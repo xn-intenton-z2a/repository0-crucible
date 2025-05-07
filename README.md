@@ -13,6 +13,7 @@ A CLI tool that outputs random ASCII facial expressions as emotional feedback.
 - Interactive REPL mode (`--interactive`)
 - Use custom face definitions from a JSON or YAML file (`--faces-file <path>`)
 - Merge custom faces with built-in library (`--merge-faces`)
+- Color output for faces (`--color [color]`), supported colors: black, red, green (default), yellow, blue, magenta, cyan, white
 - Serve HTTP API (`--serve` flag) with endpoints for `/face`, `/list-faces`, `/list-categories`, and `/diagnostics` (default port 3000, configurable with `--port` flag or `PORT` environment variable)
 
 ## Installation
@@ -58,6 +59,14 @@ node src/lib/main.js [command] [options]
 - Combine count, category, and seed:
   ```bash
   node src/lib/main.js --face 2 --category playful --seed 42
+  ```
+- Colored output (default green):
+  ```bash
+  node src/lib/main.js --face --color
+  ```
+- Colored output with specified color:
+  ```bash
+  node src/lib/main.js --face 3 --color red
   ```
 
 ### Listing Faces and Categories
