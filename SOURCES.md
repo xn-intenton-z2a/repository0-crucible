@@ -68,12 +68,12 @@ De facto standard for defining the structure and validation rules of JSON data. 
 Comprehensive reference for the WHATWG URL API in browsers and Node.js, detailing construction and parsing of URLs, manipulation of query parameters using `URLSearchParams`, and handling of origins and paths. Essential for parsing incoming HTTP request URLs (`/face?count=...`) robustly and handling edge cases such as encoding and relative paths. Last updated June 2024; maintained by Mozilla.
 ## CC BY-SA 2.5
 
-# MDN Web Docs - HTTP Content Negotiation
-## https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation
-Detailed overview of HTTP content negotiation mechanisms, including the `Accept` header, media type prioritization, q-factors, and server-side detection strategies. Critical for implementing proper `text/plain` vs `application/json` responses based on client preferences. Last updated May 2024; maintained by Mozilla.
+# MDN Web Docs - HTTP
+## https://developer.mozilla.org/en-US/docs/Web/HTTP
+Detailed overview of the HTTP protocol, methods, status codes, headers (including content negotiation and CORS), and best practices for building and consuming HTTP APIs. Critical for implementing request parsing, response formatting, error handling, and security configurations in the Node.js HTTP server. Last updated April 2024; maintained by Mozilla.
 ## CC BY-SA 2.5
 
-# MDN Web Docs - Cross-Origin Resource Sharing (CORS)
-## https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-Authoritative guide to CORS, describing preflight requests, response headers (`Access-Control-Allow-*`), and security implications. Useful for configuring HTTP server endpoints for safe cross-domain consumption by web applications. Last updated April 2024; maintained by Mozilla.
-## CC BY-SA 2.5
+# Chalk ANSI Styling
+## https://github.com/chalk/chalk
+Chalk is a lightweight JavaScript library for styling terminal string output with ANSI colors and styles. Provides methods for applying color and style transformations to strings, supports template literals, nested styling, and custom themes. Essential for implementing the `--color` flag to enhance CLI emotional feedback. Last updated March 2024; widely adopted in the Node.js ecosystem.
+## MIT License
