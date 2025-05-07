@@ -17,6 +17,7 @@
     "test:unit": "vitest --coverage",
     "test:e2e": "vitest tests/e2e/cli.test.js",
     "start": "node src/lib/main.js",
+    "ascii-face": "node src/lib/main.js --ascii-face",
     "diagnostics": "node src/lib/main.js --diagnostics",
     "serve": "node src/lib/main.js --serve",
     "build-intermediate": "node src/lib/main.js --build-intermediate",
@@ -33,6 +34,7 @@
     "ejs": "^3.1.10",
     "js-yaml": "^4.1.0",
     "minimatch": "^9.0.5",
+    "minimist": "^1.2.8",
     "zod": "^3.24.3"
   },
   "devDependencies": {
