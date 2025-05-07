@@ -1,21 +1,11 @@
 # Node.js Core API Reference
 ## https://nodejs.org/api/
-Comprehensive reference for all built-in Node.js modules including `fs`, `path`, `url`, `http/https`, `process`, `readline`, `os`, and streams. Covers file I/O, environment variables, HTTP server/client APIs, event-driven architecture, module resolution, signal handling, and system utilities such as CPU and memory information. Essential for implementing CLI flags (`--face`, `--list-*`), interactive REPL, HTTP server routes, diagnostics endpoints, and graceful shutdown. Last updated June 2024; maintained by the Node.js Foundation and the OpenJS Foundation.
+Comprehensive reference for all built-in Node.js modules including `fs`, `path`, `url`, `http/https`, `process`, and streams. Covers file I/O, environment variables, HTTP server/client APIs, event-driven architecture, module resolution, signal handling, and system utilities such as CPU and memory information. Essential for implementing CLI flags, HTTP server routes, diagnostics endpoints, and graceful shutdown. Last updated June 2024; maintained by the Node.js Foundation and the OpenJS Foundation.
 ## Node.js Foundation (MIT-like)
 
 # Node.js HTTP Module
 ## https://nodejs.org/api/http.html
-Deep dive into the Node.js core HTTP APIs: `http.createServer`, `IncomingMessage`, `ServerResponse`, request/response headers, status codes, streaming, and CORS header configuration. Crucial for building JSON and text endpoints (`/face`, `/list-faces`, `/list-categories`, `/diagnostics`, `/openapi.json`), parsing query parameters, managing content negotiation, and handling errors in serve mode. Last updated June 2024; maintained by the Node.js Foundation.
-## Node.js Foundation (MIT-like)
-
-# Node.js Readline Module
-## https://nodejs.org/api/readline.html
-Provides interfaces for reading lines from input streams, interactive prompts, and event handling. Details on `readline.createInterface`, asynchronous iteration, history control, and prompt management, underpinning the interactive REPL (`--interactive`) commands and session behavior. Last updated June 2024; maintained by the Node.js Foundation.
-## Node.js Foundation (MIT-like)
-
-# Node.js OS Module
-## https://nodejs.org/api/os.html
-Defines operating system-related utility methods and properties such as CPU information, memory usage, system uptime, load averages, network interfaces, and user information. Essential for implementing diagnostics (`--diagnostics` flag and `/diagnostics` endpoint) by programmatically gathering host metrics and system health data. Last updated June 2024; maintained by the Node.js Foundation.
+Deep dive into the Node.js core HTTP APIs: `http.createServer`, `IncomingMessage`, `ServerResponse`, request/response headers, status codes, streaming, and CORS header configuration. Crucial for building JSON and text endpoints (`/face`, `/list-faces`, `/diagnostics`, `/openapi.json`), parsing query parameters, managing content negotiation, and handling errors in serve mode. Last updated June 2024; maintained by the Node.js Foundation.
 ## Node.js Foundation (MIT-like)
 
 # ECMAScript Modules in Node.js
@@ -27,11 +17,6 @@ Explains ES module support in Node.js: `import`/`export`, `import.meta.url`, dyn
 ## https://github.com/substack/minimist
 Minimist is a minimalist argument parser for Node.js, supporting parsing of short and long flags, type coercion, default values, and aliases. In this repository, it powers parsing for flags like `--ascii-face`, `--count`, `--serve`, `--port`, and `--faces-file`. Configurable boolean flags, alias mapping, and default values make it ideal for simple CLI tools without introducing large dependencies. Last updated July 2023; widely used and highly authoritative based on community adoption.
 ## MIT License
-
-# minimatch
-## https://github.com/isaacs/minimatch
-Provides glob pattern matching functionality for filtering file paths and strings using syntax similar to Unix shell. Supports advanced features such as negation, extended patterns, and custom match options. Can be leveraged for processing file-based commands (e.g., `--merge-persist`, `--refresh`) where pattern-based selection of configuration or data files is required. Last updated May 2024; maintained by the npm community.
-## ISC License
 
 # js-yaml
 ## https://github.com/nodeca/js-yaml#readme
@@ -77,3 +62,18 @@ Embedded JavaScript templating engine with syntax for interpolation, conditional
 ## https://json-schema.org/specification.html
 De facto standard for defining the structure and validation rules of JSON data. The specification details meta-schemas, validation keywords (`type`, `properties`, `required`, etc.), data types, and referencing. Critical for defining and validating `/openapi.json` components, configuration files, and HTTP request bodies. Draft 2020-12 published 2020; maintained by JSON Schema Org. Highly authoritative specification.
 ## CC0 1.0 Universal
+
+# MDN Web Docs - URL and URLSearchParams
+## https://developer.mozilla.org/en-US/docs/Web/API/URL
+Comprehensive reference for the WHATWG URL API in browsers and Node.js, detailing construction and parsing of URLs, manipulation of query parameters using `URLSearchParams`, and handling of origins and paths. Essential for parsing incoming HTTP request URLs (`/face?count=...`) robustly and handling edge cases such as encoding and relative paths. Last updated June 2024; maintained by Mozilla.
+## CC BY-SA 2.5
+
+# MDN Web Docs - HTTP Content Negotiation
+## https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation
+Detailed overview of HTTP content negotiation mechanisms, including the `Accept` header, media type prioritization, q-factors, and server-side detection strategies. Critical for implementing proper `text/plain` vs `application/json` responses based on client preferences. Last updated May 2024; maintained by Mozilla.
+## CC BY-SA 2.5
+
+# MDN Web Docs - Cross-Origin Resource Sharing (CORS)
+## https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+Authoritative guide to CORS, describing preflight requests, response headers (`Access-Control-Allow-*`), and security implications. Useful for configuring HTTP server endpoints for safe cross-domain consumption by web applications. Last updated April 2024; maintained by Mozilla.
+## CC BY-SA 2.5
