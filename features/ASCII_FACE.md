@@ -1,38 +1,39 @@
 # Purpose
-Extend the existing CLI tool to allow users to output multiple random ASCII facial expressions in a single invocation using a new --count flag. This enhances emotional feedback by letting scripts or users request batches of faces for richer interactions.
+Enhance the existing ASCII face output feature to support batch generation of faces for richer emotional feedback in scripts or pipelines.
 
 # Implementation Details
-1. Parse Count Flag
-   - Extend minimist configuration in main to include a numeric option count (alias c) with default value 1.
-   - Validate that count is a positive integer; if invalid (zero, negative, or non-integer), print help message and exit without error code change.
+1. Parse count flag  
+   • Add numeric option count (alias c) to minimist configuration with default value 1.  
+   • Ensure flags object includes count option alongside ascii-face and help.
+2. Validate count  
+   • Accept only positive integers.  
+   • If count is zero, negative, or not an integer, output the help message and return without error.
+3. Generate faces  
+   • In main(), when ascii-face mode is active, loop from 1 to count.  
+   • Call getRandomFace() each iteration and print each result on its own console line.  
+   • Preserve existing single-face behavior when count is 1.
+4. Help message update  
+   • Include --count (-c) in helpMessage with description and default value.
+   • Add examples illustrating multiple face requests.
 
-2. Generate Multiple Faces
-   - In main, after determining ascii-face mode, loop from 1 to count:
-     • Call getRandomFace() each iteration.
-     • Print each face on its own console line.
-   - Preserve existing behavior when count is 1 (single face output).
-
-3. Help Message Update
-   - Update helpMessage to document --count (or -c) and its default.
-   - Show usage examples for multiple faces.
-
-# CLI Interface
-- node src/lib/main.js --ascii-face --count 3
+# CLI Interface Examples
+- node src/lib/main.js --ascii-face --count 3  
   Outputs three random ASCII faces, one per line.
-- node src/lib/main.js --ascii-face -c 5
+- node src/lib/main.js --ascii-face -c 5  
   Outputs five random ASCII faces.
-- node src/lib/main.js --help
-  Displays updated usage including count flag.
+- node src/lib/main.js --ascii-face  
+  Outputs one random ASCII face (default count).
 
 # Testing
-1. Unit Tests in tests/unit/main.test.js:
-   - Test that default invocation (no flags) prints exactly one face.
-   - Test that --ascii-face --count N prints N faces and console.log called N times.
-   - Test alias -c with valid and invalid values (zero, negative, non-integer) leading to help output.
-
-2. CLI Integration in tests/e2e/cli.test.js:
-   - Simulate node CLI with --ascii-face --count 4 and assert four lines of output belonging to asciiFaces.
+1. Unit tests in tests/unit/main.test.js  
+   • Default invocation prints exactly one face.  
+   • --ascii-face --count N prints N faces and console.log called N times.  
+   • Alias -c works identically to --count.  
+   • Invalid count values (zero, negative, non-integer) trigger help output.
+2. CLI integration in tests/e2e/cli.test.js  
+   • Simulate node CLI with --ascii-face --count 4 and assert four lines of output belonging to asciiFaces.
 
 # Documentation
-- Update README.md and docs/USAGE.md to describe --count and provide examples with both long and short flags.
-- Include API note on count parameter for future programmatic calls to main(args).
+- Update README.md to describe --count flag under Features and Usage.  
+- Update docs/USAGE.md to include examples for multiple faces.  
+- Note count parameter in the API for future programmatic calls and library usage.
