@@ -58,3 +58,48 @@ Load additional faces from a YAML or JSON file:
 ```bash
 node src/lib/main.js --face --config path/to/faces.yaml
 ```
+
+## HTTP Server Mode with `--serve` / `-s`
+
+Start the HTTP server (default port 3000):
+
+```bash
+node src/lib/main.js --serve
+node src/lib/main.js --serve --port 8080
+```
+
+### Endpoints
+
+#### GET /face
+
+- `count` query parameter (default 1)
+
+JSON response:
+
+```bash
+curl localhost:3000/face
+curl localhost:3000/face?count=3
+```
+
+Plain text response:
+
+```bash
+curl -H "Accept: text/plain" localhost:3000/face
+```
+
+#### GET /faces
+
+- `includeCustom` query parameter (`true`|`false`, default `true`)
+
+JSON response:
+
+```bash
+curl localhost:3000/faces
+curl localhost:3000/faces?includeCustom=false
+```
+
+Plain text response:
+
+```bash
+curl -H "Accept: text/plain" localhost:3000/faces
+```
