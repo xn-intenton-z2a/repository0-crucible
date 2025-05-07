@@ -202,7 +202,7 @@ function serveMode(port) {
           },
           servers: [{ url: `http://localhost:${port}` }],
           paths: {
-            '/face': {
+            ' /face': {
               get: {
                 summary: 'Generate random faces',
                 parameters: [
