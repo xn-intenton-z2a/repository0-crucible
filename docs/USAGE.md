@@ -1,66 +1,60 @@
+# Features
+
+- Random ASCII face generation (`--face`)
+- Batch output (`--count`, `-c`)
+- Custom faces configuration (`--config <path>`)
+- Theme selection (`--theme`, `-t`)
+
 # Usage
 
-## ASCII_FACE Feature
+Use the CLI commands to generate ASCII faces:
 
-The CLI tool can output random ASCII art facial expressions for emotional feedback.
+```bash
+# Single random face
+device/node src/lib/main.js --face
 
-### Commands
+# Batch output of 3 faces
+node src/lib/main.js --face --count 3
 
-- Built-in faces:
+# Custom faces from a YAML/JSON config file
+node src/lib/main.js --face --config faces.yaml
 
-  ```bash
-  node src/lib/main.js --face
-  # Outputs a random ASCII face, e.g. (^_^)
-  ```
+# Shortcut via npm script
+npm run ascii-face
+```
 
-- Custom faces via config file:
+## Additional Options
 
-  ```bash
-  node src/lib/main.js --face --config path/to/faces.yaml
-  # Outputs a random face from built-in and custom list
-  ```
+### Help
 
-- Help:
+Show help instructions:
 
-  ```bash
-  node src/lib/main.js --help
-  ```
+```bash
+node src/lib/main.js --help
+```
 
 ### Theme Selection with `--theme` / `-t`
 
-Narrow the pool of faces to a predefined emotional collection.
-
-Valid themes: **happy**, **sad**, **surprised**
+Select faces from a predefined theme (`happy`, `sad`, `surprised`):
 
 ```bash
-# Single happy theme face
 node src/lib/main.js --face --theme happy
-
-# Two surprised theme faces (using alias -t)
 node src/lib/main.js --face -t surprised -c 2
-
-# Invalid theme shows help
-node src/lib/main.js --face --theme unknown
 ```
 
 ### Batch Generation with `--count` / `-c`
 
-Generate multiple faces in one invocation by specifying a positive integer count.
+Generate multiple faces in one invocation:
 
 ```bash
-node src/lib/main.js --face --count 3
-# Outputs three random ASCII faces, one per line, e.g.:  
-(^_^)  
-(T_T)  
-(*_*)
-
-# Alias using -c:
-node src/lib/main.js --face -c 5
-# Outputs five random ASCII faces, one per line
+node src/lib/main.js --face --count 5
+node src/lib/main.js --face -c 4
 ```
 
-### Example Output
+### Custom Faces with `--config`
+
+Load additional faces from a YAML or JSON file:
 
 ```bash
-(T_T)
+node src/lib/main.js --face --config path/to/faces.yaml
 ```
