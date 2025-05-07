@@ -57,3 +57,23 @@ Type-safe schema validation library for TypeScript and JavaScript. Documents pri
 ## https://ejs.co/#docs
 Embedded JavaScript templating engine with powerful syntax for rendering HTML and text. Covers tags for interpolation, conditional rendering, loops, and includes/partials. Useful for generating dynamic HTML in the HTTP server’s root endpoint (`/`). Last updated 2024; MIT License.
 ## MIT License
+
+# Commander.js
+## https://github.com/tj/commander.js#readme
+Commander.js is a popular, expressive command-line interface framework for Node.js, offering declarative syntax for defining commands, options, and arguments. Provides automatic help generation, versioning, command aliasing, and asynchronous action handlers. Essential for building scalable and maintainable CLI flag parsing (e.g., `--face`, `--config`, `--serve`). Last updated July 2024; maintained by TJ Holowaychuk and contributors. Highly authoritative based on adoption in thousands of packages.
+## MIT License
+
+# Inquirer.js
+## https://github.com/SBoudrias/Inquirer.js#readme
+Inquirer.js is a feature-rich interactive CLI prompting library. Covers prompt types (`input`, `confirm`, `list`, `checkbox`, etc.), validation functions, asynchronous prompts, and custom prompt modules. Useful for enhancing the interactive REPL (`--interactive`), building guided configuration flows, and collecting user feedback. Last updated June 2024; widely adopted in CLI tools and tutorials.
+## MIT License
+
+# JSON Schema
+## https://json-schema.org/specification.html
+JSON Schema is the de facto standard for defining the structure and validation rules of JSON data. The specification details meta-schemas, validation keywords (`type`, `properties`, `required`, `allOf`, etc.), data types, and referencing. Critical for defining and validating `/openapi.json` components, configuration files (`.cruciblerc`, `cruconfig.yaml`), and HTTP request bodies. Draft 2020-12 published 2020; maintained by JSON Schema Org. Highly authoritative specification.
+## CC0 1.0 Universal
+
+# Express.js API Reference
+## https://expressjs.com/en/4x/api.html
+Express is a minimalist web framework for Node.js, offering routing, middleware, and template engine integration. The documentation covers application methods, routing parameters, request/response objects, error-handling middleware, and view rendering. Provides scalable patterns for building HTTP server endpoints and integrates with Swagger UI and template engines. Last updated May 2024; maintained by the Express.js Foundation. MIT License.
+## MIT License
