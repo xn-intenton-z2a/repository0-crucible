@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="ejs_api" href="#ejs_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EJS_API</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">EJS v3.1.9 core API methods: render(template,data,options)→String; renderFile(path,data,options,cb)→void; compile(template,options)→Function. Options: cache(Boolean), filename(String), root(String), views(Array), delimiter(String), async(Boolean), compileDebug(Boolean), rmWhitespace(Boolean), strict(Boolean), context(Object), localsName(String). Template syntax: &lt;% %&gt;,&lt;%= %&gt;,&lt;%- %&gt;,&lt;%# %&gt;,&lt;%% %&gt;. Includes via include(name,data). Async by setting async:true. Caching requires filename. Errors throw JS exceptions with line numbers.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Installation
+2 Core API methods
+3 Options
+4 Template Syntax
+5 Includes
+6 Caching
+7 Asynchronous support
+8 Delimiters</p>
+<p class="md-github">1 Installation
+npm install ejs</p>
+<p class="md-github">2 Core API methods
+render(template:String, data:Object, options?:Object) =&gt; String
+renderFile(path:String, data:Object, options:Object, callback:(err:Error, str:String)=&gt;void) =&gt; void
+compile(template:String, options?:Object) =&gt; Function(data:Object): String</p>
+<p class="md-github">3 Options
+cache: true|false (default false)
+filename: absolute or relative file path (required for include and cache key)
+root: string path for absolute include resolution (default process.cwd())
+views: array of paths to search for includes (default [])
+delimiter: single-character string for tag (default '%')
+async: true|false (default false)
+compileDebug: true|false (default true)
+rmWhitespace: true|false (default false)
+strict: true|false (default false)
+context: object to bind <code class="md-github">this</code> in template (default null)
+localsName: string name for data object in template (default 'locals')</p>
+<p class="md-github">4 Template Syntax
+&lt;% code %&gt; no output
+&lt;%= expression %&gt; HTML-escaped output
+&lt;%- expression %&gt; unescaped output
+&lt;%# comment %&gt; no execution
+&lt;%% literal %&gt; outputs <code class="md-github">&lt;%</code>
+%&gt; ends tag</p>
+<p class="md-github">5 Includes
+Syntax: &lt;%- include(filename:String, data?:Object) %&gt;
+Resolves relative to filename option or root/views paths</p>
+<p class="md-github">6 Caching
+Enable by cache:true
+Requires filename for cache key
+Stores compiled function in internal cache</p>
+<p class="md-github">7 Asynchronous support
+Set async:true in options
+Use await inside &lt;% %&gt; tags
+render and compile return Promise when async:true</p>
+<p class="md-github">8 Delimiters
+Change with delimiter option: options.delimiter = '?' yields <? code ?></p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default options object: {
+cache: false,
+filename: undefined,
+root: process.cwd(),
+views: [],
+delimiter: '%',
+async: false,
+compileDebug: true,
+rmWhitespace: false,
+strict: false,
+context: null,
+localsName: 'locals'
+}
+Implementation steps:
+1 Install ejs via npm
+2 Require or import ejs
+3 Call render or renderFile with correct options
+4 For includes set filename or root/views so include paths resolve
+5 Enable cache by passing cache:true and specifying filename
+6 For async functions set async:true and use await in templates
+7 Handle errors by try/catch around render or error-first callback in renderFile</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications:</p>
+<p class="md-github">render(template:String, data:Object, options?:Object) =&gt; String
+-Throws TypeError if template not string
+-Throws errors from JS evaluation</p>
+<p class="md-github">renderFile(path:String, data:Object, options:Object, callback:(err:Error, str:String)=&gt;void) =&gt; void
+-path: file system path to .ejs file
+-data: object passed as locals
+-options: same as render options
+-callback: function(err, result)</p>
+<p class="md-github">compile(template:String, options?:Object) =&gt; compiledFunction
+-compiledFunction(data:Object, callback?:Function) =&gt; String|Promise</p>
+<p class="md-github">Exact method signatures:</p>
+<p class="md-github">function render(template, data, options) {
+options = options || {};
+const fn = compile(template, options);
+if (options.async) return fn(data);
+return fn(data);
+}</p>
+<p class="md-github">function renderFile(path, data, options, callback) {
+if (typeof options === 'function') callback = options, options = {};
+fs.readFile(path, 'utf8', function(err, str){
+if(err) return callback(err);
+try {
+const fn = compile(str, Object.assign({}, options, {filename:path}));
+const result = options.async ? fn(data) : fn(data);
+if (options.async) result.then(res=&gt; callback(null,res),cb=&gt;callback(cb));
+else callback(null, result);
+} catch(e) {
+callback(e);
+}
+});
+}</p>
+<p class="md-github">function compile(template, options) {
+const opts = Object.assign({}, defaultOptions, options);
+// tokenizer and parser
+const fn = new Function(opts.localsName, opts.context ? 'with(this){' + compiledSource + '}' : compiledSource);
+return opts.async ? async function(locals){ return fn.call(opts.context, locals) } : function(locals){ return fn.call(opts.context, locals) };
+}</p>
+<p class="md-github">Configuration Options:
+options.cache (Boolean): toggle caching of compiled templates
+options.filename (String): used for include resolution and cache key
+options.root (String): base path for includes starting with '/'
+options.views (Array<String>): search paths for include files
+options.delimiter (String): scriptlet delimiter
+options.async (Boolean): enable async/await support
+options.compileDebug (Boolean): include debug instrumentation
+options.rmWhitespace (Boolean): collapse whitespace
+options.strict (Boolean): fail on undefined values
+options.context (Object): bind this in templates
+options.localsName (String): variable name for locals</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Always set filename when using includes or cache</li>
+<li class="md-github">Precompile templates via compile and reuse function</li>
+<li class="md-github">Enable cache in production</li>
+<li class="md-github">Use rmWhitespace to reduce output size</li>
+<li class="md-github">Wrap render calls in try/catch or use callback error handling</li>
+<li class="md-github">Use async option for Promises and async helpers</li>
+</ul>
+<p class="md-github">Troubleshooting:
+Command: console.log(ejs.render('&lt;%= a.b %&gt;', {a:{}}));
+Expected: throws TypeError: Cannot read property 'b' of undefined
+With strict:true: throws ReferenceError: a is not defined
+Command: ejs.renderFile('missing.ejs', {}, {}, cb)
+Expected cb called with err.code == 'ENOENT'</p>
+<p class="md-github">Exact commands:
+node -e &quot;console.log(require('ejs').render('&lt;%- include(&quot;tpl.ejs&quot;) %&gt;',{}, {filename:'main.ejs',views:['./views']}));&quot;
+Output: contents of views/tpl.ejs</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">ejs.render(template:String,data:Object,options?:{cache?:Boolean,filename?:String,root?:String,views?:String[],delimiter?:String,async?:Boolean,compileDebug?:Boolean,rmWhitespace?:Boolean,strict?:Boolean,context?:Object,localsName?:String})=&gt;String|Promise;             ejs.renderFile(path:String,data:Object,options:Object,cb:(Error,String)=&gt;void)=&gt;void;             ejs.compile(template:String,options?:Object)=&gt;(data:Object)=&gt;String|Promise; Options defaults: cache:false,filename:undefined,root:process.cwd(),views:[],delimiter:'%',async:false,compileDebug:true,rmWhitespace:false,strict:false,context:null,localsName:'locals'; Template tags: &lt;% code %&gt;,&lt;%=escape %&gt;,&lt;%-unescaped%&gt;,&lt;%#comment%&gt;,&lt;%%literal%&gt;,%&gt;; Include: &lt;%- include(filename,data) %&gt;, resolves via filename or root/views; Async support: options.async=true + await inside tags; Caching: options.cache=true + filename; Errors: JS exceptions with template line numbers; Delimiters change via options.delimiter; Best practices: precompile, cache in production, set filename for includes, rmWhitespace for lean output; Troubleshooting: catch exceptions, handle ENOENT on missing files.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Installation
+2 Core API methods
+3 Options
+4 Template Syntax
+5 Includes
+6 Caching
+7 Asynchronous support
+8 Delimiters</p>
+<p class="md-github">1 Installation
+npm install ejs</p>
+<p class="md-github">2 Core API methods
+render(template:String, data:Object, options?:Object) =&gt; String
+renderFile(path:String, data:Object, options:Object, callback:(err:Error, str:String)=&gt;void) =&gt; void
+compile(template:String, options?:Object) =&gt; Function(data:Object): String</p>
+<p class="md-github">3 Options
+cache: true|false (default false)
+filename: absolute or relative file path (required for include and cache key)
+root: string path for absolute include resolution (default process.cwd())
+views: array of paths to search for includes (default [])
+delimiter: single-character string for tag (default '%')
+async: true|false (default false)
+compileDebug: true|false (default true)
+rmWhitespace: true|false (default false)
+strict: true|false (default false)
+context: object to bind 'this' in template (default null)
+localsName: string name for data object in template (default 'locals')</p>
+<p class="md-github">4 Template Syntax
+&lt;% code %&gt; no output
+&lt;%= expression %&gt; HTML-escaped output
+&lt;%- expression %&gt; unescaped output
+&lt;%# comment %&gt; no execution
+&lt;%% literal %&gt; outputs '&lt;%'
+%&gt; ends tag</p>
+<p class="md-github">5 Includes
+Syntax: &lt;%- include(filename:String, data?:Object) %&gt;
+Resolves relative to filename option or root/views paths</p>
+<p class="md-github">6 Caching
+Enable by cache:true
+Requires filename for cache key
+Stores compiled function in internal cache</p>
+<p class="md-github">7 Asynchronous support
+Set async:true in options
+Use await inside &lt;% %&gt; tags
+render and compile return Promise when async:true</p>
+<p class="md-github">8 Delimiters
+Change with delimiter option: options.delimiter = '?' yields <? code ?></p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">EJS Templating Engine
+https://ejs.co/#docs</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-ejs_api" href="#digest-of-ejs_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of EJS_API</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<pre class="md-github"><code class="md-github language-bash">npm install ejs
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h1>
+<pre class="md-github"><code class="md-github language-javascript">const ejs = require('ejs');
+
+// Synchronous rendering
+ejs.render(templateString, dataObject, optionsObject);
+
+// Asynchronous rendering
+await ejs.render(templateString, dataObject, {async: true});
+
+// Compile to function
+const fn = ejs.compile(templateString, optionsObject);
+fn(dataObject);
+
+// Render from file
+ejs.renderFile(filenamePath, dataObject, optionsObject, callback);
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="primary-api-methods" href="#primary-api-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Primary API Methods</h1>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">render(template, data, options)</strong> → <em class="md-github">String</em></li>
+<li class="md-github"><strong class="md-github">renderFile(path, data, options, callback)</strong> → <em class="md-github">void</em></li>
+<li class="md-github"><strong class="md-github">compile(template, options)</strong> → <em class="md-github">Function</em></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="options-object" href="#options-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options Object</h1>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Name</th>
+<th class="md-github">Type</th>
+<th class="md-github">Default</th>
+<th class="md-github">Description</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">cache</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Cache intermediate JS functions</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">filename</td>
+<td class="md-github">String</td>
+<td class="md-github">undefined</td>
+<td class="md-github">Used by includes and cache keys</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">root</td>
+<td class="md-github">String</td>
+<td class="md-github">process.cwd</td>
+<td class="md-github">Base directory for absolute includes</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">views</td>
+<td class="md-github">Array</td>
+<td class="md-github">[]</td>
+<td class="md-github">Directories to search for includes</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">delimiter</td>
+<td class="md-github">String</td>
+<td class="md-github">'%'</td>
+<td class="md-github">Character to open and close scriptlet tags</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">async</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Enable top-level async filters and functions</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">compileDebug</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Include debug instrumentation in compiled function</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">rmWhitespace</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Remove all safe-to-remove whitespace</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">strict</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Treat undefined values as errors</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">context</td>
+<td class="md-github">Object</td>
+<td class="md-github">null</td>
+<td class="md-github"><code class="md-github">this</code> context for compiled functions</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">localsName</td>
+<td class="md-github">String</td>
+<td class="md-github">'locals'</td>
+<td class="md-github">Name of data object in template</td>
+</tr>
+</tbody>
+</table>
+<h1 class="md-github"><a class="md-github__anchor" name="template-tag-syntax" href="#template-tag-syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Template Tag Syntax</h1>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">&lt;%</code>  Scriptlet, no output</li>
+<li class="md-github"><code class="md-github">&lt;%=</code> HTML-escaped output</li>
+<li class="md-github"><code class="md-github">&lt;%-</code> Unescaped output</li>
+<li class="md-github"><code class="md-github">&lt;%#</code> Comment, no execution</li>
+<li class="md-github"><code class="md-github">&lt;%%</code> Outputs literal <code class="md-github">&lt;%</code></li>
+<li class="md-github"><code class="md-github">%&gt;</code>  Close tag</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="includes" href="#includes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Includes</h1>
+<pre class="md-github"><code class="md-github language-ejs">&lt;%- include('header.ejs', {title: 'Home'}) %&gt;
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="caching" href="#caching"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Caching</h1>
+<ul class="md-github">
+<li class="md-github">Enabled via <code class="md-github">options.cache = true</code></li>
+<li class="md-github"><code class="md-github">filename</code> required for proper cache key generation</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="error-handling" href="#error-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error Handling</h1>
+<ul class="md-github">
+<li class="md-github">Runtime errors throw JS exceptions with template line numbers</li>
+<li class="md-github">Stack traces include compiled function locations</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="asynchronous-support" href="#asynchronous-support"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Asynchronous Support</h1>
+<p class="md-github">Set <code class="md-github">options.async = true</code>. Use <code class="md-github">&lt;% await userAsyncFunction() %&gt;</code> inside templates.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="delimiters" href="#delimiters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Delimiters</h1>
+<p class="md-github">Specify <code class="md-github">options.delimiter = '?'</code> to use <code class="md-github">&lt;? ... ?&gt;</code> tags instead of <code class="md-github">&lt;% ... %&gt;</code>.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: EJS Templating Engine</li>
+<li class="md-github">URL: https://ejs.co/#docs</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-07T09:30:47.542Z</li>
+<li class="md-github">Data Size: 8029 bytes</li>
+<li class="md-github">Links Found: 26</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-07</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-07T10:41:22.118Z</p>
+  </footer>
+</body>
+</html>

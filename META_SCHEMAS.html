@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="meta_schemas" href="#meta_schemas"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>META_SCHEMAS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">The JSON Schema specification version 2020-12 is split into Core and Validation, published as a single meta-schema at https://json-schema.org/draft/2020-12/schema. A Hyper-Schema meta-schema (with link keywords) is at /hyper-schema. Recommended-output schema and eight single-vocabulary schemas (core, applicator, validation, unevaluated, format-annotation, format-assertion, content, meta-data) live under /meta/. Relative JSON Pointers spec is available but not required by Core/Validation. Migration mappings for older drafts are documented.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Meta-Schema URIs</p>
+</li>
+<li class="md-github">
+<p class="md-github">Single-Vocabulary Files</p>
+</li>
+<li class="md-github">
+<p class="md-github">Relative JSON Pointer</p>
+</li>
+<li class="md-github">
+<p class="md-github">Migration Paths</p>
+</li>
+<li class="md-github">
+<p class="md-github">Meta-Schema URIs</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Core/Validation: https://json-schema.org/draft/2020-12/schema</li>
+<li class="md-github">Hyper-Schema: https://json-schema.org/draft/2020-12/hyper-schema</li>
+<li class="md-github">Recommended Output: https://json-schema.org/draft/2020-12/meta/recommended-output</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">
+<p class="md-github">Single-Vocabulary Files
+All under https://json-schema.org/draft/2020-12/meta/: core.json, applicator.json, validation.json, unevaluated.json, format-annotation.json, format-assertion.json, content.json, meta-data.json</p>
+</li>
+<li class="md-github">
+<p class="md-github">Relative JSON Pointer</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">URI: https://json-schema.org/draft/2020-12/relative-json-pointer</li>
+<li class="md-github">Adds token syntax: '#', '[<n>]', '/path'.</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">Migration Paths</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">2019-09 → 2020-12: change identifier scheme, add unevaluated and content vocabularies.</li>
+<li class="md-github">07 → 2019-09: add dynamic refs.</li>
+<li class="md-github">06 → 07: add format-assertion.</li>
+<li class="md-github">04 → 06: remove id in favor of $id.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Usage of $schema:</p>
+<ul class="md-github">
+<li class="md-github">In your JSON Schema document, set &quot;$schema&quot;: &quot;https://json-schema.org/draft/2020-12/schema&quot; at the root.</li>
+</ul>
+<p class="md-github">Validator CLI Example (ajv):
+ajv compile-schema --strict=true --schemaId=auto --meta=2020-12 schema.json</p>
+<p class="md-github">Node.js: ajv@8
+const Ajv = require('ajv');
+const ajv = new Ajv({strict: true});
+ajv.addMetaSchema(require('./draft2020-12/schema.json'));
+const validate = ajv.compile(yourSchema);</p>
+<p class="md-github">Relative JSON Pointer Usage:
+{ &quot;$ref&quot;: &quot;#1/definitions/foo&quot; } // one level up, then path /definitions/foo</p>
+<p class="md-github">Handling Single-Vocabulary Schemas:
+ajv.addMetaSchema(require('./meta/validation.json'), 'https://json-schema.org/draft/2020-12/meta/validation')</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">$schema Declaration:</p>
+<ul class="md-github">
+<li class="md-github">Type: string (URI)</li>
+<li class="md-github">Example: &quot;$schema&quot;: &quot;https://json-schema.org/draft/2020-12/schema&quot;</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Ajv API Signatures (v8):
+constructor(options: { strict:boolean; schemaId?: 'auto'|'$id'|'id'; } ) → Ajv
+addMetaSchema(schema: object, key?: string) → void
+compile(schema: object) → ValidateFunction
+validate(schemaKey: string|object, data: any) → boolean</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Options:
+--strict boolean       default: false  enforce strict mode
+--schemaId string      default: auto   accept $id or id
+--meta version         e.g. 2019-09, 2020-12 loads built-in meta</p>
+</li>
+<li class="md-github">
+<p class="md-github">Best Practice:
+Always include &quot;$schema&quot; at top of each schema file.
+Use separate files per vocabulary when building custom meta-schemas.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Troubleshooting:
+Command: ajv compile-schema --schemaId=auto bad-schema.json
+Expected: validation error with keyword and path
+If no error: check that &quot;$schema&quot; URI matches loaded meta-schema.</p>
+</li>
+<li class="md-github">
+<p class="md-github">File Names and Locations:</p>
+<ul class="md-github">
+<li class="md-github">Save core meta-schema as draft2020-12-schema.json</li>
+<li class="md-github">Save vocabularies under meta/ folder matching URI path</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Migration Script:
+npx json-schema-draft-migrator --from=2019-09 --to=2020-12 path/to/schemas</p>
+</li>
+<li class="md-github">
+<p class="md-github">Validator Behavior:</p>
+<ul class="md-github">
+<li class="md-github">$id overrides resolution scope</li>
+<li class="md-github">Unevaluated vocabulary applies after validation keywords</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Environment:
+Node.js &gt;=12, ajv &gt;=8</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">2020-12 Core/Validation meta-schema URI=https://json-schema.org/draft/2020-12/schema Hyper-Schema URI=/hyper-schema Recommended-Output URI=/meta/recommended-output Single-vocab URIs=/meta/{core,applicator,validation,unevaluated,format-annotation,format-assertion,content,meta-data}.json Relative JSON Pointer URI=/relative-json-pointer Use &quot;$schema&quot;:<URI> root-level. Ajv v8: new Ajv({strict:true,schemaId:'auto'}); addMetaSchema(schema,key?); compile()/validate(). CLI: --strict, --schemaId, --meta. Migration 2019-09→2020-12 adds unevaluated,content; 07→09 adds dynamicRefs; 06→07 adds formatAssertion; 04→06 switches id→$id.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Meta-Schema URIs</p>
+</li>
+<li class="md-github">
+<p class="md-github">Single-Vocabulary Files</p>
+</li>
+<li class="md-github">
+<p class="md-github">Relative JSON Pointer</p>
+</li>
+<li class="md-github">
+<p class="md-github">Migration Paths</p>
+</li>
+<li class="md-github">
+<p class="md-github">Meta-Schema URIs</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Core/Validation: https://json-schema.org/draft/2020-12/schema</li>
+<li class="md-github">Hyper-Schema: https://json-schema.org/draft/2020-12/hyper-schema</li>
+<li class="md-github">Recommended Output: https://json-schema.org/draft/2020-12/meta/recommended-output</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">
+<p class="md-github">Single-Vocabulary Files
+All under https://json-schema.org/draft/2020-12/meta/: core.json, applicator.json, validation.json, unevaluated.json, format-annotation.json, format-assertion.json, content.json, meta-data.json</p>
+</li>
+<li class="md-github">
+<p class="md-github">Relative JSON Pointer</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">URI: https://json-schema.org/draft/2020-12/relative-json-pointer</li>
+<li class="md-github">Adds token syntax: '#', '[<n>]', '/path'.</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">Migration Paths</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">2019-09  2020-12: change identifier scheme, add unevaluated and content vocabularies.</li>
+<li class="md-github">07  2019-09: add dynamic refs.</li>
+<li class="md-github">06  07: add format-assertion.</li>
+<li class="md-github">04  06: remove id in favor of $id.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">JSON Schema
+https://json-schema.org/specification.html</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-meta_schemas" href="#digest-of-meta_schemas"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of META_SCHEMAS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="current-version-and-meta-schemas-retrieved-2025-05-01" href="#current-version-and-meta-schemas-retrieved-2025-05-01"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Current Version and Meta-Schemas (retrieved 2025-05-01)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="2020-12-corevalidation-dialect-meta-schema" href="#2020-12-corevalidation-dialect-meta-schema"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2020-12 Core/Validation Dialect Meta-Schema</h2>
+<p class="md-github">URI: https://json-schema.org/draft/2020-12/schema</p>
+<p class="md-github">This JSON document defines the Core foundation and Validation keywords.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="2020-12-hyper-schema-dialect-meta-schema" href="#2020-12-hyper-schema-dialect-meta-schema"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2020-12 Hyper-Schema Dialect Meta-Schema</h2>
+<p class="md-github">URI: https://json-schema.org/draft/2020-12/hyper-schema</p>
+<p class="md-github">Includes Core/Validation and hyperlinking keywords (from 2019-09).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="2020-12-recommended-output-meta-schema" href="#2020-12-recommended-output-meta-schema"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2020-12 Recommended Output Meta-Schema</h2>
+<p class="md-github">URI: https://json-schema.org/draft/2020-12/meta/recommended-output</p>
+<p class="md-github">Specifies structure of application-generated validation output.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="single-vocabulary-meta-schemas-uris-under-httpsjson-schemaorgdraft2020-12meta" href="#single-vocabulary-meta-schemas-uris-under-httpsjson-schemaorgdraft2020-12meta"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Single-Vocabulary Meta-Schemas (URIs under https://json-schema.org/draft/2020-12/meta/)</h2>
+<ul class="md-github">
+<li class="md-github">core</li>
+<li class="md-github">applicator</li>
+<li class="md-github">validation</li>
+<li class="md-github">unevaluated</li>
+<li class="md-github">format-annotation</li>
+<li class="md-github">format-assertion</li>
+<li class="md-github">content</li>
+<li class="md-github">meta-data</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="relative-json-pointers" href="#relative-json-pointers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Relative JSON Pointers</h2>
+<p class="md-github">URI: https://json-schema.org/draft/2020-12/relative-json-pointer</p>
+<p class="md-github">Extends JSON Pointer for relative addressing; not used by Core/Validation.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="migration-paths-between-drafts" href="#migration-paths-between-drafts"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Migration Paths Between Drafts</h2>
+<ul class="md-github">
+<li class="md-github">Draft-2019-09 → Draft-2020-12</li>
+<li class="md-github">Draft-07 → Draft-2019-09</li>
+<li class="md-github">Draft-06 → Draft-07</li>
+<li class="md-github">Draft-04 → Draft-06</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="access-note" href="#access-note"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Access Note</h2>
+<p class="md-github">Download each URI and open locally to avoid GitHub Pages JSON rendering limitations.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: JSON Schema</li>
+<li class="md-github">URL: https://json-schema.org/specification.html</li>
+<li class="md-github">License: CC0 1.0 Universal</li>
+<li class="md-github">Crawl Date: 2025-05-07T06:32:31.611Z</li>
+<li class="md-github">Data Size: 2325185 bytes</li>
+<li class="md-github">Links Found: 10204</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-07</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-07T10:41:21.916Z</p>
+  </footer>
+</body>
+</html>
