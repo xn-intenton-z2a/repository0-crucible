@@ -1,46 +1,38 @@
 # Purpose
-Extend the existing CLI tool to output random ASCII art facial expressions with support for both built-in and user-defined faces via a configuration file. This provides flexible emotional feedback for the AI.
+Extend the existing CLI tool to allow users to output multiple random ASCII facial expressions in a single invocation using a new --count flag. This enhances emotional feedback by letting scripts or users request batches of faces for richer interactions.
 
 # Implementation Details
-1. Load Faces from Configuration
-   - Add a function `loadFaces(configPath)` in `src/lib/main.js`.
-   - Use `fs` to read the file at `configPath` and `js-yaml` to parse YAML or JSON.
-   - Validate that the parsed content is an array of non-empty strings.
-   - Throw an error for missing file, parse errors, or invalid formats.
+1. Parse Count Flag
+   - Extend minimist configuration in main to include a numeric option count (alias c) with default value 1.
+   - Validate that count is a positive integer; if invalid (zero, negative, or non-integer), print help message and exit without error code change.
 
-2. Random Face Selection
-   - Implement `getRandomFace(faces)` that returns one element randomly from the provided array.
-   - Ensure uniform distribution over the array.
+2. Generate Multiple Faces
+   - In main, after determining ascii-face mode, loop from 1 to count:
+     • Call getRandomFace() each iteration.
+     • Print each face on its own console line.
+   - Preserve existing behavior when count is 1 (single face output).
 
-3. Main Function Enhancements
-   - Update `main(args)` to parse CLI options:
-     • `--face` to invoke face output mode.
-     • `--config <filepath>` to load additional faces.
-     • `--help` to show usage instructions for these flags.
-   - If `--face` is present:
-     • Load built-in face list from a constant.
-     • If `--config` is provided, merge built-in faces with `loadFaces` output.
-     • Call `getRandomFace` on the merged list and print the result.
-   - Preserve existing behavior for other flags and default argument logging.
+3. Help Message Update
+   - Update helpMessage to document --count (or -c) and its default.
+   - Show usage examples for multiple faces.
 
 # CLI Interface
-- `node src/lib/main.js --face`
-  Outputs a random built-in ASCII face.
-- `node src/lib/main.js --face --config path/to/faces.yaml`
-  Outputs a random face selected from built-in and user-defined faces in the YAML or JSON file.
-- `node src/lib/main.js --help`
-  Displays usage for `--face`, `--config`, and other existing options.
+- node src/lib/main.js --ascii-face --count 3
+  Outputs three random ASCII faces, one per line.
+- node src/lib/main.js --ascii-face -c 5
+  Outputs five random ASCII faces.
+- node src/lib/main.js --help
+  Displays updated usage including count flag.
 
 # Testing
-1. Unit Tests in `tests/unit/main.test.js`:
-   - Test `loadFaces` with a valid YAML and JSON fixture returning correct arrays.
-   - Test `loadFaces` error cases: missing file, invalid YAML, non-array content.
-   - Test `getRandomFace` picks an element from a known array stochastically.
-2. CLI Integration Test in `tests/e2e/cli.test.js`:
-   - Simulate process argv for `--face`, capture stdout, assert output is one of the built-in faces.
-   - Simulate `--face --config tests/fixtures/custom-faces.yaml` and assert output is from merged list.
+1. Unit Tests in tests/unit/main.test.js:
+   - Test that default invocation (no flags) prints exactly one face.
+   - Test that --ascii-face --count N prints N faces and console.log called N times.
+   - Test alias -c with valid and invalid values (zero, negative, non-integer) leading to help output.
+
+2. CLI Integration in tests/e2e/cli.test.js:
+   - Simulate node CLI with --ascii-face --count 4 and assert four lines of output belonging to asciiFaces.
 
 # Documentation
-- Update `README.md` under Features to describe custom face support.
-- Provide example YAML format and sample invocation with `--config`.
-- Document the API of `loadFaces` and `getRandomFace` under a Usage section.
+- Update README.md and docs/USAGE.md to describe --count and provide examples with both long and short flags.
+- Include API note on count parameter for future programmatic calls to main(args).
