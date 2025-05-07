@@ -1,0 +1,561 @@
+tests/unit/http_api.test.js
+# tests/unit/http_api.test.js
+import { describe, test, expect, afterAll } from 'vitest';
+import { spawn } from 'child_process';
+import http from 'http';
+import { fileURLToPath } from 'url';
+
+const mainPath = fileURLToPath(new URL('../../src/lib/main.js', import.meta.url));
+
+describe('HTTP API Server Mode', () => {
+  let server;
+  let port;
+
+  // helper to start server
+  function startServer() {
+    return new Promise((resolve) => {
+      const proc = spawn(process.execPath, [mainPath, '--serve', '--port', '0'], {
+        stdio: ['ignore', 'pipe', 'pipe']
+      });
+      proc.stdout.setEncoding('utf8');
+      let buf = '';
+      proc.stdout.on('data', (data) => {
+        buf += data;
+        const match = buf.match(/Listening on http:\/\/localhost:(\d+)/);
+        if (match) {
+          const p = Number(match[1]);
+          resolve({ proc, p });
+        }
+      });
+    });
+  }
+
+  function httpGetJson(pathname, port) {
+    return new Promise((resolve) => {
+      const options = {
+        hostname: 'localhost',
+        port,
+        path: pathname,
+        method: 'GET'
+      };
+      const req = http.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => (data += chunk));
+        res.on('end', () => {
+          let json = null;
+          try {
+            json = JSON.parse(data);
+          } catch {}
+          resolve({ status: res.statusCode, json });
+        });
+      });
+      req.on('error', () => resolve({ status: 500, json: null }));
+      req.end();
+    });
+  }
+
+  afterAll(() => {
+    if (server && server.proc) {
+      server.proc.kill();
+    }
+  });
+
+  test('GET /face with valid params', async () => {
+    server = await startServer();
+    port = server.p;
+    const { status, json } = await httpGetJson('/face?count=2&seed=42', port);
+    expect(status).toBe(200);
+    expect(Array.isArray(json.faces)).toBe(true);
+    expect(json.faces.length).toBe(2);
+  });
+
+  test('GET /face with invalid count', async () => {
+    const { status, json } = await httpGetJson('/face?count=0', port);
+    expect(status).toBe(400);
+    expect(json.error).toMatch(/Invalid count/);
+  });
+
+  test('GET /foo returns 404', async () => {
+    const { status, json } = await httpGetJson('/foo', port);
+    expect(status).toBe(404);
+    expect(json.error).toBe('Not Found');
+  });
+
+  test('GET /list-faces returns array', async () => {
+    const { status, json } = await httpGetJson('/list-faces', port);
+    expect(status).toBe(200);
+    expect(Array.isArray(json.faces)).toBe(true);
+  });
+
+  test('GET /list-categories returns array', async () => {
+    const { status, json } = await httpGetJson('/list-categories', port);
+    expect(status).toBe(200);
+    expect(Array.isArray(json.categories)).toBe(true);
+  });
+
+  test('GET /diagnostics returns fields', async () => {
+    const { status, json } = await httpGetJson('/diagnostics', port);
+    expect(status).toBe(200);
+    expect(json.nodeVersion).toBeDefined();
+    expect(json.cliVersion).toBeDefined();
+    expect(typeof json.builtInFacesCount).toBe('number');
+    expect(Array.isArray(json.categories)).toBe(true);
+    expect(typeof json.timestamp).toBe('string');
+  });
+
+  test('GET /openapi.json returns OpenAPI spec', async () => {
+    const { status, json } = await httpGetJson('/openapi.json', port);
+    expect(status).toBe(200);
+    expect(json.openapi).toBe('3.0.3');
+    expect(json.paths).toBeDefined();
+    const keys = Object.keys(json.paths);
+    [' /face','/list-faces','/list-categories','/diagnostics','/openapi.json'].forEach((p) => {
+      expect(keys).toContain(p);
+    });
+  });
+});tests/unit/main.api.test.js
+# tests/unit/main.api.test.js
+import { describe, test, expect, beforeAll, afterAll } from 'vitest';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { writeFileSync, unlinkSync } from 'fs';
+import {
+  generateFaces,
+  listFaces,
+  listCategories,
+  builtInFaces
+} from '@src/lib/main.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const tempApiPath = path.join(__dirname, 'temp_api_faces.json');
+
+beforeAll(() => {
+  const custom = {
+    faces: [
+      { face: '(^_^)', categories: ['excited'] },
+      { face: '(>_<)', categories: ['angry', 'excited'] }
+    ]
+  };
+  writeFileSync(tempApiPath, JSON.stringify(custom));
+});
+
+afterAll(() => {
+  try { unlinkSync(tempApiPath); } catch {};
+});
+
+describe('Library API', () => {
+  test('listCategories returns built-in categories', () => {
+    const cats = listCategories();
+    const expected = Array.from(new Set(builtInFaces.flatMap(f => f.categories)));
+    expect(new Set(cats)).toEqual(new Set(expected));
+  });
+
+  test('listFaces returns all built-in faces', () => {
+    const faces = listFaces();
+    const expected = builtInFaces.map(f => f.face);
+    expect(faces).toEqual(expected);
+  });
+
+  test('listFaces with category filter', () => {
+    const happyFaces = builtInFaces
+      .filter(f => f.categories.includes('happy'))
+      .map(f => f.face);
+    expect(listFaces({ category: 'happy' })).toEqual(happyFaces);
+  });
+
+  test('listFaces invalid category throws error', () => {
+    expect(() => listFaces({ category: 'foo' }))
+      .toThrow(/Invalid category 'foo'/);
+  });
+
+  test('listFaces with custom file replaces built-in faces', () => {
+    const faces = listFaces({ facesFile: tempApiPath });
+    expect(faces).toEqual(['(^_^)', '(>_<)']);
+  });
+
+  test('listCategories with custom file includes custom category', () => {
+    const cats = listCategories({ facesFile: tempApiPath });
+    expect(cats).toContain('excited');
+    expect(cats).toContain('angry');
+  });
+});
+
+describe('generateFaces', () => {
+  test('generateFaces returns correct count', () => {
+    const faces = generateFaces({ count: 3, seed: 1 });
+    expect(faces).toHaveLength(3);
+  });
+
+  test('generateFaces reproducible with same seed', () => {
+    const a = generateFaces({ count: 4, seed: 42 });
+    const b = generateFaces({ count: 4, seed: 42 });
+    expect(a).toEqual(b);
+  });
+
+  test('generateFaces invalid count throws error', () => {
+    expect(() => generateFaces({ count: 0 }))
+      .toThrow(/Invalid count/);
+  });
+
+  test('generateFaces count exceeds available throws error', () => {
+    expect(() => generateFaces({ count: builtInFaces.length + 1 }))
+      .toThrow(/Requested .* faces but only .* available/);
+  });
+});tests/unit/interactive.test.js
+# tests/unit/interactive.test.js
+import { describe, test, expect, beforeAll, afterAll } from 'vitest';
+import { spawn } from 'child_process';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { writeFileSync, unlinkSync } from 'fs';
+import { builtInFaces } from '../../src/lib/main.js';
+
+const mainPath = fileURLToPath(new URL('../../src/lib/main.js', import.meta.url));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const interactiveTempPath = path.join(__dirname, 'temp_interactive.json');
+
+// Create a temporary custom faces file for testing
+beforeAll(() => {
+  const custom = {
+    faces: [
+      { face: 'X1', categories: ['c1'] },
+      { face: 'X2', categories: [] }
+    ]
+  };
+  writeFileSync(interactiveTempPath, JSON.stringify(custom));
+});
+
+afterAll(() => {
+  try { unlinkSync(interactiveTempPath); } catch {}
+});
+
+function runInteractive(commands, timeout = 100) {
+  return new Promise((resolve) => {
+    const proc = spawn(process.execPath, [mainPath, '--interactive'], { stdio: ['pipe', 'pipe', 'pipe'] });
+    let stdout = '';
+    proc.stdout.on('data', (data) => { stdout += data.toString(); });
+    let idx = 0;
+    function sendNext() {
+      if (idx < commands.length) {
+        proc.stdin.write(commands[idx] + '\n');
+        idx++;
+        setTimeout(sendNext, timeout);
+      } else {
+        proc.stdin.end();
+      }
+    }
+    sendNext();
+    proc.on('close', (code) => {
+      resolve({ code, stdout });
+    });
+  });
+}
+
+describe('Interactive Mode', () => {
+  test('exit command ends session', async () => {
+    const { code, stdout } = await runInteractive(['exit']);
+    expect(code).toBe(0);
+    expect(stdout).toContain('Available commands');
+    expect(stdout).toContain('Goodbye!');
+  });
+
+  test('face command prints one face', async () => {
+    const { code, stdout } = await runInteractive(['face', 'exit']);
+    expect(code).toBe(0);
+    const lines = stdout.split(/\r?\n/).filter(Boolean);
+    const printedFaces = builtInFaces.map((f) => f.face);
+    const found = lines.some((line) => printedFaces.includes(line));
+    expect(found).toBe(true);
+  });
+
+  test('list-categories command prints valid categories', async () => {
+    const { code, stdout } = await runInteractive(['list-categories', 'exit']);
+    expect(code).toBe(0);
+    const lines = stdout.split(/\r?\n/).filter(Boolean);
+    const cats = Array.from(new Set(builtInFaces.flatMap(f => f.categories)));
+    cats.forEach(cat => {
+      expect(lines).toContain(cat);
+    });
+  });
+
+  test('list-faces --category sad prints sad faces', async () => {
+    const { code, stdout } = await runInteractive(['list-faces --category sad', 'exit']);
+    expect(code).toBe(0);
+    const lines = stdout.split(/\r?\n/).filter(Boolean);
+    const sadFaces = builtInFaces.filter(f => f.categories.includes('sad')).map(f => f.face);
+    const printed = lines.filter(line => sadFaces.includes(line));
+    expect(printed.length).toBeGreaterThan(0);
+  });
+
+  test('seed command sets default seed for reproducible output', async () => {
+    const { code, stdout } = await runInteractive(['seed 42', 'face', 'face', 'exit'], 50);
+    expect(code).toBe(0);
+    const lines = stdout.split(/\r?\n/).filter(Boolean);
+    expect(lines).toContain('Default seed set to 42');
+    const faceLines = lines.filter(line => builtInFaces.map(f => f.face).includes(line));
+    expect(faceLines.length).toBe(2);
+    expect(faceLines[0]).toBe(faceLines[1]);
+  });
+
+  test('invalid seed foo prints error and continues REPL', async () => {
+    const { code, stdout } = await runInteractive(['seed foo', 'exit']);
+    expect(code).toBe(0);
+    expect(stdout).toContain('Invalid seed value: foo');
+    expect(stdout).toContain('Goodbye!');
+  });
+
+  test('category command persists default category for list-faces', async () => {
+    const { code, stdout } = await runInteractive(['category happy', 'list-faces', 'exit']);
+    expect(code).toBe(0);
+    const lines = stdout.split(/\r?\n/).filter(Boolean);
+    expect(lines).toContain('Default category set to happy');
+    const happyFaces = builtInFaces.filter(f => f.categories.includes('happy')).map(f => f.face);
+    happyFaces.forEach(face => {
+      expect(lines).toContain(face);
+    });
+  });
+
+  test('custom merge persists session defaults', async () => {
+    const { code, stdout } = await runInteractive([`custom ${interactiveTempPath} --merge`, 'list-faces', 'exit']);
+    expect(code).toBe(0);
+    const lines = stdout.split(/\r?\n/).filter(Boolean);
+    expect(lines).toContain(`Custom faces merged from ${interactiveTempPath}`);
+    expect(lines).toContain('X1');
+    expect(lines).toContain('X2');
+  });
+});
+tests/unit/main.test.js
+# tests/unit/main.test.js
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
+import { main, builtInFaces } from "@src/lib/main.js";
+import { writeFileSync, unlinkSync } from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const tempPath = path.join(__dirname, "temp_faces.json");
+
+describe("Main Module Import", () => {
+  test("should be non-null", () => {
+    expect(main).not.toBeNull();
+  });
+});
+
+describe("Main Output", () => {
+  let logs = [];
+  const originalLog = console.log;
+
+  beforeEach(() => {
+    logs = [];
+    console.log = (...args) => {
+      logs.push(args.join(" "));
+    };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+  });
+
+  test("should terminate without error without --face", () => {
+    expect(() => main([])).not.toThrow();
+    expect(logs).toHaveLength(1);
+    expect(logs[0]).toBe("Run with: []");
+  });
+
+  test("should log one random face with --face", () => {
+    main(["--face"]);
+    expect(logs).toHaveLength(1);
+    const allFaces = builtInFaces.map((item) => item.face);
+    expect(allFaces).toContain(logs[0]);
+  });
+
+  test("should log three distinct faces with --face 3", () => {
+    main(["--face", "3"]);
+    expect(logs).toHaveLength(3);
+    const unique = new Set(logs);
+    expect(unique.size).toBe(3);
+    const allFaces = builtInFaces.map((item) => item.face);
+    logs.forEach((face) => {
+      expect(allFaces).toContain(face);
+    });
+  });
+
+  test("should log reproducible sequence with --face --seed 42", () => {
+    main(["--face", "--seed", "42"]);
+    const firstRun = [...logs];
+    logs = [];
+    console.log = (...args) => {
+      logs.push(args.join(" "));
+    };
+    main(["--face", "--seed", "42"]);
+    expect(logs).toEqual(firstRun);
+  });
+});
+
+describe("Category Filtering", () => {
+  let logs = [];
+  const originalLog = console.log;
+
+  beforeEach(() => {
+    logs = [];
+    console.log = (...args) => {
+      logs.push(args.join(" "));
+    };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+  });
+
+  test("should log one face from happy category", () => {
+    main(["--face", "--category", "happy"]);
+    expect(logs).toHaveLength(1);
+    const happyFaces = builtInFaces
+      .filter((item) => item.categories.includes("happy"))
+      .map((item) => item.face);
+    expect(happyFaces).toContain(logs[0]);
+  });
+
+  test("invalid category should throw error", () => {
+    expect(() =>
+      main(["--face", "--category", "unknown"])
+    ).toThrow(/Invalid category/);
+  });
+
+  test("count exceeds category available should throw error", () => {
+    // 'sad' category has only one face
+    expect(() =>
+      main(["--face", "2", "--category", "sad"])
+    ).toThrow(/only \d+ available/);
+  });
+});
+
+// Tests for custom faces and dynamic category recognition
+beforeAll(() => {
+  const custom = {
+    faces: [
+      { face: "(^_^)", categories: ["excited"] },
+      { face: "(>_<)", categories: ["excited", "angry"] }
+    ]
+  };
+  writeFileSync(tempPath, JSON.stringify(custom));
+});
+
+afterAll(() => {
+  try { unlinkSync(tempPath); } catch {};
+});
+
+describe("Custom Faces Integration", () => {
+  let logs = [];
+  const originalLog = console.log;
+
+  beforeEach(() => {
+    logs = [];
+    console.log = (...args) => { logs.push(args.join(" ")); };
+  });
+
+  afterEach(() => {
+    console.log = originalLog;
+  });
+
+  test("should recognize custom category 'excited' after loading custom file", () => {
+    main(["--face", "--faces-file", tempPath, "--category", "excited"]);
+    expect(logs).toHaveLength(1);
+    const possible = ["(^_^)", "(>_<)"];
+    expect(possible).toContain(logs[0]);
+  });
+
+  test("invalid custom category should report custom categories in error", () => {
+    expect(() =>
+      main(["--face", "--faces-file", tempPath, "--category", "foo"])
+    ).toThrow(/Valid categories:.*excited/);
+  });
+});
+
+// Listing Flags Tests
+import { describe as describeList, test as testList, expect as expectList, beforeEach as beforeEachList, afterEach as afterEachList } from 'vitest';
+describeList("Listing Flags", () => {
+  let logs = [];
+  const originalLog = console.log;
+
+  beforeEachList(() => {
+    logs = [];
+    console.log = (...args) => { logs.push(args.join(" ")); };
+  });
+
+  afterEachList(() => {
+    console.log = originalLog;
+  });
+
+  testList("list-categories prints all built-in categories", () => {
+    main(["--list-categories"]);
+    const expected = Array.from(new Set(builtInFaces.flatMap(f => f.categories)));
+    expectList(logs).toEqual(expected);
+  });
+
+  testList("list-faces prints all built-in faces in order", () => {
+    main(["--list-faces"]);
+    const expected = builtInFaces.map(f => f.face);
+    expectList(logs).toEqual(expected);
+  });
+
+  testList("list-faces --category happy prints only happy faces", () => {
+    main(["--list-faces", "--category", "happy"]);
+    const expected = builtInFaces
+      .filter(f => f.categories.includes("happy"))
+      .map(f => f.face);
+    expectList(logs).toEqual(expected);
+  });
+
+  testList("list-faces with invalid category throws error", () => {
+    expect(() =>
+      main(["--list-faces", "--category", "foo"])
+    ).toThrow(/Invalid category 'foo'/);
+  });
+
+  testList("list-faces with custom faces file replaces built-in faces", () => {
+    main(["--list-faces", "--faces-file", tempPath]);
+    const customFaces = ["(^_^)", "(>_<)"];
+    expectList(logs).toEqual(customFaces);
+  });
+
+  testList("list-faces with custom faces and merge-faces appends to built-in faces", () => {
+    main(["--list-faces", "--faces-file", tempPath, "--merge-faces"]);
+    const expected = builtInFaces.map(f => f.face).concat(["(^_^)", "(>_<)"]);
+    expectList(logs).toEqual(expected);
+  });
+});
+tests/unit/color.test.js
+# tests/unit/color.test.js
+import { describe, test, expect } from 'vitest';
+import { spawnSync } from 'child_process';
+import { fileURLToPath } from 'url';
+
+const mainPath = fileURLToPath(new URL('../../src/lib/main.js', import.meta.url));
+
+describe('Color Output', () => {
+  test('default color behavior wraps face in green ANSI codes', () => {
+    const res = spawnSync(process.execPath, [mainPath, '--face', '--color'], { encoding: 'utf8' });
+    expect(res.status).toBe(0);
+    const line = res.stdout.trim();
+    expect(line).toMatch(/^\x1b\[32m.*\x1b\[0m$/);
+  });
+
+  test('named color support wraps faces in specified ANSI codes', () => {
+    const res = spawnSync(process.execPath, [mainPath, '--face', '3', '--color', 'red'], { encoding: 'utf8' });
+    expect(res.status).toBe(0);
+    const lines = res.stdout.trim().split(/\r?\n/);
+    expect(lines).toHaveLength(3);
+    lines.forEach((ln) => {
+      expect(ln).toMatch(/^\x1b\[31m.*\x1b\[0m$/);
+    });
+  });
+
+  test('invalid color handling exits with error and descriptive message', () => {
+    const res = spawnSync(process.execPath, [mainPath, '--face', '--color', 'invalid'], { encoding: 'utf8' });
+    expect(res.status).not.toBe(0);
+    expect(res.stderr.trim()).toBe(
+      "Unsupported color 'invalid'. Supported colors: black, red, green, yellow, blue, magenta, cyan, white."
+    );
+  });
+});
