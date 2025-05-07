@@ -8,6 +8,11 @@ Comprehensive reference for all built-in Node.js modules—including file I/O (`
 Minimalist argument parser for Node.js supporting short and long flags, type coercion, default values, and aliases. Powers parsing of CLI options such as `--face`, `--count`, `--serve`, `--port`, `--theme`, `--color`, and more. Enables zero-dependency interfaces with clear validation and help messaging. Highly authoritative due to widespread community adoption; last updated July 2023.
 ## MIT License
 
+# Commander.js
+## https://github.com/tj/commander.js
+Feature-rich framework for building command-line interfaces in Node.js, providing structured option parsing, subcommands, automatic help and version flags, argument validation, variadic options, and nested command hierarchies. Offers actionable patterns for robust CLI architecture, consistent exit codes, and extensible plugin support. Last updated May 2024; maintained by open-source contributors under the MIT License.
+## MIT License
+
 # js-yaml
 ## https://github.com/nodeca/js-yaml#readme
 Pure JavaScript YAML parser and dumper supporting safe loading, custom schemas, and detailed error reporting. Documents `yaml.load`, `yaml.dump`, schema customization, and security considerations for untrusted inputs. Crucial for reading and validating `.cruciblerc` and `cruconfig.yaml` face lists. Last updated May 2024; widely used in Node.js projects.
@@ -48,9 +53,9 @@ Type-safe schema validation library for TypeScript and JavaScript. Documents pri
 De facto standard for defining JSON data structures and validation rules. Covers meta-schemas, validation keywords (`type`, `properties`, `required`), data types, and cross-document references (`$ref`). Critical for defining and validating HTTP request/response payloads and API contracts. Draft 2020-12; maintained under CC0 1.0 Universal.
 ## CC0 1.0 Universal
 
-# MDN Web Docs - HTTP & URL APIs
-## https://developer.mozilla.org/en-US/docs/Web/HTTP
-Detailed MDN reference for the HTTP protocol: methods, status codes, headers (including content negotiation and CORS), and best practices for API design. Also covers WHATWG URL API (`URL`, `URLSearchParams`) for constructing and parsing query strings in Node.js. Last updated April 2024; maintained by Mozilla.
+# MDN Web Docs - Regular Expressions
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+Authoritative guide to JavaScript Regular Expressions: syntax, flags, character classes, grouping, lookarounds, and performance considerations. Essential for implementing the `--filter` feature and validating user-supplied patterns. Last updated 2024; maintained by Mozilla.
 ## CC BY-SA 2.5
 
 # Chalk ANSI Styling
@@ -62,16 +67,6 @@ Lightweight library for styling terminal string output with ANSI colors and styl
 ## https://github.com/davidbau/seedrandom
 Robust pseudo-random number generator supporting seeding via string or numeric seeds, deterministic floats/integers, reproducible sequences, and state export/import. Implements an LCG algorithm with performance trade-offs. Enables deterministic face generation in CLI and HTTP modes and simplifies testing. Last updated December 2023.
 ## MIT License
-
-# ASCII Art & CLI Patterns
-## https://www.npmjs.com/package/ascii-faces
-Curated collection of ASCII art facial expressions with theming, batch selection, and simple API for random retrieval. Demonstrates extensibility patterns and integration of custom palettes. Influenced by classic CLI tools like Cowsay (text wrapping, streaming output) for designing robust terminal feedback. Last published January 2024.
-## MIT License
-
-# MDN Web Docs - Regular Expressions
-## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
-Authoritative guide to JavaScript Regular Expressions: syntax, flags, character classes, grouping, lookarounds, and performance considerations. Essential for implementing the `--filter` feature and validating user-supplied patterns. Last updated 2024; maintained by Mozilla.
-## CC BY-SA 2.5
 
 # Unicode Consortium - Emoji List
 ## https://unicode.org/emoji/charts/emoji-list.html
