@@ -18,6 +18,11 @@ Provides interfaces for reading lines from input streams, interactive prompts, a
 Explains ES module support in Node.js: `import`/`export`, `import.meta.url`, dynamic `import()`, package exports, and file URL resolution. Guides structuring the CLI and HTTP server as ESM, handling package metadata, and ensuring consistent module imports. Last updated June 2024; maintained by the Node.js Foundation.
 ## Node.js Foundation (MIT-like)
 
+# minimist
+## https://github.com/substack/minimist
+Minimist is a minimalist argument parser for Node.js, supporting parsing of short and long flags, type coercion, default values, and aliases. In this repository, it powers parsing for flags like `--ascii-face`, `--count`, and `--help`. Configurable boolean flags, alias mapping, and default values make it ideal for simple CLI tools. Last updated July 2023; widely used and highly authoritative based on community adoption.
+## MIT License
+
 # js-yaml
 ## https://github.com/nodeca/js-yaml#readme
 A pure JavaScript YAML parser and dumper supporting safe loading, custom schemas, and error handling. Documents `yaml.load`, `yaml.dump`, and security considerations when parsing untrusted content. Used for reading configuration files (`.cruciblerc`, `cruconfig.yaml`) and custom face definitions (`--faces-file`). Last updated May 2024; highly authoritative community project.
@@ -27,11 +32,6 @@ A pure JavaScript YAML parser and dumper supporting safe loading, custom schemas
 ## https://github.com/motdotla/dotenv#readme
 Lightweight module to load environment variables from a `.env` file into `process.env`. Covers parsing rules, override behavior, security best practices, and usage in production workflows. Enables management of runtime configuration (e.g., `PORT`, `OPENAI_API_KEY`) across CLI and server modes. Last updated March 2024; widely adopted.
 ## MIT License
-
-# GitHub Actions Workflow Syntax
-## https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
-Official guide to authoring GitHub Actions workflows: YAML schema for triggers, jobs, steps, reusable workflows, expressions, and environment variables. Vital for setting up CI/CD pipelines, test runners, linting, and release automation. Last updated 2024; maintained by GitHub.
-## CC BY 4.0
 
 # Vitest Testing Framework
 ## https://vitest.dev/guide/
@@ -75,5 +75,5 @@ JSON Schema is the de facto standard for defining the structure and validation r
 
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
-Express is a minimalist web framework for Node.js, offering routing, middleware, and template engine integration. The documentation covers application methods, routing parameters, request/response objects, error-handling middleware, and view rendering. Provides scalable patterns for building HTTP server endpoints and integrates with Swagger UI and template engines. Last updated May 2024; maintained by the Express.js Foundation. MIT License.
+Express is a minimalist web framework for Node.js, offering routing, middleware, and template engine integration. The documentation covers application methods, routing parameters, request/response objects, error-handling middleware, and view rendering. Provides scalable patterns for building HTTP server endpoints and integrates with Swagger UI and template engines. Last updated May 2024; maintained by the Express.js Foundation.
 ## MIT License
