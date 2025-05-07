@@ -1,5 +1,6 @@
-import { describe, test, expect, vi, afterEach } from "vitest";
+import { describe, test, expect, vi, afterEach, beforeAll, afterAll } from "vitest";
 import { main, asciiFaces, faceThemes } from "@src/lib/main.js";
+import http from "http";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -81,5 +82,99 @@ describe("Main Output", () => {
     main(["--face", "--count", "0"]);
     expect(logSpy).toHaveBeenCalledTimes(1);
     expect(logSpy.mock.calls[0][0]).toMatch(/^Usage:/);
+  });
+});
+
+// HTTP Server Mode tests
+
+describe("HTTP Server Mode", () => {
+  let server;
+  let port;
+
+  beforeAll(() => {
+    server = main(["--serve", "--port", "0"]);
+    return new Promise((resolve) => {
+      server.on("listening", () => {
+        const addr = server.address();
+        port = addr.port;
+        resolve();
+      });
+    });
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
+  function httpRequest(path, headers = {}) {
+    return new Promise((resolve, reject) => {
+      const options = { hostname: "localhost", port, path, headers };
+      const req = http.get(options, (res) => {
+        let data = "";
+        res.on("data", (chunk) => { data += chunk; });
+        res.on("end", () => { resolve({ res, body: data }); });
+      });
+      req.on("error", reject);
+    });
+  }
+
+  test("GET /face default returns JSON string", async () => {
+    const { res, body } = await httpRequest("/face");
+    expect(res.statusCode).toBe(200);
+    expect(res.headers["content-type"]).toMatch(/application\/json/);
+    const parsed = JSON.parse(body);
+    expect(asciiFaces).toContain(parsed);
+  });
+
+  test("GET /face?count=2 returns JSON array", async () => {
+    const { res, body } = await httpRequest("/face?count=2");
+    expect(res.statusCode).toBe(200);
+    expect(res.headers["content-type"]).toMatch(/application\/json/);
+    const arr = JSON.parse(body);
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr).toHaveLength(2);
+    arr.forEach(face => expect(asciiFaces).toContain(face));
+  });
+
+  test("GET /face?count=0 returns 400", async () => {
+    const { res, body } = await httpRequest("/face?count=0");
+    expect(res.statusCode).toBe(400);
+    expect(res.headers["content-type"]).toMatch(/application\/json/);
+    const err = JSON.parse(body);
+    expect(err).toEqual({ error: "Invalid count" });
+  });
+
+  test("GET /face with Accept: text/plain returns plain text", async () => {
+    const { res, body } = await httpRequest("/face", { Accept: "text/plain" });
+    expect(res.statusCode).toBe(200);
+    expect(res.headers["content-type"]).toMatch(/text\/plain/);
+    expect(body.split("\n")).toHaveLength(1);
+    expect(asciiFaces).toContain(body);
+  });
+
+  test("GET /faces default returns JSON array of all faces", async () => {
+    const { res, body } = await httpRequest("/faces");
+    expect(res.statusCode).toBe(200);
+    expect(res.headers["content-type"]).toMatch(/application\/json/);
+    const arr = JSON.parse(body);
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr).toEqual(asciiFaces);
+  });
+
+  test("GET /faces?includeCustom=foo returns 400", async () => {
+    const { res, body } = await httpRequest("/faces?includeCustom=foo");
+    expect(res.statusCode).toBe(400);
+    expect(res.headers["content-type"]).toMatch(/application\/json/);
+    const err = JSON.parse(body);
+    expect(err).toEqual({ error: "Invalid includeCustom flag" });
+  });
+
+  test("GET /faces with Accept: text/plain returns plain text list", async () => {
+    const { res, body } = await httpRequest("/faces", { Accept: "text/plain" });
+    expect(res.statusCode).toBe(200);
+    expect(res.headers["content-type"]).toMatch(/text\/plain/);
+    const lines = body.split("\n");
+    expect(lines).toHaveLength(asciiFaces.length);
+    lines.forEach(line => expect(asciiFaces).toContain(line));
   });
 });

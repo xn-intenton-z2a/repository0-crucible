@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-import { fileURLToPath } from "url";
+import { fileURLToPath, URL as URLClass } from "url";
 import minimist from "minimist";
 import fs from "fs";
 import yaml from "js-yaml";
+import http from "http";
 
 /**
  * Predefined list of ASCII art facial expressions for emotional feedback.
@@ -76,37 +77,32 @@ export function getRandomFace(faces = asciiFaces) {
 }
 
 /**
- * Main CLI entry point.
+ * Main CLI entry point and HTTP server mode.
  * @param {string[]} args - Command-line arguments.
  */
 export function main(args = process.argv.slice(2)) {
   const themeNames = Object.keys(faceThemes).join(", ");
   const helpMessage =
-    "Usage: node src/lib/main.js [--face] [--count <n>] [--config <path>] [--theme <theme>] [--help]\n" +
+    "Usage: node src/lib/main.js [--face] [--count <n>] [--config <path>] [--theme <theme>] [--serve] [--port <n>] [--help]\n" +
     "Options:\n" +
     "  --face              Display random ASCII face(s)\n" +
     "  --count, -c <n>     Number of faces to output (default: 1)\n" +
     "  --config <path>     Load additional faces from config file (YAML or JSON)\n" +
     "  --theme, -t <theme> Predefined face theme (" + themeNames + ")\n" +
-    "  --help              Show this help message";
+    "  --serve, -s         Start HTTP server mode\n" +
+    "  --port, -p <n>      Server port (default: 3000)\n" +
+    "  --help, -h          Show this help message";
 
   const flags = minimist(args, {
-    boolean: ["face", "help"],
-    string: ["config", "theme"],
-    alias: { h: "help", c: "count", t: "theme" },
-    default: { count: 1 }
+    boolean: ["face", "help", "serve"],
+    string: ["config", "theme", "port"],
+    alias: { h: "help", c: "count", t: "theme", s: "serve", p: "port" },
+    default: { count: 1, port: 3000 }
   });
 
-  // Validate unknown flags
   const knownFlags = [
-    "--face",
-    "--count",
-    "--config",
-    "--theme",
-    "--help",
-    "-h",
-    "-c",
-    "-t"
+    "--face","--count","--config","--theme","--serve","--port","--help",
+    "-h","-c","-t","-s","-p"
   ];
   const unknownFlags = args.filter(
     (arg) => (arg.startsWith("--") || arg.startsWith("-")) && !knownFlags.includes(arg)
@@ -121,6 +117,93 @@ export function main(args = process.argv.slice(2)) {
     return;
   }
 
+  // HTTP server mode
+  if (flags.serve) {
+    let portNum = Number(flags.port);
+    if (!Number.isInteger(portNum) || portNum < 0) {
+      console.log(helpMessage);
+      return;
+    }
+    // Load custom faces if provided
+    let customFaces = [];
+    if (flags.config) {
+      try {
+        customFaces = loadFaces(flags.config);
+      } catch (err) {
+        console.error(err.message);
+        process.exit(1);
+      }
+    }
+    const builtInFaces = [...asciiFaces];
+    const baseFaces = builtInFaces.concat(customFaces);
+
+    const server = http.createServer((req, res) => {
+      const reqUrl = new URLClass(req.url, `http://${req.headers.host}`);
+      const pathname = reqUrl.pathname;
+      const query = Object.fromEntries(reqUrl.searchParams.entries());
+      let statusCode = 200;
+      let responseBody = "";
+      let contentType = "application/json";
+
+      if (pathname === "/face") {
+        const countParam = reqUrl.searchParams.get("count") || "1";
+        const countNum = parseInt(countParam, 10);
+        if (!Number.isInteger(countNum) || countNum < 1) {
+          statusCode = 400;
+          responseBody = JSON.stringify({ error: "Invalid count" });
+        } else {
+          const facesOut = [];
+          for (let i = 0; i < countNum; i++) {
+            facesOut.push(getRandomFace(baseFaces));
+          }
+          if (req.headers.accept && req.headers.accept.includes("text/plain")) {
+            contentType = "text/plain";
+            responseBody = countNum === 1 ? facesOut[0] : facesOut.join("\n");
+          } else {
+            contentType = "application/json";
+            responseBody = countNum === 1 ? JSON.stringify(facesOut[0]) : JSON.stringify(facesOut);
+          }
+        }
+      } else if (pathname === "/faces") {
+        const includeParam = reqUrl.searchParams.get("includeCustom");
+        let includeCustom = true;
+        if (includeParam !== null) {
+          if (includeParam === "true") includeCustom = true;
+          else if (includeParam === "false") includeCustom = false;
+          else {
+            statusCode = 400;
+            responseBody = JSON.stringify({ error: "Invalid includeCustom flag" });
+          }
+        }
+        if (statusCode !== 400) {
+          const facesList = builtInFaces.concat(includeCustom ? customFaces : []);
+          if (req.headers.accept && req.headers.accept.includes("text/plain")) {
+            contentType = "text/plain";
+            responseBody = facesList.join("\n");
+          } else {
+            contentType = "application/json";
+            responseBody = JSON.stringify(facesList);
+          }
+        }
+      } else {
+        statusCode = 404;
+        responseBody = JSON.stringify({ error: "Not Found" });
+      }
+
+      res.writeHead(statusCode, { "Content-Type": contentType });
+      res.end(responseBody);
+      console.log(`${req.method} ${pathname} ${JSON.stringify(query)} ${statusCode}`);
+    });
+
+    server.listen(portNum, () => {
+      const addr = server.address();
+      const listenPort = typeof addr === "object" && addr !== null ? addr.port : portNum;
+      console.log(`Server listening on port ${listenPort}`);
+    });
+    return server;
+  }
+
+  // CLI mode
   if (!flags.face) {
     console.log(helpMessage);
     return;
@@ -133,28 +216,23 @@ export function main(args = process.argv.slice(2)) {
   }
 
   // Theme validation
-  if (flags.theme) {
-    if (!faceThemes[flags.theme]) {
-      console.log(helpMessage);
-      return;
-    }
+  if (flags.theme && !faceThemes[flags.theme]) {
+    console.log(helpMessage);
+    return;
   }
 
-  // Prepare faces list based on theme or default
+  // Prepare faces list
   let faces = flags.theme ? [...faceThemes[flags.theme]] : [...asciiFaces];
-
-  // Append custom faces if provided
   if (flags.config) {
     try {
-      const customFaces = loadFaces(flags.config);
-      faces = faces.concat(customFaces);
+      const custom = loadFaces(flags.config);
+      faces = faces.concat(custom);
     } catch (err) {
       console.error(err.message);
       process.exit(1);
     }
   }
 
-  // Output the requested number of faces
   for (let i = 0; i < count; i++) {
     console.log(getRandomFace(faces));
   }
