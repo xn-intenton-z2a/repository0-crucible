@@ -1,6 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
 
 To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
 
@@ -11,7 +11,7 @@ This readme shall evolve into a JavaScript library based on of the seed CONTRIBU
 The repository is intended as a template that includes:
 * A Template Base: A starting point for new projects.
 * A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
 
 ## Installation
 
@@ -23,27 +23,44 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+- `--face`            Display a random ASCII face
+- `--count`, `-c`     Number of faces to output (default: 1)
+- `--config`          Load additional faces from a YAML or JSON file
+- `--theme`, `-t`     Select a predefined face theme (`happy`, `sad`, `surprised`)
+- `--serve`, `-s`     Start HTTP server mode
+- `--port`, `-p`      Specify server port (default: 3000)
+- `--help`, `-h`      Show help message
 
 ## Usage
 
-To run the CLI tool and see help instructions:
-
+### Single face
 ```bash
-node src/lib/main.js --help
+node src/lib/main.js --face
 ```
 
-### Example Commands
+### Batch faces
+```bash
+node src/lib/main.js --face --count 3
+```
 
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
+### Theme selection
+```bash
+node src/lib/main.js --face --theme happy -c 2
+```
 
+### Custom config
+```bash
+node src/lib/main.js --face --config faces.yaml
+```
+
+### HTTP server
+```bash
+node src/lib/main.js --serve --port 8080
+```
 
 ## Incremental Changes Plan
 
-TODO: Add forthcoming changes here.
+This section will track forthcoming improvements and feature enhancements.
 
 ## Contributing
 

@@ -10,74 +10,77 @@ npm install repository0-crucible
 
 ## Features
 
-- Random ASCII face generation (`--face`): Output a single random ASCII face.
-- Batch output (`--count`, `-c`): Output multiple faces in one invocation.
-- Custom faces configuration (`--config <path>`): Load additional faces from a YAML or JSON file.
-- Theme selection (`--theme`, `-t`): Select a predefined face theme (`happy`, `sad`, `surprised`).
-- HTTP server mode (`--serve`, `-s`) with port override (`--port`, `-p`): Serve faces over HTTP.
-- HTTP output formats: JSON (default) and plain text (`Accept: text/plain` header).
+- `--face`            Display a random ASCII face
+- `--count`, `-c`     Number of faces to output (default: 1)
+- `--config`          Load additional faces from a YAML or JSON file
+- `--theme`, `-t`     Select a predefined face theme (`happy`, `sad`, `surprised`)
+- `--serve`, `-s`     Start HTTP server mode
+- `--port`, `-p`      Specify server port (default: 3000)
+- `--help`, `-h`      Show help message
 
 ## CLI Usage Examples
 
+### Single face
 ```bash
 node src/lib/main.js --face
+```
+
+### Batch faces
+```bash
 node src/lib/main.js --face --count 3
+```
+
+### Theme selection
+```bash
 node src/lib/main.js --face --theme happy -c 2
+```
+
+### Custom config
+```bash
 node src/lib/main.js --face --config faces.yaml
 ```
 
-## HTTP Server Mode
+## HTTP Endpoints
 
-Start the HTTP server on the default port (3000):
+All HTTP endpoints return JSON by default. To receive plain text, include the header `Accept: text/plain`.
 
-```bash
-node src/lib/main.js --serve
-```
+### GET /face
 
-Start the HTTP server on a custom port:
-
-```bash
-node src/lib/main.js --serve --port 8080
-```
-
-### HTTP Endpoints
-
-#### GET /face
-
-- Default response (JSON):
-
+- Default (JSON):
   ```bash
   curl localhost:3000/face
   ```
+  Response: JSON string, e.g., `"(^_^)"`
 
 - Batch count (JSON):
-
   ```bash
   curl localhost:3000/face?count=2
   ```
+  Response: JSON array, e.g., `["^_^)>","(T_T)"]`
 
-- Plain text response:
-
+- Plain text:
   ```bash
   curl -H "Accept: text/plain" localhost:3000/face
   ```
+  Response: plain text face, e.g., `(^_^)`
 
-#### GET /faces
+### GET /faces
 
-- Default response (JSON):
-
+- Default (JSON):
   ```bash
   curl localhost:3000/faces
   ```
+  Response: JSON array of all faces
 
 - Exclude custom faces:
-
   ```bash
   curl localhost:3000/faces?includeCustom=false
   ```
+  Response: JSON array excluding user-supplied faces
 
-- Plain text response:
-
+- Plain text:
   ```bash
   curl -H "Accept: text/plain" localhost:3000/faces
   ```
+  Response: newline-separated list of faces
+````
