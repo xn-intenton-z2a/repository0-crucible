@@ -1,34 +1,46 @@
 # Purpose
-Extend the existing ASCII art face output feature to allow users to supply custom face definitions via a configuration file. Default faces are preserved, but users can merge or override them using YAML or JSON files.
+Extend the existing CLI tool to output random ASCII art facial expressions with support for both built-in and user-defined faces via a configuration file. This provides flexible emotional feedback for the AI.
 
-# Source Changes
-1. In `src/lib/main.js`, implement `loadFaces(configPath)` that:
-   - Reads a YAML or JSON file at `configPath` using `fs` and `js-yaml`.
-   - Validates that the file exports an array of non-empty strings.
-   - Returns the array of custom faces.
-2. Update `getRandomFace(customFaces)` to accept an optional array of faces and choose from the merged list of default and custom faces.
-3. Modify `main(args)` to:
-   - Detect the `--face` flag.
-   - Optionally detect `--config <filepath>` and call `loadFaces`.
-   - Merge default faces with loaded custom faces, then call `getRandomFace(mergedFaces)`.
-   - Print the selected face.
-4. Preserve existing behavior: when invoked with `--help`, display usage for `--face` and `--config` options.
+# Implementation Details
+1. Load Faces from Configuration
+   - Add a function `loadFaces(configPath)` in `src/lib/main.js`.
+   - Use `fs` to read the file at `configPath` and `js-yaml` to parse YAML or JSON.
+   - Validate that the parsed content is an array of non-empty strings.
+   - Throw an error for missing file, parse errors, or invalid formats.
+
+2. Random Face Selection
+   - Implement `getRandomFace(faces)` that returns one element randomly from the provided array.
+   - Ensure uniform distribution over the array.
+
+3. Main Function Enhancements
+   - Update `main(args)` to parse CLI options:
+     • `--face` to invoke face output mode.
+     • `--config <filepath>` to load additional faces.
+     • `--help` to show usage instructions for these flags.
+   - If `--face` is present:
+     • Load built-in face list from a constant.
+     • If `--config` is provided, merge built-in faces with `loadFaces` output.
+     • Call `getRandomFace` on the merged list and print the result.
+   - Preserve existing behavior for other flags and default argument logging.
 
 # CLI Interface
-- `node src/lib/main.js --face` outputs a random default ASCII face.
-- `node src/lib/main.js --face --config path/to/faces.yaml` outputs a random face from defaults plus faces in the YAML/JSON file.
-- `node src/lib/main.js --help` shows descriptions for both `--face` and `--config` options.
+- `node src/lib/main.js --face`
+  Outputs a random built-in ASCII face.
+- `node src/lib/main.js --face --config path/to/faces.yaml`
+  Outputs a random face selected from built-in and user-defined faces in the YAML or JSON file.
+- `node src/lib/main.js --help`
+  Displays usage for `--face`, `--config`, and other existing options.
 
 # Testing
-1. In `tests/unit/main.test.js`, add tests for `loadFaces`:
-   - When given a valid YAML file with an array of strings, it returns that array.
-   - When given an invalid path or malformed file, it throws an error.
-2. Add tests for `getRandomFace` when passed a custom array to ensure the output is one of the provided faces.
-3. Add a CLI integration test setting `process.argv` to simulate:
-   - `--face --config tests/fixtures/custom-faces.yaml` and assert that printed output matches one of default or custom faces.
+1. Unit Tests in `tests/unit/main.test.js`:
+   - Test `loadFaces` with a valid YAML and JSON fixture returning correct arrays.
+   - Test `loadFaces` error cases: missing file, invalid YAML, non-array content.
+   - Test `getRandomFace` picks an element from a known array stochastically.
+2. CLI Integration Test in `tests/e2e/cli.test.js`:
+   - Simulate process argv for `--face`, capture stdout, assert output is one of the built-in faces.
+   - Simulate `--face --config tests/fixtures/custom-faces.yaml` and assert output is from merged list.
 
 # Documentation
-- Update `README.md`:
-  - Under Features, describe custom face configuration.
-  - Provide example YAML format and usage examples for the `--config` flag.
-
+- Update `README.md` under Features to describe custom face support.
+- Provide example YAML format and sample invocation with `--config`.
+- Document the API of `loadFaces` and `getRandomFace` under a Usage section.
