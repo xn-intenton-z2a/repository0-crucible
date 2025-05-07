@@ -1,51 +1,90 @@
 #!/usr/bin/env node
-// src/lib/main.js
-
 import { fileURLToPath } from "url";
 import minimist from "minimist";
+import fs from "fs";
+import yaml from "js-yaml";
 
 /**
  * Predefined list of ASCII art facial expressions for emotional feedback.
  */
 export const asciiFaces = [
-  "(^_^)" ,
-  ">_<" ,
-  "(^o^)" ,
-  "(-_-)" ,
-  "(o_O)" ,
-  "(T_T)" ,
-  "(^3^)" ,
-  "(^_~)" ,
-  "(*_*)" ,
+  "(^_^)",
+  ">_<",
+  "(^o^)",
+  "(-_-)",
+  "(o_O)",
+  "(T_T)",
+  "(^3^)",
+  "(^_~)",
+  "(*_*)",
   "(^.^)"
 ];
 
 /**
- * Selects and returns a random ASCII face from the asciiFaces array.
+ * Loads custom faces from a YAML or JSON configuration file.
+ * @param {string} configPath - Path to the config file.
+ * @returns {string[]} Array of face strings.
  */
-export function getRandomFace() {
-  const index = Math.floor(Math.random() * asciiFaces.length);
-  return asciiFaces[index];
+export function loadFaces(configPath) {
+  let content;
+  try {
+    content = fs.readFileSync(configPath, "utf-8");
+  } catch (err) {
+    throw new Error(`Failed to read config file: ${err.message}`);
+  }
+  let data;
+  try {
+    if (/\.(ya?ml)$/i.test(configPath)) {
+      data = yaml.load(content);
+    } else {
+      data = JSON.parse(content);
+    }
+  } catch (err) {
+    throw new Error(`Failed to parse config file: ${err.message}`);
+  }
+  if (!Array.isArray(data)) {
+    throw new Error(`Invalid config format: expected an array of strings`);
+  }
+  if (data.length === 0) {
+    throw new Error(`Invalid config: array is empty`);
+  }
+  for (const item of data) {
+    if (typeof item !== "string" || item.trim() === "") {
+      throw new Error(`Invalid config: all items must be non-empty strings`);
+    }
+  }
+  return data;
+}
+
+/**
+ * Selects and returns a random ASCII face from the provided faces array.
+ * @param {string[]} [faces=asciiFaces] - Array of face strings.
+ * @returns {string} Randomly selected face.
+ */
+export function getRandomFace(faces = asciiFaces) {
+  const index = Math.floor(Math.random() * faces.length);
+  return faces[index];
 }
 
 /**
  * Main CLI entry point.
- * @param {string[]} args - Command-line arguments (flags).
+ * @param {string[]} args - Command-line arguments.
  */
 export function main(args = process.argv.slice(2)) {
   const helpMessage =
-    "Usage: node src/lib/main.js [--ascii-face] [--help]\n" +
+    "Usage: node src/lib/main.js [--face] [--config <path>] [--help]\n" +
     "Options:\n" +
-    "  --ascii-face    Display a random ASCII face\n" +
-    "  --help          Show this help message";
+    "  --face           Display a random ASCII face\n" +
+    "  --config <path>  Load additional faces from config file (YAML or JSON)\n" +
+    "  --help           Show this help message";
 
   const flags = minimist(args, {
-    boolean: ["ascii-face", "help"],
+    boolean: ["face", "help"],
+    string: ["config"],
     alias: { h: "help" }
   });
 
-  // Detect unknown flags
-  const knownFlags = ["--ascii-face", "--help", "-h"];
+  const knownFlags = ["--face", "--config", "--help", "-h"];
   const unknownFlags = args.filter(
     (arg) => arg.startsWith("--") && !knownFlags.includes(arg)
   );
@@ -54,20 +93,28 @@ export function main(args = process.argv.slice(2)) {
     return;
   }
 
-  // Help flag
   if (flags.help) {
     console.log(helpMessage);
     return;
   }
 
-  // Default or explicit ascii-face flag
-  if (flags["ascii-face"] || args.length === 0) {
-    console.log(getRandomFace());
+  if (!flags.face) {
+    console.log(helpMessage);
     return;
   }
 
-  // Fallback to help
-  console.log(helpMessage);
+  let faces = asciiFaces;
+  if (flags.config) {
+    try {
+      const customFaces = loadFaces(flags.config);
+      faces = faces.concat(customFaces);
+    } catch (err) {
+      console.error(err.message);
+      process.exit(1);
+    }
+  }
+
+  console.log(getRandomFace(faces));
 }
 
 // Execute main if run directly

@@ -6,34 +6,36 @@ The CLI tool can output a random ASCII art facial expression for emotional feedb
 
 ### Commands
 
-- Default (no flags):
+- Built-in faces:
 
   ```bash
-  node src/lib/main.js
+  node src/lib/main.js --face
   # Outputs a random ASCII face, e.g. (^_^)
   ```
 
-- Explicit: 
+- Custom faces via config file:
 
   ```bash
-  node src/lib/main.js --ascii-face
-  # Outputs a random ASCII face, e.g. (^3^)
+  node src/lib/main.js --face --config path/to/faces.yaml
+  # Outputs a random face from built-in and custom list
   ```
 
-- Script alias:
+- Help:
 
   ```bash
-  npm run ascii-face
+  node src/lib/main.js --help
   ```
 
 ### Example Output
 
 ```bash
-(^_^)
+(T_T)
 ```
 
-### Help
+### Script Aliases
 
-```bash
-node src/lib/main.js --help
-```
+- Via npm scripts:
+
+  ```bash
+  npm run ascii-face
+  ```

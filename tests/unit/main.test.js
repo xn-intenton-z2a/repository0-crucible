@@ -12,6 +12,12 @@ describe("Random Face Generator", () => {
     const face = getRandomFace();
     expect(asciiFaces).toContain(face);
   });
+
+  test("getRandomFace returns one of provided custom faces", () => {
+    const custom = ["X", "Y", "Z"];
+    const face = getRandomFace(custom);
+    expect(custom).toContain(face);
+  });
 });
 
 describe("Main Output", () => {
@@ -20,17 +26,17 @@ describe("Main Output", () => {
     logSpy.mockRestore();
   });
 
-  test("default invocation prints a random ASCII face", () => {
+  test("default invocation prints help message", () => {
     logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main([]);
     expect(logSpy).toHaveBeenCalledTimes(1);
     const output = logSpy.mock.calls[0][0];
-    expect(asciiFaces).toContain(output);
+    expect(output).toMatch(/^Usage:/);
   });
 
-  test("explicit --ascii-face flag prints a random ASCII face", () => {
+  test("explicit --face flag prints a random ASCII face", () => {
     logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--ascii-face"]);
+    main(["--face"]);
     expect(logSpy).toHaveBeenCalledTimes(1);
     const output = logSpy.mock.calls[0][0];
     expect(asciiFaces).toContain(output);
