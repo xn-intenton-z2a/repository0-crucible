@@ -72,21 +72,24 @@ export function getRandomFace(faces = asciiFaces) {
  */
 export function main(args = process.argv.slice(2)) {
   const helpMessage =
-    "Usage: node src/lib/main.js [--face] [--config <path>] [--help]\n" +
+    "Usage: node src/lib/main.js [--face] [--count <n>] [--config <path>] [--help]\n" +
     "Options:\n" +
-    "  --face           Display a random ASCII face\n" +
-    "  --config <path>  Load additional faces from config file (YAML or JSON)\n" +
-    "  --help           Show this help message";
+    "  --face            Display random ASCII face(s)\n" +
+    "  --count, -c <n>   Number of faces to output (default: 1)\n" +
+    "  --config <path>   Load additional faces from config file (YAML or JSON)\n" +
+    "  --help            Show this help message";
 
   const flags = minimist(args, {
     boolean: ["face", "help"],
     string: ["config"],
-    alias: { h: "help" }
+    alias: { h: "help", c: "count" },
+    default: { count: 1 }
   });
 
-  const knownFlags = ["--face", "--config", "--help", "-h"];
+  // Validate unknown flags
+  const knownFlags = ["--face", "--count", "--config", "--help", "-h", "-c"];
   const unknownFlags = args.filter(
-    (arg) => arg.startsWith("--") && !knownFlags.includes(arg)
+    (arg) => (arg.startsWith("--") || arg.startsWith("-")) && !knownFlags.includes(arg)
   );
   if (unknownFlags.length) {
     console.log(helpMessage);
@@ -103,6 +106,12 @@ export function main(args = process.argv.slice(2)) {
     return;
   }
 
+  const count = flags.count;
+  if (typeof count !== "number" || !Number.isInteger(count) || count < 1) {
+    console.log(helpMessage);
+    return;
+  }
+
   let faces = asciiFaces;
   if (flags.config) {
     try {
@@ -114,7 +123,10 @@ export function main(args = process.argv.slice(2)) {
     }
   }
 
-  console.log(getRandomFace(faces));
+  // Output the requested number of faces
+  for (let i = 0; i < count; i++) {
+    console.log(getRandomFace(faces));
+  }
 }
 
 // Execute main if run directly

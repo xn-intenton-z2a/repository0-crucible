@@ -2,7 +2,7 @@
 
 ## ASCII_FACE Feature
 
-The CLI tool can output a random ASCII art facial expression for emotional feedback.
+The CLI tool can output random ASCII art facial expressions for emotional feedback.
 
 ### Commands
 
@@ -25,6 +25,22 @@ The CLI tool can output a random ASCII art facial expression for emotional feedb
   ```bash
   node src/lib/main.js --help
   ```
+
+### Batch Generation with `--count` / `-c`
+
+Generate multiple faces in one invocation by specifying a positive integer count.
+
+```bash
+node src/lib/main.js --face --count 3
+# Outputs three random ASCII faces, one per line, e.g.:  
+(^_^)  
+(T_T)  
+(*_*)
+
+# Alias using -c:
+node src/lib/main.js --face -c 5
+# Outputs five random ASCII faces, one per line
+```
 
 ### Example Output
 
