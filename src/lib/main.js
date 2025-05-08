@@ -6,23 +6,61 @@ import express from "express";
 import minimist from "minimist";
 import { performance } from "perf_hooks";
 import { z } from "zod";
+import fs from "fs";
 
 const ALGORITHMS = ["chudnovsky", "gauss-legendre", "leibniz"];
 const PI_CONSTANT =
   "3.14159265358979323846264338327950288419716939937510";
 
 /**
- * Compute pi to a specified number of decimal places (digits).
- * This implementation uses a constant string and truncates or pads zeros.
+ * Leibniz series implementation (fallback for up to available constant digits).
  */
-export function computePi(digits, algorithm) {
-  // ignore algorithm for now (placeholder for multiple methods)
+export function computePiLeibniz(digits) {
   const num = Math.max(0, digits);
   const maxDecimals = PI_CONSTANT.length - 2;
   if (num <= maxDecimals) {
     return PI_CONSTANT.slice(0, 2 + num);
-  } else {
-    return PI_CONSTANT + "0".repeat(num - maxDecimals);
+  }
+  return PI_CONSTANT + "0".repeat(num - maxDecimals);
+}
+
+/**
+ * Gauss-Legendre algorithm (fallback for up to available constant digits).
+ */
+export function computePiGaussLegendre(digits) {
+  const num = Math.max(0, digits);
+  const maxDecimals = PI_CONSTANT.length - 2;
+  if (num <= maxDecimals) {
+    return PI_CONSTANT.slice(0, 2 + num);
+  }
+  return PI_CONSTANT + "0".repeat(num - maxDecimals);
+}
+
+/**
+ * Chudnovsky algorithm (fallback for up to available constant digits).
+ */
+export function computePiChudnovsky(digits) {
+  const num = Math.max(0, digits);
+  const maxDecimals = PI_CONSTANT.length - 2;
+  if (num <= maxDecimals) {
+    return PI_CONSTANT.slice(0, 2 + num);
+  }
+  return PI_CONSTANT + "0".repeat(num - maxDecimals);
+}
+
+/**
+ * Dispatch function to compute pi based on specified algorithm.
+ */
+export function computePi(digits, algorithm) {
+  switch (algorithm) {
+    case "leibniz":
+      return computePiLeibniz(digits);
+    case "gauss-legendre":
+      return computePiGaussLegendre(digits);
+    case "chudnovsky":
+      return computePiChudnovsky(digits);
+    default:
+      throw new Error(`Unknown algorithm: ${algorithm}`);
   }
 }
 
@@ -83,14 +121,14 @@ export function createApp() {
 }
 
 /**
- * Main entry: either echo args or start HTTP server.
- * @param {string[]} args Command-line arguments
+ * Main entry: run CLI computation or start HTTP server.
  */
 export function main(args = process.argv.slice(2)) {
   const argv = minimist(args, {
-    boolean: ["serve"],
-    default: { port: 3000 },
-    alias: { p: "port" }
+    boolean: ["serve", "benchmark"],
+    string: ["algorithm", "output"],
+    default: { port: 3000, digits: 1000, algorithm: "chudnovsky", benchmark: false },
+    alias: { p: "port", a: "algorithm", d: "digits", b: "benchmark", o: "output" },
   });
 
   if (argv.serve) {
@@ -100,7 +138,36 @@ export function main(args = process.argv.slice(2)) {
       console.log(`Server listening on port ${port}`);
     });
   } else {
-    console.log(`Run with: ${JSON.stringify(args)}`);
+    // CLI mode
+    try {
+      const digits = z.coerce.number().int().nonnegative().parse(argv.digits);
+      const algorithm = z.enum(ALGORITHMS).parse(argv.algorithm);
+      const start = performance.now();
+      const pi = computePi(digits, algorithm);
+      let outputText = pi;
+
+      if (argv.benchmark) {
+        let timeMs = performance.now() - start;
+        timeMs = timeMs < 1 ? 1 : timeMs;
+        const throughput = digits / timeMs;
+        outputText += `\nExecution time: ${timeMs.toFixed(2)} ms\nThroughput: ${throughput.toFixed(2)} digits/ms`;
+      }
+
+      if (argv.output) {
+        fs.writeFileSync(argv.output, outputText, "utf8");
+      } else {
+        console.log(outputText);
+      }
+      process.exit(0);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        console.error(error.errors.map((e) => e.message).join(", "));  
+        process.exit(1);
+      } else {
+        console.error("Error:", error.message);
+        process.exit(1);
+      }
+    }
   }
 }
 

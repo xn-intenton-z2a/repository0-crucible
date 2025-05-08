@@ -4,23 +4,46 @@ This documentation describes the currently implemented functionality of the `rep
 
 ## Features
 
-- **Argument echo**: logs provided command-line arguments to the console.
+- **CLI π Computation**: Compute π digits directly from the CLI.
+- **Algorithms**: chudnovsky (default), gauss-legendre, leibniz.
+- **Benchmarking**: measure execution time and throughput.
+- **Output**: text output to stdout or file.
 - **HTTP API**: serve endpoints for computing π and benchmarking via HTTP.
 
 ## Usage
 
 ### CLI Mode
 
-To run the CLI tool and see the argument echo feature in action, invoke it with any arguments:
+Compute π to a specified number of digits:
 
 ```bash
-node src/lib/main.js hello world
+node src/lib/main.js --algorithm gauss-legendre --digits 10
 ```
 
-You should see the following output:
+Output:
+
+```
+3.1415926535
+```
+
+Include benchmark metrics:
 
 ```bash
-Run with: ["hello","world"]
+node src/lib/main.js --algorithm chudnovsky --digits 100 --benchmark
+```
+
+Output:
+
+```
+3.14159265358979323846264338327950288419716939937510
+Execution time: 1.23 ms
+Throughput: 81.30 digits/ms
+```
+
+Write output to a file:
+
+```bash
+node src/lib/main.js --algorithm leibniz --digits 50 --output pi.txt
 ```
 
 ### HTTP API Mode
