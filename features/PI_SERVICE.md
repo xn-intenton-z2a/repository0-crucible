@@ -1,73 +1,83 @@
-# Overview
+# PI Service
 
-Consolidate pi calculation capabilities into a unified service supporting both CLI and HTTP API modes. Implement the high-precision Chudnovsky algorithm for rapid convergence to an arbitrary number of decimal places. Provide a consistent interface, performance metrics, and seamless integration between command-line usage and RESTful endpoints.
+## Overview
+Provide a unified π calculation service supporting both command-line interface (CLI) and HTTP API modes. Utilize the high-precision Chudnovsky algorithm for rapid convergence to an arbitrary number of decimal places. Expose consistent usage patterns, performance metrics, and resource monitoring across both modes.
 
-# CLI Usage
+## CLI Mode
 
-Extend the existing pi subcommand in src/lib/main.js with flags:
+- Command: `node src/lib/main.js pi`
+- Flags:
+  - `--mode <cli|http>`  (default: cli)
+  - `--algorithm chudnovsky`  (required for precise computation)
+  - `--digits <number>`  (positive integer, required)
+- Output (stdout):
+  - Algorithm name
+  - Computed π value to the requested precision
+  - Total execution time in milliseconds
+  - Peak memory usage in bytes
+- Error handling:
+  - Reject missing or invalid flags with descriptive messages and exit code 1.
 
-- --mode <cli|http>
-    Determine execution mode (default: cli).
-- --algorithm chudnovsky
-    Use the Chudnovsky formula for π computation.
-- --digits <number>
-    Positive integer specifying decimal places to compute.
+## HTTP API Mode
 
-Examples:
+- When `--mode http` is specified, launch an Express server (default port 3000).
+- Endpoints:
+  - GET `/pi`
+    - Query parameters:
+      - `digits`: positive integer
+      - `algorithm`: chudnovsky
+    - Response (JSON):
+      ```json
+      {
+        "digits": "<digits>",
+        "value": "<π string>",
+        "algorithm": "chudnovsky",
+        "durationMs": <number>,
+        "peakMemoryBytes": <number>
+      }
+      ```
+  - POST `/pi`
+    - JSON body:
+      ```json
+      {
+        "digits": <number>,
+        "algorithm": "chudnovsky"
+      }
+      ```
+    - Response: same schema as GET `/pi`.
+- HTTP error codes:
+  - 400 for invalid input
+  - 500 for server or algorithm errors
 
-  node src/lib/main.js pi --algorithm chudnovsky --digits 500
-  node src/lib/main.js pi --mode http --algorithm chudnovsky --digits 1000
+## Implementation Details
 
-The CLI should print:
+- Add dependency `decimal.js` for arbitrary-precision arithmetic.
+- Create `src/lib/algorithms/chudnovsky.js` exporting `computePiChudnovsky(digits)` that returns `{ value: string, durationMs: number, peakMemoryBytes: number }`.
+- Update `src/lib/main.js` to:
+  - Parse `--mode`, `--algorithm`, and `--digits` flags.
+  - Invoke `computePiChudnovsky` in CLI or HTTP mode.
+  - Measure and report timing and memory usage using `process.memoryUsage()`.
+- Add `express` to dependencies for HTTP API.
 
-- algorithm used
-- computed value of π to requested digits
-- total execution time in milliseconds
-- peak memory usage in bytes
+## Testing
 
-# HTTP API Usage
+- Update `tests/unit/main.test.js` to cover:
+  - Correct flag parsing and error scenarios for CLI.
+  - Invocation of `computePiChudnovsky` with mocks for performance metrics.
+- Add `tests/unit/http.test.js` to validate:
+  - GET and POST `/pi` endpoints for success and error cases.
+  - JSON schema, status codes, and body content.
 
-When run with --mode http, start an Express server (default port 3000) and expose endpoints:
+## Documentation
 
-GET /pi
-  Query parameters:
-    digits: positive integer
-    algorithm: chudnovsky
-  Response JSON:
-    {
-      digits: string of π to requested precision,
-      algorithm: chudnovsky,
-      durationMs: execution time,
-      peakMemoryBytes: peak memory usage
-    }
+- Update `README.md`:
+  - Document CLI usage with examples.
+  - Document HTTP API endpoints with sample `curl` commands.
+  - Add reference to `computePiChudnovsky` in API documentation.
+- Ensure `package.json` scripts include:
+  - `serve` alias to start HTTP mode.
 
-POST /pi
-  JSON body:
-    {
-      digits: positive integer,
-      algorithm: chudnovsky
-    }
-  Response: same as GET /pi
+## Performance and Benchmarking
 
-# Implementation Details
-
-- Update src/lib/main.js to parse --mode, --algorithm, and --digits flags.
-- Default to CLI mode. Reject unsupported modes or missing digits.
-- Create src/lib/algorithms/chudnovsky.js exporting computePiChudnovsky(digits) that returns { value, durationMs, peakMemoryBytes } using decimal.js.
-- Add decimal.js to dependencies; add express for HTTP mode.
-- Ensure process resource usage is measured for each call.
-
-# Testing
-
-- Extend tests in tests/unit/main.test.js to validate CLI flag parsing, error cases, and correct invocation of computePiChudnovsky.
-- Add HTTP integration tests in tests/unit/http.test.js:
-  - Verify GET and POST endpoints return correct status and JSON schema.
-  - Mock resource usage to assert structure.
-
-# Documentation
-
-- Update README.md:
-  - Document pi command syntax for both CLI and HTTP modes.
-  - Provide example commands and curl invocations.
-  - Include API reference for GET and POST /pi.
-- Ensure package.json scripts include serve alias for HTTP mode.
+- Include optional `--benchmark` flag to output computation throughput and convergence rate.
+- Log metrics in CI reports where applicable.
