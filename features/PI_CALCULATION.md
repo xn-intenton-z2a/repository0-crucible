@@ -1,37 +1,50 @@
 # Overview
 
-Enhance the core calculatePi function to use the Chudnovsky algorithm for high-precision computation of π. Maintain backward compatibility with the Machin formula for small digit counts and expose an option to choose the algorithm via CLI.
+Extend the core calculatePi function and CLI to support two additional high-precision methods: the Chudnovsky algorithm and the Gauss-Legendre algorithm. Maintain backward compatibility with the existing Machin formula and Nilakantha series, and allow users to select any of the four methods.
 
 # API
 
-Export a function calculatePi(digits: number, algorithm?: string): string
+Export a function calculatePi(digits: number, method?: string): string
 
-- digits: integer between 1 and 5000 (inclusive)
-- algorithm: optional string, one of "chudnovsky" (default) or "machin"
+- digits: integer between 1 and 10000 (inclusive)
+- method: optional string, one of "chudnovsky" (default), "gauss-legendre", "machin", or "nilakantha"
 - returns: π to the requested number of decimal places as a string beginning with "3."
 
 # CLI Usage
 
-- Accept a --digits <n> flag (integer between 1 and 5000). Default to 100 if not provided.
-- Accept an --algorithm <name> flag with values "chudnovsky" or "machin". Default to "chudnovsky".
-- Validate inputs: error when digits out of range or algorithm unrecognized, and display a helpful message.
-- When invoked, parse flags from process.argv, invoke calculatePi, and print the result to stdout.
+- Accept a --digits <n> flag (integer between 1 and 10000). Default: 100
+- Accept a --method <name> flag with values "chudnovsky", "gauss-legendre", "machin", or "nilakantha". Default: "chudnovsky"
+- Accept a --format <type> flag: "text" or "png". Default: "text"
+- Accept a --output <path> flag when --format=png
+- Validate inputs: error when digits out of range or method unrecognized, display helpful message
+- When invoked, parse flags from process.argv, invoke calculatePi, and print or encode output
 
 # Implementation Details
 
-- Implement the Chudnovsky series using BigInt for numerator and denominator arithmetic to achieve arbitrary precision.
-- Use binary splitting to optimize series term computation for performance when digits > 1000.
-- Retain the existing Machin formula implementation as a fallback for digits ≤ 50 to minimize overhead.
-- Place calculatePi and related helpers in src/lib/main.js, exporting calculatePi alongside main.
-- Ensure no new dependencies are introduced; rely on built-in BigInt and minimal helper functions.
+- Chudnovsky Algorithm
+  - Implement the Chudnovsky series using BigInt or Decimal for arbitrary precision
+  - Use binary splitting for numerator and denominator to optimize term computation, especially for digits > 1000
+
+- Gauss-Legendre Algorithm
+  - Implement the iterative Gauss-Legendre procedure
+  - Initialize a0=1, b0=1/√2, t0=1/4, p0=1, iterate until convergence threshold based on digits
+  - Compute π ≈ (a_n + b_n)^2 / (4 t_n), then truncate to requested decimals
+
+- Machin Formula and Nilakantha Series
+  - Retain existing implementations in pi.js for compatibility and use as alternatives
+
+- Dispatcher
+  - Update calculatePi to accept and dispatch based on the new methods
+  - Default to Chudnovsky for general use
 
 # Performance
 
-- Aim for sub-second computation of π to 1,000 digits on modern hardware.
-- Document empirical benchmarks in the README after implementation.
+- Aim for sub-second computation of π to 1,000 digits on modern hardware using Chudnovsky or Gauss-Legendre
+- Document empirical benchmarks in README
 
 # Testing
 
-- Unit tests covering calculatePi for known digit outputs (e.g., 10, 100, 1000) using both algorithms.
-- Verify error handling for invalid digits and unsupported algorithm values.
-- CLI integration tests by mocking process.argv and capturing stdout, ensuring correct selection of algorithm and formatted output.
+- Unit tests covering calculatePi for known digit outputs (e.g., 5, 10, 50) for all four methods
+- Validate that Chudnovsky and Gauss-Legendre results match Machin outputs for small digit counts
+- CLI integration tests mocking process.argv and capturing stdout or file outputs
+- Verify error handling for invalid digits and unsupported methods
