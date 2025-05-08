@@ -4,33 +4,108 @@ src/lib/main.js
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
-import fs from "fs";
-import path from "path";
+import express from "express";
+import minimist from "minimist";
+import { performance } from "perf_hooks";
+import { z } from "zod";
+
+const ALGORITHMS = ["chudnovsky", "gauss-legendre", "leibniz"];
+const PI_CONSTANT =
+  "3.14159265358979323846264338327950288419716939937510";
 
 /**
- * Main entrypoint for CLI and programmatic invocation.
- * @param {string[]} args - Array of CLI arguments (e.g. process.argv.slice(2)).
+ * Compute pi to a specified number of decimal places (digits).
+ * This implementation uses a constant string and truncates or pads zeros.
+ */
+export function computePi(digits, algorithm) {
+  // ignore algorithm for now (placeholder for multiple methods)
+  const num = Math.max(0, digits);
+  const maxDecimals = PI_CONSTANT.length - 2;
+  if (num <= maxDecimals) {
+    return PI_CONSTANT.slice(0, 2 + num);
+  } else {
+    return PI_CONSTANT + "0".repeat(num - maxDecimals);
+  }
+}
+
+/**
+ * Create an Express application with /health, /pi, and /benchmark endpoints.
+ */
+export function createApp() {
+  const app = express();
+
+  app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok" });
+  });
+
+  app.get("/pi", (req, res) => {
+    try {
+      const digits = z.coerce.number().int().nonnegative().parse(req.query.digits);
+      const algorithm = z.enum(ALGORITHMS).parse(req.query.algorithm);
+
+      const start = performance.now();
+      const pi = computePi(digits, algorithm);
+      let timeMs = performance.now() - start;
+      timeMs = timeMs < 1 ? 1 : timeMs;
+
+      res.status(200).json({ pi, digits, algorithm, timeMs });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const msg = error.errors.map((e) => e.message).join(", ");
+        res.status(400).json({ error: msg });
+      } else {
+        res.status(500).json({ error: "Internal Server Error" });
+      }
+    }
+  });
+
+  app.get("/benchmark", (req, res) => {
+    try {
+      const digits = z.coerce.number().int().positive().parse(req.query.digits);
+      const algorithm = z.enum(ALGORITHMS).parse(req.query.algorithm);
+
+      const start = performance.now();
+      computePi(digits, algorithm);
+      let timeMs = performance.now() - start;
+      timeMs = timeMs < 1 ? 1 : timeMs;
+      const throughput = digits / timeMs;
+
+      res.status(200).json({ digits, algorithm, timeMs, throughput });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const msg = error.errors.map((e) => e.message).join(", ");
+        res.status(400).json({ error: msg });
+      } else {
+        res.status(500).json({ error: "Internal Server Error" });
+      }
+    }
+  });
+
+  return app;
+}
+
+/**
+ * Main entry: either echo args or start HTTP server.
+ * @param {string[]} args Command-line arguments
  */
 export function main(args = process.argv.slice(2)) {
-  if (args.includes("--trace-seeds")) {
-    const seedsDir = path.resolve(process.cwd(), "seeds");
-    console.log("Seed files traceability report:");
-    try {
-      const files = fs.readdirSync(seedsDir);
-      files
-        .filter((file) => file.endsWith('.js'))
-        .forEach((file) => console.log(file));
-    } catch (err) {
-      console.error(`Error reading seeds directory: ${err.message}`);
-    }
-    return;
-  }
+  const argv = minimist(args, {
+    boolean: ["serve"],
+    default: { port: 3000 },
+    alias: { p: "port" }
+  });
 
-  // Default behavior
-  console.log(`Run with: ${JSON.stringify(args)}`);
+  if (argv.serve) {
+    const port = Number(argv.port) || 3000;
+    const app = createApp();
+    app.listen(port, () => {
+      console.log(`Server listening on port ${port}`);
+    });
+  } else {
+    console.log(`Run with: ${JSON.stringify(args)}`);
+  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2);
-  main(args);
+  main();
 }

@@ -1,2284 +1,1667 @@
-library/COMMANDER_JS.md
-# library/COMMANDER_JS.md
-# COMMANDER_JS
+library/SEEDRANDOM.md
+# library/SEEDRANDOM.md
+# SEEDRANDOM
 
 ## Crawl Summary
-Installation npm install commander
-Options API: .option(flags,description[,default][,parser]), .requiredOption, .addOption(new Option(flags,desc).choices([...]).default(val).env(var).conflicts(opt).implies(obj).argParser(fn).preset(val).hideHelp().makeOptionMandatory())
-Commands API: .command(name[,desc][,config]), .addCommand, .argument(name[,desc][,default][,parser]), .alias, .usage, .description, .summary, .action(handler(args,options,command)), .hook(event,fn)
-Parsing: .parse([argv],{from}), .parseAsync, .enablePositionalOptions, .passThroughOptions, .allowUnknownOption, .allowExcessArguments
-Help: .helpOption, .helpCommand, .addHelpText, .showHelpAfterError, .showSuggestionAfterError, .help, .outputHelp, .helpInformation
-Error Handling: .exitOverride, .error, .version, .name, .createCommand, .storeOptionsAsProperties
-Configuration: .configureHelp, .createHelp, .configureOutput
-Stand-alone executables: .command(name,args,desc) searches for bin, .executableDir
-Hooks: preAction, postAction, preSubcommand
+Version 3.0.5 of seedrandom.js provides a deterministic PRNG for JavaScript via Math.seedrandom(seed,options) or require('seedrandom'). Returns a PRNG function random():float in [0,1) with methods quick():32-bit float, int32():signed 32-bit, double():56-bit (Alea), state():object. Options: entropy(boolean), global(boolean), state(boolean|object), pass(function). Supports algorithms: ARC4(default), alea, xor128, tychei, xorwow, xor4096, xorshift7, quick. Usage: script tag, Node.js, AMD. State save/restore via state option. Network seeding via JSONP or XHR. Best practices: use new for local, avoid global in production, append '\0' to seeds, require form doesn’t auto-define Math.seedrandom. Performance: seeded calls ~0.0002ms.
 
 ## Normalised Extract
 Table of Contents
-1 Installation
-2 Declaring program
-3 Options
-4 Commands
-5 Parsing
-6 Help
-
-1 Installation
-npm install commander
-
-2 Declaring program
-CommonJS: const { program } = require('commander')
-ESM: import { Command } from 'commander'; const program = new Command()
-
-3 Options
-.option(flags: string, description: string, defaultValue?: any, parser?: (value:string,prev:any)=>any)
-.requiredOption(flags: string, description: string, defaultValue?: any, parser?: (value:string,prev:any)=>any)
-.addOption(new Option(flags, description)
-    .default(val)
-    .choices([...])
-    .env(envVar)
-    .conflicts(opt)
-    .implies({optName:optVal})
-    .argParser(fn)
-    .preset(val)
-    .hideHelp()
-    .makeOptionMandatory())
-Access options: program.opts(), program.getOptionValue(key), program.setOptionValue(key,value)
-Option types: boolean (--flag), value (<value>), optional ([value]), variadic (...)
-
-4 Commands
-.command(name:string, description?:string, config?:object)
-.addCommand(cmd:Command)
-.argument(name:string, description?:string, defaultValue?:any, parser?:(value,prev)=>any)
-.alias(name:string)
-.usage(string)
-.description(string)
-.summary(string)
-.action((...args,options,command)=>{})
-.hook('preAction'|'postAction'|'preSubcommand', (thisCmd,actionCmd)=>{})
-
-5 Parsing
-.parse(argv?:string[],{from:'node'|'user'|'electron'})
-.parseAsync(argv?:string[],{from})
-.enablePositionalOptions()
-.passThroughOptions()
-.allowUnknownOption([bool])
-.allowExcessArguments([bool])
-
-6 Help
-.helpOption(flags:string,desc:string)
-.helpCommand(name?:string|false,desc?:string)
-.addHelpText(position:'beforeAll'|'before'|'after'|'afterAll',textOrFn)
-.showHelpAfterError([msg])
-.showSuggestionAfterError([bool])
-.help()
-.outputHelp()
-.helpInformation()
-
-## Supplementary Details
-.configureHelp({ sortSubcommands?:boolean; sortOptions?:boolean; showGlobalOptions?:boolean }) customize help
-.createHelp() returns new Help instance for subclassing
-.configureOutput({ writeOut(str):void; writeErr(str):void; outputError(str,write):void }) redirect stdout/stderr and style errors
-.exitOverride([callback(error:CommanderError)]) throw CommanderError instead of process.exit
-.error(message:string, {exitCode?:number, code?:string}) trigger CommanderError with code and exitCode
-.version(version:string, flags?:string, description?:string) set version option flags and behavior
-.name(programName:string) set program name for usage and bin lookup
-.createCommand(name?:string) factory to instantiate new Command
-.storeOptionsAsProperties() enable legacy property storage of options
-
-
-## Reference Details
-.option(flags: string, description: string, defaultValue?: any, parser?: (value: string, previous: any) => any): Command
-.requiredOption(flags: string, description: string, defaultValue?: any, parser?: (value: string, previous: any) => any): Command
-.addOption(option: Option): Command
-.command(name: string, description?: string, config?: { executableFile?: string; isDefault?: boolean; hidden?: boolean; }): Command
-.addCommand(cmd: Command, config?: { executableFile?: string; isDefault?: boolean; hidden?: boolean }): Command
-.argument(name: string, description?: string, defaultValue?: any, parser?: (value: string, previous: any) => any): Command
-.alias(alias: string): Command
-.usage(usage: string): Command
-.description(description: string): Command
-.summary(text: string): Command
-.action(handler: (...args: any[], options: object, command: Command) => void | Promise<void>): Command
-.hook(event: 'preAction'|'postAction'|'preSubcommand', fn: (thisCommand: Command, actionCommand: Command) => void | Promise<void>): Command
-.parse(argv?: string[], options?: { from: 'node'|'user'|'electron' }): Command
-.parseAsync(argv?: string[], options?: { from: 'node'|'user'|'electron' }): Promise<Command>
-.enablePositionalOptions(): Command
-.passThroughOptions(): Command
-.allowUnknownOption(allow?: boolean): Command
-.allowExcessArguments(allow?: boolean): Command
-.helpOption(flags: string, description: string): Command
-.helpCommand(name?: string | false, description?: string): Command
-.addHelpText(position: 'beforeAll'|'before'|'after'|'afterAll', text: string | ((context: { error: boolean; command: Command }) => string)): Command
-.configureOutput(opts: { writeOut(str: string): void; writeErr(str: string): void; outputError(str: string, write: (s: string) => void): void }): Command
-.exitOverride(callback?: (error: CommanderError) => void): Command
-.error(message: string, opts?: { exitCode?: number; code?: string }): never
-.version(version: string, flags?: string, description?: string): Command
-.name(name: string): Command
-.createCommand(name?: string): Command
-.storeOptionsAsProperties(): Command
-
-// Example Code
-```js
-const { Command, Option } = require('commander');
-const program = new Command();
-program
-  .name('app')
-  .version('1.0.0', '-v, --version', 'output version')
-  .option('-p, --port <number>', 'port number', 3000, parseInt)
-  .requiredOption('--env <env>', 'environment variable')
-  .addOption(new Option('--mode <mode>', 'run mode').choices(['dev','prod']).default('dev'))
-  .command('start')
-    .description('Launch server')
-    .argument('<script>', 'script file to run')
-    .option('-d, --debug', 'enable debug')
-    .action((script, options) => {
-      console.log('Running', script, 'on port', options.port);
-    });
-program.parse(process.argv);
-```
-
-// Troubleshooting
-$ app --unknown
-error: unknown option '--unknown' (Did you mean --version?)
-Use .allowUnknownOption() to accept unknown or .showHelpAfterError() to display full help after errors.
-
-$ app
-error: required option '--env <env>' not specified
-Use .requiredOption() or provide default in environment.
-
-Debugging stand-alone executables:
-- node --inspect childProcessPort = parentPort+1
-- VSCode: set autoAttachChildProcesses=true in launch.json
-
-
-## Information Dense Extract
-npm install commander; require or import Command
-API: .option(flags,desc,default?,parser?); .requiredOption; .addOption(new Option().choices().default().env().conflicts().implies().argParser().preset().hideHelp().makeOptionMandatory())
-Commands: .command(name,desc?,config?); .addCommand; .argument(name,desc?,default?,parser?); .alias; .usage; .description; .summary; .action(handler(args,opts,cmd)); .hook(preAction/postAction/preSubcommand,fn)
-Parsing: .parse([argv],{from:'node'|'user'|'electron'}); .parseAsync; .enablePositionalOptions; .passThroughOptions; .allowUnknownOption; .allowExcessArguments
-Help: .helpOption(flags,desc); .helpCommand(name?,desc?); .addHelpText(position,textOrFn); .showHelpAfterError; .showSuggestionAfterError; .help; .outputHelp; .helpInformation
-Error/Exit: .exitOverride; .error(msg,{exitCode,code}); .version; .name; .createCommand; .storeOptionsAsProperties
-Configure: .configureHelp; .createHelp; .configureOutput(writeOut,writeErr,outputError)
-Examples: reference code above
-Troubleshoot: unknown option -> allowUnknownOption or showHelpAfterError; missing required -> requiredOption; debug executables -> inspector port+1 or VSCode autoAttachChildProcesses
-
-## Sanitised Extract
-Table of Contents
-1 Installation
-2 Declaring program
-3 Options
-4 Commands
-5 Parsing
-6 Help
-
-1 Installation
-npm install commander
-
-2 Declaring program
-CommonJS: const { program } = require('commander')
-ESM: import { Command } from 'commander'; const program = new Command()
-
-3 Options
-.option(flags: string, description: string, defaultValue?: any, parser?: (value:string,prev:any)=>any)
-.requiredOption(flags: string, description: string, defaultValue?: any, parser?: (value:string,prev:any)=>any)
-.addOption(new Option(flags, description)
-    .default(val)
-    .choices([...])
-    .env(envVar)
-    .conflicts(opt)
-    .implies({optName:optVal})
-    .argParser(fn)
-    .preset(val)
-    .hideHelp()
-    .makeOptionMandatory())
-Access options: program.opts(), program.getOptionValue(key), program.setOptionValue(key,value)
-Option types: boolean (--flag), value (<value>), optional ([value]), variadic (...)
-
-4 Commands
-.command(name:string, description?:string, config?:object)
-.addCommand(cmd:Command)
-.argument(name:string, description?:string, defaultValue?:any, parser?:(value,prev)=>any)
-.alias(name:string)
-.usage(string)
-.description(string)
-.summary(string)
-.action((...args,options,command)=>{})
-.hook('preAction'|'postAction'|'preSubcommand', (thisCmd,actionCmd)=>{})
-
-5 Parsing
-.parse(argv?:string[],{from:'node'|'user'|'electron'})
-.parseAsync(argv?:string[],{from})
-.enablePositionalOptions()
-.passThroughOptions()
-.allowUnknownOption([bool])
-.allowExcessArguments([bool])
-
-6 Help
-.helpOption(flags:string,desc:string)
-.helpCommand(name?:string|false,desc?:string)
-.addHelpText(position:'beforeAll'|'before'|'after'|'afterAll',textOrFn)
-.showHelpAfterError([msg])
-.showSuggestionAfterError([bool])
-.help()
-.outputHelp()
-.helpInformation()
-
-## Original Source
-Commander.js
-https://github.com/tj/commander.js#readme
-
-## Digest of COMMANDER_JS
-
-# Installation
-
-npm install commander
-
-# Options
-
-.option(flags: string, description: string, defaultValue?: any, parser?: (value: string, previous: any) => any)
-.requiredOption(flags: string, description: string, defaultValue?: any, parser?: (value: string, previous: any) => any)
-.addOption(new Option(flags: string, description: string)
-    .hideHelp()
-    .default(value: any, label: string)
-    .choices(arrayOfValues)
-    .env(envVarName)
-    .conflicts(optionName)
-    .implies({ key: value })
-    .argParser(fn)
-    .preset(value)
-    .makeOptionMandatory())
-
-Option Types:
-- Boolean: --flag
-- Value: <value>
-- Optional: [value]
-- Variadic: <values...> or [values...]
-
-Accessing Options:
-- program.opts(): returns object of option key and values
-- program.getOptionValue(key)
-- program.setOptionValue(key, value)
-
-# Commands
-
-.command(name: string, description?: string, config?: { executableFile?: string; isDefault?: boolean; hidden?: boolean; })
-.addCommand(commandInstance: Command)
-.argument(name: string, description?: string, defaultValue?: any, parser?: (value: string, previous: any) => any)
-.alias(alias: string)
-.usage(usage: string)
-.description(text: string)
-.summary(text: string)
-.action((...args: any[], options: object, command: Command) => void)
-.hook(event: 'preAction' | 'postAction' | 'preSubcommand', (thisCommand: Command, actionCommand: Command) => void)
-
-# Parsing and Execution
-
-.parse(argv?: string[], options?: { from: 'node' | 'user' | 'electron' })
-.parseAsync(argv?: string[], options?: { from: 'node' | 'user' | 'electron' })
-.enablePositionalOptions()
-.passThroughOptions()
-.allowUnknownOption([allow?: boolean])
-.allowExcessArguments([allow?: boolean])
-
-# Help System
-
-.helpOption(flags: string, description: string)
-.helpCommand(name?: string | false, description?: string)
-.addHelpText(position: 'beforeAll' | 'before' | 'after' | 'afterAll', textOrFn: string | ((context: { error: boolean; command: Command }) => string))
-.showHelpAfterError([message: string])
-.showSuggestionAfterError([enable: boolean])
-.help(): void  // display help and exit
-.outputHelp([options: { error: boolean }]): void  // display without exit
-.helpInformation(): string  // return help string
-
-# Error and Exit Handling
-
-.exitOverride([callback: (error: CommanderError) => void])
-.error(message: string, opts?: { exitCode?: number; code?: string }): never
-.version(version: string, flags?: string, description?: string)
-.name(programName: string)
-.createCommand(name?: string): Command
-.storeOptionsAsProperties()
-
-# Additional Configuration
-
-.configureHelp({ sortSubcommands?: boolean; sortOptions?: boolean; showGlobalOptions?: boolean })
-.createHelp(): Help
-.configureOutput({ writeOut: (str: string) => void; writeErr: (str: string) => void; outputError: (str: string, write: (s: string) => void) => void })
-
-# Stand-alone Executables
-
-.command('name [args...]', 'description')  // stand-alone: directory search for bin files
-.executableDir(path: string)
-
-# Life-cycle Hooks
-
-.hook('preAction', fn)
-.hook('postAction', fn)
-.hook('preSubcommand', fn)
-
-# Examples and Code Patterns
-
-const { Command, Option } = require('commander')
-const program = new Command()
-program
-  .name('app')
-  .version('1.0.0', '-v, --version', 'output the current version')
-  .option('-p, --port <number>', 'port number', 3000, parseInt)
-  .requiredOption('--env <environment>', 'environment name')
-  .addOption(new Option('--mode <mode>', 'run mode').choices(['dev', 'prod']).default('dev'))
-  .command('start')
-    .description('start the server')
-    .argument('<file>', 'script file')
-    .option('-d, --debug', 'enable debug')
-    .action((file, options) => {
-      // implementation
-    })
-program.parse(process.argv)
-
-Data Size: 777171 bytes
-Retrieved: 2024-06-20
-
-## Attribution
-- Source: Commander.js
-- URL: https://github.com/tj/commander.js#readme
-- License: MIT License
-- Crawl Date: 2025-05-07T03:35:49.535Z
-- Data Size: 777171 bytes
-- Links Found: 5231
-
-## Retrieved
-2025-05-07
-library/META_SCHEMAS.md
-# library/META_SCHEMAS.md
-# META_SCHEMAS
-
-## Crawl Summary
-The JSON Schema specification version 2020-12 is split into Core and Validation, published as a single meta-schema at https://json-schema.org/draft/2020-12/schema. A Hyper-Schema meta-schema (with link keywords) is at /hyper-schema. Recommended-output schema and eight single-vocabulary schemas (core, applicator, validation, unevaluated, format-annotation, format-assertion, content, meta-data) live under /meta/. Relative JSON Pointers spec is available but not required by Core/Validation. Migration mappings for older drafts are documented.
-
-## Normalised Extract
-Table of Contents:
- 1. Meta-Schema URIs
- 2. Single-Vocabulary Files
- 3. Relative JSON Pointer
- 4. Migration Paths
-
-1. Meta-Schema URIs
- - Core/Validation: https://json-schema.org/draft/2020-12/schema
- - Hyper-Schema: https://json-schema.org/draft/2020-12/hyper-schema
- - Recommended Output: https://json-schema.org/draft/2020-12/meta/recommended-output
-
-2. Single-Vocabulary Files
- All under https://json-schema.org/draft/2020-12/meta/: core.json, applicator.json, validation.json, unevaluated.json, format-annotation.json, format-assertion.json, content.json, meta-data.json
-
-3. Relative JSON Pointer
- - URI: https://json-schema.org/draft/2020-12/relative-json-pointer
- - Adds token syntax: '#', '[<n>]', '/path'.
-
-4. Migration Paths
- - 2019-09 → 2020-12: change identifier scheme, add unevaluated and content vocabularies.
- - 07 → 2019-09: add dynamic refs.
- - 06 → 07: add format-assertion.
- - 04 → 06: remove id in favor of $id.
-
-## Supplementary Details
-Usage of $schema:
- - In your JSON Schema document, set "$schema": "https://json-schema.org/draft/2020-12/schema" at the root.
-
-Validator CLI Example (ajv):
- ajv compile-schema --strict=true --schemaId=auto --meta=2020-12 schema.json
-
-Node.js: ajv@8
- const Ajv = require('ajv');
- const ajv = new Ajv({strict: true});
- ajv.addMetaSchema(require('./draft2020-12/schema.json'));
- const validate = ajv.compile(yourSchema);
-
-Relative JSON Pointer Usage:
- { "$ref": "#1/definitions/foo" } // one level up, then path /definitions/foo
-
-Handling Single-Vocabulary Schemas:
- ajv.addMetaSchema(require('./meta/validation.json'), 'https://json-schema.org/draft/2020-12/meta/validation')
-
-## Reference Details
-1. $schema Declaration:
-   - Type: string (URI)
-   - Example: "$schema": "https://json-schema.org/draft/2020-12/schema"
-
-2. Ajv API Signatures (v8):
-   constructor(options: { strict:boolean; schemaId?: 'auto'|'$id'|'id'; } ) → Ajv
-   addMetaSchema(schema: object, key?: string) → void
-   compile(schema: object) → ValidateFunction
-   validate(schemaKey: string|object, data: any) → boolean
-
-3. CLI Options:
-   --strict boolean       default: false  enforce strict mode
-   --schemaId string      default: auto   accept $id or id
-   --meta version         e.g. 2019-09, 2020-12 loads built-in meta
-
-4. Best Practice:
-   Always include "$schema" at top of each schema file.
-   Use separate files per vocabulary when building custom meta-schemas.
-
-5. Troubleshooting:
-   Command: ajv compile-schema --schemaId=auto bad-schema.json
-   Expected: validation error with keyword and path
-   If no error: check that "$schema" URI matches loaded meta-schema.
-
-6. File Names and Locations:
-   - Save core meta-schema as draft2020-12-schema.json
-   - Save vocabularies under meta/ folder matching URI path
-
-7. Migration Script:
-   npx json-schema-draft-migrator --from=2019-09 --to=2020-12 path/to/schemas
-
-8. Validator Behavior:
-   - $id overrides resolution scope
-   - Unevaluated vocabulary applies after validation keywords
-
-9. Environment:
-   Node.js >=12, ajv >=8
-
-## Information Dense Extract
-2020-12 Core/Validation meta-schema URI=https://json-schema.org/draft/2020-12/schema Hyper-Schema URI=/hyper-schema Recommended-Output URI=/meta/recommended-output Single-vocab URIs=/meta/{core,applicator,validation,unevaluated,format-annotation,format-assertion,content,meta-data}.json Relative JSON Pointer URI=/relative-json-pointer Use "$schema":<URI> root-level. Ajv v8: new Ajv({strict:true,schemaId:'auto'}); addMetaSchema(schema,key?); compile()/validate(). CLI: --strict, --schemaId, --meta. Migration 2019-09→2020-12 adds unevaluated,content; 07→09 adds dynamicRefs; 06→07 adds formatAssertion; 04→06 switches id→$id.
-
-## Sanitised Extract
-Table of Contents:
- 1. Meta-Schema URIs
- 2. Single-Vocabulary Files
- 3. Relative JSON Pointer
- 4. Migration Paths
-
-1. Meta-Schema URIs
- - Core/Validation: https://json-schema.org/draft/2020-12/schema
- - Hyper-Schema: https://json-schema.org/draft/2020-12/hyper-schema
- - Recommended Output: https://json-schema.org/draft/2020-12/meta/recommended-output
-
-2. Single-Vocabulary Files
- All under https://json-schema.org/draft/2020-12/meta/: core.json, applicator.json, validation.json, unevaluated.json, format-annotation.json, format-assertion.json, content.json, meta-data.json
-
-3. Relative JSON Pointer
- - URI: https://json-schema.org/draft/2020-12/relative-json-pointer
- - Adds token syntax: '#', '[<n>]', '/path'.
-
-4. Migration Paths
- - 2019-09  2020-12: change identifier scheme, add unevaluated and content vocabularies.
- - 07  2019-09: add dynamic refs.
- - 06  07: add format-assertion.
- - 04  06: remove id in favor of $id.
-
-## Original Source
-JSON Schema
-https://json-schema.org/specification.html
-
-## Digest of META_SCHEMAS
-
-# Current Version and Meta-Schemas (retrieved 2025-05-01)
-
-## 2020-12 Core/Validation Dialect Meta-Schema
-
-URI: https://json-schema.org/draft/2020-12/schema
-
-This JSON document defines the Core foundation and Validation keywords.
-
-## 2020-12 Hyper-Schema Dialect Meta-Schema
-
-URI: https://json-schema.org/draft/2020-12/hyper-schema
-
-Includes Core/Validation and hyperlinking keywords (from 2019-09).
-
-## 2020-12 Recommended Output Meta-Schema
-
-URI: https://json-schema.org/draft/2020-12/meta/recommended-output
-
-Specifies structure of application-generated validation output.
-
-## Single-Vocabulary Meta-Schemas (URIs under https://json-schema.org/draft/2020-12/meta/)
-
-- core
-- applicator
-- validation
-- unevaluated
-- format-annotation
-- format-assertion
-- content
-- meta-data
-
-## Relative JSON Pointers
-
-URI: https://json-schema.org/draft/2020-12/relative-json-pointer
-
-Extends JSON Pointer for relative addressing; not used by Core/Validation.
-
-## Migration Paths Between Drafts
-
-- Draft-2019-09 → Draft-2020-12
-- Draft-07 → Draft-2019-09
-- Draft-06 → Draft-07
-- Draft-04 → Draft-06
-
-## Access Note
-
-Download each URI and open locally to avoid GitHub Pages JSON rendering limitations.
-
-## Attribution
-- Source: JSON Schema
-- URL: https://json-schema.org/specification.html
-- License: CC0 1.0 Universal
-- Crawl Date: 2025-05-07T06:32:31.611Z
-- Data Size: 2325185 bytes
-- Links Found: 10204
-
-## Retrieved
-2025-05-07
-library/JS_YAML.md
-# library/JS_YAML.md
-# JS_YAML
-
-## Crawl Summary
-Installation: npm install js-yaml  CLI: js-yaml [-h] [-v] [-c] [-t] file
-
-Methods:
-• load(string, options) -> parsed doc; options: filename=null, onWarning=null, schema=DEFAULT_SCHEMA, json=false; throws on multi-doc input
-• loadAll(string, iterator?, options) -> array of docs or applies iterator
-• dump(object, options) -> YAML string; options: indent=2, noArrayIndent=false, skipInvalid=false, flowLevel=-1, styles={}, schema=DEFAULT_SCHEMA, sortKeys=false|func, lineWidth=80, noRefs=false, noCompatMode=false, condenseFlow=false, quotingType="'", forceQuotes=false, replacer=null
-
-Supported schemas: FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA
-Supported types: null,bool,int,float,binary,timestamp,omap,pairs,set,str,seq,map
-Styles per tag: canonical,lowercase,uppercase,camelcase,empty,binary,octal,decimal,hexadecimal
-
-Caveats: complex keys stringified, implicit block mapping keys unsupported
-
-## Normalised Extract
-Table of Contents
-1 Installation
-2 CLI Usage
-3 API Methods
-  3.1 load
-  3.2 loadAll
-  3.3 dump
-4 Schema Options
-5 Dump Styling
-6 Supported Types
-7 Caveats
-
-1 Installation
-Run npm install js-yaml or npm install -g js-yaml for CLI.
-
-2 CLI Usage
-Command: js-yaml [-h|--help] [-v|--version] [-c|--compact] [-t|--trace] file
-  -h show help
-  -v show version
-  -c compact error messages
-  -t show stack trace
-
-3 API Methods
-3.1 load
-Signature: yaml.load(string, options) -> Object|string|number|null|undefined
-Throws: YAMLException on parse error or multi-doc input
-Options:
-  filename: string|null default null
-  onWarning: function(YAMLException) default null
-  schema: one of FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA default DEFAULT_SCHEMA
-  json: boolean default false
-
-3.2 loadAll
-Signature: yaml.loadAll(string, iterator?, options) -> Array<any> if no iterator
-iterator(doc) called per document
-Options: same as load
-
-3.3 dump
-Signature: yaml.dump(object, options) -> string
-Throws: YAMLException on invalid types unless skipInvalid=true
-Options:
-  indent: number default 2
-  noArrayIndent: boolean default false
-  skipInvalid: boolean default false
-  flowLevel: number default -1
-  styles: object tag->style default {}
-  schema: one of FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA default DEFAULT_SCHEMA
-  sortKeys: boolean|function default false
-  lineWidth: number default 80
-  noRefs: boolean default false
-  noCompatMode: boolean default false
-  condenseFlow: boolean default false
-  quotingType: ' or " default '
-  forceQuotes: boolean default false
-  replacer: function(key,value) default null
-
-4 Schema Options
-FAILSAFE_SCHEMA: strings, arrays, plain objects
-JSON_SCHEMA: JSON types
-CORE_SCHEMA: same as JSON_SCHEMA
-DEFAULT_SCHEMA: all YAML types
-
-5 Dump Styling
-Available styles per tag:
-  !!null: canonical(~), lowercase(null), uppercase(NULL), camelcase(Null), empty("")
-  !!int: binary(0b1010), octal(0o52), decimal(42), hexadecimal(0x2A)
-  !!bool: lowercase(true), uppercase(TRUE), camelcase(True)
-  !!float: lowercase(.inf), uppercase(.INF), camelcase(.Inf)
-Use options.styles:{ '!!null':'canonical' }
-
-6 Supported Types
-!!null -> null
-!!bool -> boolean
-!!int -> number
-!!float -> number
-!!binary -> Buffer
-!!timestamp -> Date
-!!omap -> Array<[k,v]>
-!!pairs -> Array<[k,v]>
-!!set -> Array<object with null values>
-!!str -> string
-!!seq -> Array<any>
-!!map -> object
-
-7 Caveats
-• Using arrays or objects as keys stringifies via toString()
-• Implicit block mapping keys with anchors unsupported
+1. PRNG Initialization
+2. PRNG Methods
+3. Options Object
+4. Script Tag Usage
+5. Node.js Usage
+6. Algorithm Variants
+7. State Persistence
+8. Reseeding Patterns
+
+1. PRNG Initialization
+Signature: Math.seedrandom(seed?: string|number|Array|null, options?: {entropy?: boolean, global?: boolean, state?: boolean|object, pass?: Function}) -> PRNG function(random()). Use new Math.seedrandom(...) for local instances; omit new to override Math.random globally.
+
+2. PRNG Methods
+random()    returns float in [0,1)
+quick()     returns 32-bit randomness as float
+int32()     returns signed 32-bit integer
+double()    returns 56-bit randomness as float (Alea only)
+state()     returns object representing internal state
+
+3. Options Object
+entropy: false | true  (default false)
+global: false | true   (default false)
+state: false | true | object  (default false)
+pass: function(prng, seed) -> any
+
+4. Script Tag Usage
+Include <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+Create PRNG: new Math.seedrandom('seed', options)
+Override Math.random: Math.seedrandom('seed')
+
+5. Node.js Usage
+Install: npm install seedrandom
+Import: var seedrandom = require('seedrandom')
+Local: var rng = seedrandom('seed', options)
+Global: seedrandom('seed', {global:true})
+
+6. Algorithm Variants
+Access via seedrandom.<algo>: alea, xor128, tychei, xorwow, xor4096, xorshift7, quick
+Each returns PRNG with same methods
+
+7. State Persistence
+Enable: var s = Math.seedrandom('seed', {state:true});
+Save: var saved = s.state();
+Restore: var r = Math.seedrandom('', {state:saved});
+
+8. Reseeding Patterns
+Autoseed: Math.seedrandom() uses crypto.getRandomValues or time+DOM fallback
+Network seed: JSONP <script>callback=Math.seedrandom</script> or synchronous XHR to random.org then Math.seedrandom(bits,!!bits)
+User-event seed: collect mouse/touch events into array then Math.seedrandom(events, {entropy:true})
 
 
 ## Supplementary Details
-Installation: npm install js-yaml@latest or npm install -g js-yaml@latest for CLI. Ensure Node.js >= v6.
-
-Loading file example:
-const fs = require('fs')
-const yaml = require('js-yaml')
-try {
-  const source = fs.readFileSync('config.yml','utf8')
-  const config = yaml.load(source, { filename:'config.yml', onWarning:w=>console.warn(w.message), schema:yaml.JSON_SCHEMA, json:true })
-} catch(e) {
-  if(e instanceof yaml.YAMLException) console.error('YAML parse error:',e.message)
-  else throw e
-}
-
-Dumping object example:
-const obj = { name:'app', items:[1,2,3] }
-const yml = yaml.dump(obj, { indent:4, noArrayIndent:true, flowLevel:0, sortKeys:(a,b)=>a.localeCompare(b), lineWidth:-1, quotingType:'"', forceQuotes:true })
-
-Schema definitions:
-const {FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA} = require('js-yaml')
-
-Define custom style:
-yaml.dump(obj, { styles:{ '!!int':'hexadecimal' } })
-
-
-## Reference Details
-// load method
-const yaml = require('js-yaml')
-// Signature: load(string: string, options?: {
-//   filename?: string|null,
-//   onWarning?: (e: YAMLException)=>void,
-//   schema?: Schema,
-//   json?: boolean
-// }) => any
-// Throws YAMLException
-
-// loadAll method
-// Signature: loadAll(string: string, iterator?: (doc:any)=>void, options?: sameAsLoad) => any[]
-
-// dump method
-// Signature: dump(object: any, options?: {
-//   indent?: number,
-//   noArrayIndent?: boolean,
-//   skipInvalid?: boolean,
-//   flowLevel?: number,
-//   styles?: {[tag:string]:string},
-//   schema?: Schema,
-//   sortKeys?: boolean|((a:string,b:string)=>number),
-//   lineWidth?: number,
-//   noRefs?: boolean,
-//   noCompatMode?: boolean,
-//   condenseFlow?: boolean,
-//   quotingType?: '"'|"'",
-//   forceQuotes?: boolean,
-//   replacer?: (key:any,value:any)=>any
-// }) => string
-
-// Best practice: safe loading
-function safeLoadFile(path) {
-  const src = fs.readFileSync(path,'utf8')
-  return yaml.load(src, { schema: yaml.JSON_SCHEMA, json:true })
-}
-
-// Troubleshooting:
-// Command to run CLI with full trace:
-// js-yaml --trace config.yml
-// Expected output on invalid YAML:
-// Error: unacceptable indentation at line 3, column 5:
-//     key: value
-//     ^
-
-
-## Information Dense Extract
-yaml.load(string, {filename=null, onWarning=null, schema=DEFAULT_SCHEMA, json=false}) -> any throws YAMLException
-yaml.loadAll(string, iterator?, options) -> any[]
-yaml.dump(object, {indent=2, noArrayIndent=false, skipInvalid=false, flowLevel=-1, styles={}, schema=DEFAULT_SCHEMA, sortKeys=false|func, lineWidth=80, noRefs=false, noCompatMode=false, condenseFlow=false, quotingType='\'', forceQuotes=false, replacer=null}) -> string
-Schemas: FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA
-Styles per tag: !!null(canonical,lowercase,uppercase,camelcase,empty), !!int(binary,octal,decimal,hexadecimal), !!bool(lowercase,uppercase,camelcase), !!float(lowercase,uppercase,camelcase)
-Supported types: null,bool,int,float,binary(timestamp),Buffer,Date,omap,pairs,set,str,seq,map
-CLI: js-yaml [-h|--help] [-v|--version] [-c|--compact] [-t|--trace] file
-
-
-## Sanitised Extract
-Table of Contents
-1 Installation
-2 CLI Usage
-3 API Methods
-  3.1 load
-  3.2 loadAll
-  3.3 dump
-4 Schema Options
-5 Dump Styling
-6 Supported Types
-7 Caveats
-
-1 Installation
-Run npm install js-yaml or npm install -g js-yaml for CLI.
-
-2 CLI Usage
-Command: js-yaml [-h|--help] [-v|--version] [-c|--compact] [-t|--trace] file
-  -h show help
-  -v show version
-  -c compact error messages
-  -t show stack trace
-
-3 API Methods
-3.1 load
-Signature: yaml.load(string, options) -> Object|string|number|null|undefined
-Throws: YAMLException on parse error or multi-doc input
-Options:
-  filename: string|null default null
-  onWarning: function(YAMLException) default null
-  schema: one of FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA default DEFAULT_SCHEMA
-  json: boolean default false
-
-3.2 loadAll
-Signature: yaml.loadAll(string, iterator?, options) -> Array<any> if no iterator
-iterator(doc) called per document
-Options: same as load
-
-3.3 dump
-Signature: yaml.dump(object, options) -> string
-Throws: YAMLException on invalid types unless skipInvalid=true
-Options:
-  indent: number default 2
-  noArrayIndent: boolean default false
-  skipInvalid: boolean default false
-  flowLevel: number default -1
-  styles: object tag->style default {}
-  schema: one of FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA default DEFAULT_SCHEMA
-  sortKeys: boolean|function default false
-  lineWidth: number default 80
-  noRefs: boolean default false
-  noCompatMode: boolean default false
-  condenseFlow: boolean default false
-  quotingType: ' or ' default '
-  forceQuotes: boolean default false
-  replacer: function(key,value) default null
-
-4 Schema Options
-FAILSAFE_SCHEMA: strings, arrays, plain objects
-JSON_SCHEMA: JSON types
-CORE_SCHEMA: same as JSON_SCHEMA
-DEFAULT_SCHEMA: all YAML types
-
-5 Dump Styling
-Available styles per tag:
-  !!null: canonical(~), lowercase(null), uppercase(NULL), camelcase(Null), empty('')
-  !!int: binary(0b1010), octal(0o52), decimal(42), hexadecimal(0x2A)
-  !!bool: lowercase(true), uppercase(TRUE), camelcase(True)
-  !!float: lowercase(.inf), uppercase(.INF), camelcase(.Inf)
-Use options.styles:{ '!!null':'canonical' }
-
-6 Supported Types
-!!null -> null
-!!bool -> boolean
-!!int -> number
-!!float -> number
-!!binary -> Buffer
-!!timestamp -> Date
-!!omap -> Array<[k,v]>
-!!pairs -> Array<[k,v]>
-!!set -> Array<object with null values>
-!!str -> string
-!!seq -> Array<any>
-!!map -> object
-
-7 Caveats
- Using arrays or objects as keys stringifies via toString()
- Implicit block mapping keys with anchors unsupported
-
-## Original Source
-js-yaml
-https://github.com/nodeca/js-yaml#readme
-
-## Digest of JS_YAML
-
-# js-yaml API Reference
-
-# load(string, options)
-Parses a YAML string as a single document.
-
-Method signature:
-
-  yaml.load(string[, options]) -> Object|string|number|null|undefined throws YAMLException
-
-Options:
-  filename            default null               string used in error messages
-  onWarning           default null               function(YAMLException)
-  schema              default DEFAULT_SCHEMA      one of FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA
-  json                default false              boolean: duplicate mapping keys override when true
-
-Throws YAMLException on parse errors or multi-document input.
-
-# loadAll(string, iterator, options)
-Parses multi-document YAML string.
-
-Method signature:
-
-  yaml.loadAll(string[, iterator(doc)][, options]) -> Array<Object|string|number|null|undefined>
-
-Parameters:
-  iterator            function(doc) called for each doc
-  options             same as load
-
-Returns array of parsed documents if no iterator provided.
-
-# dump(object, options)
-Serializes JavaScript object to YAML.
-
-Method signature:
-
-  yaml.dump(object[, options]) -> string throws YAMLException
-
-Options:
-  indent              default 2     number of spaces for indentation
-  noArrayIndent       default false boolean: do not indent array elements
-  skipInvalid         default false boolean: skip invalid types without throwing
-  flowLevel           default -1    number: depth to switch to flow style
-  styles              default {}    object: tag to style map
-  schema              default DEFAULT_SCHEMA one of FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA
-  sortKeys            default false boolean or function(a,b)
-  lineWidth           default 80    number: max line width, -1 unlimited
-  noRefs              default false boolean: disable duplicate reference anchors
-  noCompatMode        default false boolean: disable compat quoting for YAML1.1
-  condenseFlow        default false boolean: omit spaces in flow style
-  quotingType         default '      string: ''' or '"'
-  forceQuotes         default false boolean: quote all non-key strings
-  replacer            default null  function(key,value)
-
-# Style options table
-Tag      Styles                 Output examples
-!!null   canonical,lowercase, uppercase,camelcase,empty
-!!int    binary,octal,decimal,hexadecimal
-!!bool   lowercase,uppercase,camelcase
-!!float  lowercase,uppercase,camelcase
-
-# Supported types
-!!null => null
-!!bool => boolean
-!!int => number
-!!float => number
-!!binary => Buffer
-!!timestamp => Date
-!!omap => Array<[key,value]>
-!!pairs => Array<[key,value]>
-!!set => Array<object null>
-!!str => string
-!!seq => Array<any>
-!!map => object
-
-# Caveats
-• Objects or arrays as mapping keys are stringified via toString().
-• Implicit block mapping keys cannot be loaded.
-
-
-## Attribution
-- Source: js-yaml
-- URL: https://github.com/nodeca/js-yaml#readme
-- License: MIT License
-- Crawl Date: 2025-05-07T12:33:48.905Z
-- Data Size: 553062 bytes
-- Links Found: 4508
-
-## Retrieved
-2025-05-07
-library/ZOD_CORE.md
-# library/ZOD_CORE.md
-# ZOD_CORE
-
-## Crawl Summary
-Requirements: TS4.5+, strict mode. Install via npm/yarn/pnpm/bun, canary with @canary. Import z from "zod". Core constructors: z.string(), z.number(), z.bigint(), z.boolean(), z.date(), z.undefined(), z.null(), z.void(), z.any(), z.unknown(), z.never(). Schemas: object, array, tuple, union, discriminatedUnion, record, map, set, enum, nativeEnum, lazy, function. Methods: .parse, .safeParse, .parseAsync, .safeParseAsync. Modifiers: optional, nullable, partial, deepPartial, required, array, nonempty, min, max, length, extend, merge, pick, omit, strict, passthrough, strip, catchall, brand, readonly, or, and, pipe. Transforms: .transform, .refine, .superRefine, z.preprocess, .default. Type inference: z.infer, z.input, z.output. Error customization via { message } and constructor params. Troubleshooting: try/catch or safeParse.
-
-## Normalised Extract
-Table of Contents:
-1 Installation
-2 Basic Usage
-3 Core Schemas
-4 Modifiers
-5 Refinements & Transforms
-6 Type Utilities
-7 Error Handling
-
-1 Installation
-TypeScript 4.5+ with strict:true in tsconfig.json. Install zod: npm install zod (or yarn, pnpm, bun). Canary: zod@canary.
-
-2 Basic Usage
-import { z } from "zod". Create schemas and use parse/safeParse methods.
-
-3 Core Schemas
-z.string() z.number() z.bigint() z.boolean() z.date() z.undefined() z.null() z.void() z.any() z.unknown() z.never()
-4 container types
-z.object({key:z.type}) z.array(z.type) z.tuple([...]) z.union([...]) z.discriminatedUnion("key", [...]) z.record(keySchema, valueSchema) z.map(k,v) z.set(v) z.enum(["A","B"]) z.nativeEnum(NativeEnum) z.lazy(()=>schema) z.function().args(...).returns(...)
-
-4 Modifiers
-.schema.optional() .nullable() .nullish() .array() .nonempty() .min(n) .max(n) .length(n) .partial() .deepPartial() .required() .extend({}) .merge(other) .pick({k:true}) .omit({k:true}) .strict() .passthrough() .strip() .catchall(schema) .brand() .readonly() .or() .and() .pipe()
-
-5 Refinements & Transforms
-.schema.transform(fn) .refine(fn,{message,path}) .superRefine((v,ctx)=>{}) z.preprocess(fn, schema) .default(value)
-
-6 Type Utilities
-type T = z.infer<typeof schema> type In = z.input<typeof schema> type Out = z.output<typeof schema>
-
-7 Error Handling
-schema.parse(data) throws ZodError with .errors array. Use schema.safeParse(data) to get result.success and result.data or result.error.
-
-
-## Supplementary Details
-Exact tsconfig.json snippet: {"compilerOptions":{"strict":true}}. CLI commands: npm install zod; yarn add zod; pnpm add zod; bun add zod. Canary builds: zod@canary. ensure TypeScript version>=4.5. Use import { z } from "zod". Default import path: "zod".
-Use z.coerce.string(), z.coerce.number(), z.coerce.boolean(), z.coerce.bigint(), z.coerce.date() to coerce values using JS constructors. Boolean coercion: truthy->true, falsy->false.
-Date coercion: new Date(input). validate invalid dates as failure.
-String validations: .email(), .url(), .uuid(), .regex(regex), .datetime({offset?:boolean,local?:boolean,precision?:number}), .date(), .time({precision?:number}), .ip({version:"v4"|"v6"}), .cidr({version:"v4"|"v6"}).
-Number validations: .gt(n), .gte(n), .lt(n), .lte(n), .int(), .positive(), .nonnegative(), .negative(), .nonpositive(), .multipleOf(n), .finite(), .safe().
-BigInt validations similar with n suffix. NaN schema: z.nan().
-Enum: z.enum([...]) yields .options array and .enum object. .extract([...]) .exclude([...]).
-NativeEnum: z.nativeEnum(MyEnum).
-Object unknownKey policy: default strip, use .passthrough(), .strict(), .catchall(schema).
-Array sizing: .min(count,{message}), .max(count), .length(count). .nonempty({message}).
-Tuple: .rest(schema).
-Record: key type must be string or number; runtime keys always string.
-Map and Set size constraints: .nonempty(), .min(n), .max(n), .size(n).
-Function schemas: .args(...schemas), .returns(schema), .implement(fn).
-Preprocess: z.preprocess(fn, schema).fn returns preconverted data.
-Custom schemas: z.custom<Type>((val)=>boolean,{message}).
-
-
-
-## Reference Details
-API: z.string(): ZodString
-z.number(): ZodNumber
-z.bigint(): ZodBigInt
-z.boolean(): ZodBoolean
-z.date(): ZodDate
-z.undefined(): ZodUndefined
-z.null(): ZodNull
-z.void(): ZodVoid
-z.any(): ZodAny
-z.unknown(): ZodUnknown
-z.never(): ZodNever
-z.object<Shape extends ZodRawShape>(shape: Shape): ZodObject<Shape,UnknownKeys,Catchall>
-z.array<T extends ZodTypeAny>(schema: T): ZodArray<T>
-z.tuple<T extends [ZodTypeAny,...ZodTypeAny[]]>(schemas: T): ZodTuple<T>
-z.union<T extends [ZodTypeAny,...ZodTypeAny[]]>(schemas: T): ZodUnion<T>
-z.discriminatedUnion<Key extends string, Options extends ZodDiscriminatedUnionOption<Key>[]>(discriminator: Key, options: Options): ZodDiscriminatedUnion<Key,Options>
-z.record<Key extends ZodTypeAny,Value extends ZodTypeAny>(keySchema: Key, valueSchema: Value): ZodRecord<Key,Value>
-z.map<Key extends ZodTypeAny,Value extends ZodTypeAny>(keySchema: Key, valueSchema: Value): ZodMap<Key,Value>
-z.set<Elem extends ZodTypeAny>(elementSchema: Elem): ZodSet<Elem>
-z.enum<Arr extends [string,...string[]]>(values: Arr): ZodEnum<Arr>
-z.nativeEnum<E extends object>(e: E): ZodNativeEnum<E>
-z.lazy<T>(getter: ()=>ZodType<T>): ZodLazy<T>
-z.function(): ZodFunction<Args,Return>
-
-.parse(data: unknown): T
-.parseAsync(data: unknown): Promise<T>
-.safeParse(data: unknown): { success: true; data: T } | { success: false; error: ZodError }
-.safeParseAsync(data: unknown): Promise<{ success: true; data: T } | { success: false; error: ZodError }>
-
-Modifiers:
-.optional(): ZodOptional<...>
-.nullable(): ZodNullable<...>
-.nullish(): ZodOptional<ZodNullable<...>>
-.default(def: T): ZodDefault<...>
-.array(): ZodArray<...>
-.nonempty(opts?:{message:string}): ZodNonEmptyArray<...>
-.min(n:number, opts?:{message:string}): ZodArray<...>
-.max(n:number, opts?:{message:string}): ZodArray<...>
-.length(n:number, opts?:{message:string}): ZodArray<...>
-.partial(props?:{ [K in keyof T]?: boolean }): ZodObject<...>
-.deepPartial(): ZodObject<...>
-.required(props?:{ [K in keyof T]?: boolean }): ZodObject<...>
-.extend(shape: ZodRawShape): ZodObject<...>
-.merge(other: ZodObject): ZodObject<...>
-.pick(props: { [K in keyof T]?: boolean }): ZodObject<...>
-.omit(props: { [K in keyof T]?: boolean }): ZodObject<...>
-.strict(): ZodObject<...>
-.passthrough(): ZodObject<...>
-.strip(): ZodObject<...>
-.catchall(schema: ZodTypeAny): ZodObject<...>
-.brand<B extends string>(): ZodBranded<...>
-.readonly(): ZodObject<...>
-.or(other: ZodTypeAny): ZodUnion<[Self,Other]>
-.and(other: ZodTypeAny): ZodIntersection<Self,Other>
-.pipe(schema: ZodType): ZodPipeline<Self,Schema>
-
-.refine(check: (data:T)=>boolean|Promise<boolean>, params?:{message?:string,path?:(string|number)[], }
-.superRefine((data:T,ctx:RefinementCtx)=>void)
-.transform<U>(fn:(arg:T)=>U|Promise<U>): ZodEffects<...>
-.preprocess(fn:(val:any)=>any, schema:ZodTypeAny): ZodEffects<...>
-
-z.coerce.string(): ZodString converts via String(input)
-z.coerce.number(): ZodNumber via Number(input)
-z.coerce.boolean(): ZodBoolean via Boolean(input)
-z.coerce.bigint(): ZodBigInt via BigInt(input)
-z.coerce.date(): ZodDate via new Date(input)
-
-Error customization in constructors: z.string({required_error:string, invalid_type_error:string}); in methods: .min(n,{message}); .email({message}); etc.
-
-Implementation Patterns:
-1. Define schema
-2. Use schema.parse(data) or safeParse
-3. Handle errors
-4. Chain refinements and transforms
-5. Use z.infer for TS types
-
-Best practices:
-- Always enable TS strict mode
-- Use safeParse in async contexts to avoid exceptions
-- Use discriminatedUnion for tagged union performance
-
-Troubleshooting:
-Command: node -e "console.log(require('zod').z.string().parse(123))"
-Expected: throws ZodError: Invalid type
-Check error.errors for path and message arrays
-Use .spa alias for safeParseAsync
-
-
-## Information Dense Extract
-TS4.5+,strict:true. npm install zod|yarn|pnpm|bun; canary via @canary. import {z} from "zod". Constructors: z.string(),z.number(),z.bigint(),z.boolean(),z.date(),z.undefined(),z.null(),z.void(),z.any(),z.unknown(),z.never(),z.object(shape),z.array(elem),z.tuple([...]),z.union([...])|.or(),z.discriminatedUnion(key,opts),z.record(keySchema,valueSchema),z.map(k,v),z.set(v),z.enum(values),z.nativeEnum(Enum),z.lazy(fn),z.function().args(...).returns(schema).modifiers: .optional(),.nullable(),.nullish(),.default(val),.array(),.nonempty({message}),.min(n),.max(n),.length(n),.partial(props),.deepPartial(),.required(props),.extend(shape),.merge(schema),.pick(fields),.omit(fields),.strict(),.passthrough(),.strip(),.catchall(schema),.brand(),.readonly(),.and(),.or(),.pipe(schema).transforms: .transform(fn),.refine(fn,{message,path}),.superRefine((v,ctx)),z.preprocess(fn,schema).coercion: z.coerce.string()|number()|boolean()|bigint()|date().parsing: .parse(data):T throws; .parseAsync(data):Promise<T>; .safeParse(data):result; .safeParseAsync(data):Promise<result>; usage pattern: define schema->parse/safeParse->handle. TS types: z.infer,z.input,z.output. Error customization via {required_error,invalid_type_error} and method {message}. Discriminated union performance: use key. Troubleshooting: inspect ZodError.errors. Use .spa alias.
-
-## Sanitised Extract
-Table of Contents:
-1 Installation
-2 Basic Usage
-3 Core Schemas
-4 Modifiers
-5 Refinements & Transforms
-6 Type Utilities
-7 Error Handling
-
-1 Installation
-TypeScript 4.5+ with strict:true in tsconfig.json. Install zod: npm install zod (or yarn, pnpm, bun). Canary: zod@canary.
-
-2 Basic Usage
-import { z } from 'zod'. Create schemas and use parse/safeParse methods.
-
-3 Core Schemas
-z.string() z.number() z.bigint() z.boolean() z.date() z.undefined() z.null() z.void() z.any() z.unknown() z.never()
-4 container types
-z.object({key:z.type}) z.array(z.type) z.tuple([...]) z.union([...]) z.discriminatedUnion('key', [...]) z.record(keySchema, valueSchema) z.map(k,v) z.set(v) z.enum(['A','B']) z.nativeEnum(NativeEnum) z.lazy(()=>schema) z.function().args(...).returns(...)
-
-4 Modifiers
-.schema.optional() .nullable() .nullish() .array() .nonempty() .min(n) .max(n) .length(n) .partial() .deepPartial() .required() .extend({}) .merge(other) .pick({k:true}) .omit({k:true}) .strict() .passthrough() .strip() .catchall(schema) .brand() .readonly() .or() .and() .pipe()
-
-5 Refinements & Transforms
-.schema.transform(fn) .refine(fn,{message,path}) .superRefine((v,ctx)=>{}) z.preprocess(fn, schema) .default(value)
-
-6 Type Utilities
-type T = z.infer<typeof schema> type In = z.input<typeof schema> type Out = z.output<typeof schema>
-
-7 Error Handling
-schema.parse(data) throws ZodError with .errors array. Use schema.safeParse(data) to get result.success and result.data or result.error.
-
-## Original Source
-Zod Schema Validation
-https://github.com/colinhacks/zod#readme
-
-## Digest of ZOD_CORE
-
-# Installation
-
-Requirements
-TypeScript 4.5+ with strict mode enabled in tsconfig.json:
-
-{
-  "compilerOptions": {
-    "strict": true
-  }
-}
-
-Install from npm:
-
-npm install zod
-# or yarn add zod
-# or pnpm add zod
-# or bun add zod
-
-Install canary builds with @canary suffix.
-
-# Basic Usage
-
-Import the library and define schemas:
-
-import { z } from "zod";
-
-Primitives:
-z.string(), z.number(), z.bigint(), z.boolean(), z.date(), z.undefined(), z.null(), z.void(), z.any(), z.unknown(), z.never()
-
-Parsing methods:
-.parse(data: unknown): T throws ZodError on failure
-.safeParse(data: unknown): { success: boolean; data?: T; error?: ZodError }
-.parseAsync(data: unknown): Promise<T>
-.safeParseAsync(data: unknown): Promise<{ success: boolean; data?: T; error?: ZodError }>
-
-# Core Schemas and Methods
-
-Schema creation:
-- Objects: z.object({ key: z.type(), ... })
-- Arrays: z.array(z.elementType)
-- Tuples: z.tuple([z.type1, z.type2, ...])
-- Unions: z.union([z.typeA, z.typeB]) or z.typeA.or(z.typeB)
-- Discriminated unions: z.discriminatedUnion("discriminatorKey", [ ... ])
-- Records: z.record(keySchema, valueSchema)
-- Maps: z.map(keySchema, valueSchema)
-- Sets: z.set(elementSchema)
-- Enums: z.enum(["A","B"]), z.nativeEnum(NativeEnum)
-- Recursive types using z.lazy
-- Function schemas: z.function().args(...).returns(...).implement(fn)
-
-Modifiers:
-- .optional(), .nullable(), .nullish()
-- .partial(), .deepPartial(), .required()
-- .array(), .element
-- .nonempty(), .min(n), .max(n), .length(n)
-- .extend({ ... }), .merge(otherSchema)
-- .pick({ key:true }), .omit({ key:true })
-- .strict(), .passthrough(), .strip(), .catchall(schema)
-- .brand(), .readonly(), .or(), .and(), .pipe()
-
-Transformations and refinements:
-- .transform(transformFn)
-- .refine(predicateFn, { message, path?, params? })
-- .superRefine((value, ctx)=>{})
-- z.preprocess(preFn, schema)
-- .default(value)
-
-Type utilities:
-- z.infer<typeof Schema>
-- z.input<typeof Schema>
-- z.output<typeof Schema>
-
-Error customization:
-- Custom messages in constructor: z.string({ required_error, invalid_type_error })
-- Custom messages in methods: .min(n, { message })
-
-# Error Handling and Troubleshooting
-
-Catch and inspect errors:
-
-try {
-  schema.parse(data)
-} catch (e) {
-  if (e instanceof ZodError) {
-    console.error(e.errors)
-  }
-}
-
-Use safeParse to avoid exceptions.
-
-# TypeScript Inference
-
-All schemas infer type automatically:
-
-type DataType = z.infer<typeof schema>
-
-## Attribution
-- Source: Zod Schema Validation
-- URL: https://github.com/colinhacks/zod#readme
-- License: MIT License
-- Crawl Date: 2025-05-07T15:30:46.452Z
-- Data Size: 1032521 bytes
-- Links Found: 6618
-
-## Retrieved
-2025-05-07
-library/HTTP_SERVER.md
-# library/HTTP_SERVER.md
-# HTTP_SERVER
-
-## Crawl Summary
-http.createServer([options], requestListener) returns an HTTP server instance. server.listen supports numeric port, UNIX path, or options object. Default host 127.0.0.1, default socket timeout 120s, maxHeadersCount unlimited. Core events: 'request', 'connection', 'clientError', 'error'. Key config: allowHalfOpen, pauseOnConnect, keepAliveTimeout, headersTimeout. Minimal example provided. Best practices: handle clientError, adjust timeouts. Troubleshooting EADDRINUSE with lsof and kill.
-
-## Normalised Extract
-Table of Contents
-1. Method Signatures
-2. Events
-3. Defaults & Config
-4. Example
-5. Error Handling
-6. Troubleshooting
-
-1. Method Signatures
-createServer([options], requestListener)
-  options.allowHalfOpen:boolean:false
-  options.pauseOnConnect:boolean:false
-  requestListener(req:IncomingMessage,res:ServerResponse)
-  returns http.Server
-
-server.listen(port:number,hostname?:string,backlog?:number,callback?:Function)
-  hostname default '127.0.0.1'
-  backlog OS default
-  returns http.Server
-
-server.close(callback?:Function)
-
-2. Events
-'request':req, res
-'connection':socket
-'clientError':err, socket
-'error':err
-
-3. Defaults & Config
-host:127.0.0.1
-timeout:120000ms
-keepAliveTimeout:5000ms
-headersTimeout:60000ms
-maxHeadersCount:null
-
-4. Example
-import {createServer} from 'node:http'
-const srv=createServer((req,res)=>{res.writeHead(200,{'Content-Type':'text/plain'});res.end('OK')})
-srv.listen(3000,'127.0.0.1',()=>console.log('OK'))
-
-5. Error Handling
-server.on('clientError',(err,sock)=>sock.end('HTTP/1.1 400 Bad Request\r\n\r\n'))
-server.keepAliveTimeout=10000
-server.headersTimeout=15000
-
-6. Troubleshooting
-EADDRINUSE: lsof -iTCP:port -sTCP:LISTEN; kill -9 pid
-
-## Supplementary Details
-Configuration Options:
-- allowHalfOpen (boolean): false – if true, socket stays open after response.end
-- pauseOnConnect (boolean): false – if true, pauses socket until resumed in requestListener
-- timeout (number): 120000 – socket idle timeout in milliseconds
-- keepAliveTimeout (number): 5000 – time to keep socket open for additional requests
-- headersTimeout (number): 60000 – time to receive complete HTTP headers
-- maxHeadersCount (number|null): null – maximum number of headers allowed
-
-Implementation Steps:
-1. Import: `import { createServer } from 'node:http'`
-2. Instantiate: `const server = createServer(requestListener)`
-3. Attach error handlers: `server.on('clientError',...)`
-4. Configure timeouts: `server.keepAliveTimeout=...; server.headersTimeout=...`
-5. Start: `server.listen(port, host, callback)`
-6. On shutdown: `server.close(callback)`
-
-Core Functionality:
-- IncomingMessage exposes `method`, `url`, `headers`
-- ServerResponse methods: `writeHead(statusCode, headers)`, `write(data)`, `end([data])`
-
-
-## Reference Details
-HTTP.createServer(options?, requestListener)
-Parameters:
-  options.allowHalfOpen:boolean:false
-  options.pauseOnConnect:boolean:false
-  requestListener:Function<(req:IncomingMessage,res:ServerResponse)>:
-    req.method:string
-    req.url:string
-    req.headers:IncomingHttpHeaders
-    req.setTimeout(msecs:number, callback?:Function)
-    res.write(chunk:Buffer|string, encoding?:string):boolean
-    res.writeHead(statusCode:number, headers:OutgoingHttpHeaders):void
-    res.end([data:Buffer|string], [encoding:string], [callback:Function]):void
-Returns: http.Server
-
-Server.listen(port:number, hostname?:string, backlog?:number, callback?:Function):http.Server
-Server.listen(path:string, callback?:Function):http.Server
-Server.listen(options:{port:number,host?:string,backlog?:number,exclusive?:boolean}, callback?:Function):http.Server
-
-Server.close(callback?:Function):http.Server | undefined
-
-Events:
-- 'request'(req:IncomingMessage,res:ServerResponse)
-- 'connection'(socket:net.Socket)
-- 'clientError'(err:Error,socket:net.Socket)
-- 'listening'()
-- 'close'()
-- 'error'(err:Error)
-
-Full Example with Best Practices:
-```js
-import { createServer } from 'node:http';
-
-const server = createServer({ allowHalfOpen: false }, (req, res) => {
-  // set per-request timeout
-  req.setTimeout(20000, () => {
-    res.writeHead(408);
-    res.end('Request Timeout');
-  });
-
-  if (req.method !== 'GET') {
-    res.writeHead(405, { 'Allow': 'GET' });
-    return res.end('Method Not Allowed');
-  }
-
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello World');
-});
-
-server.keepAliveTimeout = 10000;
-server.headersTimeout = 15000;
-
-server.on('clientError', (err, socket) => {
-  socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
-});
-
-server.on('error', (err) => {
-  console.error('Server error:', err);
-});
-
-server.listen({ port: 3000, host: '127.0.0.1', backlog: 511 }, () => {
-  console.log('Server listening on 127.0.0.1:3000');
-});
-```
-
-Troubleshooting Procedures:
-1. Port in Use:
-   - `$ lsof -iTCP:3000 -sTCP:LISTEN`
-   - `$ kill -9 <PID>`
-2. Unhandled Promise Rejection:
-   - Add `process.on('unhandledRejection', console.error)`
-3. Debugging Connections:
-   - `$ node --inspect server.js`
-   - Access `chrome://inspect` to view call stacks
-
-
-## Information Dense Extract
-createServer([allowHalfOpen=false,pauseOnConnect=false],reqListener(req:IncomingMessage,res:ServerResponse))→http.Server; server.listen(port,hostname='127.0.0.1',backlog=?,callback)→http.Server; server.close(callback). Defaults: timeout=120000ms, keepAliveTimeout=5000ms, headersTimeout=60000ms, maxHeadersCount=null. Events: 'request', 'connection', 'clientError', 'error', 'listening', 'close'. Best practices: set timeouts via req.setTimeout and server.keepAliveTimeout, handle clientError to send 400, handle unsupported methods with 405, catch server.on('error'). Troubleshoot EADDRINUSE via lsof/kilL, debug via node --inspect.
-
-## Sanitised Extract
-Table of Contents
-1. Method Signatures
-2. Events
-3. Defaults & Config
-4. Example
-5. Error Handling
-6. Troubleshooting
-
-1. Method Signatures
-createServer([options], requestListener)
-  options.allowHalfOpen:boolean:false
-  options.pauseOnConnect:boolean:false
-  requestListener(req:IncomingMessage,res:ServerResponse)
-  returns http.Server
-
-server.listen(port:number,hostname?:string,backlog?:number,callback?:Function)
-  hostname default '127.0.0.1'
-  backlog OS default
-  returns http.Server
-
-server.close(callback?:Function)
-
-2. Events
-'request':req, res
-'connection':socket
-'clientError':err, socket
-'error':err
-
-3. Defaults & Config
-host:127.0.0.1
-timeout:120000ms
-keepAliveTimeout:5000ms
-headersTimeout:60000ms
-maxHeadersCount:null
-
-4. Example
-import {createServer} from 'node:http'
-const srv=createServer((req,res)=>{res.writeHead(200,{'Content-Type':'text/plain'});res.end('OK')})
-srv.listen(3000,'127.0.0.1',()=>console.log('OK'))
-
-5. Error Handling
-server.on('clientError',(err,sock)=>sock.end('HTTP/1.1 400 Bad Request'r'n'r'n'))
-server.keepAliveTimeout=10000
-server.headersTimeout=15000
-
-6. Troubleshooting
-EADDRINUSE: lsof -iTCP:port -sTCP:LISTEN; kill -9 pid
-
-## Original Source
-Node.js Core API & Modules
-https://nodejs.org/api/
-
-## Digest of HTTP_SERVER
-
-# HTTP Module
-
-## HTTP.createServer
-Signature: `createServer([options], requestListener)`
-
-Parameters:
-- `options` <Object> (optional):
-  - `allowHalfOpen` <boolean> Default: `false`  – if true, keeps socket open after response end
-  - `pauseOnConnect` <boolean> Default: `false` – if true, pauses sockets on connection
-- `requestListener` <Function>  – callback `(req: IncomingMessage, res: ServerResponse)`
-
-Returns: `<http.Server>`
-
-## Server.listen
-Signature overloads:
-1. `server.listen(port[, hostname][, backlog][, callback])`
-2. `server.listen(path[, callback])`
-3. `server.listen(options[, callback])`
-
-Parameters (port variant):
-- `port` <number> – port to bind
-- `hostname` <string> Default: `127.0.0.1` – hostname or IP
-- `backlog` <number> Default: OS default – maximum queued connections
-- `callback` <Function> – invoked once server starts listening
-
-Returns: `<http.Server>`
-
-## Server.close
-Signature: `server.close([callback])`
-
-Parameters:
-- `callback` <Function> – invoked when all connections closed
-
-## Events
-- `'request'`: `(req: IncomingMessage, res: ServerResponse)`
-- `'connection'`: `(socket: net.Socket)`
-- `'clientError'`: `(err: Error, socket: net.Socket)`
-- `'error'`: `(err: Error)`
-
-## Configuration Defaults
-- Default host: `127.0.0.1`
-- Default port if unspecified: falls back to environment or OS
-- `timeout`: `120000` ms on sockets
-- `maxHeadersCount`: `null` (no limit)
-- `keepAliveTimeout`: `5000` ms
-
-## Minimal Example
-```js
-import { createServer } from 'node:http';
-
-const server = createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello World!');
-});
-
-server.listen(3000, '127.0.0.1', () => {
-  console.log('Listening on 127.0.0.1:3000');
-});
-```
-
-## Best Practices
-- Handle client errors:
-```js
-server.on('clientError', (err, sock) => {
-  sock.end('HTTP/1.1 400 Bad Request\r\n\r\n');
-});
-```
-- Set timeouts on slow clients:
-```js
-server.keepAliveTimeout = 10000;
-server.headersTimeout = 15000;
-```
-
-## Troubleshooting
-- EADDRINUSE: port in use
-  - `$ lsof -iTCP:3000 -sTCP:LISTEN`
-  - `$ kill -9 <pid>`
-- Unhandled exceptions: attach `process.on('uncaughtException')`
-
----
-_Data retrieved from https://nodejs.org/api/ on 2024-06-24, Data Size: 3644215 bytes_
-
-## Attribution
-- Source: Node.js Core API & Modules
-- URL: https://nodejs.org/api/
-- License: Node.js Foundation (MIT-like)
-- Crawl Date: 2025-05-07T18:32:06.324Z
-- Data Size: 3644215 bytes
-- Links Found: 3171
-
-## Retrieved
-2025-05-07
-library/EJS_API.md
-# library/EJS_API.md
-# EJS_API
-
-## Crawl Summary
-EJS v3.1.9 core API methods: render(template,data,options)→String; renderFile(path,data,options,cb)→void; compile(template,options)→Function. Options: cache(Boolean), filename(String), root(String), views(Array), delimiter(String), async(Boolean), compileDebug(Boolean), rmWhitespace(Boolean), strict(Boolean), context(Object), localsName(String). Template syntax: <% %>,<%= %>,<%- %>,<%# %>,<%% %>. Includes via include(name,data). Async by setting async:true. Caching requires filename. Errors throw JS exceptions with line numbers.
-
-## Normalised Extract
-Table of Contents:
-1 Installation
-2 Core API methods
-3 Options
-4 Template Syntax
-5 Includes
-6 Caching
-7 Asynchronous support
-8 Delimiters
-
-1 Installation
-  npm install ejs
-
-2 Core API methods
-  render(template:String, data:Object, options?:Object) => String
-  renderFile(path:String, data:Object, options:Object, callback:(err:Error, str:String)=>void) => void
-  compile(template:String, options?:Object) => Function(data:Object): String
-
-3 Options
-  cache: true|false (default false)
-  filename: absolute or relative file path (required for include and cache key)
-  root: string path for absolute include resolution (default process.cwd())
-  views: array of paths to search for includes (default [])
-  delimiter: single-character string for tag (default '%')
-  async: true|false (default false)
-  compileDebug: true|false (default true)
-  rmWhitespace: true|false (default false)
-  strict: true|false (default false)
-  context: object to bind `this` in template (default null)
-  localsName: string name for data object in template (default 'locals')
-
-4 Template Syntax
-  <% code %> no output
-  <%= expression %> HTML-escaped output
-  <%- expression %> unescaped output
-  <%# comment %> no execution
-  <%% literal %> outputs `<%`
-  %> ends tag
-
-5 Includes
-  Syntax: <%- include(filename:String, data?:Object) %>
-  Resolves relative to filename option or root/views paths
-
-6 Caching
-  Enable by cache:true
-  Requires filename for cache key
-  Stores compiled function in internal cache
-
-7 Asynchronous support
-  Set async:true in options
-  Use await inside <% %> tags
-  render and compile return Promise when async:true
-
-8 Delimiters
-  Change with delimiter option: options.delimiter = '?' yields <? code ?>
-
-
-## Supplementary Details
-Default options object: {
-  cache: false,
-  filename: undefined,
-  root: process.cwd(),
-  views: [],
-  delimiter: '%',
-  async: false,
-  compileDebug: true,
-  rmWhitespace: false,
-  strict: false,
-  context: null,
-  localsName: 'locals'
-}
-Implementation steps:
-1 Install ejs via npm
-2 Require or import ejs
-3 Call render or renderFile with correct options
-4 For includes set filename or root/views so include paths resolve
-5 Enable cache by passing cache:true and specifying filename
-6 For async functions set async:true and use await in templates
-7 Handle errors by try/catch around render or error-first callback in renderFile
+Default algorithm: ARC4 (RC4 key schedule) with internal terminator for non-string seeds. ARC4 key collision avoidance: append '\0' to string seeds; auto-appended for non-string seeds since v2.0. Autoseed fallback uses window.crypto.getRandomValues if available; else current time, native Math.random, and traversal of DOM elements for entropy. Entropy pool accumulates from each call to one- or two-argument forms, improving future autoseeds. In Node, no global Math.seedrandom after require; assign manually if needed. Bower install and AMD usage identical to Node require. Quick algorithm is 32-bit ARC4 variant; average period ~2^1600. Performance metrics: seeded calls <0.0002ms; seeding calls <0.2ms; autoseed w/o crypto ~20-30ms.
 
 
 ## Reference Details
 API Specifications:
 
-render(template:String, data:Object, options?:Object) => String
-  -Throws TypeError if template not string
-  -Throws errors from JS evaluation
+Math.seedrandom(seed?: string|number|Array|null, options?: {entropy?: boolean, global?: boolean, state?: boolean|object, pass?: Function}) -> PRNG function
+Parameters:
+  seed: user-provided seed; null or omitted triggers autoseed
+  options.entropy: mix seed with accumulated entropy pool
+  options.global: if true assign PRNG to Math.random
+  options.state: if true attach .state(); if object restore state
+  options.pass: function(prng, seed) return custom object
+Return: function random():number in [0,1)
 
-renderFile(path:String, data:Object, options:Object, callback:(err:Error, str:String)=>void) => void
-  -path: file system path to .ejs file
-  -data: object passed as locals
-  -options: same as render options
-  -callback: function(err, result)
+seedrandom.<algorithm>(seed, options?) -> PRNG
+Algorithms: alea, xor128, tychei, xorwow, xor4096, xorshift7, quick
+Same signature minus global assignment
 
-compile(template:String, options?:Object) => compiledFunction
-  -compiledFunction(data:Object, callback?:Function) => String|Promise
+PRNG Methods:
+random(): number             // uniform [0,1)
+quick(): number              // 32-bit float random
+int32(): number              // signed 32-bit integer
+double(): number             // 56-bit float (Alea only)
+state(): object              // current internal state
 
-Exact method signatures:
+Full Code Examples:
 
-function render(template, data, options) {
-  options = options || {};
-  const fn = compile(template, options);
-  if (options.async) return fn(data);
-  return fn(data);
-}
+// Local PRNG with state save/restore
+var s0 = seedrandom('secret', {state:true});
+for(var i=0;i<100000;i++) s0();
+var saved = s0.state();
+var s1 = seedrandom('', {state:saved});
+console.assert(s1()===s0());
 
-function renderFile(path, data, options, callback) {
-  if (typeof options === 'function') callback = options, options = {};
-  fs.readFile(path, 'utf8', function(err, str){
-    if(err) return callback(err);
-    try {
-      const fn = compile(str, Object.assign({}, options, {filename:path}));
-      const result = options.async ? fn(data) : fn(data);
-      if (options.async) result.then(res=> callback(null,res),cb=>callback(cb));
-      else callback(null, result);
-    } catch(e) {
-      callback(e);
-    }
-  });
-}
+// Replace global Math.random safely
+Math.seedrandom('test-seed', {global:true});
+console.log(Math.random()); // deterministic output
 
-function compile(template, options) {
-  const opts = Object.assign({}, defaultOptions, options);
-  // tokenizer and parser
-  const fn = new Function(opts.localsName, opts.context ? 'with(this){' + compiledSource + '}' : compiledSource);
-  return opts.async ? async function(locals){ return fn.call(opts.context, locals) } : function(locals){ return fn.call(opts.context, locals) };
-}
+// Pass callback to capture seed
+var obj = Math.seedrandom(null, {pass:function(prng, seed){ return {rng:prng, seed:seed}; }});
+console.log(obj.seed);
 
-Configuration Options:
-options.cache (Boolean): toggle caching of compiled templates
-options.filename (String): used for include resolution and cache key
-options.root (String): base path for includes starting with '/'
-options.views (Array<String>): search paths for include files
-options.delimiter (String): scriptlet delimiter
-options.async (Boolean): enable async/await support
-options.compileDebug (Boolean): include debug instrumentation
-options.rmWhitespace (Boolean): collapse whitespace
-options.strict (Boolean): fail on undefined values
-options.context (Object): bind this in templates
-options.localsName (String): variable name for locals
+// Use Alea algorithm and 56-bit float
+var aleaRng = seedrandom.alea('hello');
+console.log(aleaRng.double()); // deterministic 56-bit value
+
+Configuration Options and Effects:
+
+Option       Default  Effect
+entropy      false    mix seed with entropy pool
+global       false    assign PRNG to Math.random()
+state        false    enable .state() or restore state
+pass         none     callback invoked with (prng,seed)
 
 Best Practices:
-- Always set filename when using includes or cache
-- Precompile templates via compile and reuse function
-- Enable cache in production
-- Use rmWhitespace to reduce output size
-- Wrap render calls in try/catch or use callback error handling
-- Use async option for Promises and async helpers
+- Always use new Math.seedrandom() for local, avoid global override
+- Append '\0' to string seeds for ARC4 collision avoidance
+- For reproducible tests, fix seed and avoid entropy mixing
 
-Troubleshooting:
-Command: console.log(ejs.render('<%= a.b %>', {a:{}}));
-Expected: throws TypeError: Cannot read property 'b' of undefined
-With strict:true: throws ReferenceError: a is not defined
-Command: ejs.renderFile('missing.ejs', {}, {}, cb)
-Expected cb called with err.code == 'ENOENT'
+Troubleshooting Procedures:
 
-Exact commands:
-node -e "console.log(require('ejs').render('<%- include(\"tpl.ejs\") %>',{}, {filename:'main.ejs',views:['./views']}));"
-Output: contents of views/tpl.ejs
+Issue: Math.seedrandom undefined after require('seedrandom')
+Command: var seedrandom = require('seedrandom');
+Solution: assign global manually: Math.seedrandom = seedrandom;
+
+Issue: short string seeds yield identical sequences
+Solution: append '\0' terminator: Math.seedrandom(str+'\0');
+
+Issue: autoseed slow or missing crypto
+Check: window.crypto.getRandomValues available? If not, performance ~20-30ms
+Use: include polyfill or supply explicit seed
+
+Install & Build Commands:
+npm install seedrandom
+bower install seedrandom
+
+Expected Outputs:
+new Math.seedrandom('hello')() -> 0.9282578795792454
+new Math.seedrandom('hello').int32() -> 1966374204
+seedrandom.alea('hello').double() -> 0.8297006866124559
 
 
 ## Information Dense Extract
-ejs.render(template:String,data:Object,options?:{cache?:Boolean,filename?:String,root?:String,views?:String[],delimiter?:String,async?:Boolean,compileDebug?:Boolean,rmWhitespace?:Boolean,strict?:Boolean,context?:Object,localsName?:String})=>String|Promise;             ejs.renderFile(path:String,data:Object,options:Object,cb:(Error,String)=>void)=>void;             ejs.compile(template:String,options?:Object)=>(data:Object)=>String|Promise; Options defaults: cache:false,filename:undefined,root:process.cwd(),views:[],delimiter:'%',async:false,compileDebug:true,rmWhitespace:false,strict:false,context:null,localsName:'locals'; Template tags: <% code %>,<%=escape %>,<%-unescaped%>,<%#comment%>,<%%literal%>,%>; Include: <%- include(filename,data) %>, resolves via filename or root/views; Async support: options.async=true + await inside tags; Caching: options.cache=true + filename; Errors: JS exceptions with template line numbers; Delimiters change via options.delimiter; Best practices: precompile, cache in production, set filename for includes, rmWhitespace for lean output; Troubleshooting: catch exceptions, handle ENOENT on missing files.
+seedrandom v3.0.5: Math.seedrandom(seed?,{entropy?,global?,state?,pass?}) returns PRNG(random():[0,1),quick():32-bit,float,int32():signed32,double():56-bit,Alea only,state():object). Default algorithm: ARC4; alt algorithms via seedrandom.algo(seed,opts): alea,xor128,tychei,xorwow,xor4096,xorshift7,quick. Options default false produce no global override, no entropy mixing, no state. Autoseed uses crypto.getRandomValues or time+DOM fallback. State persistence via state:true or state:object. Scripts: include seedrandom.min.js or require('seedrandom') in Node/AMD. Bower/Require.js identical. Use new for local, avoid global override in production. Append '\0' to string seeds. Install: npm install seedrandom, bower install seedrandom. Performance: seeded <0.0002ms, seeding <0.2ms, autoseed ~20-30ms. Troubleshoot: assign Math.seedrandom after require; check crypto availability; append terminator for collision avoidance.
 
 ## Sanitised Extract
-Table of Contents:
-1 Installation
-2 Core API methods
-3 Options
-4 Template Syntax
-5 Includes
-6 Caching
-7 Asynchronous support
-8 Delimiters
+Table of Contents
+1. PRNG Initialization
+2. PRNG Methods
+3. Options Object
+4. Script Tag Usage
+5. Node.js Usage
+6. Algorithm Variants
+7. State Persistence
+8. Reseeding Patterns
 
-1 Installation
-  npm install ejs
+1. PRNG Initialization
+Signature: Math.seedrandom(seed?: string|number|Array|null, options?: {entropy?: boolean, global?: boolean, state?: boolean|object, pass?: Function}) -> PRNG function(random()). Use new Math.seedrandom(...) for local instances; omit new to override Math.random globally.
 
-2 Core API methods
-  render(template:String, data:Object, options?:Object) => String
-  renderFile(path:String, data:Object, options:Object, callback:(err:Error, str:String)=>void) => void
-  compile(template:String, options?:Object) => Function(data:Object): String
+2. PRNG Methods
+random()    returns float in [0,1)
+quick()     returns 32-bit randomness as float
+int32()     returns signed 32-bit integer
+double()    returns 56-bit randomness as float (Alea only)
+state()     returns object representing internal state
 
-3 Options
-  cache: true|false (default false)
-  filename: absolute or relative file path (required for include and cache key)
-  root: string path for absolute include resolution (default process.cwd())
-  views: array of paths to search for includes (default [])
-  delimiter: single-character string for tag (default '%')
-  async: true|false (default false)
-  compileDebug: true|false (default true)
-  rmWhitespace: true|false (default false)
-  strict: true|false (default false)
-  context: object to bind 'this' in template (default null)
-  localsName: string name for data object in template (default 'locals')
+3. Options Object
+entropy: false | true  (default false)
+global: false | true   (default false)
+state: false | true | object  (default false)
+pass: function(prng, seed) -> any
 
-4 Template Syntax
-  <% code %> no output
-  <%= expression %> HTML-escaped output
-  <%- expression %> unescaped output
-  <%# comment %> no execution
-  <%% literal %> outputs '<%'
-  %> ends tag
+4. Script Tag Usage
+Include <script src='//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js'></script>
+Create PRNG: new Math.seedrandom('seed', options)
+Override Math.random: Math.seedrandom('seed')
 
-5 Includes
-  Syntax: <%- include(filename:String, data?:Object) %>
-  Resolves relative to filename option or root/views paths
+5. Node.js Usage
+Install: npm install seedrandom
+Import: var seedrandom = require('seedrandom')
+Local: var rng = seedrandom('seed', options)
+Global: seedrandom('seed', {global:true})
 
-6 Caching
-  Enable by cache:true
-  Requires filename for cache key
-  Stores compiled function in internal cache
+6. Algorithm Variants
+Access via seedrandom.<algo>: alea, xor128, tychei, xorwow, xor4096, xorshift7, quick
+Each returns PRNG with same methods
 
-7 Asynchronous support
-  Set async:true in options
-  Use await inside <% %> tags
-  render and compile return Promise when async:true
+7. State Persistence
+Enable: var s = Math.seedrandom('seed', {state:true});
+Save: var saved = s.state();
+Restore: var r = Math.seedrandom('', {state:saved});
 
-8 Delimiters
-  Change with delimiter option: options.delimiter = '?' yields <? code ?>
+8. Reseeding Patterns
+Autoseed: Math.seedrandom() uses crypto.getRandomValues or time+DOM fallback
+Network seed: JSONP <script>callback=Math.seedrandom</script> or synchronous XHR to random.org then Math.seedrandom(bits,!!bits)
+User-event seed: collect mouse/touch events into array then Math.seedrandom(events, {entropy:true})
 
 ## Original Source
-EJS Templating Engine
-https://ejs.co/#docs
+Arithmetic & Numeric Libraries
+https://github.com/davidbau/seedrandom
 
-## Digest of EJS_API
+## Digest of SEEDRANDOM
 
-# Installation
+# Seedrandom.js v3.0.5
 
-```bash
-npm install ejs
-```
+## 1. Script Tag Usage
 
-# Usage
+<script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
 
-```javascript
-const ejs = require('ejs');
+// Create a local PRNG instance without affecting Math.random
+var prng = new Math.seedrandom('your-seed', { entropy: false });
+prng()        // float in [0,1)
+prng.quick()  // 32 bits of randomness in float
+prng.int32()  // signed 32-bit integer
 
-// Synchronous rendering
-ejs.render(templateString, dataObject, optionsObject);
+// Replace Math.random globally
+Math.seedrandom('global-seed');
+Math.random() // same output as prng()
 
-// Asynchronous rendering
-await ejs.render(templateString, dataObject, {async: true});
+## 2. Node.js / CommonJS
 
-// Compile to function
-const fn = ejs.compile(templateString, optionsObject);
-fn(dataObject);
+npm install seedrandom
+var seedrandom = require('seedrandom');
 
-// Render from file
-ejs.renderFile(filenamePath, dataObject, optionsObject, callback);
-```
+// Local PRNG
+var rng = seedrandom('seed');
+rng();
 
-# Primary API Methods
+// Global PRNG
+seedrandom('seed', { global: true });
+Math.random();
 
-- **render(template, data, options)** → *String*
-- **renderFile(path, data, options, callback)** → *void*
-- **compile(template, options)** → *Function*
+// Alternate algorithms
+var rng2 = seedrandom.xor4096('seed', { entropy: true });
+rng2.int32();
 
-# Options Object
+## 3. AMD / Require.js
 
-| Name            | Type      | Default     | Description                                                  |
-|-----------------|-----------|-------------|--------------------------------------------------------------|
-| cache           | Boolean   | false       | Cache intermediate JS functions                              |
-| filename        | String    | undefined   | Used by includes and cache keys                              |
-| root            | String    | process.cwd | Base directory for absolute includes                         |
-| views           | Array     | []          | Directories to search for includes                           |
-| delimiter       | String    | '%'         | Character to open and close scriptlet tags                   |
-| async           | Boolean   | false       | Enable top-level async filters and functions                 |
-| compileDebug    | Boolean   | true        | Include debug instrumentation in compiled function           |
-| rmWhitespace    | Boolean   | false       | Remove all safe-to-remove whitespace                        |
-| strict          | Boolean   | false       | Treat undefined values as errors                             |
-| context         | Object    | null        | `this` context for compiled functions                       |
-| localsName      | String    | 'locals'    | Name of data object in template                              |
+bower install seedrandom
+require(['seedrandom'], function(seedrandom) {
+  var rng = seedrandom('seed');
+  rng();
+});
 
-# Template Tag Syntax
+## 4. API & Signatures
 
-- `<%`  Scriptlet, no output
-- `<%=` HTML-escaped output
-- `<%-` Unescaped output
-- `<%#` Comment, no execution
-- `<%%` Outputs literal `<%`
-- `%>`  Close tag
+Math.seedrandom(seed?: string|number|Array|null,
+                options?: {
+                  entropy?: boolean,
+                  global?: boolean,
+                  state?: boolean|object,
+                  pass?: function(prng, seed)
+                })
+                -> function random():number
 
-# Includes
+seedrandom.<algorithm>(seed, options?) -> PRNG function
+  algorithms: alea, xor128, tychei, xorwow, xor4096, xorshift7, quick
 
-```ejs
-<%- include('header.ejs', {title: 'Home'}) %>
-```
+## 5. PRNG Methods
 
-# Caching
+prng()        -> number in [0,1)
+prng.quick()  -> number, 32-bit randomness
+prng.int32()  -> signed 32-bit integer
+prng.double() -> number, 56-bit randomness (Alea only)
+prng.state()  -> object representing internal state
 
-- Enabled via `options.cache = true`
-- `filename` required for proper cache key generation
+## 6. Options
 
-# Error Handling
+entropy: mix user-provided seed with global entropy pool (default false)
+global: if true, assign to Math.random (default false)
+state: if true or object, enable state() output or restore from saved state
+pass: callback(prng, seed) that returns custom object
 
-- Runtime errors throw JS exceptions with template line numbers
-- Stack traces include compiled function locations
+## 7. State Saving & Restoring
 
-# Asynchronous Support
+var s0 = Math.seedrandom('seed', { state: true });
+for(i=0;i<100000;i++) s0();
+var saved = s0.state();
+var s1 = Math.seedrandom('', { state: saved });
+assert(s1() === s0());
 
-Set `options.async = true`. Use `<% await userAsyncFunction() %>` inside templates.
+## 8. Reseeding & Network
 
-# Delimiters
+// Autoseed via crypto or DOM/time fallback
+Math.seedrandom();
 
-Specify `options.delimiter = '?'` to use `<? ... ?>` tags instead of `<% ... %>`.
+// Network-based seeding
+<script src="//jsonlib.appspot.com/urandom?callback=Math.seedrandom"></script>
+// or custom XHR to random.org and then Math.seedrandom(bits, !!bits);
+
+## 9. Best Practices & Troubleshooting
+
+- Always use new Math.seedrandom() for local PRNGs in libraries
+- Append '\0' terminator for short string seeds to avoid ARC4 key collisions
+- Avoid global override in production code
+- In Node require form, Math.seedrandom is undefined; assign manually if needed
+
+## 10. Performance
+
+Seeded PRNG call: ~0.0002ms per call
+Seeding (with crypto or entropy): ~0.2ms per call
+Autoseed without crypto: ~20-30ms on older browsers
 
 
 ## Attribution
-- Source: EJS Templating Engine
-- URL: https://ejs.co/#docs
-- License: MIT License
-- Crawl Date: 2025-05-07T09:30:47.542Z
-- Data Size: 8029 bytes
-- Links Found: 26
+- Source: Arithmetic & Numeric Libraries
+- URL: https://github.com/davidbau/seedrandom
+- License: Mixed Licenses: decimal.js (MIT), math.js (Apache-2.0), seedrandom (MIT)
+- Crawl Date: 2025-05-08T12:34:06.695Z
+- Data Size: 909666 bytes
+- Links Found: 4965
 
 ## Retrieved
-2025-05-07
-library/VITEST_GUIDE.md
-# library/VITEST_GUIDE.md
-# VITEST_GUIDE
+2025-05-08
+library/EXPRESS_API.md
+# library/EXPRESS_API.md
+# EXPRESS_API
 
 ## Crawl Summary
-Install vitest via npm|yarn|pnpm|bun; requires Node>=18.0.0, Vite>=5.0.0. Test files must use .test. or .spec. suffix. Export functions in .js/.ts modules; import expect and test from vitest. Scripts: test: vitest; coverage: vitest run --coverage. Config via vite.config.ts or vitest.config.ts with defineConfig; priority vitest.config.ts>--config>mode. Supported config file extensions: .js,.mjs,.cjs,.ts,.cts,.mts. Test config options: include, exclude, environment, globals, setupFiles, threads, hookTimeout. Workspaces array accepts globs or config objects with name, root, environment, setupFiles. CLI flags: --config, --port <number>, --https, --coverage; use vitest run to disable watch. Disable auto install with VITEST_SKIP_INSTALL_CHECKS=1. Merge configs with mergeConfig. Use official VSCode extension. Install unreleased via pkg.pr.new or pnpm linking. Troubleshoot file naming, Bun command, config path, CLI help.
+express.json: parses JSON bodies; options inflate=true, limit=100kb, reviver=null, strict=true, type=application/json, verify undefined. express.raw: parse to Buffer; inflate=true, limit=100kb, type=application/octet-stream. express.text: parse to string; defaultCharset=utf-8, inflate=true, limit=100kb, type=text/plain. express.urlencoded: parse urlencoded; extended=true, inflate=true, limit=100kb, parameterLimit=1000, type=application/x-www-form-urlencoded. express.Router opts caseSensitive=false, mergeParams=false, strict=false. express.static root, options dotfiles undefined, etag=true, extensions=false, fallthrough=true, immutable=false, index=index.html, lastModified=true, maxAge=0, redirect=true, setHeaders undefined. express() returns app with methods app.METHOD(path,callbacks), app.use, app.route, app.param, app.listen, app.engine(ext,callback), app.render(view,[locals],cb), app.set/get, enable/disable, enabled/disabled, app.path(), app.mountpath, settings with defaults.
 
 ## Normalised Extract
 Table of Contents:
-1 Installation
-2 Test File Patterns
-3 Package Scripts
-4 Configuration
-5 Workspace Configuration
-6 CLI Options
-7 Environment Variables
-8 IDE Integration
-9 Unreleased Installation
-10 Troubleshooting
+1 express.json
+2 express.raw
+3 express.text
+4 express.urlencoded
+5 express.Router
+6 express.static
+7 Application Object
 
-1 Installation
-Commands:
-  npm install -D vitest
-  yarn add -D vitest
-  pnpm add -D vitest
-  bun add -D vitest
-Requirements:
-  Node >= 18.0.0
-  Vite >= 5.0.0
-npx vitest runs local binary or installs temporary.
+1 express.json   Signature: express.json([options]) → function(req,res,next)
+Options:
+ inflate  Boolean  true
+ limit    Number|String  "100kb"
+ reviver  Function|null
+ strict   Boolean  true
+ type     String|Array|Function  "application/json"
+ verify   Function|undefined  (req,res,buf,encoding)
 
-2 Test File Patterns
-  File suffix must include .test. or .spec.
+2 express.raw   Signature: express.raw([options]) → function(req,res,next)
+Options:
+ inflate  Boolean  true
+ limit    Number|String  "100kb"
+ type     String|Array|Function  "application/octet-stream"
+ verify   Function|undefined  (req,res,buf,encoding)
 
-3 Package Scripts
-Add to package.json:
-  "scripts": {
-    "test": "vitest",
-    "coverage": "vitest run --coverage"
-  }
-Run with npm run test | yarn test | pnpm test | bun run test.
+3 express.text  Signature: express.text([options]) → function(req,res,next)
+Options:
+ defaultCharset  String  "utf-8"
+ inflate  Boolean  true
+ limit    Number|String  "100kb"
+ type     String|Array|Function  "text/plain"
+ verify   Function|undefined  (req,res,buf,encoding)
 
-4 Configuration
-Unified via vite.config.ts:
-  /// <reference types="vitest/config" />
-  import { defineConfig } from 'vite';
-  export default defineConfig({
-    test: { include:['**/*.test.ts'], environment:'node', globals:true, setupFiles:['./setup.ts'], threads:true, hookTimeout:5000 }
-  });
-Alternate standalone vitest.config.ts:
-  import { defineConfig } from 'vitest/config';
-  export default defineConfig({ test:{/* options */} });
-Priority: vitest.config.ts > CLI --config <path> > defineConfig mode=test.
-Supported extensions: .js, .mjs, .cjs, .ts, .cts, .mts.
+4 express.urlencoded   Signature: express.urlencoded([options]) → function(req,res,next)
+Options:
+ extended       Boolean  true
+ inflate        Boolean  true
+ limit          Number|String  "100kb"
+ parameterLimit Number  1000
+ type           String|Array|Function  "application/x-www-form-urlencoded"
+ verify         Function|undefined  (req,res,buf,encoding)
 
-5 Workspace Configuration
-In test.workspace array:
-  globs: 'packages/*', 'tests/*/vitest.config.{e2e,unit}.ts'
-  objects:
-    { name:'happy-dom', root:'./shared_tests', environment:'happy-dom', setupFiles:['./setup.happy-dom.ts'] }
+5 express.Router   Signature: express.Router([options]) → Router
+Options:
+ caseSensitive  Boolean  false
+ mergeParams    Boolean  false
+ strict         Boolean  false
 
-6 CLI Options
-  vitest [--config <path>] [--port <number>] [--https] [--coverage]
-  vitest run disables watch.
+6 express.static  Signature: express.static(root,[options]) → function(req,res,next)
+Arguments:
+ root  String  directory path
+Options:
+ dotfiles      String|undefined
+ etag          Boolean  true
+ extensions    Array|Boolean  false
+ fallthrough   Boolean  true
+ immutable     Boolean  false
+ index         String|Boolean  "index.html"
+ lastModified  Boolean  true
+ maxAge        Number|String  0
+ redirect      Boolean  true
+ setHeaders    Function|undefined  (res,path,stat)
 
-7 Environment Variables
-  VITEST_SKIP_INSTALL_CHECKS=1 disables automatic dependency prompts.
+7 Application Object   Creation: var app = express()
+Methods:
+ app.METHOD(path, [...]callbacks)
+ app.all(path, ...) matches all HTTP verbs
+ app.use(path?,middleware)
+ app.param(name|[names],callback)
+ app.route(path)
+ app.listen([port[,host[,backlog]]],callback)
+ app.engine(ext,callback)
+ app.render(view,[locals],callback)
+ app.set(name,value)
+ app.get(name) get setting or app.get(path,...) route
+ enable(name), disable(name), enabled(name), disabled(name)
+ path() returns mount path
 
-8 IDE Integration
-  Install Vitest Runner extension in VS Code.
-
-9 Unreleased Installation
-  npm i https://pkg.pr.new/vitest@{commit}
-  Local link:
-    git clone https://github.com/vitest-dev/vitest.git
-    pnpm install
-    cd packages/vitest && pnpm run build && pnpm link --global
-    in project: pnpm link --global vitest
-
-10 Troubleshooting
-  Bun conflict: use bun run test.
-  Missing tests: check .test./.spec. suffix.
-  Config not applied: verify file extension and path; use --config.
-  CLI flags: npx vitest --help.
+Settings Defaults:
+ case sensitive routing  undefined
+ env  process.env.NODE_ENV||"development"
+ etag  "weak"
+ jsonp callback name  "callback"
+ json escape  undefined
+ json replacer  undefined
+ json spaces  undefined
+ query parser  "extended"
+ strict routing  undefined
+ subdomain offset  2
+ trust proxy  false
+ views  process.cwd()+"/views"
+ view cache  false(dev)/true(prod)
 
 ## Supplementary Details
-Supported config file extensions: .js, .mjs, .cjs, .ts, .cts, .mts. .json not supported. defineConfig and mergeConfig API from 'vitest/config'.
-Config option defaults:
-  include: ['**/*.test.{js,ts}']
-  exclude: ['node_modules', 'dist']
-  globals: false
-  environment: 'node'
-  threads: true
-  hookTimeout: 30000 ms
-  testTimeout: 5000 ms
-  coverage: false
-  reporters: ['default']
-  setupFiles: []
-TestOptions:
-  only: false
-  skip: false
-  timeout: inherits testTimeout
-  retries: 0
-Workspace object keys:
-  name: string
-  root: string
-  environment: string
-  setupFiles: string[]
-CLI flags:
-  --config <string>: path to config file
-  --port <number>: port for coverage server
-  --https: enable HTTPS
-  --coverage: enable coverage run
-Env vars:
-  VITEST_SKIP_INSTALL_CHECKS: '1' disables dependency prompts
-Type directive:
-  /// <reference types="vitest/config" /> at top of config file
-MergeConfig usage:
-  mergeConfig(baseConfig, defineConfig({ test:{ /* overrides */ } }));
+express.json internal: uses body-parser.json(options)
+express.raw: uses body-parser.raw(options)
+express.text: uses body-parser.text(options)
+express.urlencoded: uses body-parser.urlencoded(options)
+Router: inherits methods use, route, verb methods; property stack of layers.
+static: uses serve-static(root,options); for fallthrough=false, next(err) on client errors.
+Application: under the hood, express() returns function app(req,res,next) extended with EventEmitter and methods from proto.
+app.listen calls http.createServer(app).listen
+app.param(name,cb): registers param middleware in router.paramCallbacks array.
+
 
 ## Reference Details
-Test API:
-function test(
-  name: string,
-  fn: (() => unknown) | Promise<unknown>,
-  options?: {
-    only?: boolean;
-    skip?: boolean;
-    timeout?: number;
-    retries?: number;
-  }
-): void;
+Code Examples:
+1. JSON parser:
+var express = require('express')
+var app = express()
+app.use(express.json({ limit: '200kb', strict:false, type: ['application/json','application/vnd.api+json'], verify: function(req,res,buf,enc){ if(buf.length>1e6) throw new Error('Payload too large') } }))
+app.post('/data', function(req,res){ res.json({received:req.body}); })
 
-Expect API:
-interface Matchers<T> {
-  toBe(expected: T): void;
-  toEqual(expected: unknown): void;
-  toThrow(error?: string | RegExp | ErrorConstructor): void;
-  // ...other matchers
-}
-function expect<T>(value: T): Matchers<T>;
+2. raw parser for webhooks:
+app.use('/webhook', express.raw({ type: 'application/json' }))
+app.post('/webhook', function(req,res){ var sig = req.get('Stripe-Signature'); stripe.webhooks.constructEvent(req.body,sig,endpointSecret)
+res.sendStatus(200) })
 
-Config API:
-function defineConfig<C>(config: C): C;
-function mergeConfig<C1, C2>(config1: C1, config2: C2): C1 & C2;
+3. urlencoded form:
+app.use(express.urlencoded({ extended:false, limit:'50kb', parameterLimit:500 }))
+app.post('/login', function(req,res){ var user=req.body.user; var pass=req.body.pass; })
 
-TestConfig interface:
-{
-  include?: string[];
-  exclude?: string[];
-  globals?: boolean;
-  environment?: 'node' | 'jsdom' | 'happy-dom';
-  threads?: boolean;
-  hookTimeout?: number;
-  testTimeout?: number;
-  coverage?: boolean | {
-    reporter?: string[];
-    exclude?: string[];
-  };
-  reporters?: string[];
-  setupFiles?: string[];
-  workspace?: Array<string | TestConfig>;
-}
+4. Router mounting:
+var router=express.Router({ mergeParams:true })
+router.get('/items/:itemId', function(req,res){ res.send(req.params.itemId) })
+app.use('/api',router)
 
-CLI commands & flags:
-npx vitest [--config <path>] [--port <number>] [--https] [--coverage] [--run]
-
-Environment variables:
-VITEST_SKIP_INSTALL_CHECKS=1
+5. static with caching:
+app.use(express.static(__dirname+'/public',{ maxAge:'7d', immutable:true, setHeaders:(res,path,stat)=>{ res.set('X-Custom','value') } }))
 
 Best Practices:
-- Use unified vite.config.ts with test property.
-- Avoid multiple config files; merge if needed.
-- Name files with .test. or .spec. suffix.
-- Pin Vitest version in package.json as devDependency.
+• Validate req.body before use.  
+• Use strict:false for flexible JSON.  
+• Limit body size to prevent DoS.  
+• Use Router mergeParams when sub-routing.  
+• Offload static to CDN, set immutable for versioned assets.
 
-Troubleshooting steps:
-1. Bun uses own runner: use `bun run test` and confirm exit code 0.
-2. File matching: run `npx vitest --detectLeaks` to verify patterns.
-3. Config load: run `npx vitest --config ./vitest.config.ts --show-config`.
-4. Missing types: add `/// <reference types="vitest/config" />` or install @types/vitest.
-5. View help: `npx vitest --help`.
-Expected output for basic test:
-✓ sum.test.js (1)  ✓ adds 1 + 2 to equal 3
-Test Files 1 passed(1) Tests 1 passed(1)
+Troubleshooting:
+Command: curl -X POST http://localhost:3000/data -H 'Content-Type:application/json' -d '{"foo":42}'  
+Expected: HTTP 200, body {"received":{"foo":42}}  
+Error: 413 Payload Too Large -> Increase limit or reduce payload size.
+
+Command: curl -v http://localhost:3000/img.png  
+Expected headers: Cache-Control: public, max-age=604800, immutable  
+Error: 404 -> Check file path under public/, verify express.static root.
 
 
 ## Information Dense Extract
-install: npm|yarn|pnpm|bun add -D vitest; Node>=18; Vite>=5; files: *.test.*|*.spec.*; sum.js export sum(a,b):number; sum.test.js import {test,expect}; script:test=vitest; coverage=vitest run --coverage; config:vite.config.ts or vitest.config.ts defineConfig({test:{include,exclude,environment,globals,threads,hookTimeout,setupFiles}}); ext:.js,.mjs,.cjs,.ts,.cts,.mts; mergeConfig(base,override); workspace:Array<string|TestConfig> entries; CLI: --config<string>,--port<number>,--https,--coverage,--run; env:VITEST_SKIP_INSTALL_CHECKS=1; API:test(name,fn,options:{only,skip,timeout,retries}); expect<T>(value).toBe|toEqual|toThrow; defineConfig<C>(C):C; mergeConfig<C1,C2>(C1,C2):C1&C2; TestConfig interface keys; troubleshooting: bun run test; npx vitest --help; ensure .test. suffix; use --show-config.
+express.json(options): inflate=true,limit=100kb,reviver=null,strict=true,type=application/json,verify; express.raw(options): inflate=true,limit=100kb,type=application/octet-stream,verify; express.text(options): defaultCharset=utf-8,inflate=true,limit=100kb,type=text/plain,verify; express.urlencoded(options): extended=true,inflate=true,limit=100kb,parameterLimit=1000,type=application/x-www-form-urlencoded,verify; express.Router(options): caseSensitive=false,mergeParams=false,strict=false; express.static(root,options): dotfiles,etag=true,extensions=false,fallthrough=true,immutable=false,index=index.html,lastModified=true,maxAge=0,redirect=true,setHeaders; app=express(): methods: .use,.route,.listen,.engine,.render,.set/get,.enable/disable,.param,.path,.mountpath; settings defaults: case sensitive routing=undef,env=NODE_ENV||development,etag=weak,jsonp callback name=callback,json escape=undef,json replacer=undef,json spaces=undef,query parser=extended,strict routing=undef,subdomain offset=2,trust proxy=false,views=process.cwd()+"/views",view cache=false(dev)/true(prod)
 
 ## Sanitised Extract
 Table of Contents:
-1 Installation
-2 Test File Patterns
-3 Package Scripts
-4 Configuration
-5 Workspace Configuration
-6 CLI Options
-7 Environment Variables
-8 IDE Integration
-9 Unreleased Installation
-10 Troubleshooting
+1 express.json
+2 express.raw
+3 express.text
+4 express.urlencoded
+5 express.Router
+6 express.static
+7 Application Object
 
-1 Installation
-Commands:
-  npm install -D vitest
-  yarn add -D vitest
-  pnpm add -D vitest
-  bun add -D vitest
-Requirements:
-  Node >= 18.0.0
-  Vite >= 5.0.0
-npx vitest runs local binary or installs temporary.
+1 express.json   Signature: express.json([options])  function(req,res,next)
+Options:
+ inflate  Boolean  true
+ limit    Number|String  '100kb'
+ reviver  Function|null
+ strict   Boolean  true
+ type     String|Array|Function  'application/json'
+ verify   Function|undefined  (req,res,buf,encoding)
 
-2 Test File Patterns
-  File suffix must include .test. or .spec.
+2 express.raw   Signature: express.raw([options])  function(req,res,next)
+Options:
+ inflate  Boolean  true
+ limit    Number|String  '100kb'
+ type     String|Array|Function  'application/octet-stream'
+ verify   Function|undefined  (req,res,buf,encoding)
 
-3 Package Scripts
-Add to package.json:
-  'scripts': {
-    'test': 'vitest',
-    'coverage': 'vitest run --coverage'
-  }
-Run with npm run test | yarn test | pnpm test | bun run test.
+3 express.text  Signature: express.text([options])  function(req,res,next)
+Options:
+ defaultCharset  String  'utf-8'
+ inflate  Boolean  true
+ limit    Number|String  '100kb'
+ type     String|Array|Function  'text/plain'
+ verify   Function|undefined  (req,res,buf,encoding)
 
-4 Configuration
-Unified via vite.config.ts:
-  /// <reference types='vitest/config' />
-  import { defineConfig } from 'vite';
-  export default defineConfig({
-    test: { include:['**/*.test.ts'], environment:'node', globals:true, setupFiles:['./setup.ts'], threads:true, hookTimeout:5000 }
-  });
-Alternate standalone vitest.config.ts:
-  import { defineConfig } from 'vitest/config';
-  export default defineConfig({ test:{/* options */} });
-Priority: vitest.config.ts > CLI --config <path> > defineConfig mode=test.
-Supported extensions: .js, .mjs, .cjs, .ts, .cts, .mts.
+4 express.urlencoded   Signature: express.urlencoded([options])  function(req,res,next)
+Options:
+ extended       Boolean  true
+ inflate        Boolean  true
+ limit          Number|String  '100kb'
+ parameterLimit Number  1000
+ type           String|Array|Function  'application/x-www-form-urlencoded'
+ verify         Function|undefined  (req,res,buf,encoding)
 
-5 Workspace Configuration
-In test.workspace array:
-  globs: 'packages/*', 'tests/*/vitest.config.{e2e,unit}.ts'
-  objects:
-    { name:'happy-dom', root:'./shared_tests', environment:'happy-dom', setupFiles:['./setup.happy-dom.ts'] }
+5 express.Router   Signature: express.Router([options])  Router
+Options:
+ caseSensitive  Boolean  false
+ mergeParams    Boolean  false
+ strict         Boolean  false
 
-6 CLI Options
-  vitest [--config <path>] [--port <number>] [--https] [--coverage]
-  vitest run disables watch.
+6 express.static  Signature: express.static(root,[options])  function(req,res,next)
+Arguments:
+ root  String  directory path
+Options:
+ dotfiles      String|undefined
+ etag          Boolean  true
+ extensions    Array|Boolean  false
+ fallthrough   Boolean  true
+ immutable     Boolean  false
+ index         String|Boolean  'index.html'
+ lastModified  Boolean  true
+ maxAge        Number|String  0
+ redirect      Boolean  true
+ setHeaders    Function|undefined  (res,path,stat)
 
-7 Environment Variables
-  VITEST_SKIP_INSTALL_CHECKS=1 disables automatic dependency prompts.
+7 Application Object   Creation: var app = express()
+Methods:
+ app.METHOD(path, [...]callbacks)
+ app.all(path, ...) matches all HTTP verbs
+ app.use(path?,middleware)
+ app.param(name|[names],callback)
+ app.route(path)
+ app.listen([port[,host[,backlog]]],callback)
+ app.engine(ext,callback)
+ app.render(view,[locals],callback)
+ app.set(name,value)
+ app.get(name) get setting or app.get(path,...) route
+ enable(name), disable(name), enabled(name), disabled(name)
+ path() returns mount path
 
-8 IDE Integration
-  Install Vitest Runner extension in VS Code.
-
-9 Unreleased Installation
-  npm i https://pkg.pr.new/vitest@{commit}
-  Local link:
-    git clone https://github.com/vitest-dev/vitest.git
-    pnpm install
-    cd packages/vitest && pnpm run build && pnpm link --global
-    in project: pnpm link --global vitest
-
-10 Troubleshooting
-  Bun conflict: use bun run test.
-  Missing tests: check .test./.spec. suffix.
-  Config not applied: verify file extension and path; use --config.
-  CLI flags: npx vitest --help.
+Settings Defaults:
+ case sensitive routing  undefined
+ env  process.env.NODE_ENV||'development'
+ etag  'weak'
+ jsonp callback name  'callback'
+ json escape  undefined
+ json replacer  undefined
+ json spaces  undefined
+ query parser  'extended'
+ strict routing  undefined
+ subdomain offset  2
+ trust proxy  false
+ views  process.cwd()+'/views'
+ view cache  false(dev)/true(prod)
 
 ## Original Source
-Vitest Testing Framework
-https://vitest.dev/guide/
+Express.js API
+https://expressjs.com/en/4x/api.html
 
-## Digest of VITEST_GUIDE
+## Digest of EXPRESS_API
 
-# Installing Vitest
+# express.json(options)  
+**Availability**: v4.16.0+  
+**Signature**: express.json([options]) → middleware  
+**Options**:
+- inflate (Boolean): default true. Handle deflated bodies.
+- limit (Number | String): default "100kb". Maximum request body size.
+- reviver (Function): default null. Passed to JSON.parse.
+- strict (Boolean): default true. Accept only arrays and objects.
+- type (String | Array | Function): default "application/json". Media type to parse.
+- verify (Function): default undefined. verify(req,res,buf,encoding).
 
-Requirements: Vite >= 5.0.0, Node >= 18.0.0
-Install via:
-```bash
-npm install -D vitest
-# or yarn add -D vitest
-# or pnpm add -D vitest
-# or bun add -D vitest
-``` 
-Tip: Use `npx vitest` to run local or temporary install.
+# express.raw(options)  
+**Availability**: v4.17.0+  
+**Signature**: express.raw([options]) → middleware  
+**Options**:
+- inflate (Boolean): default true.
+- limit (Number | String): default "100kb".
+- type (String | Array | Function): default "application/octet-stream".
+- verify (Function): default undefined.
 
-# Writing Tests
+# express.text(options)  
+**Availability**: v4.17.0+  
+**Signature**: express.text([options]) → middleware  
+**Options**:
+- defaultCharset (String): default "utf-8".
+- inflate (Boolean): default true.
+- limit (Number | String): default "100kb".
+- type (String | Array | Function): default "text/plain".
+- verify (Function): default undefined.
 
-File: sum.js
-```js
-export function sum(a, b) {
-  return a + b;
-}
-```
-File: sum.test.js
-```js
-import { expect, test } from 'vitest';
-import { sum } from './sum.js';
+# express.urlencoded(options)  
+**Availability**: v4.16.0+  
+**Signature**: express.urlencoded([options]) → middleware  
+**Options**:
+- extended (Boolean): default true.
+- inflate (Boolean): default true.
+- limit (Number | String): default "100kb".
+- parameterLimit (Number): default 1000.
+- type (String | Array | Function): default "application/x-www-form-urlencoded".
+- verify (Function): default undefined.
 
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
-});
-```
-Filename must include `.test.` or `.spec.` suffix.
+# express.Router(options)  
+**Signature**: express.Router([options]) → Router  
+**Options**:
+- caseSensitive (Boolean): default false.
+- mergeParams (Boolean): default false (4.5.0+).
+- strict (Boolean): default false.
 
-# Package.json Scripts
+# express.static(root, options)  
+**Signature**: express.static(root, [options]) → middleware  
+**Options**:
+- dotfiles (String): default undefined.
+- etag (Boolean): default true.
+- extensions (Array|Boolean): default false.
+- fallthrough (Boolean): default true.
+- immutable (Boolean): default false.
+- index (String|Boolean): default "index.html".
+- lastModified (Boolean): default true.
+- maxAge (Number|String): default 0.
+- redirect (Boolean): default true.
+- setHeaders (Function): default undefined. setHeaders(res,path,stat).
 
-Add under `scripts`:
-```json
-{
-  "test": "vitest",
-  "coverage": "vitest run --coverage"
-}
-```
-Run with `npm run test`, `yarn test`, `pnpm test`, or `bun run test` (avoid `bun test`).
+# express()  
+**Signature**: express() → app  
+**app Methods:** app.get, post, put, delete, patch, all, route, param, use, listen, engine, render, set, enable, disable, get(setting), enabled, disabled, path, mountpath  
+**app Settings**:
+- case sensitive routing (Boolean): undefined.
+- env (String): process.env.NODE_ENV or "development".
+- etag ("weak"|"strong"|false): default "weak".
+- jsonp callback name (String): "callback".
+- json escape (Boolean): undefined.
+- json replacer: default undefined.
+- json spaces: default undefined.
+- query parser ("simple"|"extended"|Function|false): default "extended".
+- strict routing (Boolean): undefined.
+- subdomain offset (Number): 2.
+- trust proxy (Boolean|String|Array|Function): default false.
+- views (String|Array): process.cwd()+"/views".
+- view cache (Boolean): false in dev, true in prod.
 
-# Configuring Vitest
-
-Unified with Vite—place in `vite.config.ts`:
-```ts
-/// <reference types="vitest/config" />
-import { defineConfig } from 'vite';
-
-export default defineConfig({
-  test: {
-    include: ['**/*.test.ts'],
-    environment: 'node',
-    globals: true,
-    setupFiles: ['./setup.ts'],
-    threads: true,
-    hookTimeout: 5000
-  }
-});
-```
-Priority: `vitest.config.ts` > CLI `--config` > `mode: test` in `defineConfig`.
-Supported extensions: .js, .mjs, .cjs, .ts, .cts, .mts (no .json).
-
-Alternate standalone config in `vitest.config.ts`:
-```ts
-import { defineConfig } from 'vitest/config';
-
-export default defineConfig({
-  test: { /* options */ }
-});
-```
-Merge Vite and Vitest configs:
-```ts
-import viteConfig from './vite.config.mjs';
-import { defineConfig, mergeConfig } from 'vitest/config';
-
-export default mergeConfig(
-  viteConfig,
-  defineConfig({ test: { /* override */ } })
-);
-```
-
-# Workspaces Support
-
-In config:
-```ts
-defineConfig({
-  test: {
-    workspace: [
-      'packages/*',
-      'tests/*/vitest.config.{e2e,unit}.ts',
-      {
-        test: {
-          name: 'happy-dom',
-          root: './shared_tests',
-          environment: 'happy-dom',
-          setupFiles: ['./setup.happy-dom.ts']
-        }
-      },
-      {
-        test: {
-          name: 'node',
-          root: './shared_tests',
-          environment: 'node',
-          setupFiles: ['./setup.node.ts']
-        }
-      }
-    ]
-  }
-});
-```
-
-# CLI Usage
-
-Default commands:
-- `vitest` (watch)
-- `vitest run` (single run)
-- `--config <path>`
-- `--port <number>`
-- `--https`
-- `--coverage`
-
-Run `npx vitest --help` for full option list.
-
-# Automatic Dependency Installation
-
-Prompted install for missing deps. Disable via:
-```bash
-export VITEST_SKIP_INSTALL_CHECKS=1
-``` 
-
-# IDE Integrations
-
-Install official VS Code extension: Vitest Runner.
-
-# Examples
-
-Provided examples: basic, fastify, in-source-test, lit, vue, marko, preact, react, solid, svelte, sveltekit, profiling, typecheck, workspace.
-
-# Using Unreleased Commits
-
-Install nightly:
-```bash
-npm i https://pkg.pr.new/vitest@{commit}
-```
-Local build & link:
-```bash
-git clone https://github.com/vitest-dev/vitest.git
-cd vitest
-pnpm install
-cd packages/vitest
-pnpm run build
-pnpm link --global
-# then in project:
-pnpm link --global vitest
-```
-
-# Troubleshooting
-
-- Bun test runner conflict: use `bun run test`.
-- File patterns not matching: ensure `.test.` or `.spec.` in filename.
-- Config not applied: verify extension and path, use `--config`.
-- View CLI flags: `npx vitest --help`.
-
-_Last updated: 2024-06-01_
 
 ## Attribution
-- Source: Vitest Testing Framework
-- URL: https://vitest.dev/guide/
+- Source: Express.js API
+- URL: https://expressjs.com/en/4x/api.html
 - License: MIT License
-- Crawl Date: 2025-05-07T21:27:50.000Z
-- Data Size: 27282977 bytes
-- Links Found: 22548
+- Crawl Date: 2025-05-08T06:32:44.081Z
+- Data Size: 22142899 bytes
+- Links Found: 19663
 
 ## Retrieved
-2025-05-07
+2025-05-08
+library/SWAGGER_UI_EXPRESS.md
+# library/SWAGGER_UI_EXPRESS.md
+# SWAGGER_UI_EXPRESS
+
+## Crawl Summary
+Serve Swagger UI in Express via middleware. Use swaggerUi.serve and swaggerUi.setup(document,options). Options: explorer boolean, swaggerOptions object (validatorUrl,null; url,string; urls array of {name,url}). Custom styling: customCss,string; customCssUrl,string|array. Custom scripting: customJs,string|array; customJsUrl,string|array; customJsStr,string|array. Load spec from JSON file, URL, multiple URLs, or YAML. Dynamic host injection: use middleware to set req.swaggerDoc. Multiple instances via serveFiles(document,options). Link to spec via serveFiles(null,options) and setup(null,options). Node and Express requirements. Testing with phantom and npm test.
+
+## Normalised Extract
+Table of Contents
+
+1 Installation
+2 Express Middleware Setup
+3 Options
+   3.1 explorer
+   3.2 swaggerOptions.validatorUrl
+   3.3 swaggerOptions.url
+   3.4 swaggerOptions.urls
+   3.5 customCss
+   3.6 customCssUrl
+   3.7 customJs
+   3.8 customJsUrl
+   3.9 customJsStr
+4 Loading Spec
+   4.1 from JSON file
+   4.2 from URL
+   4.3 multiple URLs
+   4.4 from YAML
+5 Dynamic Document
+6 Multiple Instances
+7 Linking Spec Endpoint
+8 Requirements
+9 Testing Procedures
+
+1 Installation
+Install via npm:
+npm install swagger-ui-express
+
+2 Express Middleware Setup
+Require modules:
+const swaggerUi = require('swagger-ui-express')
+Mount docs:
+app.use(path, swaggerUi.serve, swaggerUi.setup(spec,options))
+Or split serve and setup with router.get
+
+3 Options
+3.1 explorer boolean default false
+3.2 swaggerOptions.validatorUrl default "https://validator.swagger.io/"; set null to disable
+3.3 swaggerOptions.url string remote spec URL
+3.4 swaggerOptions.urls array of {name:string,url:string} to populate dropdown; explorer must be true
+3.5 customCss CSS string injected into page style
+3.6 customCssUrl string|array public URLs to CSS resources
+3.7 customJs string public URL to JS resource
+3.8 customJsUrl string|array public URLs to JS resources
+3.9 customJsStr string|array inline JS code snippets
+
+4 Loading Spec
+4.1 from JSON: require('./swagger.json')
+4.2 from URL: setup(null,{swaggerOptions:{url}})
+4.3 multiple URLs: setup(null,{explorer:true,swaggerOptions:{urls}})
+4.4 from YAML: npm install yaml; read file; YAML.parse; pass document to setup
+
+5 Dynamic Document
+Middleware sets req.swaggerDoc then use serveFiles and setup without document args
+
+6 Multiple Instances
+Use serveFiles(document,options) before setup(document)
+
+7 Linking Spec Endpoint
+Expose GET /api-docs/swagger.json returning JSON; use serveFiles(null,{swaggerOptions:{url}})
+
+8 Requirements
+Node>=0.10.32, Express>=4
+
+9 Testing Procedures
+Install phantom; run npm test
+
+
+## Supplementary Details
+Express version requirement: 4.x; Node version requirement: >=0.10.32
+Lock swagger-ui-dist version via package-lock.json or explicit dependency in package.json:
+"swagger-ui-dist": "3.52.5"
+
+Implementation steps:
+1. npm install swagger-ui-express swagger-ui-dist
+2. require express, swagger-ui-express
+3. load swagger JSON or parse YAML
+4. configure options object with desired properties
+5. mount middleware: app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec,options))
+6. verify docs at http://host:port/api-docs
+
+Default options object:
+explorer:false
+swaggerOptions:{validatorUrl:"https://validator.swagger.io/"}
+customCss:undefined
+customCssUrl:undefined
+customJs:undefined
+customJsUrl:undefined
+customJsStr:undefined
+
+Common implementation patterns:
+- Use express.Router to modularize docs route
+- Wrap dynamic host assignment in a middleware before serveFiles
+- For multiple specs, use unique paths and independent options
+
+
+## Reference Details
+API Specifications:
+
+swaggerUi.serve: Express middleware function serving static assets. Signature: function(req:Request,res:Response,next:Function):void
+
+swaggerUi.setup(document?:object, options?:{
+  explorer?:boolean,
+  swaggerOptions?:{
+    validatorUrl?:string|null,
+    url?:string,
+    urls?:Array<{name:string,url:string}>
+  },
+  customCss?:string,
+  customCssUrl?:string|string[],
+  customJs?:string|string[],
+  customJsUrl?:string|string[],
+  customJsStr?:string|string[]
+}):Function
+Returns middleware that renders Swagger UI HTML.
+
+swaggerUi.serveFiles(document?:object, options?:object):Function
+Serves Swagger UI assets bound to document; combine with setup()
+
+Code Example:
+const express = require('express')
+const swaggerUi = require('swagger-ui-express')
+const YAML = require('yaml')
+const fs = require('fs')
+const file = fs.readFileSync('./swagger.yaml','utf8')
+const swaggerDocument = YAML.parse(file)
+const options = {
+  explorer: true,
+  swaggerOptions: {
+    urls: [
+      { name: 'API V1', url: '/api/v1/swagger.json' },
+      { name: 'API V2', url: '/api/v2/swagger.json' }
+    ],
+    validatorUrl: null
+  },
+  customCss: '.swagger-ui .topbar{display:none}',
+  customJs: '/assets/custom.js',
+  customJsStr: 'console.log("Custom JS loaded")'
+}
+
+app.use('/api-docs',
+  express.static('public'),
+  function(req,res,next){ req.swaggerDoc = swaggerDocument; next() },
+  swaggerUi.serveFiles(undefined,options),
+  swaggerUi.setup(undefined,options)
+)
+
+Configuration Options Table:
+option              type               default           effect
+explorer            boolean            false             shows dropdown
+swaggerOptions.url  string             undefined         loads spec via URL
+swaggerOptions.urls Array<{name,url}>  undefined         multiple specs in explorer
+swaggerOptions.validatorUrl string|null https://validator.swagger.io/ disables/upgrades request validation
+customCss           string             undefined         inline CSS injection
+customCssUrl        string|array       undefined         external CSS files
+customJs            string|array       undefined         external JS files
+customJsUrl         string|array       undefined         external JS files
+customJsStr         string|array       undefined         inline JS injection
+
+detailed Troubleshooting:
+1. 404 on /api-docs:
+   - ensure app.use called before other catch-all routes
+   - verify swaggerUi.serve is included
+2. Blank page or JS errors:
+   - run npm ls swagger-ui-dist to check version
+   - clear npm cache and reinstall
+3. Validator errors:
+   - set validatorUrl:null to disable external validator
+
+Commands:
+npm ls swagger-ui-express
+npm ls swagger-ui-dist
+node -v  # expect >= v0.10.32
+npm run test # phantom-based UI tests
+
+
+## Information Dense Extract
+install swagger-ui-express via npm; require express and swagger-ui-express; load swagger spec (JSON or YAML parsed); configure options { explorer:boolean, swaggerOptions:{ validatorUrl:string|null, url:string, urls:[{name,url}] }, customCss:string, customCssUrl:string|array, customJs:string|array, customJsUrl:string|array, customJsStr:string|array }; mount middleware: app.use(path, swaggerUi.serve, swaggerUi.setup(spec,options)); for dynamic docs use middleware to set req.swaggerDoc and serveFiles; multiple instances via serveFiles(document,options); link spec via serveFiles(null,options) and setup(null,options); requirements Node>=0.10.32, Express>=4; troubleshooting: ensure serve and setup order, disable validatorUrl, verify swagger-ui-dist version, run phantom UI tests.
+
+## Sanitised Extract
+Table of Contents
+
+1 Installation
+2 Express Middleware Setup
+3 Options
+   3.1 explorer
+   3.2 swaggerOptions.validatorUrl
+   3.3 swaggerOptions.url
+   3.4 swaggerOptions.urls
+   3.5 customCss
+   3.6 customCssUrl
+   3.7 customJs
+   3.8 customJsUrl
+   3.9 customJsStr
+4 Loading Spec
+   4.1 from JSON file
+   4.2 from URL
+   4.3 multiple URLs
+   4.4 from YAML
+5 Dynamic Document
+6 Multiple Instances
+7 Linking Spec Endpoint
+8 Requirements
+9 Testing Procedures
+
+1 Installation
+Install via npm:
+npm install swagger-ui-express
+
+2 Express Middleware Setup
+Require modules:
+const swaggerUi = require('swagger-ui-express')
+Mount docs:
+app.use(path, swaggerUi.serve, swaggerUi.setup(spec,options))
+Or split serve and setup with router.get
+
+3 Options
+3.1 explorer boolean default false
+3.2 swaggerOptions.validatorUrl default 'https://validator.swagger.io/'; set null to disable
+3.3 swaggerOptions.url string remote spec URL
+3.4 swaggerOptions.urls array of {name:string,url:string} to populate dropdown; explorer must be true
+3.5 customCss CSS string injected into page style
+3.6 customCssUrl string|array public URLs to CSS resources
+3.7 customJs string public URL to JS resource
+3.8 customJsUrl string|array public URLs to JS resources
+3.9 customJsStr string|array inline JS code snippets
+
+4 Loading Spec
+4.1 from JSON: require('./swagger.json')
+4.2 from URL: setup(null,{swaggerOptions:{url}})
+4.3 multiple URLs: setup(null,{explorer:true,swaggerOptions:{urls}})
+4.4 from YAML: npm install yaml; read file; YAML.parse; pass document to setup
+
+5 Dynamic Document
+Middleware sets req.swaggerDoc then use serveFiles and setup without document args
+
+6 Multiple Instances
+Use serveFiles(document,options) before setup(document)
+
+7 Linking Spec Endpoint
+Expose GET /api-docs/swagger.json returning JSON; use serveFiles(null,{swaggerOptions:{url}})
+
+8 Requirements
+Node>=0.10.32, Express>=4
+
+9 Testing Procedures
+Install phantom; run npm test
+
+## Original Source
+Swagger UI Express
+https://github.com/scottie1984/swagger-ui-express
+
+## Digest of SWAGGER_UI_EXPRESS
+
+# Swagger UI Express Technical Digest
+
+Retrieved: 2024-06-12
+Source: https://github.com/scottie1984/swagger-ui-express
+Data Size: 539117 bytes
+
+## Usage
+
+Install
+
+npm install swagger-ui-express
+
+Express app setup
+
+const express = require('express')
+const app = express()
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
+Router setup
+
+const router = require('express').Router()
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
+
+router.use('/api-docs', swaggerUi.serve)
+router.get('/api-docs', swaggerUi.setup(swaggerDocument))
+
+## Swagger Explorer
+
+Default hidden. Enable:
+
+var options = { explorer: true }
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
+
+## Custom swaggerOptions
+
+var options = {
+  swaggerOptions: { validatorUrl: null }
+}
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
+
+## Custom CSS
+
+// Inline CSS
+var options = { customCss: '.swagger-ui .topbar { display: none }' }
+
+// CSS URL(s)
+var options = { customCssUrl: '/custom.css' }
+var options = { customCssUrl: [ '/custom.css','https://example.com/other-custom.css' ] }
+
+Mount:
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
+
+## Custom JS
+
+// External JS
+var options = { customJs: '/custom.js' }
+var options = { customJs: [ '/custom.js','https://example.com/other-custom.js' ] }
+
+// Inline JS
+var options = { customJsStr: 'console.log("Hello World")' }
+var options = {
+  customJsStr: [ 'console.log("Hello World")', 'var x = 1; console.log(x)' ]
+}
+
+## Load Swagger from URL
+
+var options = {
+  swaggerOptions: { url: 'http://petstore.swagger.io/v2/swagger.json' }
+}
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, options))
+
+## Load Multiple Swagger URLs
+
+var options = {
+  explorer: true,
+  swaggerOptions: {
+    urls: [ { url: 'http://petstore.swagger.io/v2/swagger.json', name: 'Spec1' },
+            { url: 'http://petstore.swagger.io/v2/swagger.json', name: 'Spec2' } ]
+  }
+}
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, options))
+
+## Load YAML
+
+npm install yaml
+const fs = require('fs')
+const YAML = require('yaml')
+const file = fs.readFileSync('./swagger.yaml','utf8')
+const swaggerDocument = YAML.parse(file)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
+## Dynamic Swagger Document
+
+app.use('/api-docs', function(req,res,next){
+  swaggerDocument.host = req.get('host')
+  req.swaggerDoc = swaggerDocument
+  next()
+}, swaggerUi.serveFiles(swaggerDocument,{}), swaggerUi.setup())
+
+## Multiple Instances
+
+app.use('/api-docs-one', swaggerUi.serveFiles(swaggerDocumentOne,{}), swaggerUi.setup(swaggerDocumentOne))
+app.use('/api-docs-two', swaggerUi.serveFiles(swaggerDocumentTwo,{}), swaggerUi.setup(swaggerDocumentTwo))
+app.use('/api-docs-dynamic', middleware, swaggerUi.serveFiles(), swaggerUi.setup())
+
+## Link to Swagger Document
+
+app.get('/api-docs/swagger.json',(req,res)=>res.json(swaggerDocument))
+var options = { swaggerOptions:{ url:'/api-docs/swagger.json' } }
+app.use('/api-docs', swaggerUi.serveFiles(null, options), swaggerUi.setup(null, options))
+
+## Requirements
+
+Node >=0.10.32
+Express >=4
+
+## Testing
+
+npm install phantom
+npm test
+
+## Attribution
+- Source: Swagger UI Express
+- URL: https://github.com/scottie1984/swagger-ui-express
+- License: MIT License
+- Crawl Date: 2025-05-08T15:30:57.288Z
+- Data Size: 539117 bytes
+- Links Found: 4315
+
+## Retrieved
+2025-05-08
+library/OPENAPI_SPEC.md
+# library/OPENAPI_SPEC.md
+# OPENAPI_SPEC
+
+## Crawl Summary
+openapi: string; info{title,version}; servers[{url,variables}]; paths{/...: pathItem}; components{schemas,responses,parameters,examples,requestBodies,headers,securitySchemes,links,callbacks}; parameter.name,in,required,style,explode,allowReserved; requestBody.content[mediaType]; response.description,content; schema.types,formats; securitySchemes.(type,name,in,flows); OAuth2 flows
+
+## Normalised Extract
+Table of Contents:
+1 OpenAPI Root
+2 Info Metadata
+3 Server Configuration
+4 Paths Definition
+5 Path Item Operations
+6 Operation Structure
+7 Components Registry
+8 Parameter Definition
+9 Request Body Specification
+10 Response Specification
+11 Schema Definition
+12 Security Schemes
+
+1 OpenAPI Root
+openapi: "3.0.3"
+info.version: API version string
+info.title: API title
+2 Info Metadata
+title (string), version (string), optional description, termsOfService (URL), contact{name,url,email}, license{name,url}
+3 Server Configuration
+servers[]: url:string, description:string, variables{ name:{default:string,enum:[string],description:string} }
+4 Paths Definition
+paths:{"/{resource}/{id}":{operations,parameters,servers}}
+5 Path Item Operations
+object fields: get,put,post,delete,patch,etc → Operation Object; parameters[] applies to all operations
+6 Operation Structure
+tags[], summary,string, description,string, operationId,string, parameters[], requestBody, responses{statusCode:Response Object}, security[], servers[]
+7 Components Registry
+components.schemas{name:Schema}, parameters{name:Parameter}, responses{name:Response}, requestBodies{name:RequestBody}, headers{name:Header}, securitySchemes{name:SecurityScheme}, examples, links, callbacks
+8 Parameter Definition
+name:string,in:(path|query|header|cookie),required:boolean,deprecated:boolean,style:(form|simple|matrix|label|spaceDelimited|pipeDelimited|deepObject),explode:boolean,allowReserved:boolean,schema:Schema,example,examples,content{mediaType:MediaType}
+9 Request Body Specification
+description, required:boolean, content{mediaType:{schema:Schema,examples,encoding:{property:{contentType,headers,style,explode,allowReserved}}}}
+10 Response Specification
+description, headers, content{mediaType:{schema,examples,encoding}}, links
+11 Schema Definition
+fixedFields:title,type,format,properties,required,allOf,oneOf,anyOf,not,items,additionalProperties,description,default,enum,nullable,deprecated,readOnly,writeOnly
+12 Security Schemes
+type:apiKey{name,in},http{scheme,bearerFormat},oauth2{flows},openIdConnect{openIdConnectUrl}
+
+
+## Supplementary Details
+- Semantic Versioning: major.minor.patch. openapi field MUST match spec version.  
+- YAML: version 1.2, common constraints: JSON Failsafe schema, scalar string keys, markdown in description fields.  
+- Path Templating: parameters in path MUST match template names.  
+- Content negotiation: media types evaluated by most specific match.  
+- Style defaults: query=form, path=simple, header=simple, cookie=form.  
+- explode default: form=true, others=false.  
+- allowEmptyValue: only query, default false.  
+- deepObject style: for object query parameters.  
+- Security Requirement: OR logic within array; empty {} makes optional.  
+
+
+## Reference Details
+# Full API Specifications
+
+## OpenAPI Object
+openapi: string (REQUIRED, regex "^(\\d+\\.){2}\\d+$")
+info: Info Object
+servers: [ Server Object ] default=[{url:"/"}]
+paths: Paths Object (REQUIRED)
+components: Components Object
+security: [ Security Requirement Object ]
+tags: [ Tag Object ]
+externalDocs: External Documentation Object
+
+## Info Object
+title: string (REQUIRED)
+description: string
+toS: URL (RFC3986)
+contact:
+  name: string
+  url: URL
+  email: email
+license:
+  name: string (REQUIRED)
+  url: URL (REQUIRED)
+version: string (REQUIRED)
+
+## Server Object
+url: string (REQUIRED)
+description: string
+variables:
+  <name>:
+    enum: [string]
+    default: string (REQUIRED)
+    description: string
+
+## Paths Object
+Type: Object
+Keys: "/" prefix; value: Path Item Object
+
+## Path Item Object
+$ref: URL
+summary: string
+description: string
+servers: [ Server Object ]
+parameters: [ Parameter | Reference ]
+operations:
+  get,put,post,delete,options,head,patch,trace: Operation Object
+
+## Operation Object
+tags: [ string ]
+summary: string
+description: string
+externalDocs: External Documentation Object
+operationId: string (unique)
+parameters: [ Parameter | Reference ]
+requestBody: RequestBody | Reference
+responses: {<statusCode>: Response | Reference} (REQUIRED)
+callbacks: {<name>: Callback | Reference}
+deprecated: boolean (default=false)
+security: [ Security Requirement ]
+servers: [ Server ]
+
+## Components Object
+schemas: {<name>: Schema | Reference}
+responses: {<name>: Response | Reference}
+parameters: {<name>: Parameter | Reference}
+examples: {<name>: Example | Reference}
+requestBodies: {<name>: RequestBody | Reference}
+headers: {<name>: Header | Reference}
+securitySchemes: {<name>: SecurityScheme | Reference}
+links: {<name>: Link | Reference}
+callbacks: {<name>: Callback | Reference}
+
+## Parameter Object
+name: string (REQUIRED)
+in: "path"|"query"|"header"|"cookie" (REQUIRED)
+description: string
+required: boolean (default false; path=true)
+deprecated: boolean (default false)
+allowEmptyValue: boolean (default false, query only)
+style: string
+explode: boolean
+allowReserved: boolean
+schema: Schema | Reference
+example: any
+examples: {<name>: Example | Reference}
+content: {<mediaType>: MediaType}
+
+## Request Body Object
+description: string
+content: {<mediaType>: MediaType} (REQUIRED)
+required: boolean (default false)
+
+## Response Object
+description: string (REQUIRED)
+headers: {<name>: Header | Reference}
+content: {<mediaType>: MediaType}
+links: {<name>: Link | Reference}
+
+## Schema Object
+title: string
+description: string
+default: any
+enum: [any]
+type: "string"|"number"|"integer"|"boolean"|"array"|"object"
+format: string
+properties: {<name>: Schema | Reference}
+required: [string]
+additionalProperties: boolean | Schema | Reference
+items: Schema | Reference
+allOf/oneOf/anyOf: [Schema | Reference]
+not: Schema | Reference
+nullable: boolean
+readOnly/writeOnly: boolean
+deprecated: boolean
+xml: XML Object
+discriminator: Discriminator Object
+externalDocs: External Documentation Object
+example: any
+
+## Security Scheme Object
+type: "apiKey"|"http"|"oauth2"|"openIdConnect"(REQUIRED)
+description: string
+name: string (apiKey)
+in: "query"|"header"|"cookie"(apiKey)
+scheme: string (http)
+bearerFormat: string
+describes the format of the bearer token
+flows: OAuthFlows (oauth2)
+openIdConnectUrl: URL (openIdConnect)
+
+## OAuthFlows Object
+implicit/password/clientCredentials/authorizationCode: OAuthFlow Object
+
+## OAuthFlow Object
+authorizationUrl: URL (implicit, authorizationCode)
+tokenUrl: URL (password, clientCredentials, authorizationCode)
+refreshUrl: URL
+tScopes: {<scope>: description}
+
+## MediaType Object
+schema: Schema | Reference
+examples: {<name>: Example | Reference}
+encoding: {<name>: Encoding}
+
+## Encoding Object
+contentType: string
+headers: {<name>: Header | Reference}
+style: string
+explode: boolean
+allowReserved: boolean
+
+## Reference Object
+$ref: URL (REQUIRED)
+
+## Security Requirement Object
+{<name>: [string]}
+
+## Information Dense Extract
+openapi:string;info{title:string,version:string};servers[url:string,variables{name:{default:string,enum:[string],description:string}}];paths{"/<path>":{parameters:[{name,in,required:boolean,style,explode,allowReserved,schema}],servers,operations{get,post,put,delete,patch,options,head,trace: {operationId,parameters,requestBody:content{<mediaType>:schema},responses{<code>:content{<mediaType>:schema},description},security,servers}}};components{schemas,parameters,responses,requestBodies,headers,securitySchemes,links,callbacks};schema{type,format,properties,required,allOf,oneOf,anyOf,not,items,additionalProperties,enum,default,nullable,readOnly,writeOnly,example,deprecated};securitySchemes{apiKey{name,in},http{scheme,bearerFormat},oauth2{flows:{implicit,authorizationCode,password,clientCredentials}},openIdConnect{openIdConnectUrl}}
+
+## Sanitised Extract
+Table of Contents:
+1 OpenAPI Root
+2 Info Metadata
+3 Server Configuration
+4 Paths Definition
+5 Path Item Operations
+6 Operation Structure
+7 Components Registry
+8 Parameter Definition
+9 Request Body Specification
+10 Response Specification
+11 Schema Definition
+12 Security Schemes
+
+1 OpenAPI Root
+openapi: '3.0.3'
+info.version: API version string
+info.title: API title
+2 Info Metadata
+title (string), version (string), optional description, termsOfService (URL), contact{name,url,email}, license{name,url}
+3 Server Configuration
+servers[]: url:string, description:string, variables{ name:{default:string,enum:[string],description:string} }
+4 Paths Definition
+paths:{'/{resource}/{id}':{operations,parameters,servers}}
+5 Path Item Operations
+object fields: get,put,post,delete,patch,etc  Operation Object; parameters[] applies to all operations
+6 Operation Structure
+tags[], summary,string, description,string, operationId,string, parameters[], requestBody, responses{statusCode:Response Object}, security[], servers[]
+7 Components Registry
+components.schemas{name:Schema}, parameters{name:Parameter}, responses{name:Response}, requestBodies{name:RequestBody}, headers{name:Header}, securitySchemes{name:SecurityScheme}, examples, links, callbacks
+8 Parameter Definition
+name:string,in:(path|query|header|cookie),required:boolean,deprecated:boolean,style:(form|simple|matrix|label|spaceDelimited|pipeDelimited|deepObject),explode:boolean,allowReserved:boolean,schema:Schema,example,examples,content{mediaType:MediaType}
+9 Request Body Specification
+description, required:boolean, content{mediaType:{schema:Schema,examples,encoding:{property:{contentType,headers,style,explode,allowReserved}}}}
+10 Response Specification
+description, headers, content{mediaType:{schema,examples,encoding}}, links
+11 Schema Definition
+fixedFields:title,type,format,properties,required,allOf,oneOf,anyOf,not,items,additionalProperties,description,default,enum,nullable,deprecated,readOnly,writeOnly
+12 Security Schemes
+type:apiKey{name,in},http{scheme,bearerFormat},oauth2{flows},openIdConnect{openIdConnectUrl}
+
+## Original Source
+OpenAPI Specification (OAS)
+https://spec.openapis.org/oas/v3.0.3
+
+## Digest of OPENAPI_SPEC
+
+# OpenAPI Specification v3.0.3 (retrieved 2023-10-07)
+
+## 1. OpenAPI Object  
+openapi: string (REQUIRED, semantic version)  
+info: Info Object (REQUIRED)  
+servers: [ Server Object ] (default: [{ url: "/" }])  
+paths: Paths Object (REQUIRED)  
+components: Components Object  
+security: [ Security Requirement Object ]  
+tags: [ Tag Object ]  
+externalDocs: External Documentation Object
+
+## 2. Info Object
+- title: string (REQUIRED)
+- description: string
+- termsOfService: URL
+- contact: Contact Object
+- license: License Object
+- version: string (REQUIRED)
+
+## 3. Server Object
+- url: URL template (REQUIRED)
+- description: string
+- variables: Map[string, Server Variable Object]
+
+## 4. Paths Object
+Patterned fields: "/path" → Path Item Object
+
+## 5. Path Item Object
+- $ref: string (URL)
+- summary: string
+- description: string
+- operations: get, put, post, delete, options, head, patch, trace: Operation Object
+- servers: [ Server Object ]
+- parameters: [ Parameter Object | Reference Object ]
+
+## 6. Operation Object
+- tags: [ string ]
+- summary: string
+- description: string
+- externalDocs: External Documentation Object
+- operationId: string (unique)
+- parameters: [ Parameter Object | Reference Object ]
+- requestBody: Request Body Object | Reference Object
+- responses: Map[string (status code), Response Object | Reference Object] (REQUIRED)
+- callbacks: Map[string, Callback Object | Reference Object]
+- deprecated: boolean (default false)
+- security: [ Security Requirement Object ]
+- servers: [ Server Object ]
+
+## 7. Components Object
+- schemas: Map[string, Schema Object | Reference Object]
+- responses: Map[string, Response Object | Reference Object]
+- parameters: Map[string, Parameter Object | Reference Object]
+- examples: Map[string, Example Object | Reference Object]
+- requestBodies: Map[string, Request Body Object | Reference Object]
+- headers: Map[string, Header Object | Reference Object]
+- securitySchemes: Map[string, Security Scheme Object | Reference Object]
+- links: Map[string, Link Object | Reference Object]
+- callbacks: Map[string, Callback Object | Reference Object]
+
+## 8. Parameter Object
+- name: string (REQUIRED)
+- in: "query" | "header" | "path" | "cookie" (REQUIRED)
+- description: string
+- required: boolean (default false; MUST=true for in=path)
+- deprecated: boolean (default false)
+- allowEmptyValue: boolean (default false)
+- style: ... (default: form|simple|form|simple)
+- explode: boolean
+- allowReserved: boolean
+- schema: Schema Object | Reference Object
+- example: any
+- examples: Map[string, Example Object | Reference Object]
+- content: Map[string (mediaType), Media Type Object]
+
+## 9. Request Body Object
+- description: string
+- content: Map[string (mediaType), Media Type Object] (REQUIRED)
+- required: boolean (default false)
+
+## 10. Response Object
+- description: string (REQUIRED)
+- headers: Map[string, Header Object | Reference Object]
+- content: Map[string (mediaType), Media Type Object]
+- links: Map[string, Link Object | Reference Object]
+
+## 11. Schema Object
+Fixed fields: title, multipleOf, maximum, exclusiveMaximum, minimum, exclusiveMinimum, maxLength, minLength, pattern, maxItems, minItems, uniqueItems, maxProperties, minProperties, required, enum, type, allOf, oneOf, anyOf, not, items, properties, additionalProperties, description, format, default, nullable, discriminator, readOnly, writeOnly, xml, externalDocs, example, deprecated
+
+## 12. Security Scheme Object
+- type: "apiKey" | "http" | "oauth2" | "openIdConnect" (REQUIRED)
+- description: string
+- name: string (REQUIRED for apiKey)
+- in: "query" | "header" | "cookie" (REQUIRED for apiKey)
+- scheme: string (REQUIRED for http)
+- bearerFormat: string
+- flows: OAuth Flows Object (REQUIRED for oauth2)
+- openIdConnectUrl: URL (REQUIRED for openIdConnect)
+
+## 13. OAuth Flows Object
+Map: implicit, password, clientCredentials, authorizationCode: OAuth Flow Object
+
+## 14. Encoding Object
+- contentType: string
+- headers: Map[string, Header Object | Reference Object]
+- style: string
+- explode: boolean
+- allowReserved: boolean
+
+## Attribution
+- Source: OpenAPI Specification (OAS)
+- URL: https://spec.openapis.org/oas/v3.0.3
+- License: CC0 1.0 Universal
+- Crawl Date: 2025-05-08T09:30:25.292Z
+- Data Size: 17035172 bytes
+- Links Found: 55931
+
+## Retrieved
+2025-05-08
+library/MINIMIST.md
+# library/MINIMIST.md
+# MINIMIST
+
+## Crawl Summary
+minimist(args:Array<string>, opts?:{boolean:Array<string>|boolean,string:Array<string>,alias:Object,default:Object,unknown:(arg:string)=>boolean,stopEarly:boolean,'--':boolean}) => ParsedArgs:{_:string[],[flag]:boolean|string|number|Array<string|number>,'--'?:string[]}  opts.boolean default:false opts.string default:[] opts.alias default:{} opts.default default:{} opts.unknown default:undefined opts.stopEarly default:false opts['--'] default:false
+
+## Normalised Extract
+Table of Contents:
+1 Function Signature
+2 Configuration Options
+3 ParsedArgs Object
+
+1 Function Signature
+   minimist  (args: Array<string>, opts?: {
+     boolean: Array<string> | boolean,
+     string: Array<string>,
+     alias: { [key: string]: string | Array<string> },
+     default: { [key: string]: any },
+     unknown: (arg: string) => boolean,
+     stopEarly: boolean,
+     "--": boolean
+   }) => ParsedArgs
+
+2 Configuration Options
+   boolean: flags to coerce to booleans or true for all non-numeric
+   string: flags to coerce to strings
+   alias: map short names to long names mutually
+   default: values assigned when flag absent
+   unknown: callback for flags not in alias or default; return false to skip storing
+   stopEarly: halt parsing on first non-option and push rest to _
+   "--": when true, arguments after "--" go into ParsedArgs['--']
+
+3 ParsedArgs Object
+   _: Array<string> positional
+   [flag]: boolean | string | number | Array<string|number>
+   "--"?: Array<string> only if opts["--"] true
+
+## Supplementary Details
+Parameter Types and Defaults:
+  args: Array<string> required
+  opts.boolean: Array<string> | boolean default false
+  opts.string: Array<string> default []
+  opts.alias: Object default {}
+  opts.default: Object default {}
+  opts.unknown: Function default undefined
+  opts.stopEarly: boolean default false
+  opts['--']: boolean default false
+Implementation Steps:
+ 1 Import minimist
+ 2 Prepare args array (slice process.argv)
+ 3 Define opts object per requirements
+ 4 Call minimist(args, opts)
+ 5 Access flags and positionals from returned object
+Type Coercion:
+ - Numeric strings are converted to Number unless listed in opts.string or opts.boolean
+ - Boolean flags appear as true or false
+ - String flags respect opts.string
+Alias Resolution:
+ - Multiple aliases map to same key and mirror values
+Unknown Flags:
+ - unknown callback allows validation or rejection
+Stop Early:
+ - when true, parsing stops at first non-flag
+"--" Handling:
+ - arguments after "--" bypass parsing into flags and appended to ['--'] array
+
+## Reference Details
+API:
+  function minimist(
+    args: string[],
+    opts?: {
+      boolean?: string[] | boolean,
+      string?: string[],
+      alias?: Record<string,string | string[]>,
+      default?: Record<string, any>,
+      unknown?(arg: string): boolean,
+      stopEarly?: boolean,
+      "--"?: boolean
+    }
+  ): {
+    _: string[],
+    "--"?: string[],
+    [key: string]: any
+  }
+
+Code Examples:
+  // Basic
+  const argv = require('minimist')(process.argv.slice(2))
+
+  // With defaults and aliases
+  const opts = {
+    boolean: ['debug'],
+    string: ['name'],
+    alias: { d: 'debug', n: 'name' },
+    default: { debug: false, name: 'guest' }
+  }
+  const argv2 = require('minimist')(process.argv.slice(2), opts)
+
+Best Practices:
+  • Explicitly list boolean and string flags to avoid unintended coercion.
+  • Provide default values for critical flags.
+  • Use alias to support short and long forms consistently.
+  • Use unknown callback to enforce allowed options.
+
+Troubleshooting:
+  Command: node app.js --debug --name=alice extra
+  Expected ParsedArgs: { _: ['extra'], debug: true, d: true, name: 'alice', n: 'alice' }
+  If numeric values remain strings, ensure the flag is not in opts.string.
+  To capture arguments after "--": set opts['--']=true and verify argv['--'] contains those items.
+
+Step-by-Step:
+ 1 Verify process.argv slicing
+ 2 Log opts to confirm arrays and mappings
+ 3 Log returned object to inspect coercions
+ 4 Use unknown callback to catch unexpected flags
+ 5 Validate presence of ['--'] when needed
+
+## Information Dense Extract
+minimist(args:Array<string>,opts?:{boolean:Array<string>|boolean= false,string:Array<string>= [],alias:Object= {},default:Object= {},unknown:(arg)=>boolean,stopEarly:boolean= false,'--':boolean= false})=>ParsedArgs:{_:string[], '--'?:string[],[flag]:boolean|string|number|Array<string|number>}. opts.boolean coerces flags or all non-numerics, opts.string preserves strings, opts.alias maps keys bi-directionally, opts.default supplies missing, unknown filters flags, stopEarly halts on first non-option, '--' captures trailing args.
+
+## Sanitised Extract
+Table of Contents:
+1 Function Signature
+2 Configuration Options
+3 ParsedArgs Object
+
+1 Function Signature
+   minimist  (args: Array<string>, opts?: {
+     boolean: Array<string> | boolean,
+     string: Array<string>,
+     alias: { [key: string]: string | Array<string> },
+     default: { [key: string]: any },
+     unknown: (arg: string) => boolean,
+     stopEarly: boolean,
+     '--': boolean
+   }) => ParsedArgs
+
+2 Configuration Options
+   boolean: flags to coerce to booleans or true for all non-numeric
+   string: flags to coerce to strings
+   alias: map short names to long names mutually
+   default: values assigned when flag absent
+   unknown: callback for flags not in alias or default; return false to skip storing
+   stopEarly: halt parsing on first non-option and push rest to _
+   '--': when true, arguments after '--' go into ParsedArgs['--']
+
+3 ParsedArgs Object
+   _: Array<string> positional
+   [flag]: boolean | string | number | Array<string|number>
+   '--'?: Array<string> only if opts['--'] true
+
+## Original Source
+minimist
+https://github.com/substack/minimist
+
+## Digest of MINIMIST
+
+# Overview
+Minimist is a lightweight Node.js argument parser that converts command-line arguments into an object with keys for flags and values.
+
+# Installation
+```bash
+npm install minimist --save
+```
+
+# Usage
+```js
+const minimist = require('minimist')
+const argv = minimist(process.argv.slice(2), opts)
+```
+
+# API
+
+## minimist(args, opts)
+- args  (Array<string>): list of command-line tokens (usually process.argv.slice(2)).
+- opts  (Object, optional): configuration object with fields:
+  • boolean   (Array<string> | boolean) – flags to always treat as booleans or true to treat all non-numeric as booleans. Default: false.
+  • string    (Array<string>) – flags to always treat as strings. Default: [].
+  • alias     (Object) – mapping of flag names to aliases, e.g. { h: 'help' }.
+  • default   (Object) – default values for flags, e.g. { verbose: false }.
+  • unknown   (Function): (arg: string) => boolean – called for unrecognized flags; return false to skip setting.
+  • stopEarly (boolean) – stop parsing on first non-option. Default: false.
+  • "--"     (boolean) – populate args after "--" into argv['--']. Default: false.
+
+# Return Value
+ParsedArgs (Object):
+  • _ (Array<string>) – positional arguments.
+  • [flag: string]: boolean | string | number | Array<string | number>
+  • "--" (Array<string>) when opts["--"] is true.
+
+# Examples
+```js
+const argv = minimist(['-x', '3', '--verbose'], {
+  boolean: 'verbose',
+  default: { x: 0 },
+  alias: { v: 'verbose' }
+})
+// argv = { _: [], x: 3, verbose: true, v: true }
+```
+
+# Content retrieved on 2024-06-15 from https://github.com/substack/minimist
+
+## Attribution
+- Source: minimist
+- URL: https://github.com/substack/minimist
+- License: MIT License
+- Crawl Date: 2025-05-08T03:35:44.150Z
+- Data Size: 0 bytes
+- Links Found: 0
+
+## Retrieved
+2025-05-08
