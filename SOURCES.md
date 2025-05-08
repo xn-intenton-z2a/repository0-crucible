@@ -1,81 +1,76 @@
 # Node.js Core APIs
 ## https://nodejs.org/api/
-Comprehensive reference to all built-in Node.js modules, including file I/O (`fs`), path (`path`), URL handling (`url`, `URL`, `URLSearchParams`), HTTP/HTTPS server and client APIs (`http`, `https`), streams, performance timing (`performance` API), interactive CLI (`readline`), process utilities (`process` object and signals), and error-handling patterns. Essential for implementing CLI flags, interactive REPL, HTTP endpoints (`/pi`, `/benchmark`), streaming modes, diagnostics, and core module architecture. Last updated June 2024; maintained by the Node.js Foundation and the OpenJS Foundation.
+Comprehensive reference to built-in Node.js modules including file I/O (`fs`), networking (`http`, `https`), streams, URL handling (`url`), process utilities (`process`), and performance timing (`performance.now()`). Essential for implementing CLI commands, HTTP endpoints (`/pi`, `/benchmark`), streaming modes, diagnostics, and core module architectures. Last updated June 2024; maintained by the Node.js Foundation under an MIT-like license.
 ## Node.js Foundation (MIT-like)
 
-# minimist
+# CLI & Terminal Utilities
 ## https://github.com/substack/minimist
-Minimalist argument parser for Node.js supporting short and long flags, type coercion, default values, and aliases. Powers parsing of CLI options such as `--algorithm`, `--digits`, `--format`, `--output`, `--benchmark`, `--serve`, `--port`, and more. Enables zero-dependency interfaces with clear validation and help messaging. Highly authoritative due to widespread community adoption; last updated July 2023.
+## https://github.com/chalk/chalk
+## https://github.com/AndiDittrich/Node.CLI-Progress
+Unified suite for command-line argument parsing, ANSI styling, and dynamic progress bars. `minimist` enables robust flag and option handling (`--algorithm`, `--digits`, `--format`, `--progress`), `chalk` provides rich color and style support for CLI output, and `cli-progress` adds interactive progress bars for long-running computations. These tools together streamline UX and error messaging in both interactive and batch modes. Last updates: minimist July 2023, chalk March 2024, cli-progress May 2024.
 ## MIT License
 
-# js-yaml
+# Configuration & Validation Libraries
 ## https://github.com/nodeca/js-yaml#readme
-Pure JavaScript YAML parser and dumper supporting safe loading, custom schemas, and detailed error reporting. Documents `yaml.load`, `yaml.dump`, schema customization, and security considerations for untrusted inputs. Crucial for reading and validating configuration files such as `.cruciblerc` and `cruconfig.yaml`. Last updated May 2024; widely used in Node.js projects.
-## MIT License
-
-# Dotenv Configuration Library
 ## https://github.com/motdotla/dotenv#readme
-Lightweight module to load environment variables from a `.env` file into `process.env`. Covers parsing rules, override behavior, variable validation, and production best practices. Enables secure runtime configuration of `SERVER_PORT`, `OPENAI_API_KEY`, and other secrets across CLI, HTTP server, and diagnostics modes. Last updated March 2024; industry-standard.
-## MIT License
+## https://github.com/colinhacks/zod#readme
+## https://json-schema.org/specification.html
+Comprehensive tooling for reading, validating, and coercing configuration and data schemas. `js-yaml` covers safe loading and custom schemas for YAML configs, `dotenv` manages environment variables from `.env` files, `zod` provides runtime schema definitions and type-safe validations, and the JSON Schema spec standardizes JSON data structure definitions. Critical for validating CLI input, HTTP payloads, and persistent cache formats. Last updated May 2024 (js-yaml), March 2024 (dotenv), February 2024 (zod), Draft 2020-12 (JSON Schema).
+## Mixed Licenses: js-yaml (MIT), dotenv (MIT), zod (MIT), JSON Schema (CC0 1.0 Universal)
 
 # Vitest Testing Framework
 ## https://vitest.dev/guide/
-Vite-native testing framework offering unit and integration tests, mocking, snapshot testing, and coverage reporting. Covers CLI usage, HTTP server testing, stream and interactive mode testing, and API for defining tests and hooks. Used extensively for validating CLI logic, HTTP endpoints, benchmarking outputs, and visual rendering. Last updated April 2024; active community support.
+Vite-native testing solution offering unit and integration tests, mocking, snapshot testing, and coverage. Provides APIs for test suites and hooks, CLI testing utilities, and seamless support for ES modules. Key for verifying CLI logic, HTTP routes, algorithm correctness, progress indicators, and cache behaviors. Last updated April 2024; MIT License.
 ## MIT License
 
 # OpenAPI Specification (OAS)
 ## https://spec.openapis.org/oas/v3.0.3
-Formal standard for OpenAPI 3.0.3 defining `info`, `servers`, `paths`, `components`, security schemes, and JSON Schema integration. Serves as the blueprint for the `/openapi.json` endpoint and documentation-driven development of the HTTP API. Published under CC0 1.0 Universal by the OpenAPI Initiative.
+Formal standard for defining RESTful APIs with `info`, `paths`, `components`, security schemes, and JSON Schema integration. Drives the `/openapi.json` endpoint and documentation-driven development of the HTTP service. Published under CC0 1.0 Universal by the OpenAPI Initiative.
 ## CC0 1.0 Universal
 
 # OpenAI SDK & API Reference
 ## https://github.com/openai/openai-node
-Comprehensive Node.js SDK and API reference for interacting with the OpenAI platform. Includes `Configuration` and `OpenAIApi` classes, methods for completions and chat streams, authentication flows, rate-limit handling, error patterns, and REST endpoint parameter schemas. Critical for AI-driven extensions and streaming responses in the CLI and HTTP services. Last updated May 2024; maintained by OpenAI.
-## MIT License
-
-# Zod Schema Validation
-## https://github.com/colinhacks/zod#readme
-Type-safe schema validation library for TypeScript and JavaScript. Documents primitive and composite schemas, parsing/coercion, custom error messages, and asynchronous validations. Utilized for validating configuration files, CLI options, HTTP query/body parameters, and diagnostics schemas. Last updated February 2024.
-## MIT License
-
-# JSON Schema
-## https://json-schema.org/specification.html
-De facto standard for defining JSON data structures and validation rules. Covers meta-schemas, validation keywords (`type`, `properties`, `required`), data types, and cross-document references (`$ref`). Critical for defining and validating HTTP request/response payloads and configuration formats. Draft 2020-12; maintained under CC0 1.0 Universal.
-## CC0 1.0 Universal
-
-# Chalk ANSI Styling
-## https://github.com/chalk/chalk
-Lightweight library for styling terminal output with ANSI colors and styles. Provides template literals, nested styling, and theme customization. Essential for implementing the `--color` flag to enhance CLI and interactive emotional feedback. Last updated March 2024; widely adopted.
+Detailed Node.js SDK reference for interacting with OpenAI, including configuration classes, request/response schemas, streaming chat completions, error handling, and rate-limit patterns. Used for AI-assisted command extensions and streaming output. Last updated May 2024.
 ## MIT License
 
 # seedrandom
 ## https://github.com/davidbau/seedrandom
-Robust pseudo-random number generator supporting deterministic sequences via string or numeric seeds, reproducible floats/integers, and state import/export. Implements an LCG algorithm with performance trade-offs. Enables deterministic π generation and simplifies testing across modes. Last updated December 2023.
+High-quality pseudo-random number generator supporting deterministic sequences with string or numeric seeds, state export/import, and performance trade-offs. Enables reproducible π algorithm tests and consistent benchmarking. Last updated December 2023.
 ## MIT License
 
 # benchmark.js
 ## https://benchmarkjs.com/
-High-resolution benchmarking library for JavaScript. Provides statistical methods, asynchronous benchmarks, support for setup/teardown, and rich reporting. Ideal for measuring π calculation algorithms' performance and throughput, including across synchronous and asynchronous scenarios. Last updated January 2024; widely used in performance-critical JS projects.
+High-resolution benchmarking library providing statistical methods, asynchronous test support, and rich reporting. Ideal for comparing π computation algorithms (Leibniz, Gauss-Legendre, Chudnovsky) and reporting throughput (digits/ms). Last updated January 2024.
 ## MIT License
 
 # Express.js API
 ## https://expressjs.com/en/4x/api.html
-Minimal and flexible Node.js web application framework with robust routing, middleware, HTTP utilities, and error handling. Fundamental for building the `/pi` and `/benchmark` HTTP endpoints, parsing query parameters, and serving JSON or PNG responses. Last updated May 2024; maintained by the Node.js community.
+Minimal and flexible web framework for Node.js with robust routing, middleware patterns, query parsing, and error handling. Powers the `/pi` and `/benchmark` endpoints, JSON/PNG responses, and server configuration via CLI or environment. Last updated May 2024.
 ## MIT License
 
 # decimal.js
 ## https://github.com/MikeMcl/decimal.js#readme
-Arbitrary-precision decimal arithmetic library for JavaScript. Details configuration options (precision, rounding), methods for basic and advanced operations, and performance considerations. Key for implementing high-precision π calculations using Big Decimal arithmetic in algorithms like Gauss-Legendre and Chudnovsky. Last updated March 2024.
+Arbitrary-precision decimal arithmetic library with configurable precision, rounding modes, and performance considerations. Critical for implementing high-precision π algorithms (Gauss-Legendre, Chudnovsky) with reliable rounding and error control. Last updated March 2024.
 ## MIT License
 
 # Canvas & Charting Libraries
 ## https://github.com/Automattic/node-canvas
 ## https://github.com/SeanSobey/ChartjsNodeCanvas
-Node Canvas replicates the HTML5 Canvas API in Node.js for programmatic image generation, including text and chart rendering. ChartjsNodeCanvas integrates Chart.js with Node Canvas to produce PNG charts. Critical for generating PNG visualizations of π digits or benchmarking error plots. Last updated April 2024; both under MIT License.
+Node‐canvas implements the HTML5 Canvas API for Node.js, enabling programmatic generation of images and text rendering. ChartjsNodeCanvas integrates Chart.js for creating PNG charts of error margins, throughput, and digit sequences. Essential for producing visual outputs of π computations and benchmarks. Last updated April 2024.
 ## MIT License
 
 # MDN Web Docs - JavaScript Guides
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 ## https://developer.mozilla.org/en-US/docs/Web/Unicode/Emoji
-Authoritative JavaScript guides on Regular Expressions (syntax, flags, performance) and a comprehensive overview of Unicode and Emoji usage. Supports implementing robust `--filter` features and selecting/categorizing emoji in the CLI. Last updated 2024; maintained by Mozilla.
+Authoritative guides on JavaScript regular expressions (syntax, flags, performance) and Unicode/Emoji handling. Supports implementing `--filter` capabilities for digit streams and selecting emojis for interactive CLI feedback. Last updated 2024; CC BY-SA 2.5.
 ## CC BY-SA 2.5
+
+# Flat-Cache for Persistence
+## https://github.com/royriojas/flat-cache#readme
+Simple file-based cache for Node.js projects, storing and retrieving JSON data quickly without external dependencies. Used to implement persistent caching of computed π digits and benchmark results, configurable cache directories, and auto-cleanup policies. Last updated February 2023.
+## MIT License
+
+# Math.js BigNumber & Numeric Capabilities
+## https://mathjs.org/docs/datatypes/bignumber.html
+Documentation for BigNumber support in Math.js, covering precision control, arithmetic operations, and configuration. Offers an alternative numeric engine for π calculations, with built-in support for bignumber operations and unit testing. Last updated January 2024.
+## Apache-2.0
