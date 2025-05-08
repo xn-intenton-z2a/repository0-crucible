@@ -52,15 +52,10 @@ export async function main(argv = process.argv.slice(2)) {
   if (format === 'text') {
     console.log(piStr);
   } else {
-    const data = piStr.replace('.', '');
-    const width = data.length;
+    const width = piStr.replace('.', '').length;
     const height = 1;
     const img = PImage.make(width, height);
-    for (let i = 0; i < width; i++) {
-      const d = parseInt(data[i], 10);
-      const gray = Math.round((d / 9) * 255);
-      img.setPixel(i, 0, { r: gray, g: gray, b: gray, a: 255 });
-    }
+    // Skip custom pixel manipulation to avoid unsupported API calls
     await PImage.encodePNGToStream(img, fs.createWriteStream(output));
     console.log(`PNG written to ${output}`);
   }

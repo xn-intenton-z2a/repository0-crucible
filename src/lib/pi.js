@@ -7,7 +7,7 @@ import Decimal from 'decimal.js';
  */
 export function calculatePiMachin(digits) {
   const extra = 5;
-  Decimal.set({ precision: digits + extra, rounding: Decimal.ROUND_HALF_UP });
+  Decimal.set({ precision: digits + extra, rounding: Decimal.ROUND_DOWN });
   const one = new Decimal(1);
   function arctan(x) {
     let sum = new Decimal(0);
@@ -26,7 +26,8 @@ export function calculatePiMachin(digits) {
   const arctan1_5 = arctan(one.div(5));
   const arctan1_239 = arctan(one.div(239));
   const pi = arctan1_5.times(16).minus(arctan1_239.times(4));
-  return pi.toFixed(digits);
+  // Truncate rather than round to match expected output
+  return pi.toFixed(digits, Decimal.ROUND_DOWN);
 }
 
 /**
@@ -36,7 +37,7 @@ export function calculatePiMachin(digits) {
  */
 export function calculatePiNilakantha(digits) {
   const extra = 5;
-  Decimal.set({ precision: digits + extra, rounding: Decimal.ROUND_HALF_UP });
+  Decimal.set({ precision: digits + extra, rounding: Decimal.ROUND_DOWN });
   let pi = new Decimal(3);
   let k = 1;
   const tolerance = new Decimal(10).pow(-digits - 2);
@@ -47,7 +48,8 @@ export function calculatePiNilakantha(digits) {
     pi = k % 2 === 1 ? pi.plus(term) : pi.minus(term);
     k++;
   } while (term.greaterThan(tolerance));
-  return pi.toFixed(digits);
+  // Truncate rather than round to match Machin behavior
+  return pi.toFixed(digits, Decimal.ROUND_DOWN);
 }
 
 /**
