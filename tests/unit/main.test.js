@@ -1,4 +1,4 @@
-import { describe, test, expect, afterEach, vi } from 'vitest';
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 import fs from 'fs';
 import { main } from '@src/lib/main.js';
 
@@ -21,11 +21,29 @@ describe('CLI Input Validation', () => {
 });
 
 describe('CLI Text Output', () => {
+  let log;
+  beforeEach(() => {
+    log = vi.spyOn(console, 'log').mockImplementation(() => {});
+  });
+  afterEach(() => {
+    log.mockRestore();
+  });
+
   test('defaults to 100 digits', async () => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
     await main([]);
     expect(log).toHaveBeenCalled();
-    log.mockRestore();
+  });
+
+  test('chudnovsky method outputs correct pi', async () => {
+    log.mockClear();
+    await main(['--digits', '5', '--method', 'chudnovsky']);
+    expect(log).toHaveBeenCalledWith('3.14159');
+  });
+
+  test('gauss-legendre method outputs correct pi', async () => {
+    log.mockClear();
+    await main(['--digits', '5', '--method', 'gauss-legendre']);
+    expect(log).toHaveBeenCalledWith('3.14159');
   });
 });
 

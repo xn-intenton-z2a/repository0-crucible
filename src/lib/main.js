@@ -10,7 +10,7 @@ import PImage from 'pureimage';
  */
 export async function main(argv = process.argv.slice(2)) {
   let digits = 100;
-  let method = 'machin';
+  let method = 'chudnovsky';
   let format = 'text';
   let output;
 
@@ -26,7 +26,7 @@ export async function main(argv = process.argv.slice(2)) {
       output = argv[++i];
     } else if (arg === '--help') {
       console.log(
-        'Usage: node src/lib/main.js [--digits <n>] [--method <machin|nilakantha>] [--format <text|png>] [--output <path>]'
+        'Usage: node src/lib/main.js [--digits <n>] [--method <chudnovsky|gauss-legendre|machin|nilakantha>] [--format <text|png>] [--output <path>]'
       );
       return;
     } else {
@@ -38,8 +38,8 @@ export async function main(argv = process.argv.slice(2)) {
   if (!Number.isInteger(digits) || digits < 1 || digits > 10000) {
     throw new Error('Invalid --digits. Must be integer between 1 and 10000');
   }
-  if (!['machin', 'nilakantha'].includes(method)) {
-    throw new Error('Invalid --method. Must be "machin" or "nilakantha"');
+  if (!['chudnovsky', 'gauss-legendre', 'machin', 'nilakantha'].includes(method)) {
+    throw new Error('Invalid --method. Must be "chudnovsky", "gauss-legendre", "machin" or "nilakantha"');
   }
   if (!['text', 'png'].includes(format)) {
     throw new Error('Invalid --format. Must be "text" or "png"');
@@ -55,7 +55,6 @@ export async function main(argv = process.argv.slice(2)) {
     const width = piStr.replace('.', '').length;
     const height = 1;
     const img = PImage.make(width, height);
-    // Skip custom pixel manipulation to avoid unsupported API calls
     await PImage.encodePNGToStream(img, fs.createWriteStream(output));
     console.log(`PNG written to ${output}`);
   }
