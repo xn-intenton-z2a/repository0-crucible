@@ -2,22 +2,30 @@
 
 This documentation describes the only implemented functionality of the `repository0-crucible` CLI tool.
 
-## Features
+## Feature
 
-- **Argument echo**: logs provided command-line arguments to the console.
+- **Argument echo**: prints provided command-line arguments to the console.
 
 ## Usage
 
-To run the CLI tool and see the argument echo feature in action, invoke it with any arguments:
+Run the CLI with any arguments:
 
 ```bash
-node src/lib/main.js hello world
+node src/lib/main.js [args...]
 ```
 
-You should see the following output:
+### Examples
 
 ```bash
-Run with: ["hello","world"]
+# Echo two arguments:
+node src/lib/main.js foo bar
+# Output:
+Run with: ["foo","bar"]
+
+# Using npm script:
+npm run start -- alpha beta gamma
+# Output:
+Run with: ["alpha","beta","gamma"]
 ```
 
-No other command-line flags or options are currently supported.
+No other flags or options are currently supported.

@@ -1,54 +1,65 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+`repository0-crucible` is a lightweight demo CLI tool (and JavaScript library) that currently implements a simple argument echo feature. Its primary purpose is to showcase automated CI/CD workflows and provide a foundation for extending CLI capabilities.
 
-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+To explore the self-evolving agentic coding system that powers these workflows, see [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib).
 
 ## Repository Template
 
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+This repository serves as a template and example implementation, including:
+
+* A starting point for new CLI projects.
+* Demonstration of GitHub workflows imported from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib).
+* A simple, functional CLI command to echo arguments.
 
 ## Installation
 
-Install via npm:
+Install dependencies locally:
 
 ```bash
-npm install repository0-crucible
+npm install
+```
+
+Optionally install globally:
+
+```bash
+npm install -g @xn-intenton-z2a/repository0-crucible
 ```
 
 ## Features
 
-TODO: Add features here.
+- **Argument echo**: logs provided command-line arguments to the console.
 
 ## Usage
 
-To run the CLI tool and see help instructions:
+Invoke the CLI tool directly with any arguments:
 
 ```bash
-node src/lib/main.js --help
+node src/lib/main.js hello world
+# Output: Run with: ["hello","world"]
 ```
 
-### Example Commands
+Or via the built-in npm script (arguments must follow `--`):
 
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
+```bash
+npm run start -- foo bar
+# Output: Run with: ["foo","bar"]
+```
 
+### Other available scripts
+
+- **npm run build**: No build step; placeholder.
+- **npm test**: Runs unit tests with Vitest.
+- **npm run serve**: Placeholder for future HTTP server support.
 
 ## Incremental Changes Plan
 
-TODO: Add forthcoming changes here.
+This project will evolve to include additional π computation features (benchmarking, reporting, progress bars, HTTP API, caching, etc.). See the `features/` directory for detailed proposals on each upcoming capability.
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on reporting issues, submitting pull requests, and updating documentation.
 
 ## License
 
-Released under the MIT License (see [LICENSE](./LICENSE)).
+Released under the MIT License. See [LICENSE](./LICENSE) for details.
