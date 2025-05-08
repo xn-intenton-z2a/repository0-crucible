@@ -1,6 +1,6 @@
 # Node.js Core APIs
 ## https://nodejs.org/api/
-Comprehensive reference to built-in Node.js modules including file I/O (`fs`), networking (`http`, `https`), streams, URL handling (`url`), process utilities (`process`), and performance timing (`performance.now()`). Essential for implementing CLI commands, HTTP endpoints (`/pi`, `/benchmark`), streaming modes, diagnostics, and core module architectures. Last updated June 2024; maintained by the Node.js Foundation under an MIT-like license.
+Comprehensive reference to built-in Node.js modules including file I/O (`fs`), networking (`http`, `https`), streams (`stream`), URL handling (`url`), process utilities (`process`), performance timing and monitoring (`perf_hooks`), and ECMAScript module system (`esm`). Essential for implementing CLI commands, HTTP endpoints (`/pi`, `/benchmark`), streaming output of digit sequences, real-time progress feedback, and advanced module loading patterns. Last updated June 2024; maintained by the Node.js Foundation under an MIT-like license.
 ## Node.js Foundation (MIT-like)
 
 # CLI & Terminal Utilities
@@ -74,3 +74,13 @@ Simple file-based cache for Node.js projects, storing and retrieving JSON data q
 ## https://mathjs.org/docs/datatypes/bignumber.html
 Documentation for BigNumber support in Math.js, covering precision control, arithmetic operations, and configuration. Offers an alternative numeric engine for π calculations, with built-in support for bignumber operations and unit testing. Last updated January 2024.
 ## Apache-2.0
+
+# EJS Templates
+## https://ejs.co/#docs
+The official EJS templating documentation covers syntax for embedding JavaScript code in HTML templates, includes examples for control flow, partials, custom filters, and layouts. This is critical for implementing the HTML report generation feature with EJS, demonstrating template structure, rendering APIs (`ejs.render`, `ejs.renderFile`), error handling, caching, and custom delimiter usage. Last updated 2024; maintained under MIT License.
+## MIT License
+
+# Chart.js
+## https://www.chartjs.org/docs/latest/
+Extensive guide to Chart.js 4 covering chart types (line, bar, scatter, pie), dataset and axis configuration, scales, plugins, custom legends, animations, and responsive design. Essential for leveraging Chart.js via ChartjsNodeCanvas to produce performance and error margin visualizations in PNG format, including examples of configuring options, callbacks, and registering custom controllers. Last updated May 2024; licensed under MIT.
+## MIT License
