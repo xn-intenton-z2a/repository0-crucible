@@ -1,29 +1,28 @@
 # Overview
-Extend the CLI to calculate π to a specified number of digits using multiple algorithms and benchmark execution performance.
+Extend the CLI tool to calculate π to a specified number of digits using configurable algorithms and report basic performance metrics.
 
-# CLI Interface
-Add a calculate command with flags:
+# CLI Usage
+Add a new calculate command or integrate into existing CLI entrypoint with two required flags:
 
- algorithm: choose from chudnovsky, gauss-legendre, bbp, leibniz as default algorithm
- digits: integer number of digits to compute
- benchmark: enable timing and memory usage metrics
- output: choose text or png output
- file: specify output filename for png mode
+--digits: positive integer specifying how many digits after the decimal point to compute
+--algorithm: one of chudnovsky, bbp, gauss-legendre, leibniz specifying which algorithm to use
+
+Provide clear help text and validation errors for missing or invalid values.
 
 # Algorithms
-Implement multiple algorithms for demonstration and performance:
+- chudnovsky: optimized series for rapid high-precision results
+- bbp: binary digit extraction for arbitrary starting positions
+- gauss-legendre: iterative algorithm to demonstrate convergence
+- leibniz: simple alternating series for educational purposes
 
- chudnovsky for fast high precision
-gauss-legendre for iterative convergence
-bbp for digit extraction at arbitrary positions
-leibniz for simple series demonstration
+# Output
+- Default mode: print computed π digits to standard output
+- Append execution time and peak memory usage summary to stdout for quick insight
 
-# Benchmarking
-When benchmark flag is enabled measure execution time and peak memory usage and include metrics in the output.
-
-# Output Formats
-text mode prints computed π digits and performance metrics to console
-png mode generates a performance chart using a canvas library and saves it to a file
-
-# Implementation Impact
-Update src/lib/main.js to parse the new flags invoke algorithm implementations collect metrics and render output. Add canvas dependency in package.json write unit tests in tests/unit/main.test.js to verify small digit calculations metric reporting and output generation. Update README.md with usage examples and package.json with new dependency and script entries.
+# Implementation Details
+- Update src/lib/main.js to parse the new flags using a CLI parser (e.g., yargs or commander)
+- Create or refactor modules for each algorithm under src/lib/algorithms
+- Instrument execution with high-resolution timers and memory usage calls
+- Write unit tests in tests/unit/main.test.js to verify correct output for small digit counts and validate flag parsing and error handling
+- Update README.md with usage examples illustrating both default and error cases
+- Add any required CLI parser dependency to package.json under dependencies
