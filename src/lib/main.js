@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import express from "express";
 import minimist from "minimist";
 import { performance } from "perf_hooks";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import fs from "fs";
 
 const ALGORITHMS = ["chudnovsky", "gauss-legendre", "leibniz"];
@@ -86,7 +86,7 @@ export function createApp() {
 
       res.status(200).json({ pi, digits, algorithm, timeMs });
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (error instanceof ZodError) {
         const msg = error.errors.map((e) => e.message).join(", ");
         res.status(400).json({ error: msg });
       } else {
@@ -108,7 +108,7 @@ export function createApp() {
 
       res.status(200).json({ digits, algorithm, timeMs, throughput });
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (error instanceof ZodError) {
         const msg = error.errors.map((e) => e.message).join(", ");
         res.status(400).json({ error: msg });
       } else {
@@ -137,40 +137,45 @@ export function main(args = process.argv.slice(2)) {
     app.listen(port, () => {
       console.log(`Server listening on port ${port}`);
     });
-  } else {
-    // CLI mode
-    try {
-      const digits = z.coerce.number().int().nonnegative().parse(argv.digits);
-      const algorithm = z.enum(ALGORITHMS).parse(argv.algorithm);
-      const start = performance.now();
-      const pi = computePi(digits, algorithm);
-      let outputText = pi;
+    return;
+  }
 
-      if (argv.benchmark) {
-        let timeMs = performance.now() - start;
-        timeMs = timeMs < 1 ? 1 : timeMs;
-        const throughput = digits / timeMs;
-        outputText += `\nExecution time: ${timeMs.toFixed(2)} ms\nThroughput: ${throughput.toFixed(2)} digits/ms`;
-      }
+  // CLI mode
+  try {
+    const digits = z.coerce.number().int().nonnegative().parse(argv.digits);
+    const algorithm = z.enum(ALGORITHMS).parse(argv.algorithm);
+    const start = performance.now();
+    const pi = computePi(digits, algorithm);
+    let outputText = pi;
 
-      if (argv.output) {
-        fs.writeFileSync(argv.output, outputText, "utf8");
-      } else {
-        console.log(outputText);
-      }
-      process.exit(0);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        console.error(error.errors.map((e) => e.message).join(", "));  
-        process.exit(1);
-      } else {
-        console.error("Error:", error.message);
-        process.exit(1);
-      }
+    if (argv.benchmark) {
+      let timeMs = performance.now() - start;
+      timeMs = timeMs < 1 ? 1 : timeMs;
+      const throughput = digits / timeMs;
+      outputText += `\nExecution time: ${timeMs.toFixed(2)} ms\nThroughput: ${throughput.toFixed(2)} digits/ms`;
+    }
+
+    if (argv.output) {
+      fs.writeFileSync(argv.output, outputText, "utf8");
+    } else {
+      console.log(outputText);
+    }
+
+    return 0;
+  } catch (error) {
+    if (error instanceof ZodError) {
+      console.error(error.errors.map((e) => e.message).join(", "));
+      return 1;
+    } else {
+      console.error("Error:", error.message);
+      return 1;
     }
   }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main();
+  const exitCode = main();
+  if (typeof exitCode === 'number') {
+    process.exit(exitCode);
+  }
 }
