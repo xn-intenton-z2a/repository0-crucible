@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="openapi_spec" href="#openapi_spec"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OPENAPI_SPEC</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">openapi: string; info{title,version}; servers[{url,variables}]; paths{/...: pathItem}; components{schemas,responses,parameters,examples,requestBodies,headers,securitySchemes,links,callbacks}; parameter.name,in,required,style,explode,allowReserved; requestBody.content[mediaType]; response.description,content; schema.types,formats; securitySchemes.(type,name,in,flows); OAuth2 flows</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1 OpenAPI Root
+2 Info Metadata
+3 Server Configuration
+4 Paths Definition
+5 Path Item Operations
+6 Operation Structure
+7 Components Registry
+8 Parameter Definition
+9 Request Body Specification
+10 Response Specification
+11 Schema Definition
+12 Security Schemes</p>
+<p class="md-github">1 OpenAPI Root
+openapi: &quot;3.0.3&quot;
+info.version: API version string
+info.title: API title
+2 Info Metadata
+title (string), version (string), optional description, termsOfService (URL), contact{name,url,email}, license{name,url}
+3 Server Configuration
+servers[]: url:string, description:string, variables{ name:{default:string,enum:[string],description:string} }
+4 Paths Definition
+paths:{&quot;/{resource}/{id}&quot;:{operations,parameters,servers}}
+5 Path Item Operations
+object fields: get,put,post,delete,patch,etc → Operation Object; parameters[] applies to all operations
+6 Operation Structure
+tags[], summary,string, description,string, operationId,string, parameters[], requestBody, responses{statusCode:Response Object}, security[], servers[]
+7 Components Registry
+components.schemas{name:Schema}, parameters{name:Parameter}, responses{name:Response}, requestBodies{name:RequestBody}, headers{name:Header}, securitySchemes{name:SecurityScheme}, examples, links, callbacks
+8 Parameter Definition
+name:string,in:(path|query|header|cookie),required:boolean,deprecated:boolean,style:(form|simple|matrix|label|spaceDelimited|pipeDelimited|deepObject),explode:boolean,allowReserved:boolean,schema:Schema,example,examples,content{mediaType:MediaType}
+9 Request Body Specification
+description, required:boolean, content{mediaType:{schema:Schema,examples,encoding:{property:{contentType,headers,style,explode,allowReserved}}}}
+10 Response Specification
+description, headers, content{mediaType:{schema,examples,encoding}}, links
+11 Schema Definition
+fixedFields:title,type,format,properties,required,allOf,oneOf,anyOf,not,items,additionalProperties,description,default,enum,nullable,deprecated,readOnly,writeOnly
+12 Security Schemes
+type:apiKey{name,in},http{scheme,bearerFormat},oauth2{flows},openIdConnect{openIdConnectUrl}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<ul class="md-github">
+<li class="md-github">Semantic Versioning: major.minor.patch. openapi field MUST match spec version.</li>
+<li class="md-github">YAML: version 1.2, common constraints: JSON Failsafe schema, scalar string keys, markdown in description fields.</li>
+<li class="md-github">Path Templating: parameters in path MUST match template names.</li>
+<li class="md-github">Content negotiation: media types evaluated by most specific match.</li>
+<li class="md-github">Style defaults: query=form, path=simple, header=simple, cookie=form.</li>
+<li class="md-github">explode default: form=true, others=false.</li>
+<li class="md-github">allowEmptyValue: only query, default false.</li>
+<li class="md-github">deepObject style: for object query parameters.</li>
+<li class="md-github">Security Requirement: OR logic within array; empty {} makes optional.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="full-api-specifications" href="#full-api-specifications"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Full API Specifications</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="openapi-object" href="#openapi-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OpenAPI Object</h2>
+<p class="md-github">openapi: string (REQUIRED, regex &quot;^(\d+\.){2}\d+$&quot;)
+info: Info Object
+servers: [ Server Object ] default=[{url:&quot;/&quot;}]
+paths: Paths Object (REQUIRED)
+components: Components Object
+security: [ Security Requirement Object ]
+tags: [ Tag Object ]
+externalDocs: External Documentation Object</p>
+<h2 class="md-github"><a class="md-github__anchor" name="info-object" href="#info-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Info Object</h2>
+<p class="md-github">title: string (REQUIRED)
+description: string
+toS: URL (RFC3986)
+contact:
+name: string
+url: URL
+email: email
+license:
+name: string (REQUIRED)
+url: URL (REQUIRED)
+version: string (REQUIRED)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="server-object" href="#server-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Server Object</h2>
+<p class="md-github">url: string (REQUIRED)
+description: string
+variables:
+<name>:
+enum: [string]
+default: string (REQUIRED)
+description: string</p>
+<h2 class="md-github"><a class="md-github__anchor" name="paths-object" href="#paths-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Paths Object</h2>
+<p class="md-github">Type: Object
+Keys: &quot;/&quot; prefix; value: Path Item Object</p>
+<h2 class="md-github"><a class="md-github__anchor" name="path-item-object" href="#path-item-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Path Item Object</h2>
+<p class="md-github">$ref: URL
+summary: string
+description: string
+servers: [ Server Object ]
+parameters: [ Parameter | Reference ]
+operations:
+get,put,post,delete,options,head,patch,trace: Operation Object</p>
+<h2 class="md-github"><a class="md-github__anchor" name="operation-object" href="#operation-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Operation Object</h2>
+<p class="md-github">tags: [ string ]
+summary: string
+description: string
+externalDocs: External Documentation Object
+operationId: string (unique)
+parameters: [ Parameter | Reference ]
+requestBody: RequestBody | Reference
+responses: {<statusCode>: Response | Reference} (REQUIRED)
+callbacks: {<name>: Callback | Reference}
+deprecated: boolean (default=false)
+security: [ Security Requirement ]
+servers: [ Server ]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="components-object" href="#components-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Components Object</h2>
+<p class="md-github">schemas: {<name>: Schema | Reference}
+responses: {<name>: Response | Reference}
+parameters: {<name>: Parameter | Reference}
+examples: {<name>: Example | Reference}
+requestBodies: {<name>: RequestBody | Reference}
+headers: {<name>: Header | Reference}
+securitySchemes: {<name>: SecurityScheme | Reference}
+links: {<name>: Link | Reference}
+callbacks: {<name>: Callback | Reference}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="parameter-object" href="#parameter-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameter Object</h2>
+<p class="md-github">name: string (REQUIRED)
+in: &quot;path&quot;|&quot;query&quot;|&quot;header&quot;|&quot;cookie&quot; (REQUIRED)
+description: string
+required: boolean (default false; path=true)
+deprecated: boolean (default false)
+allowEmptyValue: boolean (default false, query only)
+style: string
+explode: boolean
+allowReserved: boolean
+schema: Schema | Reference
+example: any
+examples: {<name>: Example | Reference}
+content: {<mediaType>: MediaType}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="request-body-object" href="#request-body-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Request Body Object</h2>
+<p class="md-github">description: string
+content: {<mediaType>: MediaType} (REQUIRED)
+required: boolean (default false)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="response-object" href="#response-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Response Object</h2>
+<p class="md-github">description: string (REQUIRED)
+headers: {<name>: Header | Reference}
+content: {<mediaType>: MediaType}
+links: {<name>: Link | Reference}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="schema-object" href="#schema-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Schema Object</h2>
+<p class="md-github">title: string
+description: string
+default: any
+enum: [any]
+type: &quot;string&quot;|&quot;number&quot;|&quot;integer&quot;|&quot;boolean&quot;|&quot;array&quot;|&quot;object&quot;
+format: string
+properties: {<name>: Schema | Reference}
+required: [string]
+additionalProperties: boolean | Schema | Reference
+items: Schema | Reference
+allOf/oneOf/anyOf: [Schema | Reference]
+not: Schema | Reference
+nullable: boolean
+readOnly/writeOnly: boolean
+deprecated: boolean
+xml: XML Object
+discriminator: Discriminator Object
+externalDocs: External Documentation Object
+example: any</p>
+<h2 class="md-github"><a class="md-github__anchor" name="security-scheme-object" href="#security-scheme-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Security Scheme Object</h2>
+<p class="md-github">type: &quot;apiKey&quot;|&quot;http&quot;|&quot;oauth2&quot;|&quot;openIdConnect&quot;(REQUIRED)
+description: string
+name: string (apiKey)
+in: &quot;query&quot;|&quot;header&quot;|&quot;cookie&quot;(apiKey)
+scheme: string (http)
+bearerFormat: string
+describes the format of the bearer token
+flows: OAuthFlows (oauth2)
+openIdConnectUrl: URL (openIdConnect)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="oauthflows-object" href="#oauthflows-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OAuthFlows Object</h2>
+<p class="md-github">implicit/password/clientCredentials/authorizationCode: OAuthFlow Object</p>
+<h2 class="md-github"><a class="md-github__anchor" name="oauthflow-object" href="#oauthflow-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OAuthFlow Object</h2>
+<p class="md-github">authorizationUrl: URL (implicit, authorizationCode)
+tokenUrl: URL (password, clientCredentials, authorizationCode)
+refreshUrl: URL
+tScopes: {<scope>: description}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="mediatype-object" href="#mediatype-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MediaType Object</h2>
+<p class="md-github">schema: Schema | Reference
+examples: {<name>: Example | Reference}
+encoding: {<name>: Encoding}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="encoding-object" href="#encoding-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Encoding Object</h2>
+<p class="md-github">contentType: string
+headers: {<name>: Header | Reference}
+style: string
+explode: boolean
+allowReserved: boolean</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-object" href="#reference-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Object</h2>
+<p class="md-github">$ref: URL (REQUIRED)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="security-requirement-object" href="#security-requirement-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Security Requirement Object</h2>
+<p class="md-github">{<name>: [string]}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">openapi:string;info{title:string,version:string};servers[url:string,variables{name:{default:string,enum:[string],description:string}}];paths{&quot;/<path>&quot;:{parameters:[{name,in,required:boolean,style,explode,allowReserved,schema}],servers,operations{get,post,put,delete,patch,options,head,trace: {operationId,parameters,requestBody:content{<mediaType>:schema},responses{<code>:content{<mediaType>:schema},description},security,servers}}};components{schemas,parameters,responses,requestBodies,headers,securitySchemes,links,callbacks};schema{type,format,properties,required,allOf,oneOf,anyOf,not,items,additionalProperties,enum,default,nullable,readOnly,writeOnly,example,deprecated};securitySchemes{apiKey{name,in},http{scheme,bearerFormat},oauth2{flows:{implicit,authorizationCode,password,clientCredentials}},openIdConnect{openIdConnectUrl}}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1 OpenAPI Root
+2 Info Metadata
+3 Server Configuration
+4 Paths Definition
+5 Path Item Operations
+6 Operation Structure
+7 Components Registry
+8 Parameter Definition
+9 Request Body Specification
+10 Response Specification
+11 Schema Definition
+12 Security Schemes</p>
+<p class="md-github">1 OpenAPI Root
+openapi: '3.0.3'
+info.version: API version string
+info.title: API title
+2 Info Metadata
+title (string), version (string), optional description, termsOfService (URL), contact{name,url,email}, license{name,url}
+3 Server Configuration
+servers[]: url:string, description:string, variables{ name:{default:string,enum:[string],description:string} }
+4 Paths Definition
+paths:{'/{resource}/{id}':{operations,parameters,servers}}
+5 Path Item Operations
+object fields: get,put,post,delete,patch,etc  Operation Object; parameters[] applies to all operations
+6 Operation Structure
+tags[], summary,string, description,string, operationId,string, parameters[], requestBody, responses{statusCode:Response Object}, security[], servers[]
+7 Components Registry
+components.schemas{name:Schema}, parameters{name:Parameter}, responses{name:Response}, requestBodies{name:RequestBody}, headers{name:Header}, securitySchemes{name:SecurityScheme}, examples, links, callbacks
+8 Parameter Definition
+name:string,in:(path|query|header|cookie),required:boolean,deprecated:boolean,style:(form|simple|matrix|label|spaceDelimited|pipeDelimited|deepObject),explode:boolean,allowReserved:boolean,schema:Schema,example,examples,content{mediaType:MediaType}
+9 Request Body Specification
+description, required:boolean, content{mediaType:{schema:Schema,examples,encoding:{property:{contentType,headers,style,explode,allowReserved}}}}
+10 Response Specification
+description, headers, content{mediaType:{schema,examples,encoding}}, links
+11 Schema Definition
+fixedFields:title,type,format,properties,required,allOf,oneOf,anyOf,not,items,additionalProperties,description,default,enum,nullable,deprecated,readOnly,writeOnly
+12 Security Schemes
+type:apiKey{name,in},http{scheme,bearerFormat},oauth2{flows},openIdConnect{openIdConnectUrl}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">OpenAPI Specification (OAS)
+https://spec.openapis.org/oas/v3.0.3</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-openapi_spec" href="#digest-of-openapi_spec"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of OPENAPI_SPEC</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="openapi-specification-v303-retrieved-2023-10-07" href="#openapi-specification-v303-retrieved-2023-10-07"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OpenAPI Specification v3.0.3 (retrieved 2023-10-07)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="1-openapi-object" href="#1-openapi-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. OpenAPI Object</h2>
+<p class="md-github">openapi: string (REQUIRED, semantic version)<br>
+info: Info Object (REQUIRED)<br>
+servers: [ Server Object ] (default: [{ url: &quot;/&quot; }])<br>
+paths: Paths Object (REQUIRED)<br>
+components: Components Object<br>
+security: [ Security Requirement Object ]<br>
+tags: [ Tag Object ]<br>
+externalDocs: External Documentation Object</p>
+<h2 class="md-github"><a class="md-github__anchor" name="2-info-object" href="#2-info-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Info Object</h2>
+<ul class="md-github">
+<li class="md-github">title: string (REQUIRED)</li>
+<li class="md-github">description: string</li>
+<li class="md-github">termsOfService: URL</li>
+<li class="md-github">contact: Contact Object</li>
+<li class="md-github">license: License Object</li>
+<li class="md-github">version: string (REQUIRED)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="3-server-object" href="#3-server-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Server Object</h2>
+<ul class="md-github">
+<li class="md-github">url: URL template (REQUIRED)</li>
+<li class="md-github">description: string</li>
+<li class="md-github">variables: Map[string, Server Variable Object]</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="4-paths-object" href="#4-paths-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Paths Object</h2>
+<p class="md-github">Patterned fields: &quot;/path&quot; → Path Item Object</p>
+<h2 class="md-github"><a class="md-github__anchor" name="5-path-item-object" href="#5-path-item-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Path Item Object</h2>
+<ul class="md-github">
+<li class="md-github">$ref: string (URL)</li>
+<li class="md-github">summary: string</li>
+<li class="md-github">description: string</li>
+<li class="md-github">operations: get, put, post, delete, options, head, patch, trace: Operation Object</li>
+<li class="md-github">servers: [ Server Object ]</li>
+<li class="md-github">parameters: [ Parameter Object | Reference Object ]</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="6-operation-object" href="#6-operation-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Operation Object</h2>
+<ul class="md-github">
+<li class="md-github">tags: [ string ]</li>
+<li class="md-github">summary: string</li>
+<li class="md-github">description: string</li>
+<li class="md-github">externalDocs: External Documentation Object</li>
+<li class="md-github">operationId: string (unique)</li>
+<li class="md-github">parameters: [ Parameter Object | Reference Object ]</li>
+<li class="md-github">requestBody: Request Body Object | Reference Object</li>
+<li class="md-github">responses: Map[string (status code), Response Object | Reference Object] (REQUIRED)</li>
+<li class="md-github">callbacks: Map[string, Callback Object | Reference Object]</li>
+<li class="md-github">deprecated: boolean (default false)</li>
+<li class="md-github">security: [ Security Requirement Object ]</li>
+<li class="md-github">servers: [ Server Object ]</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="7-components-object" href="#7-components-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Components Object</h2>
+<ul class="md-github">
+<li class="md-github">schemas: Map[string, Schema Object | Reference Object]</li>
+<li class="md-github">responses: Map[string, Response Object | Reference Object]</li>
+<li class="md-github">parameters: Map[string, Parameter Object | Reference Object]</li>
+<li class="md-github">examples: Map[string, Example Object | Reference Object]</li>
+<li class="md-github">requestBodies: Map[string, Request Body Object | Reference Object]</li>
+<li class="md-github">headers: Map[string, Header Object | Reference Object]</li>
+<li class="md-github">securitySchemes: Map[string, Security Scheme Object | Reference Object]</li>
+<li class="md-github">links: Map[string, Link Object | Reference Object]</li>
+<li class="md-github">callbacks: Map[string, Callback Object | Reference Object]</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="8-parameter-object" href="#8-parameter-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>8. Parameter Object</h2>
+<ul class="md-github">
+<li class="md-github">name: string (REQUIRED)</li>
+<li class="md-github">in: &quot;query&quot; | &quot;header&quot; | &quot;path&quot; | &quot;cookie&quot; (REQUIRED)</li>
+<li class="md-github">description: string</li>
+<li class="md-github">required: boolean (default false; MUST=true for in=path)</li>
+<li class="md-github">deprecated: boolean (default false)</li>
+<li class="md-github">allowEmptyValue: boolean (default false)</li>
+<li class="md-github">style: ... (default: form|simple|form|simple)</li>
+<li class="md-github">explode: boolean</li>
+<li class="md-github">allowReserved: boolean</li>
+<li class="md-github">schema: Schema Object | Reference Object</li>
+<li class="md-github">example: any</li>
+<li class="md-github">examples: Map[string, Example Object | Reference Object]</li>
+<li class="md-github">content: Map[string (mediaType), Media Type Object]</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="9-request-body-object" href="#9-request-body-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>9. Request Body Object</h2>
+<ul class="md-github">
+<li class="md-github">description: string</li>
+<li class="md-github">content: Map[string (mediaType), Media Type Object] (REQUIRED)</li>
+<li class="md-github">required: boolean (default false)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="10-response-object" href="#10-response-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>10. Response Object</h2>
+<ul class="md-github">
+<li class="md-github">description: string (REQUIRED)</li>
+<li class="md-github">headers: Map[string, Header Object | Reference Object]</li>
+<li class="md-github">content: Map[string (mediaType), Media Type Object]</li>
+<li class="md-github">links: Map[string, Link Object | Reference Object]</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="11-schema-object" href="#11-schema-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>11. Schema Object</h2>
+<p class="md-github">Fixed fields: title, multipleOf, maximum, exclusiveMaximum, minimum, exclusiveMinimum, maxLength, minLength, pattern, maxItems, minItems, uniqueItems, maxProperties, minProperties, required, enum, type, allOf, oneOf, anyOf, not, items, properties, additionalProperties, description, format, default, nullable, discriminator, readOnly, writeOnly, xml, externalDocs, example, deprecated</p>
+<h2 class="md-github"><a class="md-github__anchor" name="12-security-scheme-object" href="#12-security-scheme-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>12. Security Scheme Object</h2>
+<ul class="md-github">
+<li class="md-github">type: &quot;apiKey&quot; | &quot;http&quot; | &quot;oauth2&quot; | &quot;openIdConnect&quot; (REQUIRED)</li>
+<li class="md-github">description: string</li>
+<li class="md-github">name: string (REQUIRED for apiKey)</li>
+<li class="md-github">in: &quot;query&quot; | &quot;header&quot; | &quot;cookie&quot; (REQUIRED for apiKey)</li>
+<li class="md-github">scheme: string (REQUIRED for http)</li>
+<li class="md-github">bearerFormat: string</li>
+<li class="md-github">flows: OAuth Flows Object (REQUIRED for oauth2)</li>
+<li class="md-github">openIdConnectUrl: URL (REQUIRED for openIdConnect)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="13-oauth-flows-object" href="#13-oauth-flows-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>13. OAuth Flows Object</h2>
+<p class="md-github">Map: implicit, password, clientCredentials, authorizationCode: OAuth Flow Object</p>
+<h2 class="md-github"><a class="md-github__anchor" name="14-encoding-object" href="#14-encoding-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>14. Encoding Object</h2>
+<ul class="md-github">
+<li class="md-github">contentType: string</li>
+<li class="md-github">headers: Map[string, Header Object | Reference Object]</li>
+<li class="md-github">style: string</li>
+<li class="md-github">explode: boolean</li>
+<li class="md-github">allowReserved: boolean</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: OpenAPI Specification (OAS)</li>
+<li class="md-github">URL: https://spec.openapis.org/oas/v3.0.3</li>
+<li class="md-github">License: CC0 1.0 Universal</li>
+<li class="md-github">Crawl Date: 2025-05-08T09:30:25.292Z</li>
+<li class="md-github">Data Size: 17035172 bytes</li>
+<li class="md-github">Links Found: 55931</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-08</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-08T10:41:07.429Z</p>
+  </footer>
+</body>
+</html>
