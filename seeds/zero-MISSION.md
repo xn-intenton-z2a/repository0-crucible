@@ -1,2 +1,2 @@
 # xn-intenton-z2a/repository0-crucible
-Create a CLI app that outputs random facial expressions using ascii art. This will be the emotional feedback mechanism for an AI.
+Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.
