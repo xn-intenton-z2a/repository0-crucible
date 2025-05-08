@@ -1,34 +1,55 @@
 # Overview
-Extend the CLI tool to calculate π to a specified number of digits using configurable algorithms, report basic performance metrics, and optionally generate a convergence plot as a PNG image.
+
+Introduce a dedicated `pi` subcommand in the CLI to compute π using the basic Leibniz series.  This first iteration focuses on a simple text output mode that reports the approximate value of π along with execution time and peak memory usage.
 
 # CLI Usage
-Add or enhance the existing calculate command in the CLI entrypoint with the following flags:
 
---digits: positive integer specifying how many digits after the decimal point to compute
---algorithm: one of chudnovsky, bbp, gauss-legendre, leibniz specifying which algorithm to use
---format: one of text, png controlling output mode
---output: optional file path for PNG image when format is png
+Add a `pi` command to the existing CLI entrypoint in `src/lib/main.js` with the following flags:
 
-Provide clear help text and validation errors for missing or invalid values.
+--iterations: positive integer specifying how many terms of the Leibniz series to sum
+--help: display built-in help text for the `pi` command
 
-# Algorithms
-- chudnovsky: optimized series for rapid high-precision results
-- bbp: binary digit extraction for arbitrary starting positions
-- gauss-legendre: iterative algorithm to demonstrate convergence
-- leibniz: simple alternating series for educational purposes
+Examples:
+  node src/lib/main.js pi --iterations 1000000
+  node src/lib/main.js pi --iterations 5000
+
+# Algorithm
+
+Implement the Leibniz series for π:
+
+  π ≈ 4 × ∑_{k=0 to N-1} ((-1)^k) / (2k + 1)
+
+- Compute the partial sum over the specified number of iterations
+- Record start and end times to measure duration
+- Track peak memory usage via `process.memoryUsage()`
 
 # Output
-- text mode (default): print computed π digits to standard output and append execution time and peak memory usage summary
-- png mode: generate a PNG file showing convergence of the partial sums over iterations and save to the specified output path; also print a success message with file location
 
-# Visualization
-- Use a chart library compatible with Node 20 (for example chartjs-node-canvas) to draw a line chart of error magnitude vs iteration count
-- Label axes appropriately and include chart title indicating algorithm and digit goal
+In text mode (default):
+
+- Print the approximate value of π rounded to 6 decimal places
+- Print total execution time in milliseconds
+- Print peak memory usage in bytes
+
+Example output:
+  π ≈ 3.141592
+  Duration: 120 ms
+  Peak Memory: 5 242 000 bytes
 
 # Implementation Details
-- Update src/lib/main.js to parse the new flags using a CLI parser (for example yargs or commander)
-- Refactor modules under src/lib/algorithms to record convergence data (error magnitude per iteration) alongside result digits
-- Add a new module src/lib/plotter.js that uses chartjs-node-canvas to generate the PNG file
-- Extend tests in tests/unit/main.test.js to verify flag parsing, text mode output, and for png mode ensure the file is created and has nonzero size (use a temporary directory)
-- Update package.json to add dependencies chartjs-node-canvas and canvas if required
-- Update README.md with usage examples illustrating both text and png modes, including error cases
+
+- Update `src/lib/main.js` to register a new subcommand `pi` using a CLI parser (e.g. commander or yargs)
+- Create `src/lib/algorithms/leibniz.js`:
+  - Export a function `computePiLeibniz(iterations)` that returns an object `{ value, durationMs, peakMemoryBytes }`
+- In the `pi` command handler:
+  - Parse the `--iterations` flag
+  - Validate it is a positive integer
+  - Invoke `computePiLeibniz`
+  - Print results in the specified format
+- Extend `tests/unit/main.test.js`:
+  - Add tests for the `pi` command with valid and invalid iteration values
+  - Verify output contains expected approximate value, duration, and memory usage
+- Update `README.md`:
+  - Document the `pi` command usage examples
+  - Show sample output for a small iteration count
+- No new dependencies required for this iteration
