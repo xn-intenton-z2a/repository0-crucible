@@ -1,36 +1,46 @@
 # Overview
 
-Implement core arbitrary-precision π calculation CLI command. Allow users to compute π to a specified number of decimal places using multiple high-precision algorithms and output the result in text format.
+Enable CLI mode for computing π to arbitrary precision directly from the command line. Users can specify the number of decimal places, choose an algorithm, and direct output to a file or stdout without starting an HTTP server. This feature leverages the existing computePi function and measurement utilities to provide an end-to-end command-line experience.
 
 # Implementation
 
-1. Command-Line Interface
-   - Use minimist to parse flags in src/lib/main.js:
-     • --algorithm <leibniz|gauss-legendre|chudnovsky> to choose calculation method (default chudnovsky)
-     • --digits <n> to specify number of decimal places (default 1000)
-     • --output <path> to write result to a file or stdout if omitted
+1. Command-Line Interface in main.js
+   - Use minimist to parse flags:
+     • --algorithm <leibniz|gauss-legendre|chudnovsky> (default chudnovsky)
+     • --digits <n> (nonnegative integer, default 1000)
+     • --output <path> (file path for result; stdout if omitted)
+   - Validate inputs with zod:
+     • digits must be an integer ≥ 0
+     • algorithm must match one of the supported methods
+   - On invocation (when --serve is not provided):
+     • Record start time with performance.now()
+     • Call computePi(digits, algorithm)
+     • Compute elapsed time and enforce a minimum of 1ms
+     • Format result:
+       – If output is stdout, print the digits only
+       – If output is a file path, write plain UTF-8 text to the file
+     • Exit process with code 0 on success
+   - On validation error:
+     • Print descriptive error messages to stderr
+     • Exit process with code 1
 
-2. Algorithm Modules
-   - Implement three algorithms in src/lib/main.js or helper functions:
-     • Leibniz series with BigInt and manual scaling
-     • Gauss-Legendre method for quadratic convergence using BigInt
-     • Chudnovsky formula for rapid convergence leveraging BigInt
-   - Manage fixed-point arithmetic manually or with a lightweight decimal helper
-
-3. Output Generation
-   - Format computed digits as plain UTF-8 text
-   - Write output to stdout or file specified by --output
+2. Integration with Existing Code
+   - Import computePi from main.js
+   - Reuse performance.now() for timing
+   - Ensure that --serve remains exclusive to HTTP mode
 
 # Testing
 
-- Create tests in tests/unit/pi-calculation.test.js:
-  • Verify first 10 digits of π for each algorithm implementation
-  • Simulate CLI calls with minimist flags and confirm correct output for digits and algorithm selection
+- Add tests in tests/unit/cli-calculation.test.js:
+  • Simulate process.argv with valid flags and capture stdout; assert correct digits prefix and lack of extra logs
+  • Test writing to a temporary file and verify file contents match expected π digits
+  • Simulate invalid digits (negative, noninteger) and invalid algorithm; capture stderr and exit code
 
 # Documentation
 
 - Update README.md:
-  • Document --algorithm, --digits, and --output flags under Usage and CLI Options
-  • Provide example commands:  
-    node src/lib/main.js --algorithm chudnovsky --digits 500  
-    node src/lib/main.js --digits 1000 --output pi.txt
+  • Document CLI usage under a new "CLI Calculation" section
+  • List supported flags, their defaults, and example commands:
+      node src/lib/main.js --algorithm gauss-legendre --digits 500
+      node src/lib/main.js --digits 1000 --output pi.txt
+  • Note that HTTP mode is enabled with --serve and is mutually exclusive with CLI compute
