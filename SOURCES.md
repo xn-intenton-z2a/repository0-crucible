@@ -1,14 +1,14 @@
 # Node.js Core & JavaScript Guides
 ## https://nodejs.org/api/
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/
-Comprehensive reference to Node.js built-in modules including file I/O (`fs`), networking (`http`, `https`), streams (`stream`), URL handling (`url`), performance measurement (`perf_hooks`), and the ECMAScript module system (ESM). Paired with MDN’s in-depth JavaScript guides covering control flow, data types, regular expressions, and Unicode/Emoji support. Essential for implementing CLI commands, HTTP endpoints (`/pi`, `/benchmark`), streaming digit sequences, progress indicators, and dynamic templating. Last updated June 2024; maintained by the Node.js Foundation (MIT-like) and MDN (CC BY-SA 2.5).
+Comprehensive reference to Node.js built-in modules including file I/O (`fs`), networking (`http`, `https`), streams (`stream`), URL handling (`url`), performance measurement (`perf_hooks`), and the ECMAScript module system (ESM). Paired with MDN’s in-depth JavaScript guides covering control flow, data types, regular expressions, Unicode/Emoji support, and JavaScript’s native `BigInt` type (construction, arithmetic, binary operations, performance considerations). Essential for implementing CLI commands, HTTP endpoints (`/pi`, `/benchmark`), streaming digit sequences, progress indicators, and dynamic templating. Last updated June 2024; maintained by the Node.js Foundation (MIT-like) and MDN (CC BY-SA 2.5).
 ## Mixed Licenses: Node.js Foundation (MIT-like), MDN (CC BY-SA 2.5)
 
 # CLI & Terminal Utilities
 ## https://github.com/substack/minimist
 ## https://github.com/chalk/chalk
 ## https://github.com/AndiDittrich/Node.CLI-Progress
-A unified suite for parsing command-line arguments (`minimist`), applying ANSI color styling (`chalk`), and rendering progress bars (`cli-progress`). These tools enable robust handling of flags (`--algorithm`, `--digits`, `--format`, `--progress`), rich colorized output for emphasis and warnings, and interactive progress feedback during long-running π calculations. Last updated: minimist July 2023, chalk March 2024, cli-progress May 2024.
+Unified suite for parsing command-line arguments (`minimist`), applying ANSI color styling (`chalk`), and rendering interactive progress bars (`cli-progress`). Enables robust handling of flags (`--algorithm`, `--digits`, `--format`, `--progress`), rich colorized output for emphasis and warnings, and user feedback during long-running π calculations. Last updated: minimist July 2023, chalk March 2024, cli-progress May 2024.
 ## MIT License
 
 # Configuration & Validation Libraries
@@ -59,9 +59,13 @@ A high-resolution benchmarking toolkit offering statistical analysis, asynchrono
 
 # Canvas & Charting
 ## https://github.com/Automattic/node-canvas
-## https://github.com/SeanSobey/ChartjsNodeCanvas
 ## https://www.chartjs.org/docs/latest/
-`node-canvas` provides a headless Canvas API, `ChartjsNodeCanvas` integrates Chart.js for server-side chart rendering, and the Chart.js docs cover chart types, data configuration, plugins, and responsive design. Crucial for generating PNG visualizations of error margins, performance matrices, and digit distributions. Last updated April 2024 (node-canvas), May 2024 (Chart.js).
+`node-canvas` provides a headless Canvas API for Node.js, while Chart.js documentation covers chart types, configuration, plugins, and responsive design. Used for generating PNG visualizations of error margins, performance matrices, and digit distributions via server-side rendering. Last updated April 2024 (node-canvas), May 2024 (Chart.js).
+## MIT License
+
+# Chartjs Node Canvas
+## https://github.com/SeanSobey/ChartjsNodeCanvas
+Specialized library to integrate Chart.js with Node.js using a headless canvas. Configurable dimensions, background, and analog API mirroring Chart.js, enabling server-side creation of static PNG charts from datasets. Essential for rendering performance and error plots in PNG format within CLI and HTTP routes. Last updated May 2024.
 ## MIT License
 
 # EJS Templates
@@ -78,11 +82,6 @@ A lightweight file-based cache for Node.js, enabling fast JSON data storage and 
 ## https://github.com/ajv-validator/ajv
 A fast and extensible JSON Schema validator supporting multiple draft versions (Draft-07/2019-09/2020-12), custom keywords, asynchronous validation, and format extensions. Ideal for validating HTTP request payloads against OpenAPI schemas in Express routes. Last updated March 2024.
 ## MIT License
-
-# ECMAScript BigInt
-## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
-In-depth guide to JavaScript’s native `BigInt` type, covering construction, arithmetic operators, bitwise operations, and conversion. Essential for implementing high-precision π algorithms and handling large integer arithmetic without external libraries. Includes performance considerations and interoperability with `Number` and `TypedArray`. Last updated May 2024; maintained by MDN.
-## CC BY-SA 2.5
 
 # calc-pi npm package
 ## https://github.com/benolayinka/calc-pi
