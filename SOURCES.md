@@ -1,14 +1,19 @@
 # Node.js Core & JavaScript Guides
 ## https://nodejs.org/api/
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/
-Comprehensive reference to Node.js built-in modules including file I/O (`fs`), networking (`http`, `https`), streams (`stream`), URL handling (`url`), performance measurement (`perf_hooks`), and the ECMAScript module system (ESM). Paired with MDN’s in-depth JavaScript guides covering control flow, data types, regular expressions, Unicode/Emoji support, and JavaScript’s native `BigInt` type (construction, arithmetic, binary operations, performance considerations). Essential for implementing CLI commands, HTTP endpoints (`/pi`, `/benchmark`), streaming digit sequences, progress indicators, and dynamic templating. Last updated June 2024; maintained by the Node.js Foundation (MIT-like) and MDN (CC BY-SA 2.5).
+Comprehensive reference to Node.js built-in modules including file I/O (`fs`), networking (`http`, `https`), streams (`stream`), URL handling (`url`), worker threads (`worker_threads`), performance measurement (`perf_hooks`), and the ECMAScript module system (ESM), paired with MDN’s in-depth JavaScript guides covering control flow, data types, regular expressions, and BigInt. Essential for implementing high-performance CLI commands, HTTP endpoints, and offloading CPU-intensive calculations. Last updated June 2024; maintained by Node.js Foundation (MIT-like) and MDN (CC BY-SA 2.5).
 ## Mixed Licenses: Node.js Foundation (MIT-like), MDN (CC BY-SA 2.5)
+
+# Worker Threads
+## https://nodejs.org/api/worker_threads.html
+Official Node.js documentation for CPU-bound parallelism using worker threads. Provides APIs to spawn threads, share memory via `SharedArrayBuffer`, message passing via `MessagePort`, and performance considerations for offloading intensive tasks. Crucial for scaling complex π computation algorithms without blocking the event loop. Last updated June 2024; maintained by Node.js Foundation (MIT-like).
+## MIT-like
 
 # CLI & Terminal Utilities
 ## https://github.com/substack/minimist
 ## https://github.com/chalk/chalk
 ## https://github.com/AndiDittrich/Node.CLI-Progress
-Unified suite for parsing command-line arguments (`minimist`), applying ANSI color styling (`chalk`), and rendering interactive progress bars (`cli-progress`). Enables robust handling of flags (`--algorithm`, `--digits`, `--format`, `--progress`), rich colorized output for emphasis and warnings, and user feedback during long-running π calculations. Last updated: minimist July 2023, chalk March 2024, cli-progress May 2024.
+Suite for parsing CLI flags (`minimist`), styling terminal output (`chalk`), and rendering progress bars (`cli-progress`). Enables robust handling of options (`--algorithm`, `--digits`, `--format`), styled logs, and real-time progress feedback during long-running computations. Last updated: minimist July 2023, chalk March 2024, cli-progress May 2024.
 ## MIT License
 
 # Configuration & Validation Libraries
@@ -16,74 +21,70 @@ Unified suite for parsing command-line arguments (`minimist`), applying ANSI col
 ## https://github.com/motdotla/dotenv#readme
 ## https://github.com/colinhacks/zod#readme
 ## https://json-schema.org/specification.html
-Tooling for reading, validating, and coercing structured data: `js-yaml` for YAML config files, `dotenv` for environment variable management, `zod` for runtime schema enforcement, and the JSON Schema specification for formal data contracts. Critical for validating CLI input, HTTP payloads, cache formats, and OpenAPI components. Last updated May 2024 (js-yaml), March 2024 (dotenv), February 2024 (zod), Draft 2020-12 (JSON Schema).
-## Mixed Licenses: js-yaml (MIT), dotenv (MIT), zod (MIT), JSON Schema (CC0 1.0 Universal)
+Tooling for parsing YAML (`js-yaml`), environment variables (`dotenv`), runtime schema enforcement (`zod`), and formal JSON Schema contracts. Ensures configuration correctness and safe input handling for CLI flags, HTTP queries, and cache formats. Last updated 2024.
+## Mixed Licenses: js-yaml (MIT), dotenv (MIT), zod (MIT), JSON Schema (CC0 1.0)
 
 # Testing Frameworks & HTTP Testing Tools
 ## https://vitest.dev/guide/
 ## https://github.com/visionmedia/supertest
-`Vitest` offers fast unit and integration testing with ES modules, mocking, snapshot testing, and coverage reporting. `Supertest` enables end-to-end HTTP tests against Express routes (`/pi`, `/benchmark`). Together they ensure algorithm correctness, CLI behavior, and API stability. Last updated April 2024 (Vitest), January 2024 (Supertest).
+`Vitest` provides fast unit and integration testing with ES modules, mocks, and coverage. `Supertest` enables end-to-end HTTP tests against Express routes. Together they validate algorithm accuracy, CLI behavior, and API stability. Last updated April 2024 (Vitest), January 2024 (Supertest).
 ## MIT License
 
 # OpenAPI Specification (OAS)
 ## https://spec.openapis.org/oas/v3.0.3
-The formal standard for defining RESTful APIs with `info`, `paths`, `components`, security schemes, and JSON Schema integration. Powers the `/openapi.json` endpoint and drives documentation-driven API development. Published June 2023 under CC0 1.0 Universal by the OpenAPI Initiative.
+Standard for defining API metadata, paths, components, and JSON Schema integration. Powers `/openapi.json` generation and drives documentation-driven development. Published June 2023 under CC0 1.0 Universal.
 ## CC0 1.0 Universal
 
 # Swagger UI Express
 ## https://github.com/scottie1984/swagger-ui-express
-Express middleware to serve interactive Swagger UI documentation directly from an OpenAPI spec. Simplifies API exploration and debugging by generating a user-friendly web interface for `/openapi.json`. Last updated February 2024.
+Express middleware to serve interactive Swagger UI from an OpenAPI spec. Simplifies API exploration and testing in-browser. Last updated February 2024.
+## MIT License
+
+# Prometheus Client
+## https://github.com/siimon/prom-client#readme
+Comprehensive guide to instrumenting Node.js applications with Prometheus metrics. Covers counters, gauges, histograms, summaries, default metrics, and exposing a `/metrics` endpoint. Essential for real-time monitoring of π computation throughput and API performance. Last updated April 2024.
 ## MIT License
 
 # OpenAI SDK & API Reference
 ## https://github.com/openai/openai-node
-Detailed Node.js SDK reference for interacting with the OpenAI API, including configuration options, request/response schemas, streaming chat completions, error handling, and rate limit guidance. Utilized for AI-augmented CLI extensions and streaming outputs. Last updated May 2024.
+Node.js SDK reference for interacting with OpenAI's API: configuration, authentication, streaming completions, and error handling. Utilized for AI-augmented CLI features and dynamic output streaming. Last updated May 2024.
 ## MIT License
 
 # Express.js API
 ## https://expressjs.com/en/4x/api.html
-A minimal, flexible web framework for Node.js featuring robust routing, middleware patterns, query parsing, and error handling. Powers the `/pi` and `/benchmark` endpoints, JSON and PNG responses, and integrates with validation, caching, and metrics middleware. Last updated May 2024.
+Minimal and flexible web framework for routing, middleware, error handling, and streaming responses. Powers `/pi`, `/benchmark`, and custom endpoints, integrating validation and instrumentation. Last updated May 2024.
 ## MIT License
 
 # Arithmetic & Numeric Libraries
 ## https://github.com/MikeMcl/decimal.js#readme
 ## https://mathjs.org/docs/datatypes/bignumber.html
 ## https://github.com/davidbau/seedrandom
-Support for arbitrary-precision decimal arithmetic (`decimal.js`), BigNumber operations (`math.js`), and deterministic pseudo-random number generation (`seedrandom`). Provides configurable precision, rounding modes, performance tuning, and seedable RNG for reproducible benchmarks. Last updated March 2024 (decimal.js), January 2024 (math.js), December 2023 (seedrandom).
+Libraries for arbitrary-precision decimals (`decimal.js`), big numbers (`math.js`), and seedable RNG (`seedrandom`). Offer configurable precision, rounding modes, and reproducible performance benchmarks. Last updated 2024.
 ## Mixed Licenses: decimal.js (MIT), math.js (Apache-2.0), seedrandom (MIT)
 
 # Benchmarking Library
 ## https://benchmarkjs.com/
-A high-resolution benchmarking toolkit offering statistical analysis, asynchronous test support, and detailed reporting. Ideal for comparing π computation algorithms (Leibniz, Gauss-Legendre, Chudnovsky) and measuring throughput under consistent load. Last updated January 2024.
+High-resolution benchmarking with statistical analysis and async test support. Ideal for comparing algorithm performance consistently. Last updated January 2024.
 ## MIT License
 
-# Canvas & Charting
-## https://github.com/Automattic/node-canvas
+# Chart.js & node-canvas Integration
 ## https://www.chartjs.org/docs/latest/
-`node-canvas` provides a headless Canvas API for Node.js, while Chart.js documentation covers chart types, configuration, plugins, and responsive design. Used for generating PNG visualizations of error margins, performance matrices, and digit distributions via server-side rendering. Last updated April 2024 (node-canvas), May 2024 (Chart.js).
-## MIT License
-
-# Chartjs Node Canvas
+## https://github.com/Automattic/node-canvas
 ## https://github.com/SeanSobey/ChartjsNodeCanvas
-Specialized library to integrate Chart.js with Node.js using a headless canvas. Configurable dimensions, background, and analog API mirroring Chart.js, enabling server-side creation of static PNG charts from datasets. Essential for rendering performance and error plots in PNG format within CLI and HTTP routes. Last updated May 2024.
+Guides and APIs for server-side chart generation using Chart.js on a headless Canvas. Demonstrates chart configuration, plugin use, and rendering static PNGs for error plots and performance graphs. Last updated May 2024.
 ## MIT License
 
 # EJS Templates
 ## https://ejs.co/#docs
-Official EJS documentation covering syntax for embedding JavaScript in HTML, partials, filters, layouts, and rendering APIs (`ejs.render`, `ejs.renderFile`). Essential for generating dynamic HTML reports with embedded charts and data tables. Last updated 2024.
-## MIT License
-
-# Flat-Cache for Persistence
-## https://github.com/royriojas/flat-cache#readme
-A lightweight file-based cache for Node.js, enabling fast JSON data storage and retrieval with minimal dependencies. Used for persistent caching of π digits and benchmark results with configurable directories and cleanup policies. Last updated February 2023.
+Documentation for embedding JavaScript in HTML using EJS templates. Covers syntax, partials, filters, and layouts for dynamic report generation. Last updated 2024.
 ## MIT License
 
 # Ajv JSON Schema Validator
 ## https://github.com/ajv-validator/ajv
-A fast and extensible JSON Schema validator supporting multiple draft versions (Draft-07/2019-09/2020-12), custom keywords, asynchronous validation, and format extensions. Ideal for validating HTTP request payloads against OpenAPI schemas in Express routes. Last updated March 2024.
+Fast JSON Schema validator with support for multiple drafts, custom keywords, and async validation. Used to validate HTTP payloads against OpenAPI schemas. Last updated March 2024.
 ## MIT License
 
 # calc-pi npm package
 ## https://github.com/benolayinka/calc-pi
-An open-source Node.js package offering multiple π computation algorithms (Leibniz, Gauss-Legendre, Chudnovsky) with both synchronous and asynchronous APIs, streaming interfaces, and progress events. Demonstrates optimized implementations and real-time updates, useful for benchmarking and comparative studies. Last updated January 2024.
+Open-source package with optimized π algorithms (Leibniz, Gauss-Legendre, Chudnovsky), streaming and synchronous APIs, and progress events. Serves as a reference and benchmarking baseline. Last updated January 2024.
 ## MIT License
