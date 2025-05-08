@@ -1,43 +1,44 @@
 # Overview
 
-Introduce a subcommand and library extension to calculate π to arbitrary precision using multiple algorithms, benchmark their performance, and output results in PNG or plain-text formats. This feature expands the CLI’s core functionality to support scientific exploration and visualization of π calculation methods.
+Provide a unified π computation and benchmarking pipeline that implements multiple high-precision algorithms, configurable digit length, optional performance measurement, and text or PNG output. This feature merges basic calculation and benchmarking into a single core capability that delivers precise results and timing metrics.
 
 # Implementation
 
 1. Command-Line Interface
-   - Add options to `main.js`: 
-     • `--algorithm` (leibniz, gauss-legendre, chudnovsky)
-     • `--digits <n>` (number of decimal places)
-     • `--format <text|png>`
-     • `--output <path>` (filename for text or image)
-     • `--benchmark` (enable timing of each algorithm)
-   - Default to chudnovsky, 1000 digits, text output to stdout if not specified.
+   - Parse flags in src/lib/main.js using minimist
+     • --algorithm <leibniz|gauss-legendre|chudnovsky> to choose the calculation method
+     • --digits <n> to specify number of decimal places (default 1000)
+     • --format <text|png> to select output format (default text)
+     • --output <path> to write result to a file, fallback to stdout if omitted
+     • --benchmark to measure execution time and throughput in digits per millisecond
 
 2. Algorithm Modules
-   - Create inline implementations for each algorithm in `src/lib/main.js` or import utility functions:
-     • Leibniz series (iterative convergence)
-     • Gauss-Legendre method (quadratic convergence)
-     • Chudnovsky formula (rapid convergence)
-   - Use BigInt and decimal libraries or native `BigInt` with manual scaling for precision.
+   - Inline implementations in main.js or local helper functions:
+     • Leibniz series with dynamic iteration count tuned to digit precision
+     • Gauss-Legendre method using BigInt and manual scaling for quadratic convergence
+     • Chudnovsky formula leveraging native BigInt with manual decimal placement for rapid convergence
+   - Use a simple decimal scaling approach or a lightweight decimal library if needed
 
 3. Benchmarking
-   - Measure execution time using `performance.now()` before/after computation.
-   - Include throughput report (digits per millisecond) in text or annotate PNG.
+   - When --benchmark is enabled, wrap computation in performance.now() before and after
+   - Calculate total time and throughput (digits per millisecond)
+   - Include timing summary in text output or annotate PNG caption
 
 4. Output Generation
-   - Text format: write π digits and benchmark summary to a `.txt` file or stdout.
-   - PNG format: use a lightweight canvas library (add dependency such as `canvas` or `chartjs-node-canvas`) to render a plot of error margin vs iteration count or display computed digits as stylized text image.
+   - Text format: write the computed π digits and benchmark summary as UTF-8 text
+   - PNG format: use an existing canvas or charting library to render digits or a simple error-margin plot
+   - Write files to the specified output path or stdout for text
 
 # Testing
 
-- Unit tests in `tests/unit`:
-  • Verify first 10 digits of π for each algorithm.
-  • Confirm benchmark timing yields a positive number.
-  • Simulate `--format text` and `--format png` to ensure files are created.
+- Add unit tests in tests/unit/benchmark.test.js
+  • Verify first 10 digits of π for each algorithm
+  • Confirm benchmark flag produces positive timing values
+  • Simulate CLI calls with various flags and check correct output format and file creation
 
 # Documentation
 
 - Update README.md:
-  • Document new CLI flags and usage examples.
-  • Show sample commands for benchmarking and PNG output.
-- Add usage examples under the Usage section.
+  • Document each new CLI flag with description and defaults
+  • Provide example commands for computing π with and without benchmarking in text and PNG formats
+  • Describe expected output structure and how to interpret timing metrics
