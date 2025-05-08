@@ -1,50 +1,56 @@
 # Overview
 
-Extend the core calculatePi function and CLI to support two additional high-precision methods: the Chudnovsky algorithm and the Gauss-Legendre algorithm. Maintain backward compatibility with the existing Machin formula and Nilakantha series, and allow users to select any of the four methods.
+Extend the calculatePi library function and CLI entrypoint to support two additional high-precision methods: the Chudnovsky algorithm and the Gauss-Legendre algorithm. Maintain backward compatibility with the existing Machin formula and Nilakantha series, and offer a consistent API surface for all four calculation methods.
 
 # API
 
 Export a function calculatePi(digits: number, method?: string): string
 
-- digits: integer between 1 and 10000 (inclusive)
-- method: optional string, one of "chudnovsky" (default), "gauss-legendre", "machin", or "nilakantha"
-- returns: π to the requested number of decimal places as a string beginning with "3."
+- digits: integer between 1 and 10000 inclusive
+- method: optional string one of chudnovsky (default), gauss-legendre, machin, nilakantha
+- returns: π to the requested number of decimal places as a string starting with "3."
 
 # CLI Usage
 
-- Accept a --digits <n> flag (integer between 1 and 10000). Default: 100
-- Accept a --method <name> flag with values "chudnovsky", "gauss-legendre", "machin", or "nilakantha". Default: "chudnovsky"
-- Accept a --format <type> flag: "text" or "png". Default: "text"
-- Accept a --output <path> flag when --format=png
-- Validate inputs: error when digits out of range or method unrecognized, display helpful message
-- When invoked, parse flags from process.argv, invoke calculatePi, and print or encode output
+Accept the following flags in the main CLI:
+
+- --digits <n>       number of decimal places (1 to 10000), default 100
+- --method <name>    calculation method: chudnovsky, gauss-legendre, machin, nilakantha; default chudnovsky
+- --format <type>    output format: text or png; default text
+- --output <path>    required when format is png
+
+Validate all inputs and emit clear error messages for out-of-range digits, unknown methods, invalid formats, or missing output path.
 
 # Implementation Details
 
-- Chudnovsky Algorithm
-  - Implement the Chudnovsky series using BigInt or Decimal for arbitrary precision
-  - Use binary splitting for numerator and denominator to optimize term computation, especially for digits > 1000
+Chudnovsky algorithm
+- implement the series using decimal.js for arbitrary precision
+- apply binary splitting to accelerate numerator and denominator computation for high digit counts
 
-- Gauss-Legendre Algorithm
-  - Implement the iterative Gauss-Legendre procedure
-  - Initialize a0=1, b0=1/√2, t0=1/4, p0=1, iterate until convergence threshold based on digits
-  - Compute π ≈ (a_n + b_n)^2 / (4 t_n), then truncate to requested decimals
+Gauss-Legendre algorithm
+- implement iterative procedure with initial values a0 = 1, b0 = 1/√2, t0 = 1/4, p0 = 1
+- loop until the change in π estimate exceeds the precision threshold for the requested digits
+- compute π ≈ (a_n + b_n)^2 / (4 t_n), then truncate to the target decimals
 
-- Machin Formula and Nilakantha Series
-  - Retain existing implementations in pi.js for compatibility and use as alternatives
-
-- Dispatcher
-  - Update calculatePi to accept and dispatch based on the new methods
-  - Default to Chudnovsky for general use
-
-# Performance
-
-- Aim for sub-second computation of π to 1,000 digits on modern hardware using Chudnovsky or Gauss-Legendre
-- Document empirical benchmarks in README
+Dispatcher
+- add calculatePiChudnovsky and calculatePiGaussLegendre in src/lib/pi.js
+- update calculatePi to dispatch based on method parameter
 
 # Testing
 
-- Unit tests covering calculatePi for known digit outputs (e.g., 5, 10, 50) for all four methods
-- Validate that Chudnovsky and Gauss-Legendre results match Machin outputs for small digit counts
-- CLI integration tests mocking process.argv and capturing stdout or file outputs
-- Verify error handling for invalid digits and unsupported methods
+- write unit tests for calculatePiChudnovsky and calculatePiGaussLegendre with known results for small digit counts
+- verify that outputs of new methods match Machin formula for low digit values
+- extend CLI integration tests to cover method flag selection and new error conditions
+
+# Documentation
+
+- update README.md and docs/USAGE.md to list all four methods and show usage examples for chudnovsky and gauss-legendre
+- include a short performance benchmark table comparing runtime for 100, 1000, and 5000 digits across all methods
+
+# Performance
+
+- target sub-second execution for 1000 digits on contemporary hardware using Chudnovsky and Gauss-Legendre implementations
+
+# Dependencies
+
+- leverage existing decimal.js dependency; no new packages required
