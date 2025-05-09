@@ -1,44 +1,54 @@
 # Overview
 
-Extend the pi calculation CLI to support a benchmarking mode that measures the performance of one or more π algorithms and outputs results in JSON.
+Introduce a benchmarking mode into the CLI to measure and report performance of the π calculation algorithms. Users will be able to run timed benchmarks across one or all supported methods and receive structured results.
 
 # CLI Usage
 
-Accept the following new flags in the main CLI entrypoint:
+When the --benchmark flag is supplied, the CLI ignores --format and --output and enters benchmark mode.
 
 --benchmark
-  Run performance benchmarks instead of printing π.
+    Enable performance benchmarking instead of computing π output.
 --benchmark-runs <n>
-  Number of times to execute each method; default 3.
+    Number of times to invoke each method; must be integer ≥1. Default: 3.
 --benchmark-json
-  Output raw JSON array of BenchmarkResult objects instead of table or text.
-
-When --benchmark is present, ignore --format and --output flags.  If --method is provided, benchmark only that method; otherwise benchmark all supported methods.
+    Output raw JSON array of BenchmarkResult objects. Without this flag, a human-readable table is printed.
+--digits <n>
+    Number of decimals to compute for each run (1 to 10000). Default: 100.
+--method <name>
+    A single method to benchmark (chudnovsky, gauss-legendre, machin, nilakantha). If omitted, all methods are benchmarked.
 
 # Implementation Details
 
-1. In src/lib/pi.js reuse the existing benchmarkPi(digits: number, runs?: number, methods?: string[]): Promise<BenchmarkResult[]> API unchanged.
-2. In src/lib/main.js:
-   - Parse --benchmark, --benchmark-runs, and --benchmark-json flags alongside existing flags.
-   - If --benchmark is set:
-     • Call benchmarkPi(digits, runs, methods) to obtain Promise<BenchmarkResult[]>.
-     • Await the results and serialize to JSON.
-     • If --benchmark-json is present, print the JSON string to stdout with console.log.
-     • Exit the process after printing.
-   - Ensure clear error messages for invalid runs values (non-integer or <1).
+1. In src/lib/pi.js
+   • Implement a new async function benchmarkPi(digits: number, runs: number, methods?: string[]): Promise<BenchmarkResult[]>.
+     – For each method, call calculatePi(digits, method) runs times, measuring elapsed microseconds via high-resolution timer.
+     – Compute averageTimeMs, minTimeMs, maxTimeMs for each method and return an array of { method, runs, averageTimeMs, minTimeMs, maxTimeMs }.
+2. In src/lib/main.js
+   • Parse --benchmark, --benchmark-runs, and --benchmark-json alongside existing flags.
+   • When --benchmark is set:
+     – Validate that benchmark-runs is an integer ≥1.
+     – Determine target methods from --method or default to all.
+     – Await benchmarkPi(digits, runs, methods).
+     – If --benchmark-json, console.log JSON.stringify(results); else, render a table with headers Method | Runs | Avg ms | Min ms | Max ms.
+     – Exit process after output.
 
 # Testing
 
-- Add unit tests in tests/unit/main.test.js for:
-  • Parsing --benchmark, --benchmark-runs, --benchmark-json alongside --digits and --method.
-  • Error cases: non-integer runs, runs < 1.
-  • Valid output: spy console.log to verify correct JSON string of BenchmarkResult array.
-- Add an end-to-end test in tests/e2e/cli.test.js:
-  • Invoke the tool with --benchmark, --digits 10, --benchmark-runs 2, --benchmark-json.
-  • Parse stdout as JSON and verify array structure: each object has method, averageTimeMs, minTimeMs, maxTimeMs, runs.
+Unit tests in tests/unit/pi.test.js:
+  • Test benchmarkPi with a stubbed calculatePi to simulate timing and verify returned structure contains correct runs and numeric timing fields.
+
+Unit tests in tests/unit/main.test.js:
+  • Validate parsing of --benchmark flags and error on invalid runs values.
+  • Spy on console.log to verify JSON or table output is produced.
+
+End-to-end test in tests/e2e/cli.test.js:
+  • Run CLI with --benchmark, --digits 10, --benchmark-runs 2, --benchmark-json; parse stdout as JSON and assert array contains entries for expected methods with correct runs count.
 
 # Documentation
 
-- Update README.md under Features to list "CLI benchmarking mode" and show example:
-  node src/lib/main.js --digits 500 --benchmark --benchmark-runs 5 --benchmark-json
-- Update docs/USAGE.md to document new flags, describe output JSON schema, and include sample output.
+README.md:
+  • Under Features, add “CLI benchmarking mode” with example invocation:
+      node src/lib/main.js --digits 500 --benchmark --benchmark-runs 5 --benchmark-json
+
+docs/USAGE.md:
+  • Document new flags, describe output JSON schema, and include sample JSON and table outputs.
