@@ -1,2 +1,2 @@
 # xn-intenton-z2a/repository0-crucible
-Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.
+Explore GPU-accelerated and WebAssembly-powered π computation pipelines across browser and server environments, with CLI commands, HTTP/SSE interfaces, performance benchmarking, and PNG or JSON outputs.

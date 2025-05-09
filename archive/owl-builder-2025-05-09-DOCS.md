@@ -1,3 +1,5 @@
+docs/USAGE.md
+# docs/USAGE.md
 # PI Calculation CLI & HTTP Server Usage
 
 This tool computes π to arbitrary precision and provides versatile output options, caching, progress indicators, benchmarking, and an HTTP server interface.
