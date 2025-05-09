@@ -61,3 +61,29 @@ describe('CLI PNG Output', () => {
     expect(fs.existsSync(outPath)).toBe(true);
   });
 });
+
+describe('CLI Benchmark Mode', () => {
+  let log;
+  beforeEach(() => {
+    log = vi.spyOn(console, 'log').mockImplementation(() => {});
+  });
+  afterEach(() => {
+    log.mockRestore();
+  });
+
+  test('invalid benchmark-runs throws error', async () => {
+    await expect(main(['--benchmark', '--benchmark-runs', '0'])).rejects.toThrow('Invalid --benchmark-runs');
+  });
+
+  test('outputs JSON when --benchmark-json used', async () => {
+    log.mockClear();
+    await main(['--digits', '5', '--benchmark', '--benchmark-runs', '1', '--benchmark-json']);
+    expect(log).toHaveBeenCalled();
+    const arg = log.mock.calls[0][0];
+    const results = JSON.parse(arg);
+    expect(Array.isArray(results)).toBe(true);
+    expect(results.length).toBeGreaterThan(0);
+    expect(results[0]).toHaveProperty('method');
+    expect(results[0]).toHaveProperty('averageTimeMs');
+  });
+});

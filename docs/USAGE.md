@@ -8,6 +8,9 @@ This tool calculates π to arbitrary precision using four algorithms and can out
   --method <name>    Calculation method: "chudnovsky" (default), "gauss-legendre", "machin" or "nilakantha". Default: "chudnovsky"
   --format <type>    Output format: "text" or "png". Default: "text"
   --output <path>    Output file path (required when --format=png)
+  --benchmark        Run performance benchmarks instead of printing π
+  --benchmark-runs <n>  Number of runs per method (integer ≥1). Default: 3
+  --benchmark-json   Output raw JSON array of BenchmarkResult objects instead of text
   --help             Show usage information
 
 ## Examples
@@ -28,13 +31,6 @@ Generate a 5000-digit π PNG image with default method (Chudnovsky):
 
   node src/lib/main.js --digits 5000 --format png --output pi.png
 
-## Performance
+Benchmark π calculation for 10 digits, 2 runs, output JSON:
 
-Performance benchmarks on a modern machine (Intel i7, 16GB RAM):
-
-| Method          | 100 digits | 1000 digits | 5000 digits |
-|-----------------|------------|-------------|--------------|
-| Chudnovsky      |  <10 ms    |   ~120 ms   |    ~800 ms   |
-| Gauss-Legendre  |  <20 ms    |   ~200 ms   |   ~1500 ms   |
-| Machin          |  <50 ms    |   ~500 ms   |   ~4000 ms   |
-| Nilakantha      |  <100 ms   |  ~2000 ms   |  ~15000 ms   |
+  node src/lib/main.js --digits 10 --benchmark --benchmark-runs 2 --benchmark-json
