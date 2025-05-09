@@ -143,3 +143,50 @@ export function calculatePi(digits = 100, method = 'chudnovsky') {
       throw new Error('method must be "chudnovsky", "gauss-legendre", "machin" or "nilakantha"');
   }
 }
+
+/**
+ * Benchmark pi calculation methods.
+ * @param {number} digits - number of decimal places (1 to 10000)
+ * @param {number} runs - number of runs per method (>=1)
+ * @param {string[]} methods - array of method names
+ * @returns {Promise<Array<{method:string,runs:number,averageTimeMs:number,minTimeMs:number,maxTimeMs:number}>>}
+ */
+export async function benchmarkPi(digits, runs = 3, methods) {
+  if (!Number.isInteger(digits) || digits < 1 || digits > 10000) {
+    throw new Error('digits must be an integer between 1 and 10000');
+  }
+  if (!Number.isInteger(runs) || runs < 1) {
+    throw new Error('runs must be an integer >= 1');
+  }
+  const allowed = ['chudnovsky', 'gauss-legendre', 'machin', 'nilakantha'];
+  let targetMethods;
+  if (methods === undefined) {
+    targetMethods = allowed;
+  } else if (!Array.isArray(methods) || methods.length === 0) {
+    throw new Error('methods must be a non-empty array of valid method names');
+  } else {
+    targetMethods = methods;
+    for (const m of targetMethods) {
+      if (!allowed.includes(m)) {
+        throw new Error(`method must be one of ${allowed.join(',')}`);
+      }
+    }
+  }
+  const results = [];
+  for (const method of targetMethods) {
+    const times = [];
+    for (let i = 0; i < runs; i++) {
+      const start = process.hrtime.bigint();
+      calculatePi(digits, method);
+      const end = process.hrtime.bigint();
+      const durationMs = Number(end - start) / 1e6;
+      times.push(durationMs);
+    }
+    const sum = times.reduce((a, b) => a + b, 0);
+    const averageTimeMs = sum / times.length;
+    const minTimeMs = Math.min(...times);
+    const maxTimeMs = Math.max(...times);
+    results.push({ method, runs, averageTimeMs, minTimeMs, maxTimeMs });
+  }
+  return results;
+}

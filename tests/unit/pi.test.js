@@ -4,7 +4,8 @@ import {
   calculatePiNilakantha,
   calculatePiChudnovsky,
   calculatePiGaussLegendre,
-  calculatePi
+  calculatePi,
+  benchmarkPi
 } from '@src/lib/pi.js';
 
 describe('calculatePiMachin', () => {
@@ -77,5 +78,34 @@ describe('calculatePi dispatcher', () => {
 
   test('throws on invalid method', () => {
     expect(() => calculatePi(5, 'wrong')).toThrow();
+  });
+});
+
+describe('benchmarkPi', () => {
+  test('invalid digits throws error', async () => {
+    await expect(benchmarkPi(0)).rejects.toThrow('digits must be an integer');
+  });
+
+  test('invalid runs throws error', async () => {
+    await expect(benchmarkPi(5, 0)).rejects.toThrow('runs must be an integer >= 1');
+  });
+
+  test('returns result structure for single method', async () => {
+    const results = await benchmarkPi(1, 1, ['machin']);
+    expect(Array.isArray(results)).toBe(true);
+    expect(results).toHaveLength(1);
+    const res = results[0];
+    expect(res).toHaveProperty('method', 'machin');
+    expect(res).toHaveProperty('runs', 1);
+    expect(typeof res.averageTimeMs).toBe('number');
+    expect(typeof res.minTimeMs).toBe('number');
+    expect(typeof res.maxTimeMs).toBe('number');
+  });
+
+  test('returns default methods when methods not provided', async () => {
+    const results = await benchmarkPi(1, 1);
+    expect(results).toHaveLength(4);
+    const methods = results.map((r) => r.method).sort();
+    expect(methods).toEqual(['chudnovsky', 'gauss-legendre', 'machin', 'nilakantha'].sort());
   });
 });
