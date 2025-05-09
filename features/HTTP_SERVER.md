@@ -1,89 +1,73 @@
 # Overview
-Enable HTTP server mode for π computation with full API support, including health checks, on-demand π endpoints in text and PNG, real-time progress streaming, benchmarking, OpenAPI specification, and Swagger UI documentation.
+Implement an HTTP server mode that exposes two primary endpoints for π generation and benchmarking. Clients can request π digits in text or PNG format via GET /pi and run performance benchmarks via GET /benchmark. Both endpoints support real-time progress reporting using Server-Sent Events for long-running operations.
 
 # Endpoints
 
-## GET /health
-Return service health status
-
-- Status: 200
-- Body: { "status": "ok" }
-
 ## GET /pi
-Compute π on demand
 
 - Query parameters
   - digits (integer 1–10000, default 100)
   - method (chudnovsky|gauss-legendre|machin|nilakantha, default chudnovsky)
   - format (text|png, default text)
-- Behavior
-  - format=text: respond with Content-Type text/plain and π digit string
-  - format=png: render monochrome PNG of π digits, respond with Content-Type image/png
+  - progressInterval (integer 1–100, default 5)
 
-## GET /pi/stream
-Stream computation progress and final result via Server-Sent Events
-
-- Query parameters: same as /pi plus progressInterval (integer 1–100, default 5)
-- Headers: Content-Type text/event-stream, Cache-Control no-cache, Connection keep-alive
-- Events
-  - progress: JSON payload { percentComplete: number } at each interval
-  - result: JSON payload { pi: string, pngBase64?: string } then close stream
+Behavior
+- If progressInterval is provided, respond with SSE stream of progress events.
+- format=text
+  - On normal request, respond with Content-Type: text/plain and the π digit string.
+- format=png
+  - Respond with Content-Type: image/png and a rendered monochrome PNG of the π digits.
 
 ## GET /benchmark
-Run performance benchmarks and return timing data
 
 - Query parameters
   - digits (integer 1–10000, default 100)
-  - methods (comma-separated list or all)
+  - methods (comma-separated list of supported methods or omit for all)
   - runs (integer ≥1, default 3)
-- Response: application/json array of { method, runs, averageTimeMs, minTimeMs, maxTimeMs }
+  - progressInterval (integer 1–100, default 5)
 
-## GET /openapi.json
-Serve the OpenAPI v3 specification for the HTTP API in JSON format
-
-- Status: 200
-- Content-Type: application/json
-- Body: OpenAPI specification document
-
-## GET /docs
-Serve Swagger UI for interactive API exploration
-
-- Embeds the OpenAPI spec at /openapi.json
-- Accessible via a browser for testing endpoints
-
-# CLI Integration
-
-- Add flags --serve (boolean) and --port <n> (integer ≥1, default 3000)
-- When --serve is true, skip CLI computation logic and start the HTTP server on the specified port
+Behavior
+- If progressInterval is provided, respond with SSE stream of progress events for benchmark runs.
+- On normal request, respond with Content-Type: application/json and an array of timing results:
+  [ { method, runs, averageTimeMs, minTimeMs, maxTimeMs } ]
 
 # Implementation Details
 
-1. Dependencies
-   - express for HTTP routing
-   - zod for request validation
-   - pureimage for PNG rendering
-   - swagger-ui-express and swagger-jsdoc for OpenAPI generation and UI
-
-2. Server Setup in main.js
-   - On --serve, initialize an Express app with JSON and URL-encoded middleware
-   - Load or generate OpenAPI spec via swagger-jsdoc from route annotations or a config object
-   - Use swagger-ui-express to serve UI at /docs with spec URL /openapi.json
-   - Mount routes for /health, /pi, /pi/stream, /benchmark, and /openapi.json
-   - Use Zod schemas to validate query parameters and return 400 on invalid inputs
-   - Integrate calculatePi, renderPiAsPng, and benchmarkPi for endpoint handlers
-   - Implement SSE in /pi/stream using response.write and proper headers
+1. CLI Integration
+   - Parse --serve and --port flags in src/lib/main.js. On --serve, skip CLI computation and start the HTTP server.
+2. Server Setup
+   - Use express for routing and zod for request validation.
+   - Create an Express app with JSON and URL-encoded middleware.
+   - On GET /pi:
+     • Validate parameters with Zod.
+     • If progressInterval present, upgrade response to SSE with headers: text/event-stream, no-cache, keep-alive.
+     • Call calculatePi with onProgress callback that writes SSE events:
+         event: progress
+         data: { percentComplete }
+     • For PNG format, generate image buffer via renderPiAsPng and write as SSE payload or direct response.
+     • After completion, write final event or end response.
+   - On GET /benchmark:
+     • Validate parameters.
+     • If progressInterval present, use SSE to stream progress per run and per method.
+     • Call benchmarkPi and stream per-run or send final JSON.
+3. Utilities
+   - Implement helper to wrap response.writeSSE(event, data).
+   - Reuse existing calculatePi, benchmarkPi, and renderPiAsPng from src/lib.
+4. Dependencies
+   - Add express, zod, swagger-ui-express, swagger-jsdoc (optional for future OpenAPI). Ensure minimal dependencies for core endpoints.
 
 # Tests
 
-- Unit and integration tests using supertest in tests/unit/http.server.test.js
-  - /health returns 200 and { status: ok }
-  - /pi returns correct text and image content types and bodies
-  - /pi/stream emits SSE progress and result events
-  - /benchmark returns JSON array with valid timing data
-  - /openapi.json returns a valid OpenAPI v3 JSON object
-  - /docs serves HTML content with Swagger UI assets
+- Create tests/unit/http.server.test.js:
+  • Test /pi returns text/plain and correct π string.
+  • Test /pi?format=png returns image/png buffer with expected dimensions.
+  • Test /pi?progressInterval=10 returns SSE events sequence of progress and final result.
+  • Test /benchmark returns JSON with correct structure.
+  • Test /benchmark?progressInterval=20 returns SSE progress events and final JSON event.
 
 # Documentation
 
-- Update README.md under HTTP Server Mode to include OpenAPI and Swagger UI usage
-- Update docs/USAGE.md to document /openapi.json endpoint and /docs UI route with examples
+1. README.md
+   - Add HTTP Server Mode section with examples for /pi and /benchmark with and without progress.
+2. docs/USAGE.md
+   - Document new query parameters progressInterval and example curl commands.
