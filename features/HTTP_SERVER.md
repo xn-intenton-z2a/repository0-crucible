@@ -1,77 +1,51 @@
 # Overview
-Extend the CLI tool to support an embedded HTTP server mode, exposing REST endpoints for π calculation, benchmarking, SSE progress streaming, and self-documenting OpenAPI+Swagger UI.
+Add embedded HTTP server mode to the CLI tool, enabled via the --serve flag. The server exposes REST endpoints for π calculation, benchmarking, and real-time progress streaming via Server-Sent Events, and provides a self-documenting OpenAPI specification with Swagger UI.
 
 # CLI Integration
-When invoked with --serve, the application enters HTTP server mode:
-
-• Parse flags --serve (boolean) and --port <n> (integer, default 3000).
-• If --serve is present, skip CLI output and start the HTTP server on the specified port.
+• Parse --serve (boolean) and --port <n> (integer, default 3000) in src/lib/main.js.
+• When --serve is present, skip standard CLI behavior and start the HTTP server on the specified port.
 
 # Server Implementation
+## Dependencies
+Add express for routing, cors for cross-origin support, zod for request validation, swagger-ui-express for serving Swagger UI, and js-yaml for loading the OpenAPI document.
 
-Dependencies:
-• express for routing and HTTP server
-• cors for cross-origin support
-• zod for request validation
-• swagger-ui-express for serving Swagger UI
-
-In src/lib/main.js:
-
-1. Detect serve mode and initialize an Express app.
-2. Apply cors() and express.json() middleware.
-3. Mount routes below.
+## Initialization
+In main.js, when serve mode is detected:
+    Create an Express app.
+    Apply cors middleware and express.json.
+    Load or generate OpenAPI spec in JSON and YAML formats.
 
 # Routes
+Define the following endpoints on the Express app:
 
 ## GET /pi
-Query parameters:
-• digits: integer 1–10000 (required)
-• method: ‘chudnovsky’, ‘gauss-legendre’, ‘machin’, ‘nilakantha’ (optional, default chudnovsky)
-• format: ‘text’ or ‘png’ (optional, default text)
-
-Behavior:
-• Validate inputs with zod schemas; on failure respond 400 JSON { error: string }.
-• On format=text, call calculatePi and respond 200 text/plain with the π string.
-• On format=png, render a monochrome PNG via pureimage, set Content-Type image/png and stream image.
-
-## GET /benchmark
-Query parameters:
-• digits: integer 1–10000 (required)
-• methods: comma-separated list of methods (optional, default all)
-• runs: integer ≥1 (optional, default 3)
-
-Behavior:
-• Validate inputs; on failure respond 400 JSON { error: string }.
-• Call benchmarkPi, respond 200 application/json with array of BenchmarkResult.
+Accept query parameters digits, method, format, output optional (ignored in server).
+Validate inputs using zod. For format=text, calculatePi and respond with text/plain. For format=png, render PNG via pureimage and respond with image/png.
 
 ## GET /pi/stream
-Query parameters: same as /pi, plus optional progress-interval: integer 1–100 (default 5)
+Accept digits, method, progress-interval. Respond with Content-Type=text/event-stream, Cache-Control no-cache, Connection keep-alive. During calculatePi invoke onProgress callbacks to emit events:
+event: progress
+data: { percentComplete: number }
+After completion, emit:
+event: result
+data: { pi: string, pngBase64?: string }
+Then close the connection.
 
-Behavior:
-• On connection, set headers for SSE: Content-Type text/event-stream, Cache-Control no-cache, Connection keep-alive.
-• During calculatePi, emit event: progress with JSON payload { percentComplete } at each interval.
-• On completion emit event: result with payload { pi, pngBase64? } and close the stream.
+## GET /benchmark
+Accept digits, methods, runs. Validate inputs, invoke benchmarkPi, and respond with application/json containing array of results.
 
-## GET /openapi.json and /docs
+## GET /openapi.json
+Serve the generated OpenAPI JSON spec.
 
-- Generate OpenAPI spec covering /pi, /benchmark, /pi/stream, /openapi.json and /docs.
-- Serve spec JSON at /openapi.json.
-- Serve interactive Swagger UI at /docs using swagger-ui-express.
+## GET /docs
+Serve interactive Swagger UI using swagger-ui-express, pointing at /openapi.json.
 
 # Tests
-
-Add unit tests in tests/unit/http.server.test.js:
-• Validate GET /pi returns correct payloads and status codes.
-• Validate GET /benchmark returns JSON array of results.
-• Validate GET /pi/stream SSE stream emits progress and result events in order.
-• Validate /openapi.json returns valid OpenAPI schema.
-• Validate /docs serves Swagger UI HTML.
-
-Add integration tests in tests/e2e/http.server.e2e.js using supertest and eventsource-parser.
+• Unit tests in tests/unit/http.server.test.js using vitest and supertest to validate each endpoint, status codes, payload shapes, and SSE event order.
+• End-to-end tests in tests/e2e/http.server.e2e.js parsing the SSE stream and verifying OpenAPI UI at /docs.
 
 # Documentation
-
-Update README.md and docs/USAGE.md:
-• Describe --serve and --port flags.
-• Show examples for all HTTP endpoints, including SSE and Swagger UI.
-• Note error formats and response content types.
+• Update README.md to document --serve and --port flags and list all HTTP endpoints with examples.
+• Update docs/USAGE.md under HTTP Server Usage with detailed descriptions and sample curl commands.
+## FeatureNamesToBeDeleted
+none
