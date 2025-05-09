@@ -1,81 +1,58 @@
 # Overview
-Implement an embedded HTTP server mode for the π calculation tool, exposing REST endpoints for computing π in text or PNG formats, streaming real-time progress via Server-Sent Events (SSE), running benchmarks over HTTP, and serving a self-documenting OpenAPI specification with interactive Swagger UI.
+
+Implement a basic HTTP server mode that exposes two core REST endpoints for π computation and algorithm benchmarking. The server should validate inputs, handle text and PNG outputs, and return structured JSON results for benchmarks.
+
+# CLI Integration
+
+When the CLI is invoked with `--serve`, switch to server mode instead of running local calculations:
+
+• `--serve` (boolean) to enable HTTP server mode.  
+• `--port <n>` (integer, default 3000) to specify listening port.  
+
+In server mode, skip CLI output and start an Express server on the configured port.
+
+# Endpoints
+
+## GET /pi
+
+Query Parameters:
+• `digits` (int, 1–10000, default 100)  
+• `method` (string: chudnovsky|gauss-legendre|machin|nilakantha, default chudnovsky)  
+• `format` (string: text|png, default text)
+
+Behavior:
+- Validate request with zod; respond 400 with JSON error on invalid input.  
+- For `format=text`, compute π via `calculatePi` and respond with `text/plain` body containing the digits.  
+- For `format=png`, compute π, render a monochrome PNG image of the digits using pureimage, and respond with `image/png` binary body.
+
+## GET /benchmark
+
+Query Parameters:
+• `digits` (int, 1–10000, default 100)  
+• `methods` (comma-separated list of valid names, default all methods)  
+• `runs` (int ≥1, default 3)
+
+Behavior:
+- Validate request with zod; respond 400 on invalid input.  
+- Invoke `benchmarkPi(digits, runs, methodsArray)` to measure performance.  
+- Respond with `application/json` array of objects: `{ method, runs, averageTimeMs, minTimeMs, maxTimeMs }`.
 
 # Implementation Details
 
-## CLI Integration
-
-- Add flags in src/lib/main.js:
-  • `--serve` (boolean) to enter HTTP server mode.
-  • `--port <n>` (integer, default 3000) to specify listening port.
-- When `--serve` is detected, skip CLI output logic and initialize the HTTP server on the specified port.
-
-## Dependencies
-
-- Add express for routing and middleware.
-- Add cors to allow cross-origin requests.
-- Add zod to validate incoming query parameters.
-- Add swagger-ui-express to serve the Swagger UI.
-- Use js-yaml or inline JSON to generate OpenAPI spec.
-
-## Server Initialization
-
-In main.js on `serve` mode:
-
-1. Create an Express application.
-2. Apply CORS and express.json middleware.
-3. Load or build an OpenAPI document describing all endpoints.
-4. Mount Swagger UI at `GET /docs`, pointing to `GET /openapi.json`.
-
-## Endpoints
-
-### GET /pi
-
-- Query: `digits` (int 1–10000), `method` (chudnovsky|gauss-legendre|machin|nilakantha), `format` (text|png).
-- Validate with zod; on error respond 400 with JSON error.
-- For `format=text`, calculate π and respond `text/plain` with body = π string.
-- For `format=png`, calculate π, render monochrome PNG using pureimage, and respond `image/png`.
-
-### GET /pi/stream
-
-- Query: same as `/pi`, plus optional `progressInterval` (int 1–100).
-- Respond with headers:
-  - `Content-Type: text/event-stream`
-  - `Cache-Control: no-cache`
-  - `Connection: keep-alive`
-- Call calculatePi with an onProgress callback that writes SSE events:
-  - `event: progress` with JSON `{ percentComplete: <n> }`.
-- After completion, emit:
-  - `event: result` with JSON `{ pi: <string>, pngBase64?: <string> }` if PNG.
-- Close the stream.
-
-### GET /benchmark
-
-- Query: `digits` (int), `methods` (comma-separated list), `runs` (int).
-- Validate inputs with zod.
-- Call existing `benchmarkPi` function.
-- Respond `application/json` with array of benchmark result objects.
-
-### GET /openapi.json
-
-- Serve the OpenAPI document as JSON.
-
+1. Dependencies: add or reuse express, cors, zod, pureimage.  
+2. In `src/lib/main.js`: detect `--serve` and `--port`, import Express, configure middleware, and mount routes.  
+3. Use zod schemas for parameter parsing and validation.  
+4. Reuse existing `calculatePi` and `benchmarkPi` functions.  
+5. For PNG, call pureimage to render and pipe to response.
 
 # Tests
 
-- In `tests/unit/http.server.test.js`, use vitest and supertest to:
-  • Verify validation errors return 400 with JSON error.
-  • Validate `/pi` endpoints return correct status, content type, and body for text and PNG formats.
-  • Validate `/pi/stream` SSE events sequence: progress events increasing to 100, then result.
-  • Validate `/benchmark` returns JSON array matching shape of `benchmarkPi` output.
-  • Validate `/openapi.json` is valid JSON containing defined paths.
-
+Create unit tests in `tests/unit/http.server.test.js` using Vitest and Supertest to verify:  
+- Validation errors return 400 with JSON error.  
+- `/pi` returns correct status, content type, and body for both text and PNG formats.  
+- `/benchmark` returns a JSON array with expected result shape.
 
 # Documentation Updates
 
-- README.md:
-  • Document `--serve` and `--port` flags.
-  • List all HTTP endpoints with example `curl` commands.
-- docs/USAGE.md:
-  • Add section "HTTP Server Usage" with endpoint details, query parameter descriptions, and sample requests.
-  • Include instructions to view Swagger UI at `/docs` and raw spec at `/openapi.json`.
+- Update `README.md` under HTTP Server mode to list flags and example `curl` commands for `/pi` and `/benchmark`.  
+- Update `docs/USAGE.md` to document the two new endpoints, their parameters, and sample requests.
