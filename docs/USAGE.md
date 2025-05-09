@@ -49,6 +49,10 @@ Generate benchmark results as JSON:
 
   node src/lib/main.js --digits 100 --benchmark --benchmark-runs 5 --benchmark-json
 
+Display human-readable benchmark table:
+
+  node src/lib/main.js --digits 100 --benchmark --benchmark-runs 5
+
 ### HTTP Server Examples
 
 Start the server on port 4000:
@@ -84,4 +88,3 @@ Access Swagger UI:
 - For PNG rendering, ensure `--output` is specified; the CLI writes a monochrome image with monospaced digits.
 - The cache layer speeds up repeated runs; disable with `--no-cache` if fresh computation is needed.
 - SSE endpoints (`/pi/stream`) emit `progress` and final `result` events.
-
