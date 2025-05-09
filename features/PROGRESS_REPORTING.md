@@ -1,42 +1,54 @@
 # Overview
-Add real-time progress reporting to both CLI and HTTP server modes to improve user feedback during long-running π calculations.
+Add real-time progress reporting for long-running π calculations to improve user feedback in both CLI and HTTP API modes.
 
 # CLI Progress Reporting
-Introduce a new flag --progress and optional --progress-interval in src/lib/main.js. When enabled, the CLI will display a live progress indicator showing the percentage of completion or terms processed. Progress updates occur at configurable intervals (default every 5%). Use readline to update a single-line console output without cluttering logs.
+Introduce two new flags to the CLI:
+--progress             Enable progress reporting during π calculation
+--progress-interval n  Emit progress updates at every n percent of work completed (integer between 1 and 100, default 5)
+When enabled, the CLI displays an updating single-line indicator showing “X% complete” at each interval. This works in both text and PNG output modes by passing a progress callback into the calculation engine and using readline to overwrite the same console line.
 
-# HTTP Progress Reporting
-Add a Server-Sent Events (SSE) endpoint GET /pi/stream in the HTTP server. Accept the same query parameters as GET /pi. Respond with Content-Type: text/event-stream. Emit `progress` SSE events carrying JSON payloads `{ percentComplete: number }` as the calculation proceeds, followed by a final `result` event carrying the full π string (for text format) or base64-encoded PNG data (for image format).
+# HTTP API Progress Reporting
+Add a Server-Sent Events endpoint at GET /pi/stream that accepts the same query parameters as GET /pi. When a client connects:
+- Set response headers: Content-Type: text/event-stream, Cache-Control: no-cache, Connection: keep-alive
+- During calculation, emit `progress` events with JSON payload { percentComplete: number } at each configured interval
+- After completion, emit a final `result` event with JSON payload { pi: string, pngBase64?: string } and then close the stream
 
 # Implementation Details
 1. Algorithm Hooks
-   • Update calculatePi and each underlying method (Chudnovsky, Gauss-Legendre, Machin, Nilakantha) to accept an optional onProgress(percent: number) callback.  
-   • Within iterative loops, compute percentComplete based on iteration count or convergence criterion and invoke onProgress at defined milestones.
+   Extend calculatePi and each underlying method to accept an optional onProgress(percent: number) callback. Within iterative loops, compute percentComplete based on iteration or convergence and invoke onProgress when percent crosses each interval threshold.
 
 2. CLI Integration
-   • Parse `--progress` and `--progress-interval <n>` flags in main().  
-   • When `--progress` is present, pass a callback that writes a carriage-returned line with `X% complete` at each update.  
-   • Ensure the indicator clears or advances appropriately when the calculation finishes or errors.
+   - In src/lib/main.js, parse --progress and --progress-interval flags. Validate interval is integer 1–100.
+   - When --progress is set, pass a callback to calculatePi that uses readline to write and overwrite “X% complete”. Clear the line and output the final pi or PNG confirmation after calculation ends.
 
 3. HTTP Server Integration
-   • In server mode (when `--serve` is set), register a new Express route `/pi/stream`.  
-   • On connection, set headers: `Content-Type: text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`.  
-   • Call calculatePi with an onProgress callback that writes lines prefixed with `event: progress\ndata: ${JSON.stringify({percentComplete})}\n\n`.  
-   • After completion, send `event: result\ndata: ${JSON.stringify({pi: piStr, pngBase64: base64Data})}\n\n` and end the stream.
+   - In server mode (--serve), register route GET /pi/stream on the Express app.
+   - On connection, configure SSE headers and flush intervals.
+   - Call calculatePi with onProgress callback that writes lines:
+       event: progress
+data: { "percentComplete": <n> }
 
-4. Configuration
-   • `--progress-interval <n>`: integer 1–100, defines percent step between progress events. Default: 5.
-   • Validate interval values and throw errors for invalid inputs.
+     and after finish:
+       event: result
+data: { "pi": "3.14…", "pngBase64": "…" }
+
+   - End the stream after the result event.
+
+4. Configuration Defaults
+   Default progress interval is 5 percent. Invalid interval values should throw a descriptive error.
 
 # Tests
-- Create unit tests in `tests/unit/progress.test.js`: stub onProgress to verify callback invocations at expected percent thresholds.  
-- Extend CLI tests in `tests/unit/main.test.js`: mock a fast algorithm to simulate progress updates and verify console output for `--progress`.  
-- Add end-to-end tests in `tests/e2e/http.progress.test.js` using supertest: connect to `/pi/stream`, parse received SSE events, assert that multiple `progress` events appear in increasing order and a final `result` event contains correct payload.
+- Unit tests for onProgress callbacks in calculatePiMachin, calculatePiNilakantha, calculatePiChudnovsky, calculatePiGaussLegendre to verify events at expected percent thresholds.
+- CLI tests in tests/unit/main.test.js: mock a fast pi function, run main() with --progress and --progress-interval 10, capture console output, and assert that progress lines and final output appear correctly.
+- End-to-end API tests in tests/e2e/http.progress.test.js: use supertest to connect to /pi/stream, parse SSE events, assert that a series of progress events in increasing order arrives followed by a result event with correct payload.
 
 # Documentation
-- Update `README.md` under Features with a “Progress Reporting” section including examples:
-
+- Update README.md under Features with:
+  ### Progress Reporting
   node src/lib/main.js --digits 1000 --progress
   node src/lib/main.js --digits 1000 --progress --progress-interval 10
   curl http://localhost:3000/pi/stream?digits=500&method=machin
 
-- Update `docs/USAGE.md` to document new CLI flags (`--progress`, `--progress-interval`) and the `/pi/stream` SSE endpoint, including event formats and sample client usage.
+- Update docs/USAGE.md:
+  - Document CLI flags --progress and --progress-interval with descriptions and examples
+  - Document SSE endpoint /pi/stream, event formats, and sample client usage
