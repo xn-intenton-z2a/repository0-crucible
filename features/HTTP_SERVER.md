@@ -1,58 +1,70 @@
-# Overview
+# HTTP_SERVER
 
-Implement a basic HTTP server mode that exposes two core REST endpoints for π computation and algorithm benchmarking. The server should validate inputs, handle text and PNG outputs, and return structured JSON results for benchmarks.
+## Overview
+Extend the existing HTTP server mode to provide health checks, SSE streaming for progress, and automatic OpenAPI specification with Swagger UI, in addition to the current endpoints for π computation and benchmarking.
 
-# CLI Integration
+## Endpoints
 
-When the CLI is invoked with `--serve`, switch to server mode instead of running local calculations:
+### GET /health
+- Respond with status 200 and JSON payload { status: 'ok' } to indicate server readiness.
 
-• `--serve` (boolean) to enable HTTP server mode.  
-• `--port <n>` (integer, default 3000) to specify listening port.  
+### GET /pi
+- Query parameters:
+  - digits (int, 1–10000, default 100)
+  - method (string: chudnovsky|gauss-legendre|machin|nilakantha, default chudnovsky)
+  - format (string: text|png, default text)
+- Validate inputs using zod. On validation error, respond 400 with JSON error details.
+- For text format, compute π and respond 200 text/plain with the digit string.
+- For png format, compute π, render monochrome image of digits with pureimage, and respond 200 image/png.
 
-In server mode, skip CLI output and start an Express server on the configured port.
+### GET /pi/stream
+- Server-Sent Events endpoint for real-time progress and final result.
+- Accept same parameters as /pi plus optional progressInterval (int, 1–100, default 5).
+- On client connect, set headers cache-control no-cache, content-type text/event-stream, connection keep-alive.
+- During computation, emit progress events:
+    event: progress
+    data: { percentComplete: number }
+- On completion, emit result event:
+    event: result
+    data: { pi: string, pngBase64?: string }
+- Then close the stream.
 
-# Endpoints
+### GET /benchmark
+- Query parameters:
+  - digits (int, 1–10000, default 100)
+  - methods (comma-separated names, default all)
+  - runs (int ≥1, default 3)
+- Validate inputs. On error, respond 400 with JSON error.
+- Invoke benchmarkPi and respond with 200 application/json array of benchmark results.
 
-## GET /pi
+### GET /openapi.json
+- Serve the OpenAPI specification as JSON describing all HTTP endpoints and schemas.
 
-Query Parameters:
-• `digits` (int, 1–10000, default 100)  
-• `method` (string: chudnovsky|gauss-legendre|machin|nilakantha, default chudnovsky)  
-• `format` (string: text|png, default text)
+### GET /docs
+- Serve Swagger UI at /docs using swagger-ui-express, pointing to /openapi.json.
 
-Behavior:
-- Validate request with zod; respond 400 with JSON error on invalid input.  
-- For `format=text`, compute π via `calculatePi` and respond with `text/plain` body containing the digits.  
-- For `format=png`, compute π, render a monochrome PNG image of the digits using pureimage, and respond with `image/png` binary body.
+## CLI Integration
+- When CLI invoked with --serve and --port, initialize Express app and mount all routes above.
+- Ensure CLI flags --serve and --port remain as documented.
 
-## GET /benchmark
+## Implementation Details
+1. Add dependencies swagger-ui-express and yamljs or js-yaml to dependencies.
+2. In src/lib/main.js:
+   - After express setup, import swaggerUi and the generated OpenAPI JSON object or YAML file.
+   - Register /health, /pi, /pi/stream, /benchmark, /openapi.json, and /docs routes.
+   - Reuse existing calculatePi, benchmarkPi, and rendering helpers.
+3. Use zod to define and parse schemas for each endpoint.
+4. For SSE, implement a helper to write event lines and flush responses.
+5. Ensure errors in routes are caught and result in JSON error responses.
 
-Query Parameters:
-• `digits` (int, 1–10000, default 100)  
-• `methods` (comma-separated list of valid names, default all methods)  
-• `runs` (int ≥1, default 3)
+## Tests
+- In tests/unit/http.server.test.js:
+  - Add tests for GET /health responds with 200 and status ok.
+  - Test GET /openapi.json returns valid JSON with expected paths.
+  - Test GET /docs serves Swagger UI HTML content.
+  - Test SSE /pi/stream emits progress and result events under simulated fast calculation.
+- Use supertest and eventsource-parser for SSE tests.
 
-Behavior:
-- Validate request with zod; respond 400 on invalid input.  
-- Invoke `benchmarkPi(digits, runs, methodsArray)` to measure performance.  
-- Respond with `application/json` array of objects: `{ method, runs, averageTimeMs, minTimeMs, maxTimeMs }`.
-
-# Implementation Details
-
-1. Dependencies: add or reuse express, cors, zod, pureimage.  
-2. In `src/lib/main.js`: detect `--serve` and `--port`, import Express, configure middleware, and mount routes.  
-3. Use zod schemas for parameter parsing and validation.  
-4. Reuse existing `calculatePi` and `benchmarkPi` functions.  
-5. For PNG, call pureimage to render and pipe to response.
-
-# Tests
-
-Create unit tests in `tests/unit/http.server.test.js` using Vitest and Supertest to verify:  
-- Validation errors return 400 with JSON error.  
-- `/pi` returns correct status, content type, and body for both text and PNG formats.  
-- `/benchmark` returns a JSON array with expected result shape.
-
-# Documentation Updates
-
-- Update `README.md` under HTTP Server mode to list flags and example `curl` commands for `/pi` and `/benchmark`.  
-- Update `docs/USAGE.md` to document the two new endpoints, their parameters, and sample requests.
+## Documentation
+- Update README.md under HTTP Server Mode to list new endpoints /health, /openapi.json, and /docs with example curl commands.
+- Update docs/USAGE.md to document health check endpoint and OpenAPI specification, and include sample requests for SSE and docs.
