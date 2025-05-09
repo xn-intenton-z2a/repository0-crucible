@@ -1,64 +1,44 @@
 # Overview
 
-Expand the existing command‐line benchmarking feature to also provide an HTTP endpoint for on‐demand multi‐algorithm performance comparison.  Users can invoke benchmarks via CLI flags or spin up a local HTTP server to query results programmatically.
-
-# API
-
-Export the existing function `benchmarkPi(digits: number, runs?: number, methods?: string[]): Promise<BenchmarkResult[]>` unchanged, where `BenchmarkResult` has:
-
-  • method: string  
-  • averageTimeMs: number  
-  • minTimeMs: number  
-  • maxTimeMs: number  
-  • runs: number
-
-Add a new function `startBenchmarkServer(options?: { port?: number, methods?: string[] }): http.Server` that:
-
-  • Launches an HTTP server on the given port (default 3000).  
-  • Handles GET requests to `/benchmark` with query parameters `digits`, `runs`, `methods` and returns JSON BenchmarkResult[].  
-  • Optionally serves an HTML summary at `/benchmark/html` if `Accept: text/html`.
+Extend the pi calculation CLI to support a benchmarking mode that measures the performance of one or more π algorithms and outputs results in JSON.
 
 # CLI Usage
 
-  --benchmark            Run performance benchmarks instead of printing π.  
-  --benchmark-runs <n>   Number of times to execute each method (default: 3).  
-  --benchmark-json       Output raw JSON instead of a table.
+Accept the following new flags in the main CLI entrypoint:
 
-When `--benchmark` is present, ignore `--format` and `--output`.  If `--method` is provided, benchmark only that method; otherwise all supported methods.  
+--benchmark
+  Run performance benchmarks instead of printing π.
+--benchmark-runs <n>
+  Number of times to execute each method; default 3.
+--benchmark-json
+  Output raw JSON array of BenchmarkResult objects instead of table or text.
 
-# HTTP API Usage
-
-Run the tool with `--serve [--port <n>]`:  
-
-  node src/lib/main.js --serve --port 4000  
-
-Endpoints:  
-  GET /benchmark?digits=1000&runs=5&methods=chudnovsky,gauss-legendre  
-    • Returns JSON array of BenchmarkResult objects.  
-  GET /benchmark/html?digits=1000  
-    • Returns an HTML table summary of default methods.
+When --benchmark is present, ignore --format and --output flags.  If --method is provided, benchmark only that method; otherwise benchmark all supported methods.
 
 # Implementation Details
 
-1. In `src/lib/pi.js`, reuse `benchmarkPi` as-is.  No changes required.  
-2. In `src/lib/main.js`:  
-   - Parse `--serve` and optional `--port`.  
-   - If `--serve` is set, call `startBenchmarkServer({ port, methods })` and log the listening URL.  
-   - Otherwise, preserve existing CLI benchmarking behavior under `--benchmark` flags.  
-3. In `src/lib/server.js` (or within main.js):  
-   - Use Node's built-in `http` module to create a server.  
-   - Parse URL and query params, validate inputs, call `benchmarkPi`, and return JSON or HTML.  
-   - Handle error cases with appropriate HTTP status codes.
-4. No additional dependencies required; use `perf_hooks` and `http` from Node core.
+1. In src/lib/pi.js reuse the existing benchmarkPi(digits: number, runs?: number, methods?: string[]): Promise<BenchmarkResult[]> API unchanged.
+2. In src/lib/main.js:
+   - Parse --benchmark, --benchmark-runs, and --benchmark-json flags alongside existing flags.
+   - If --benchmark is set:
+     • Call benchmarkPi(digits, runs, methods) to obtain Promise<BenchmarkResult[]>.
+     • Await the results and serialize to JSON.
+     • If --benchmark-json is present, print the JSON string to stdout with console.log.
+     • Exit the process after printing.
+   - Ensure clear error messages for invalid runs values (non-integer or <1).
 
 # Testing
 
-- Unit tests for `startBenchmarkServer` handling valid and invalid query parameters in `tests/unit/server.test.js`.  
-- Integration test in `tests/e2e/serve.test.js`: launch the server on an ephemeral port, perform HTTP GET to `/benchmark`, assert JSON structure and status code.  
-- Extend existing CLI tests in `tests/unit/main.test.js` to cover `--serve --port 0` and ensure the server starts without errors.
+- Add unit tests in tests/unit/main.test.js for:
+  • Parsing --benchmark, --benchmark-runs, --benchmark-json alongside --digits and --method.
+  • Error cases: non-integer runs, runs < 1.
+  • Valid output: spy console.log to verify correct JSON string of BenchmarkResult array.
+- Add an end-to-end test in tests/e2e/cli.test.js:
+  • Invoke the tool with --benchmark, --digits 10, --benchmark-runs 2, --benchmark-json.
+  • Parse stdout as JSON and verify array structure: each object has method, averageTimeMs, minTimeMs, maxTimeMs, runs.
 
 # Documentation
 
-- Update `docs/USAGE.md` to document `--serve`, port flag, HTTP endpoints with examples.  
-- Update `README.md` under Features to list “HTTP benchmarking API” and provide sample curl commands.  
-- Add notes in `CONTRIBUTING.md` on testing HTTP endpoints and documenting JSON schemas.
+- Update README.md under Features to list "CLI benchmarking mode" and show example:
+  node src/lib/main.js --digits 500 --benchmark --benchmark-runs 5 --benchmark-json
+- Update docs/USAGE.md to document new flags, describe output JSON schema, and include sample output.
