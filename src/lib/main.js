@@ -11,14 +11,15 @@ import { fileURLToPath } from 'url';
  * @param {string} algorithm - "machin" or "gauss-legendre".
  * @returns {Decimal} Decimal instance representing π.
  */
-export async function calculatePi(digits = 100, algorithm = 'machin') {
+export function calculatePi(digits = 100, algorithm = 'machin') {
   if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
     throw new Error(`Invalid digits '${digits}'. Must be integer between 1 and 1000000.`);
   }
   if (!['machin', 'gauss-legendre'].includes(algorithm)) {
     throw new Error(`Invalid algorithm '${algorithm}'. Must be 'machin' or 'gauss-legendre'.`);
   }
-  Decimal.set({ precision: digits + 5 });
+  // Set precision with a small safety margin and truncate (round down) results
+  Decimal.set({ precision: digits + 5, rounding: Decimal.ROUND_DOWN });
 
   if (algorithm === 'machin') {
     const arctan = (x) => {
@@ -38,7 +39,7 @@ export async function calculatePi(digits = 100, algorithm = 'machin') {
     };
     const a1 = arctan(new Decimal(1).dividedBy(5));
     const a2 = arctan(new Decimal(1).dividedBy(239));
-    // π/4 = 4*arctan(1/5) - arctan(1/239)
+    // π = 4 * (4*arctan(1/5) - arctan(1/239))
     return a1.times(4).minus(a2).times(4);
   }
 
@@ -100,8 +101,9 @@ export async function main(inputArgs = process.argv.slice(2)) {
   }
 
   try {
-    const pi = await calculatePi(digits, algorithm);
-    console.log(pi.toFixed(digits));
+    const pi = calculatePi(digits, algorithm);
+    // Truncate when printing
+    console.log(pi.toFixed(digits, Decimal.ROUND_DOWN));
     process.exit(0);
   } catch (err) {
     console.error(err.message);
