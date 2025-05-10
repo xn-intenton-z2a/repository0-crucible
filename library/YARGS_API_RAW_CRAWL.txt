@@ -3809,7 +3809,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about Aevi's customer story
+    Read more about Etsy's customer story
     
       
         
@@ -3820,8 +3820,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Aevi
-    Aevi delivers developer happiness with GitHub Enterprise.
+     Etsy
+    Etsy migrated to the cloud to focus their craft on customers, not infrastructure.
     
       Read story 
 
@@ -3831,7 +3831,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Braintree's customer story
+    Read more about EY's customer story
     
       
         
@@ -3842,8 +3842,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Braintree
-    Braintree brings their customers closer to their development and release processes with GitHub.
+     EY
+    EY combines GitHub and Microsoft Azure DevOps to keep developers on the cutting edge.
     
       Read story 
 
@@ -3853,7 +3853,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Coinbase's customer story
+    Read more about Plaid's customer story
     
       
         
@@ -3864,8 +3864,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Coinbase
-    Coinbase creates a culture of empowerment while maintaining security or compliance.
+     Plaid
+    Plaid’s Developer Efficiency team speeds up workflows with developer happiness—and GitHub—at the heart of their operation.
     
       Read story 
 
@@ -3875,7 +3875,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Deutsche Börse Group's customer story
+    Read more about Elentra at Queen's University's customer story
     
       
         
@@ -3886,8 +3886,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Deutsche Börse Group
-    With code and collaboration in one place, Deutsche Börse Group innovates faster with GitHub Enterprise.
+     Elentra at Queen's University
+    Elentra at Queen’s University created a Consortium built on GitHub to transform medical education.
     
       Read story 
 
@@ -3897,7 +3897,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Deutsche Vermögensberatung's customer story
+    Read more about DLR Institute of Robotics's customer story
     
       
         
@@ -3908,9 +3908,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Deutsche Vermögensberatung
-    DVAG puts customers first by optimizing developer efficiency on GitHub Enterprise.
-
+     DLR Institute of Robotics
+    Learn why the DLR Robotics Institute chose to roll out GitHub Enterprise when it saw an organic rise in Git usage across the organization.
     
       Read story 
 
@@ -3920,7 +3919,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Dow Jones's customer story
+    Read more about Otto Group's customer story
     
       
         
@@ -3931,8 +3930,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Dow Jones
-    Dow Jones delivers the day’s headlines with a secure and news-ready platform developers and readers can rely on: GitHub Enterprise.
+     Otto Group
+    Otto Group elevates developer engagement with GitHub Advanced Security.
     
       Read story 
 
@@ -4609,7 +4608,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about Trustpilot's customer story
+    Read more about Buffer's customer story
     
       
         
@@ -4620,8 +4619,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Trustpilot
-    Global review platform Trustpilot uses GitHub Team to build a better product, faster, with 300 releases per week.
+     Buffer
+    Buffer goes from siloed to synced for better production releases.
     
       Read story 
 
@@ -4631,7 +4630,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Tray.io's customer story
+    Read more about Cesium's customer story
     
       
         
@@ -4642,8 +4641,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Tray.io
-    GitHub Team helps the general automation platform build, package, and deploy code faster than ever.
+     Cesium
+    Cesium leverages an open source community to support the development of 3D geospatial applications.
     
       Read story 
 
@@ -4653,7 +4652,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Sketch's customer story
+    Read more about Front's customer story
     
       
         
@@ -4664,8 +4663,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Sketch
-    Sketch streamlines their workflows to provide teams with a comprehensive digital design editor.
+     Front
+    Front takes the work out of their workflows with GitHub Team.
     
       Read story 
 
@@ -4675,7 +4674,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Peak Money's customer story
+    Read more about Knock's customer story
     
       
         
@@ -4686,30 +4685,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Peak Money
-    Peak Money collaborates across tools, teams, and time zones with GitHub Team.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Netdata's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Netdata
-    Netdata accelerates their developer workflow with built-in security and open source.
+     Knock
+    Knock pivots to new products, with the help of GitHub’s fast, flexible developer workflows.
     
       Read story 
 
@@ -4732,6 +4709,28 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
     
      Modsy
     Modsy leverages GitHub Team to make interior design easy and accessible for all.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Netdata's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Netdata
+    Netdata accelerates their developer workflow with built-in security and open source.
     
       Read story 
 
@@ -6179,9 +6178,9 @@ The ReadME Project
     
         
       
-        PICO-8
+        Git
       
-      PICO-8 is a fantasy console for making, sharing and playing tiny games and other computer programs in Lua.
+      Git is the most widely used version control system.
     
   
 
@@ -6195,9 +6194,9 @@ The ReadME Project
     
         
       
-        JSON
+        Elixir
       
-      JSON (JavaScript Object Notation) allows for easy interchange of data, often between a program and a database.
+      Elixir is a dynamic, functional language designed for building scalable and maintainable applications.
     
   
 
@@ -6211,9 +6210,9 @@ The ReadME Project
     
         
       
-        Koa
+        Swift
       
-      Koa is an expressive middleware framework for Node.js servers that uses ES2017 async functions.
+      Swift is a modern programming language focused on safety, performance, and expressivity.
     
   
 
@@ -6805,6 +6804,16 @@ The ReadME Project
           
           
             
+  javascript
+
+          
+          
+            
+  css
+
+          
+          
+            
   config
 
           
@@ -6815,27 +6824,17 @@ The ReadME Project
           
           
             
-  php
+  html
 
           
           
             
-  machine-learning
-
-          
-          
-            
-  deep-learning
+  mongodb
 
           
           
             
   reactjs
-
-          
-          
-            
-  expressjs
 
           
           
@@ -6865,9 +6864,9 @@ The ReadME Project
 
 
       
-        1,847
+        1,889
       
-        92
+        93
       
         Built by
 
@@ -6912,9 +6911,9 @@ The ReadME Project
 
 
       
-        28,232
+        28,274
       
-        4,157
+        4,161
       
         Built by
 
@@ -6959,9 +6958,9 @@ The ReadME Project
 
 
       
-        4,412
+        4,433
       
-        304
+        307
       
         Built by
 
@@ -7006,9 +7005,9 @@ The ReadME Project
 
 
       
-        14,161
+        14,177
       
-        2,835
+        2,836
       
         Built by
 
@@ -7050,9 +7049,9 @@ The ReadME Project
 
 
       
-        15,661
+        15,766
       
-        912
+        916
       
         Built by
 
@@ -7097,9 +7096,9 @@ The ReadME Project
 
 
       
-        23,067
+        23,099
       
-        1,974
+        1,976
       
         Built by
 
@@ -7144,9 +7143,9 @@ The ReadME Project
 
 
       
-        40,546
+        40,565
       
-        7,838
+        7,842
       
         Built by
 
@@ -7186,7 +7185,7 @@ The ReadME Project
   
 
       
-        60,816
+        60,878
       
         3,322
       
@@ -7233,9 +7232,9 @@ The ReadME Project
 
 
       
-        4,332
+        4,360
       
-        354
+        358
       
         Built by
 
@@ -7288,9 +7287,9 @@ The ReadME Project
 
 
       
-        25,798
+        25,810
       
-        18,393
+        18,394
       
         Built by
 
@@ -7335,9 +7334,9 @@ The ReadME Project
 
 
       
-        58,876
+        58,892
       
-        4,112
+        4,113
       
         Built by
 
@@ -7382,7 +7381,7 @@ The ReadME Project
 
 
       
-        8,895
+        8,902
       
         307
       
@@ -7437,7 +7436,7 @@ The ReadME Project
 
 
       
-        1,328
+        1,346
       
         94
       
@@ -7484,9 +7483,9 @@ The ReadME Project
 
 
       
-        1,318
+        1,346
       
-        103
+        105
       
         Built by
 
@@ -7531,7 +7530,7 @@ The ReadME Project
 
 
       
-        10,722
+        10,746
       
         1,205
       
@@ -9637,9 +9636,9 @@ The ReadME Project
 
 
       
-        1,847
+        1,889
       
-        92
+        93
       
         Built by
 
@@ -9686,9 +9685,9 @@ The ReadME Project
 
 
       
-        28,232
+        28,274
       
-        4,157
+        4,161
       
         Built by
 
@@ -9735,9 +9734,9 @@ The ReadME Project
 
 
       
-        4,412
+        4,433
       
-        304
+        307
       
         Built by
 
@@ -9784,9 +9783,9 @@ The ReadME Project
 
 
       
-        14,161
+        14,177
       
-        2,835
+        2,836
       
         Built by
 
@@ -9830,9 +9829,9 @@ The ReadME Project
 
 
       
-        15,661
+        15,766
       
-        912
+        916
       
         Built by
 
@@ -9879,9 +9878,9 @@ The ReadME Project
 
 
       
-        23,067
+        23,099
       
-        1,974
+        1,976
       
         Built by
 
@@ -9928,9 +9927,9 @@ The ReadME Project
 
 
       
-        40,546
+        40,565
       
-        7,838
+        7,842
       
         Built by
 
@@ -9972,7 +9971,7 @@ The ReadME Project
   
 
       
-        60,816
+        60,878
       
         3,322
       
@@ -10021,9 +10020,9 @@ The ReadME Project
 
 
       
-        4,332
+        4,360
       
-        354
+        358
       
         Built by
 
@@ -10078,9 +10077,9 @@ The ReadME Project
 
 
       
-        25,798
+        25,810
       
-        18,393
+        18,394
       
         Built by
 
@@ -10127,9 +10126,9 @@ The ReadME Project
 
 
       
-        58,876
+        58,892
       
-        4,112
+        4,113
       
         Built by
 
@@ -10176,7 +10175,7 @@ The ReadME Project
 
 
       
-        8,895
+        8,902
       
         307
       
@@ -10233,7 +10232,7 @@ The ReadME Project
 
 
       
-        1,328
+        1,346
       
         94
       
@@ -10282,9 +10281,9 @@ The ReadME Project
 
 
       
-        1,318
+        1,346
       
-        103
+        105
       
         Built by
 
@@ -10331,7 +10330,7 @@ The ReadME Project
 
 
       
-        10,722
+        10,746
       
         1,205
       
@@ -10548,16 +10547,16 @@ The ReadME Project
         
   
       
-    Made in Brazil
-    Open source projects built in or receiving significant contributions from Brazil :brazil:
+    Pixel Art Tools
+    Creating pixel art for fun or animated sprites for a game? The digital artist in you will love these apps and tools!
   
 
 
         
   
       
-    Pixel Art Tools
-    Creating pixel art for fun or animated sprites for a game? The digital artist in you will love these apps and tools!
+    Made in Brazil
+    Open source projects built in or receiving significant contributions from Brazil :brazil:
   
 
 
@@ -23617,7 +23616,7 @@ post on why we think this is important.
           
     
       
-        + 28,592,193
+        + 28,603,967
       
   
 
@@ -23633,80 +23632,50 @@ post on why we think this is important.
 
 
     
-  
-    
       
-        
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
       
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-
-
-
 
 
   
@@ -26097,7 +26066,7 @@ Additional navigation options
   
   
   ProTip!
-  Exclude everything labeled bug with -label:bug.\n\n\n\nyargs
+  Mix and match filters to narrow down what you’re looking for.\n\n\n\nyargs
     
     /
     
@@ -26833,7 +26802,7 @@ Additional navigation options
   
   
   ProTip!
-  What’s not been updated in a month: updated:<2025-04-09.\n\n\n\nyargs
+  Follow long discussions with comments:>50.\n\n\n\nyargs
     
     /
     
@@ -31516,7 +31485,7 @@ Insights: yargs/yargs
   
       
   
-  May 2, 2025 – May 9, 2025
+  May 3, 2025 – May 10, 2025
   
         
               Period:
@@ -31708,3811 +31677,4 @@ Insights: yargs/yargs
       
         chore(main): release 18.0.0
         
-          #2325 commented on May 6, 2025 • 0 new comments\n\n\n\nBuild and ship software on a single, collaborative platformJoin the world’s most widely adopted AI-powered developer platform.Enter your emailSign up for GitHubTry GitHub CopilotGitHub featuresA demonstration animation of a code editor using GitHub Copilot Chat, where the user requests GitHub Copilot to refactor duplicated logic and extract it into a reusable function for a given code snippet.CodePlanCollaborateAutomateSecureCodeBuild code quickly and more securely with GitHub Copilot embedded throughout your workflows.GitHub is used byPauseAccelerate performanceWith GitHub Copilot embedded throughout the platform, you can simplify your toolchain, automate tasks, and improve the developer experience.A Copilot chat window with extensions enabled. The user inputs the @ symbol to reveal a list of five Copilot Extensions. @Sentry is selected from the list, which shifts the window to a chat directly with that extension. There are three sample prompts at the bottom of the chat window, allowing the user to Get incident information, Edit status on incident, or List the latest issues. The last one is activated to send the prompt: @Sentry List the latest issues. The extension then lists several new issues and their metadata.Work 55% faster.Jump to footnote 1 Increase productivity with AI-powered coding assistance, including code completion, chat, and more.Explore GitHub CopilotDuolingo boosts developer speed by 25% with GitHub CopilotRead customer story2024 Gartner® Magic Quadrant™ for AI Code AssistantsRead reportAutomate any workflowOptimize your process with simple and secured CI/CD.A list of workflows displays a heading ‘45,167 workflow runs’ at the top. Below are five rows of completed workflows accompanied by their completion time and their duration formatted in minutes and seconds.Discover GitHub ActionsGet up and running in secondsStart building instantly with a comprehensive dev environment in the cloud.A GitHub Codespaces setup for the landing page of a game called OctoInvaders. On the left is a code editor with some HTML and Javascript files open. On the right is a live render of the page. In front of this split editor window is a screenshot of two active GitHub Codespaces environments with their branch names and a button to ‘Create codespace on main.’Check out GitHub CodespacesBuild on the goManage projects and chat with GitHub Copilot from anywhere.Two smartphone screens side by side. The left screen shows a Notification inbox, listing issues and pull requests from different repositories like TensorFlow and GitHub’s OctoArcade octoinvaders. The right screen shows a new conversation in GitHub Copilot chat.Download GitHub MobileIntegrate the tools you loveSync with 17,000+ integrations and a growing library of Copilot Extensions.A grid of fifty app tiles displays logos for integrations and extensions for companies like Stripe, Slack, and Docker. The tiles extend beyond the bounds of the image to indicate a wide array of apps. Visit GitHub MarketplaceBuilt-in application security  where found means fixedUse AI to find and fix vulnerabilities—freeing your teams to ship more secure software faster.Apply fixes in seconds. Spend less time fixing vulnerabilities and more time building features with Copilot Autofix.Explore GitHub Advanced SecuritySolve security debt. Leverage AI-assisted security campaigns to reduce application vulnerabilities and zero-day attacks.Discover security campaignsDependencies you can depend on. Update vulnerable dependencies with supported fixes for breaking changes.Learn about DependabotYour secrets, your business: protected. Detect, prevent, and remediate leaked secrets across your organization.Read about secret scanning7x fastervulnerability fixes with GitHubJump to footnote 290% coverageof alert types in all supported languages with Copilot AutofixWork together, achieve moreCollaborate with your teams, use management tools that sync with your projects, and code from anywhere—all on a single, integrated platform.Your workflows, your way. Plan effectively with an adaptable spreadsheet that syncs with your work.Jump into GitHub Projects“It helps us onboard new software engineers and get them productive right away. We have all our source code, issues, and pull requests in one place... GitHub is a complete platform that frees us from menial tasks and enables us to do our best work.Fabian FaulhaberApplication manager at Mercedes-BenzKeep track of your tasksCreate issues and manage projects with tools that adapt to your code.Display of task tracking within an issue, showing the status of related sub-issues and their connection to the main issue.Explore GitHub IssuesShare ideas and ask questionsCreate space for open-ended conversations alongside your project.A GitHub Discussions thread where a GitHub user suggests a power-up idea involving Hubot revealing a path and protecting Mona. The post has received 5 upvotes and several reactions. Below, three other users add to the discussion, suggesting Hubot could provide different power-ups depending on levels and appreciating the collaboration idea.Discover GitHub DiscussionsReview code changes togetherCreate review processes that improve code quality and fit neatly into your workflow.Two code review approvals by helios-ackmore and amanda-knox, which are followed by three successful checks for ‘Build,’ ‘Test,’ and ‘Publish.’Learn about code reviewFund open source projectsBecome an open source partner and support the tools and libraries that power your work.A GitHub Sponsors popup displays ‘$15,000 a month’ with a progress bar showing 87% towards a $15,000 goal.Dive into GitHub SponsorsFrom startups to enterprises, GitHub scales  with teams of any size in any industry.By industryBy sizeBy use caseBy industryTechnologyFigma streamlines development and strengthens securityRead customer storyAutomotiveMercedes-Benz standardizes source code and automates onboardingRead customer storyFinancial servicesMercado Libre cuts coding time by 50%Read customer storyExplore customer storiesView all solutionsMillions of developers and businesses call GitHub homeWhether you’re scaling your development process or just learning how to code, GitHub is where you belong. Join the world’s most widely adopted AI-powered developer platform to build the technologies that redefine what’s possible.Enter your emailSign up for GitHubTry GitHub CopilotFootnotesSurvey: The AI wave continues to grow on software development teams, 2024.This 7X times factor is based on data from the industry’s longest running analysis of fix rates Veracode State of Software Security 2023, which cites the average time to fix 50% of flaws as 198 days vs. GitHub’s fix rates of 72% of flaws with in 28 days which is at a minimum of 7X faster when compared.\n\n\n\nGitHub SecurityAdvanced SecuritySecret ProtectionCode SecuritySupply Chain SecurityPlans & pricingGitHub SecurityPowerful security, designed for developersRequest a demoSee plans & pricingGet enterprise-grade, built-in application security. Explore GitHub Advanced SecurityFind out how platform security strengthens your workflow. Read about platform securityGitHub’s API stays secure with ISO, SOC 2, and GDPR.  Visit the Trust CenterJoin the companies that secure their code with GitHubJoin the companies that secure their code with GitHubSecurity seamlesslyintegrated into your workflowPrevent accidental secret exposure Push protection automatically blocks secrets before they reach your repository, keeping code clean without disrupting workflows.  Explore GitHub Secret ProtectionFind and fix vulnerabilities in your codeAddress security debt in your GitHub workflow with static analysis, AI remediation, and proactive vulnerability management.Explore GitHub Code SecuritySecuring the entiresoftware supply chain
-Enhance your security strategy with the GitHub Security LabLearn how the lab helps secure open source by finding vulnerabilities, building tools like CodeQL, and advancing security research.Visit the GitHub Security LabStay ahead of threats with the Security Advisory DatabaseAccess a security vulnerability database inclusive of CVEs and GitHub originated security advisories from the world of open source software.
-Visit the GitHub Security DatabaseGitHub’s supply chain security reduces open source risks with auto-updates, dependency tracking, and build attestation.Learn more about supply chain security“GitHub Advanced Security empowers our developers to detect and fix vulnerabilities earlier, accelerating our time to market and boosting developer satisfaction.”Michael SpindlerHead of development services and tools at SAPAdopted by the world's leading organizationsOtto Group elevates developer engagement with GitHub Advanced SecurityRead customer storySPH Media tames tool sprawl and secures code with GitHubRead customer storyPostmates uses GitHub Advanced Security to catch vulnerabilitiesRead customer storyBuilt-in security for developer workflows Request a demoSee plans & pricingResources to get startedDiscover developer-first securityTake an in-depth look at the current state of application security.
-View the webinarExplore the DevSecOps guideLearn how to write more secure code from the start with DevSecOps.
-Read the whitepaperAvoid AppSec pitfallsExplore common application security pitfalls and how to avoid them.
-Read the whitepaper\n\n\n\nBuild and ship software on a single, collaborative platformJoin the world’s most widely adopted AI-powered developer platform.Enter your emailSign up for GitHubTry GitHub CopilotGitHub featuresA demonstration animation of a code editor using GitHub Copilot Chat, where the user requests GitHub Copilot to refactor duplicated logic and extract it into a reusable function for a given code snippet.CodePlanCollaborateAutomateSecureCodeBuild code quickly and more securely with GitHub Copilot embedded throughout your workflows.GitHub is used byPauseAccelerate performanceWith GitHub Copilot embedded throughout the platform, you can simplify your toolchain, automate tasks, and improve the developer experience.A Copilot chat window with extensions enabled. The user inputs the @ symbol to reveal a list of five Copilot Extensions. @Sentry is selected from the list, which shifts the window to a chat directly with that extension. There are three sample prompts at the bottom of the chat window, allowing the user to Get incident information, Edit status on incident, or List the latest issues. The last one is activated to send the prompt: @Sentry List the latest issues. The extension then lists several new issues and their metadata.Work 55% faster.Jump to footnote 1 Increase productivity with AI-powered coding assistance, including code completion, chat, and more.Explore GitHub CopilotDuolingo boosts developer speed by 25% with GitHub CopilotRead customer story2024 Gartner® Magic Quadrant™ for AI Code AssistantsRead reportAutomate any workflowOptimize your process with simple and secured CI/CD.A list of workflows displays a heading ‘45,167 workflow runs’ at the top. Below are five rows of completed workflows accompanied by their completion time and their duration formatted in minutes and seconds.Discover GitHub ActionsGet up and running in secondsStart building instantly with a comprehensive dev environment in the cloud.A GitHub Codespaces setup for the landing page of a game called OctoInvaders. On the left is a code editor with some HTML and Javascript files open. On the right is a live render of the page. In front of this split editor window is a screenshot of two active GitHub Codespaces environments with their branch names and a button to ‘Create codespace on main.’Check out GitHub CodespacesBuild on the goManage projects and chat with GitHub Copilot from anywhere.Two smartphone screens side by side. The left screen shows a Notification inbox, listing issues and pull requests from different repositories like TensorFlow and GitHub’s OctoArcade octoinvaders. The right screen shows a new conversation in GitHub Copilot chat.Download GitHub MobileIntegrate the tools you loveSync with 17,000+ integrations and a growing library of Copilot Extensions.A grid of fifty app tiles displays logos for integrations and extensions for companies like Stripe, Slack, and Docker. The tiles extend beyond the bounds of the image to indicate a wide array of apps. Visit GitHub MarketplaceBuilt-in application security  where found means fixedUse AI to find and fix vulnerabilities—freeing your teams to ship more secure software faster.Apply fixes in seconds. Spend less time fixing vulnerabilities and more time building features with Copilot Autofix.Explore GitHub Advanced SecuritySolve security debt. Leverage AI-assisted security campaigns to reduce application vulnerabilities and zero-day attacks.Discover security campaignsDependencies you can depend on. Update vulnerable dependencies with supported fixes for breaking changes.Learn about DependabotYour secrets, your business: protected. Detect, prevent, and remediate leaked secrets across your organization.Read about secret scanning7x fastervulnerability fixes with GitHubJump to footnote 290% coverageof alert types in all supported languages with Copilot AutofixWork together, achieve moreCollaborate with your teams, use management tools that sync with your projects, and code from anywhere—all on a single, integrated platform.Your workflows, your way. Plan effectively with an adaptable spreadsheet that syncs with your work.Jump into GitHub Projects“It helps us onboard new software engineers and get them productive right away. We have all our source code, issues, and pull requests in one place... GitHub is a complete platform that frees us from menial tasks and enables us to do our best work.Fabian FaulhaberApplication manager at Mercedes-BenzKeep track of your tasksCreate issues and manage projects with tools that adapt to your code.Display of task tracking within an issue, showing the status of related sub-issues and their connection to the main issue.Explore GitHub IssuesShare ideas and ask questionsCreate space for open-ended conversations alongside your project.A GitHub Discussions thread where a GitHub user suggests a power-up idea involving Hubot revealing a path and protecting Mona. The post has received 5 upvotes and several reactions. Below, three other users add to the discussion, suggesting Hubot could provide different power-ups depending on levels and appreciating the collaboration idea.Discover GitHub DiscussionsReview code changes togetherCreate review processes that improve code quality and fit neatly into your workflow.Two code review approvals by helios-ackmore and amanda-knox, which are followed by three successful checks for ‘Build,’ ‘Test,’ and ‘Publish.’Learn about code reviewFund open source projectsBecome an open source partner and support the tools and libraries that power your work.A GitHub Sponsors popup displays ‘$15,000 a month’ with a progress bar showing 87% towards a $15,000 goal.Dive into GitHub SponsorsFrom startups to enterprises, GitHub scales  with teams of any size in any industry.By industryBy sizeBy use caseBy industryTechnologyFigma streamlines development and strengthens securityRead customer storyAutomotiveMercedes-Benz standardizes source code and automates onboardingRead customer storyFinancial servicesMercado Libre cuts coding time by 50%Read customer storyExplore customer storiesView all solutionsMillions of developers and businesses call GitHub homeWhether you’re scaling your development process or just learning how to code, GitHub is where you belong. Join the world’s most widely adopted AI-powered developer platform to build the technologies that redefine what’s possible.Enter your emailSign up for GitHubTry GitHub CopilotFootnotesSurvey: The AI wave continues to grow on software development teams, 2024.This 7X times factor is based on data from the industry’s longest running analysis of fix rates Veracode State of Software Security 2023, which cites the average time to fix 50% of flaws as 198 days vs. GitHub’s fix rates of 72% of flaws with in 28 days which is at a minimum of 7X faster when compared.\n\n\n\nSign in to GitHub
-    
-
-
-    
-
-
-
-  
-    
-
-  
-    
-      
-    
-    
-      
-      {{ message }}
-
-    
-  
-
-  
-
-
-
-    
-      
-        
-      
-    
-
-    
-      
-  
-
-    
-      Username or email address
-    
-    
-
-  
-    
-      Password
-    
-    
-    Forgot password?
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-  
-  
-      
-  
-
-    
-
-
-        Password login alternatives
-        
-            
-    
-        
-    Sign in with a passkey
-  
-
-    
-  
-
-          
-            New to GitHub?
-              Create an account\n\n\n\nCreate your free account
-      Explore GitHub's core features for individuals and organizations.
-
-        
-        
-          See what's included
-          
-            
-          
-        
-        
-          
-  
-      
-        
-          
-        
-        
-          Access to GitHub Copilot
-          Increase your productivity and accelerate software development.
-      
-      
-        
-          
-        
-        
-          Unlimited repositories
-          Collaborate securely on public and private projects.
-      
-      
-        
-          
-        
-        
-          Integrated code reviews
-          Boost code quality with built-in review tools.
-      
-      
-        
-          
-        
-        
-          Automated workflows
-          Save time with CI/CD integrations and GitHub Actions.
-      
-      
-        
-          
-        
-        
-          Community support
-          Connect with developers worldwide for instant feedback and insights.
-      
-  
-
-        
-      
-    
-  
-    
-    
-  
-
-
-
-
-        
-          
-          
-            
-
-  
-  
-
-
-  
-    
-  
-  
-    
-      
-        
-        
-        
-
-        
-          Sign up to GitHub
-        
-
-        
-
-        
-          
-            
-              Email*
-            
-            
-              
-                
-                
-              
-            
-          
-
-          
-            
-              Password*
-            
-            
-              
-                
-                    
-                    
-                    
-                  
-                
-              
-              
-                Password should be at least 15 characters OR at least 8 characters including a number and a lowercase letter.
-              
-            
-          
-
-          
-            
-              
-                Username*
-              
-            
-            
-              
-                
-                  
-                  
-                
-              
-              
-                Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.
-              
-            
-          
-          
-  
-    
-      
-        Your Country/Region*, required
-      
-    
-    
-      
-  
-      
-    Select Country/Region
-  
-    
-      
-    
-
-
-    
-      
-  
-    
-      
-        Select Country/Region
-      
-        
-    
-    
-      
-    
-  
-              
-              
-  
-      
-        
-      
-    
-      
-                  Sorry, something went wrong.
-
-            
-            
-                
-      
-        Filter
-    
-  
-      
-        
-          
-      Loading
-
-      
-    
-      
-
-      
-  
-  
-  
-
-    
-
-
-      
-        
-          
-          
-            
-                
-  
-      
-        
-      
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Afghanistan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Åland
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Albania
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Algeria
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          American Samoa
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Andorra
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Angola
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Anguilla
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Antarctica
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Antigua and Barbuda
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Argentina
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Armenia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Aruba
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Australia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Austria
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Azerbaijan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bahamas
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bahrain
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bangladesh
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Barbados
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Belarus
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Belgium
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Belize
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Benin
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bermuda
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bhutan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bolivia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bonaire, Sint Eustatius and Saba
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bosnia and Herzegovina
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Botswana
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bouvet Island
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Brazil
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          British Indian Ocean Territory
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Brunei Darussalam
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Bulgaria
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Burkina Faso
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Burundi
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Cambodia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Cameroon
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Canada
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Cape Verde
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Cayman Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Central African Republic
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Chad
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Chile
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          China
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Christmas Island
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Cocos (Keeling) Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Colombia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Comoros
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Congo (Brazzaville)
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Congo (Kinshasa)
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Cook Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Costa Rica
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Côte d'Ivoire
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Croatia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Curaçao
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Cyprus
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Czech Republic
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Denmark
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Djibouti
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Dominica
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Dominican Republic
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Ecuador
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Egypt
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          El Salvador
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Equatorial Guinea
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Eritrea
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Estonia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Ethiopia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Falkland Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Faroe Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Fiji
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Finland
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          France
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          French Guiana
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          French Polynesia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          French Southern Lands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Gabon
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Gambia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Georgia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Germany
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Ghana
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Gibraltar
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Greece
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Greenland
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Grenada
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Guadeloupe
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Guam
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Guatemala
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Guernsey
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Guinea
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Guinea-Bissau
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Guyana
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Haiti
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Heard and McDonald Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Honduras
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Hong Kong
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Hungary
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Iceland
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          India
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Indonesia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Iran
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Iraq
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Ireland
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Isle of Man
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Israel
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Italy
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Jamaica
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Japan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Jersey
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Jordan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Kazakhstan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Kenya
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Kiribati
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Korea, South
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Kuwait
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Kyrgyzstan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Laos
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Latvia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Lebanon
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Lesotho
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Liberia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Libya
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Liechtenstein
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Lithuania
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Luxembourg
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Macau
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Macedonia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Madagascar
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Malawi
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Malaysia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Maldives
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Mali
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Malta
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Marshall Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Martinique
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Mauritania
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Mauritius
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Mayotte
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Mexico
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Micronesia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Moldova
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Monaco
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Mongolia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Montenegro
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Montserrat
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Morocco
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Mozambique
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Myanmar
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Namibia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Nauru
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Nepal
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Netherlands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          New Caledonia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          New Zealand
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Nicaragua
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Niger
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Nigeria
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Niue
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Norfolk Island
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Northern Mariana Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Norway
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Oman
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pakistan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Palau
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Palestine
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Panama
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Papua New Guinea
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Paraguay
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Peru
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Philippines
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pitcairn
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Poland
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Portugal
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Puerto Rico
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Qatar
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Reunion
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Romania
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Rwanda
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Saint Barthélemy
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Saint Helena
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Saint Kitts and Nevis
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Saint Lucia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Saint Martin (French part)
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Saint Pierre and Miquelon
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Saint Vincent and the Grenadines
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Samoa
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          San Marino
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Sao Tome and Principe
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Saudi Arabia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Senegal
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Serbia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Seychelles
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Sierra Leone
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Singapore
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Sint Maarten (Dutch part)
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Slovakia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Slovenia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Solomon Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Somalia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          South Africa
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          South Georgia and South Sandwich Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          South Sudan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Spain
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Sri Lanka
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Sudan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Suriname
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Svalbard and Jan Mayen Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Swaziland
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Sweden
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Switzerland
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Taiwan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Tajikistan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Tanzania
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Thailand
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Timor-Leste
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Togo
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Tokelau
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Tonga
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Trinidad and Tobago
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Tunisia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Türkiye
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Turkmenistan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Turks and Caicos Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Tuvalu
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Uganda
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Ukraine
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          United Arab Emirates
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          United Kingdom
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          United States Minor Outlying Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          United States of America
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Uruguay
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Uzbekistan
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Vanuatu
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Vatican City
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Venezuela
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Vietnam
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Virgin Islands, British
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Virgin Islands, U.S.
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Wallis and Futuna Islands
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Yemen
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Zambia
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Zimbabwe
-      
-
-  
-
-    
-
-
-            
-            
-              No results found
-            
-        
-      
-  
-      
-      
-        For compliance reasons, we're required to collect country information to send you occasional updates and announcements.
-      
-    
-  
-  
-    
-       Email preferences 
-      
-        
-  
-  
-    
-      Receive occasional product updates and announcements
-      
-  
-
-      
-    
-  
-
-
-        
-
-          
-              
-    Continue
-              
-  
-
-          
-
-        
-            Verify your account
-            
-              
-
-
-  
-    
-  
-
-  
-    
-  
-
-  
-      
-  
-
-  
-
-
-            
-
-          
-
-
-
-        
-
-        
-            
-    Create account
-              
-  
-
-        
-
-        
-          
-  By creating an account, you agree to the
-  Terms of Service.
-  For more information about GitHub's privacy practices, see the
-  GitHub Privacy Statement.
-  We'll occasionally send you account-related emails.\n\n\n\n
+          #2325 commented on May 6, 2025 • 0 new comments\n\n\n\n

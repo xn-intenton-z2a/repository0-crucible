@@ -1,297 +1,345 @@
 # YARGS_API
 
 ## Crawl Summary
-yargs returns an Argv instance configured via method chaining. Key methods: option(defines type, alias, default, demand, choices, coerce, conflicts, implies), command(adds subcommands with builder and handler), parse(process args or invoke callback), middleware(registers functions pre/post validation), config(loads file-based config), env(import ENV vars), demandOption(required flags), choices(restrict allowed values), coerce(transform values), group(organize help), strict(strict parsing), parserConfiguration(tune parser flags), completion(enable shell completions), recommendCommands(suggest similar commands), fail(custom error handling), help/version(set help/version flags).
+yargs.command(string|Array, string, builder?, handler?) returns Yargs; yargs.option(key, {alias,describe,type,default,demandOption,nargs,choices,coerce,global,hidden,group}) returns Yargs; yargs.positional(key, {describe,type,default,choices,coerce}); yargs.parse(args?,context?,callback?) returns Arguments; yargs.argv returns Arguments; yargs.usage(string), .help([string]), .alias(string,string|Array), .version([string]) add core flags; yargs.middleware(fn,applyBeforeValidation?) invokes before/after validation; parser config via strict, strictCommands, strictOptions, recommendCommands, parserConfiguration({camel-case-expansion,boolean-negation,duplicate-arguments-array,flatten-duplicate-arrays,populate--,combine-arrays,short-option-groups}); yargs.env(prefix|mapping); error handling via yargs.fail(fn). Default help output, unknown command error, exit codes 0/1.
 
 ## Normalised Extract
 Table of Contents
-1 CLI Initialization
-2 Defining Options
-3 Subcommands
-4 Parsing Flow
-5 Configuration & Environment
-6 Validation & Coercion
-7 Grouping & Help Output
-8 Strict Mode & Recommendations
-9 Shell Completion
-10 Parser Configuration
-11 Error Handling
+1. Commands
+2. Options
+3. Positional Arguments
+4. Parsing & argv
+5. Help & Version Flags
+6. Middleware
+7. Parser Configuration
+8. Environment Variables
+9. Error Handling & Troubleshooting
 
-1 CLI Initialization
-yargs(args?: string[]): Argv    Creates parser instance; default args=process.argv.slice(2).
+1. Commands
+Signature: yargs.command(command, description, builder, handler) returns Yargs
+Parameters:
+  command: string or array with positional tokens
+  description: string
+  builder: function(Yargs)=>Yargs or object defining options/positional
+  handler: function(argv: Arguments)
 
-2 Defining Options
-.option(key, opt) -> Argv
-  key: string|array
-  opt.alias: string|array
-  opt.type: 'string'|'number'|'boolean'|'array'
-  opt.describe: string
-  opt.default: any
-  opt.demandOption: boolean|string
-  opt.choices: array
-  opt.coerce: fn(arg)->any
-  opt.nargs: number
-  opt.normalization: boolean
-  opt.implies: string|array
-  opt.conflicts: string|array
-  opt.hidden: boolean
-  opt.global: boolean
+2. Options
+Signature: yargs.option(key, options) returns Yargs
+Options:
+  alias: string or array
+  describe: string
+  type: 'string'|'number'|'boolean'|'array'
+  default: any
+  demandOption: boolean or array
+  nargs: number
+  choices: array
+  coerce: function(arg)=>any
+  global: boolean
+  hidden: boolean
+  group: string
 
-3 Subcommands
-.command(cmd, description, builder?, handler?) -> Argv
-  cmd: commandName or array of aliases
-  builder: yargs -> Argv or option map
-  handler: argv -> void
-Pattern:
-  yargs.command('serve <file>', 'start server', y=>y.option('port',{default:80}), argv=>{ ... })
+3. Positional Arguments
+Signature: yargs.positional(key, options)
+Options: describe, type, default, choices, coerce
 
-4 Parsing Flow
-.parse(args, context?, parseCallback?) -> argv
-  parseCallback(err, argv, output)
-.middleware(fns, applyBeforeValidation?) -> Argv    Register pre/post validation hooks
+4. Parsing & argv
+Signature: yargs.parse(args?, context?, callback?) returns Arguments
+Property: yargs.argv (parsed Arguments)
 
-5 Configuration & Environment
-.config(key, desc?, global?, parseFn?) -> Argv    Load config file path from key
-.env(prefix) -> Argv    Map ENV_PREFIX_OPT to argv.opt
+5. Help & Version Flags
+Methods: .usage(message), .help(optName='help'), .alias(option, alias), .version(versionString)
+Default flags: --help/-h, --version/-V
 
-6 Validation & Coercion
-.demandOption(keys, msg?, boolean?) -> Argv
-.choices(key, values) -> Argv
-.coerce(key, fn) -> Argv
+6. Middleware
+Signature: yargs.middleware(fn, applyBeforeValidation=false) returns Yargs
+Executes fn(argv) before or after validation
 
-7 Grouping & Help Output
-.group(opts, groupName) -> Argv
-.help(opt?, msg?, fn?) -> Argv
-.version(opt?, ver?, fn?) -> Argv
-.showHelpOnFail(enabled, msg?) -> Argv
-.wrap(cols) -> Argv
+7. Parser Configuration
+Methods: .strict(enabled=true), .strictCommands(enabled), .strictOptions(enabled), .recommendCommands(enabled), .parserConfiguration(configObject)
+Config keys: camel-case-expansion, boolean-negation, duplicate-arguments-array, flatten-duplicate-arrays, populate--, combine-arrays, short-option-groups
 
-8 Strict Mode & Recommendations
-.strict(), .strictCommands(), .strictOptions() -> Argv
-yargs.recommendCommands() -> Argv
+8. Environment Variables
+Signature: yargs.env(prefix) or yargs.env({key:envVar}) returns Yargs
+Defaults flags from process.env prefixed or mapped
 
-9 Shell Completion
-.completion(cmd?, fn?) -> Argv
+9. Error Handling & Troubleshooting
+Method: yargs.fail(fn(msg, err)) returns Yargs
+Example CLI outputs:
+  Unknown command error
+  Help usage display
 
-10 Parser Configuration
-.parserConfiguration({
-  'boolean-negation': boolean,
-  'camel-case-expansion': boolean,
-  'duplicate-arguments-array': boolean,
-  'flatten-duplicate-arrays': boolean,
-  'populate--': boolean,
-  'short-option-groups': boolean,
-  'parse-numbers': boolean,
-  'parse-positional-numbers': boolean,
-  'greedy-arrays': boolean
-}) -> Argv
-
-11 Error Handling
-.fail(fn(msg, err)) -> Argv
-.check(fn(argv, aliases) => boolean|string) -> Argv
 
 ## Supplementary Details
-- Default behavior: exitProcess enabled, strictParse false, boolean-negation true, camel-case-expansion true.
-- ENV mapping: prefix converts dots and dashes to underscores; case-insensitive.
-- Config file loader: JSON.parse by default; supply parseFn for YAML.
-- Middleware order: applyBeforeValidation=true runs before validation checks, else after.
-- Help formatting: wrap width = terminal columns or provided value.
-- Unknown options: in strict mode, error code EUNKNOWN; .recommendCommands attaches suggestions based on Levenshtein distance.
-- Completion: default command is '_' if no name provided; provides suggestions for commands, options, and positional.
-- Group: groups appear under heading in help sorted by group insertion order.
+Default behaviors and configurations
+• Default usage template: "$0 <command> [options]"
+• Default help option: name="help", alias=["h"] description="Show help" type=boolean
+• Default version option: name="version", alias=["V"] description="Show version number" type=boolean
+• Default parserConfiguration:
+    camel-case-expansion: true
+    boolean-negation: true
+    duplicate-arguments-array: false
+    flatten-duplicate-arrays: true
+    populate--: true
+    combine-arrays: false
+    short-option-groups: true
+• Default strict: disabled
+• Default recommendCommands: disabled
+• Default environment prefix: none
+Implementation steps
+1. Initialize parser: const y = require('yargs/yargs')(hideBin(process.argv));
+2. Apply scriptName: y.scriptName('cli')
+3. Define usage: y.usage('$0 <cmd> [opts]')
+4. Add commands: y.command(...)
+5. Define global options: y.option(...)
+6. Add middleware: y.middleware(...) as needed
+7. Enable flags: y.help().alias('help','h').version('1.2.3').alias('version','V')
+8. Configure parsing: y.strictCommands(true).recommendCommands(true)
+9. Parse: y.parse() or access y.argv
 
 
 ## Reference Details
-Functions & Signatures:
-yargs(args?: string[]): Argv    Returns parser instance.
+### API Specifications & Method Signatures
 
-Argv.option(key: string|string[], opt: OptionConfig): Argv
-  OptionConfig:
-    alias?: string|string[]; type?: 'string'|'number'|'boolean'|'array'; describe?: string;
-    default?: any; demandOption?: boolean|string; choices?: any[]; coerce?: (arg:any)=>any;
-    nargs?: number; normalization?: boolean; implies?: string|string[];
-    conflicts?: string|string[]; hidden?: boolean; global?: boolean;
+**command**
+```ts
+command(
+  command: string | string[],
+  description: string,
+  builder?: (yargs: Yargs) => Yargs | { [key:string]: Options },
+  handler?: (argv: Arguments) => any
+): Yargs
+```
 
-Argv.command(cmd: string|string[], description: string,
-             builder?: ((yargs:Argv)=>Argv)|Record<string,OptionConfig>,
-             handler?: (argv:Arguments)=>void): Argv
+**option**
+```ts
+option(
+  key: string,
+  options: {
+    alias?: string | string[];
+    describe: string;
+    type?: 'string' | 'number' | 'boolean' | 'array';
+    default?: any;
+    demandOption?: boolean | string[];
+    nargs?: number;
+    choices?: Array<string | number>;
+    coerce?: (arg: any) => any;
+    global?: boolean;
+    hidden?: boolean;
+    group?: string;
+  }
+): Yargs
+```
 
-Argv.parse(args: string|string[], context?:object,
-            parseCallback?: (err:Error|null, argv:Arguments, output:string)=>void): Arguments
+**positional**
+```ts
+positional(
+  key: string,
+  options: {
+    describe: string;
+    type?: 'string'|'number'|'boolean';
+    default?: any;
+    choices?: Array<string|number>;
+    coerce?: (arg: any) => any;
+  }
+): void
+```
 
-Argv.middleware(fns:Function|Function[], applyBeforeValidation?:boolean): Argv
+**parse**
+```ts
+parse(
+  args?: string[],
+  context?: object,
+  callback?: (err: Error, argv: Arguments, output: string) => any
+): Arguments
+```
 
-Argv.config(key:string, description?:string, global?:boolean, parseFn?:(path:string)=>object): Argv
+**fail**
+```ts
+fail(
+  fn: (msg: string, err: Error) => any
+): Yargs
+```
 
-Argv.env(prefix:string): Argv
+**middleware**
+```ts
+middleware(
+  fn: (argv: Arguments) => any,
+  applyBeforeValidation?: boolean
+): Yargs
+```
 
-Argv.demandOption(keys:string|string[], msg?:string, boolean?:boolean): Argv
+**help, alias, version, usage**
+```ts
+yargs.usage(message: string): Yargs
+yargs.help(optionName?: string): Yargs
+yargs.alias(option: string, alias: string | string[]): Yargs
+yargs.version(versionString?: string): Yargs
+```
 
-Argv.default(key:string|string[], value:any, description?:string): Argv
+**strict & parser config**
+```ts
+yargs.strict(enabled?: boolean): Yargs
+yargs.strictCommands(enabled?: boolean): Yargs
+yargs.strictOptions(enabled?: boolean): Yargs
+yargs.recommendCommands(enabled?: boolean): Yargs
+yargs.parserConfiguration({
+  'camel-case-expansion'?: boolean,
+  'boolean-negation'?: boolean,
+  'duplicate-arguments-array'?: boolean,
+  'flatten-duplicate-arrays'?: boolean,
+  'populate--'?: boolean,
+  'combine-arrays'?: boolean,
+  'short-option-groups'?: boolean
+}): Yargs
+yargs.env(prefix?: string | { [key: string]: string }): Yargs
+```
 
-Argv.choices(key:string, values:ReadonlyArray<any>): Argv
+### Code Examples & Patterns
 
-Argv.coerce(key:string|string[], fn:(arg:any)=>any): Argv
+**Basic CLI**
+```js
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
 
-Argv.group(opts:string|string[], groupName:string): Argv
+const cli = yargs(hideBin(process.argv))
+  .scriptName('mycli')
+  .usage('$0 <cmd> [opts]')
+  .command(
+    'start [port]',
+    'start server',
+    y => y.positional('port', { describe: 'port to bind', type: 'number', default: 3000 }),
+    argv => {
+      console.log(`Server running on port ${argv.port}`);
+    }
+  )
+  .option('verbose', { alias: 'v', type: 'boolean', describe: 'enable verbose', default: false })
+  .middleware(argv => { if (argv.verbose) console.log('Verbose on'); })
+  .help().alias('help','h')
+  .version('1.0.0').alias('version','V')
+  .strictCommands()
+  .recommendCommands()
+  .parse();
+```
 
-Argv.strict(): Argv    Exits on unknown options and commands
-Argv.strictCommands(): Argv   Exits on unknown commands only
-Argv.strictOptions(): Argv    Exits on unknown options only
+**Dynamic Command Loading**
+```js
+yargs.commandDir('commands', { extensions: ['js'], recurse: true });
+```
 
-Argv.parserConfiguration(config:Record<string,boolean>): Argv
-  Default parserConfiguration:
-    boolean-negation: true; camel-case-expansion: true;
-    duplicate-arguments-array: true; flatten-duplicate-arrays: true;
-    populate--: false; short-option-groups: true;
-    parse-numbers: true; parse-positional-numbers: true; greedy-arrays: false;
+### Configuration Options
 
-Argv.completion(cmd?:string, fn?:(current:string,argv:Arguments,done:(completions:string[])=>void)=>void): Argv
+• hideBin: strips node and script name from process.argv
+• scriptName: sets $0 in usage
+• default help alias: h, version alias: V
+• parserConfiguration defaults as listed in supplementaryDetails
 
-Argv.recommendCommands(): Argv
+### Best Practices
 
-Argv.fail(fn:(msg:string, err:Error|undefined)=>void): Argv
+• Use `.strictCommands()` to catch typos
+• Use `.recommendCommands()` to suggest similar commands
+• Define `.middleware()` for cross-cutting concerns (logging, config)
+• Group related options via `group` attribute and `.options()` calls
 
-Argv.check(fn:(argv:Arguments, aliases:Record<string,string[]>)=>boolean|string): Argv
+### Troubleshooting
 
-Argv.help(opt?:string, msg?:string, fn?:()=>void): Argv
-Argv.version(opt?:string, version?:string, fn?:()=>void): Argv
+Unknown command handling:
+```js
+yargs
+  .strictCommands()
+  .fail((msg, err) => {
+    if (err) throw err;
+    console.error(msg);
+    yargs.showHelp();
+    process.exit(1);
+  })
+  .parse();
+```
 
-Argv.showHelpOnFail(enabled:boolean, message?:string): Argv
-Argv.wrap(cols:number): Argv
-Argv.detectLocale(enabled:boolean): Argv
-Argv.locale(locale:string): Argv
-Argv.updateLocale(obj:Record<string,string>): Argv
-Argv.scriptName(name:string): Argv
-Argv.exitProcess(enabled:boolean): Argv
-Argv.pkgConf(name:string): Argv
-Argv.example(cmd:string, description:string, opts?:{hide:boolean}): Argv
+**Expected Output**
+```
+$ node cli.js foo
+Unknown command: "foo"
+Usage: mycli <cmd> [opts]
+Commands:
+  start    start server
 
-Usage Example:
-const argv = yargs(process.argv.slice(2))
-  .scriptName('myapp')
-  .usage('Usage: $0 <command> [options]')
-  .option('p', {alias:'port', type:'number', describe:'port to bind on', default:8080, demandOption:true})
-  .command('start <file>', 'start server', y=>y.option('verbose',{type:'boolean'}), argv=>{ console.log('port',argv.port) })
-  .middleware(arg=>{ if(arg.verbose) console.log('verbose on') }, true)
-  .config('config', 'path to config file', true, path=>require(path))
-  .env('MYAPP')
-  .strict()
-  .completion()  
-  .help('h')
-  .version('v','1.2.3')
-  .argv;
+Options:
+  --help     Show help  [boolean]
+```
 
-Best Practices:
-- Use .strictCommands() to catch typos in subcommands.
-- Group related options with .group([...],'GroupName') for clearer help.
-- Provide .demandOption for required flags instead of manual checks.
-- Leverage .coerce for type transformations (e.g. parse JSON strings).
-- Use .recommendCommands() to improve UX on mistyped commands.
-
-Troubleshooting:
-1. Unknown option error:
-  Command: node myapp.js --unknown
-  Output: Unknown argument: unknown
-           Did you mean port?
-  Fix: add .recommendCommands() and/or .strictOptions(false)
-
-2. JSON parse error in config:
-  Error: Unexpected token o in JSON at position 1
-  Command: node myapp.js --config wrong.json
-  Fix: supply parseFn in .config to handle YAML or custom formats.
+**Debugging**
+- Use `--help` to inspect available commands and options
+- Use `.parserConfiguration({ 'populate--': true })` to capture unparsed arguments under `argv._`
+- Inspect `argv` in `middleware` to validate flag parsing
 
 
 ## Information Dense Extract
-yargs(args?:string[]):Argv|Argv.option(key:string|string[],{alias?,type?,describe?,default?,demandOption?,choices?,coerce?,nargs?,normalization?,implies?,conflicts?,hidden?,global?}):Argv.command(cmd:string|string[],desc:string,builder?:((Argv)=>Argv)|Record<string,OptionConfig>,handler?:(Arguments)=>void):Argv.parse(args:string|string[],context?:object,cb?:(Error|null,Arguments,string)=>void):Arguments.middleware(fns:Function|Function[],before?:boolean):Argv.config(key:string,desc?:string,global?:boolean,parseFn?:(string)=>object):Argv.env(prefix:string):Argv.demandOption(keys:string|string[],msg?:string,boolean?:boolean):Argv.default(key:string|string[],value:any,desc?:string):Argv.choices(key:string,values:any[]):Argv.coerce(key:string|string[],fn:(any)=>any):Argv.group(opts:string|string[],group:string):Argv.strict():Argv.strictCommands():Argv.strictOptions():Argv.parserConfiguration({boolean-negation:boolean,camel-case-expansion:boolean,duplicate-arguments-array:boolean,flatten-duplicate-arrays:boolean,populate--:boolean,short-option-groups:boolean,parse-numbers:boolean,parse-positional-numbers:boolean,greedy-arrays:boolean}):Argv.completion(cmd?:string,fn?:(string,Arguments,(string[])=>void)=>void):Argv.recommendCommands():Argv.fail(fn:(string,Error|undefined)=>void):Argv.check(fn:(Arguments,Record<string,string[]>)=>boolean|string):Argv.help(opt?:string,msg?:string,fn?:()=>void):Argv.version(opt?:string,version?:string,fn?:()=>void):Argv.showHelpOnFail(boolean,msg?:string):Argv.wrap(cols:number):Argv.detectLocale(boolean):Argv.locale(string):Argv.updateLocale(Record<string,string>):Argv.scriptName(string):Argv.exitProcess(boolean):Argv.pkgConf(string):Argv.example(string,string,{hide?:boolean}):Argv.getUsageInstance():Usage
-
+command(string|string[],string,(Yargs)=>Yargs|object,(argv)=>any)->Yargs; option(string,{alias?:string|string[],describe:string,type?:'string'|'number'|'boolean'|'array',default?:any,demandOption?:boolean|string[],nargs?:number,choices?:Array<string|number>,coerce?:(arg)=>any,global?:boolean,hidden?:boolean,group?:string})->Yargs; positional(string,{describe:string,type?:'string'|'number'|'boolean',default?:any,choices?:Array<string|number>,coerce?:(arg)=>any}); parse(args?:string[],context?:object,cb?:(err,argv,output)=>any)->Arguments; argv:Arguments; usage(string)->Yargs; help(optName?:string)->Yargs; alias(option:string,alias:string|string[])->Yargs; version(str?:string)->Yargs; middleware(fn:(argv)=>any,applyBeforeVal?:boolean)->Yargs; strict(enabled?:boolean)->Yargs; strictCommands(enabled?:boolean)->Yargs; strictOptions(enabled?:boolean)->Yargs; recommendCommands(enabled?:boolean)->Yargs; parserConfiguration({camel-case-expansion?:boolean,boolean-negation?:boolean,duplicate-arguments-array?:boolean,flatten-duplicate-arrays?:boolean,populate--?:boolean,combine-arrays?:boolean,short-option-groups?:boolean})->Yargs; env(prefix:string|object)->Yargs; fail(fn:(msg,err)=>any)->Yargs; Default help: --help/-h; version: --version/-V; hideBin(process.argv); scriptName; usage; parse(); dynamic commands: .commandDir(dir,{extensions,recurse,visit}); troubleshooting via .fail and .showHelp()
 
 ## Sanitised Extract
 Table of Contents
-1 CLI Initialization
-2 Defining Options
-3 Subcommands
-4 Parsing Flow
-5 Configuration & Environment
-6 Validation & Coercion
-7 Grouping & Help Output
-8 Strict Mode & Recommendations
-9 Shell Completion
-10 Parser Configuration
-11 Error Handling
+1. Commands
+2. Options
+3. Positional Arguments
+4. Parsing & argv
+5. Help & Version Flags
+6. Middleware
+7. Parser Configuration
+8. Environment Variables
+9. Error Handling & Troubleshooting
 
-1 CLI Initialization
-yargs(args?: string[]): Argv    Creates parser instance; default args=process.argv.slice(2).
+1. Commands
+Signature: yargs.command(command, description, builder, handler) returns Yargs
+Parameters:
+  command: string or array with positional tokens
+  description: string
+  builder: function(Yargs)=>Yargs or object defining options/positional
+  handler: function(argv: Arguments)
 
-2 Defining Options
-.option(key, opt) -> Argv
-  key: string|array
-  opt.alias: string|array
-  opt.type: 'string'|'number'|'boolean'|'array'
-  opt.describe: string
-  opt.default: any
-  opt.demandOption: boolean|string
-  opt.choices: array
-  opt.coerce: fn(arg)->any
-  opt.nargs: number
-  opt.normalization: boolean
-  opt.implies: string|array
-  opt.conflicts: string|array
-  opt.hidden: boolean
-  opt.global: boolean
+2. Options
+Signature: yargs.option(key, options) returns Yargs
+Options:
+  alias: string or array
+  describe: string
+  type: 'string'|'number'|'boolean'|'array'
+  default: any
+  demandOption: boolean or array
+  nargs: number
+  choices: array
+  coerce: function(arg)=>any
+  global: boolean
+  hidden: boolean
+  group: string
 
-3 Subcommands
-.command(cmd, description, builder?, handler?) -> Argv
-  cmd: commandName or array of aliases
-  builder: yargs -> Argv or option map
-  handler: argv -> void
-Pattern:
-  yargs.command('serve <file>', 'start server', y=>y.option('port',{default:80}), argv=>{ ... })
+3. Positional Arguments
+Signature: yargs.positional(key, options)
+Options: describe, type, default, choices, coerce
 
-4 Parsing Flow
-.parse(args, context?, parseCallback?) -> argv
-  parseCallback(err, argv, output)
-.middleware(fns, applyBeforeValidation?) -> Argv    Register pre/post validation hooks
+4. Parsing & argv
+Signature: yargs.parse(args?, context?, callback?) returns Arguments
+Property: yargs.argv (parsed Arguments)
 
-5 Configuration & Environment
-.config(key, desc?, global?, parseFn?) -> Argv    Load config file path from key
-.env(prefix) -> Argv    Map ENV_PREFIX_OPT to argv.opt
+5. Help & Version Flags
+Methods: .usage(message), .help(optName='help'), .alias(option, alias), .version(versionString)
+Default flags: --help/-h, --version/-V
 
-6 Validation & Coercion
-.demandOption(keys, msg?, boolean?) -> Argv
-.choices(key, values) -> Argv
-.coerce(key, fn) -> Argv
+6. Middleware
+Signature: yargs.middleware(fn, applyBeforeValidation=false) returns Yargs
+Executes fn(argv) before or after validation
 
-7 Grouping & Help Output
-.group(opts, groupName) -> Argv
-.help(opt?, msg?, fn?) -> Argv
-.version(opt?, ver?, fn?) -> Argv
-.showHelpOnFail(enabled, msg?) -> Argv
-.wrap(cols) -> Argv
+7. Parser Configuration
+Methods: .strict(enabled=true), .strictCommands(enabled), .strictOptions(enabled), .recommendCommands(enabled), .parserConfiguration(configObject)
+Config keys: camel-case-expansion, boolean-negation, duplicate-arguments-array, flatten-duplicate-arrays, populate--, combine-arrays, short-option-groups
 
-8 Strict Mode & Recommendations
-.strict(), .strictCommands(), .strictOptions() -> Argv
-yargs.recommendCommands() -> Argv
+8. Environment Variables
+Signature: yargs.env(prefix) or yargs.env({key:envVar}) returns Yargs
+Defaults flags from process.env prefixed or mapped
 
-9 Shell Completion
-.completion(cmd?, fn?) -> Argv
-
-10 Parser Configuration
-.parserConfiguration({
-  'boolean-negation': boolean,
-  'camel-case-expansion': boolean,
-  'duplicate-arguments-array': boolean,
-  'flatten-duplicate-arrays': boolean,
-  'populate--': boolean,
-  'short-option-groups': boolean,
-  'parse-numbers': boolean,
-  'parse-positional-numbers': boolean,
-  'greedy-arrays': boolean
-}) -> Argv
-
-11 Error Handling
-.fail(fn(msg, err)) -> Argv
-.check(fn(argv, aliases) => boolean|string) -> Argv
+9. Error Handling & Troubleshooting
+Method: yargs.fail(fn(msg, err)) returns Yargs
+Example CLI outputs:
+  Unknown command error
+  Help usage display
 
 ## Original Source
 Yargs CLI Parser
@@ -299,136 +347,128 @@ https://github.com/yargs/yargs/blob/master/docs/api.md
 
 ## Digest of YARGS_API
 
-# Yargs API Documentation (retrieved on 2024-06-20)
+# YARGS CLI API
 
-## yargs([args])
-Signature: function yargs(args?: string[]): Argv
-Returns a new Argv parser instance based on provided args or process.argv.
+Date retrieved: 2024-06-10
 
-## .option(key, opt)
-Signature: Argv.option(key: string | string[], opt: {
-  alias?: string | string[];
-  type?: 'string' | 'number' | 'boolean' | 'array';
-  describe?: string;
-  default?: any;
-  demandOption?: boolean | string;
-  choices?: ReadonlyArray<any>;
-  coerce?: (arg: any) => any;
-  nargs?: number;
-  normalization?: boolean;
-  implies?: string | string[];
-  conflicts?: string | string[];
-  hidden?: boolean;
-  global?: boolean;
-}): Argv
-Defines an option with full configuration.
+# Command
 
-## .command(cmd, description, builder?, handler?)
-Signature: Argv.command(
-  cmd: string | string[],
-  description: string,
-  builder?: (yargs: Argv) => Argv | Record<string, object>,
-  handler?: (argv: Arguments) => void
-): Argv
-Adds a subcommand. Builder can be a function or options map.
+Signature
+```
+yargs.command(command: string | string[], description: string, builder?: (yargs: Yargs) => Yargs | object, handler?: (argv: Arguments) => any): Yargs
+```
+Description
+Defines a subcommand. `command` may include positional tokens. `builder` configures flags. `handler` receives parsed argv.
 
-## .parse(args, context?, parseCallback?)
-Signature: Argv.parse(
-  args: string | string[],
-  context?: object,
-  parseCallback?: (err: Error | null, argv: Arguments, output: string) => void
-): Arguments
-Parses args into argv or invokes callback.
+# Options
 
-## .middleware(fns, applyBeforeValidation?)
-Signature: Argv.middleware(
-  fns: Function | Function[],
-  applyBeforeValidation?: boolean
-): Argv
-Registers middleware functions executed before or after validation.
+Signature
+```
+yargs.option(key: string, options: {
+  alias?: string | string[]
+  describe: string
+  type?: 'string' | 'number' | 'boolean' | 'array'
+  default?: any
+  demandOption?: boolean | string[]
+  nargs?: number
+  choices?: Array<string | number>
+  coerce?: (arg: any) => any
+  global?: boolean
+  hidden?: boolean
+  group?: string
+}): Yargs
+```
 
-## .config(key, [description], [global], [parseFn])
-Signature: Argv.config(
-  key: string,
-  description?: string,
-  global?: boolean,
-  parseFn?: (configPath: string) => object
-): Argv
-Loads JSON/YAML config from a file path provided via key or ENV.
+# Positional
 
-## .env(prefix)
-Signature: Argv.env(prefix: string): Argv
-Populates argv from process.env variables with given prefix.
+Signature
+```
+yargs.positional(key: string, options: { describe: string, type?: 'string'|'number'|'boolean', default?: any, choices?: Array<string|number>, coerce?: (arg: any)=>any }): void
+```
+Used inside command builders to define positional parameters.
 
-## .demandOption(keys, [msg], [boolean])
-Signature: Argv.demandOption(
-  keys: string | string[],
-  msg?: string,
-  boolean?: boolean
-): Argv
-Requires specific options.
+# Parsing & argv
 
-## .choices(key, values)
-Signature: Argv.choices(key: string, values: ReadonlyArray<any>): Argv
-Restricts option values to provided set.
+Signature
+```
+yargs.parse(args?: string[], context?: object, callback?: (err: Error, argv: Arguments, output: string) => any): Arguments
+```
+Property
+```
+yargs.argv: Arguments
+```
+Triggers parsing of `process.argv`.
 
-## .coerce(key, fn)
-Signature: Argv.coerce(key: string | string[], fn: (arg: any) => any): Argv
-Transforms argument value before validation.
+# Help & Usage
 
-## .group(opts, groupName)
-Signature: Argv.group(opts: string | string[], groupName: string): Argv
-Groups options under a named heading in help.
+Signatures
+```
+yargs.usage(message: string): Yargs
+yargs.help(optionName?: string): Yargs
+yargs.alias(option: string, alias: string | string[]): Yargs
+yargs.version(versionString?: string): Yargs
+```
+Automatically adds `--help` and `--version` flags.
 
-## .strict(), .strictCommands(), .strictOptions()
-Signature: Argv.strict(): Argv
-      Argv.strictCommands(): Argv
-      Argv.strictOptions(): Argv
-Enables strict parsing, unknown options or commands cause errors.
+# Middleware
 
-## .parserConfiguration(config)
-Signature: Argv.parserConfiguration(config: {
-  'boolean-negation'?: boolean;
-  'camel-case-expansion'?: boolean;
-  'duplicate-arguments-array'?: boolean;
-  'flatten-duplicate-arrays'?: boolean;
-  'populate--'?: boolean;
-  'short-option-groups'?: boolean;
-  'parse-numbers'?: boolean;
-  'parse-positional-numbers'?: boolean;
-  'greedy-arrays'?: boolean;
-  'duplicate-arguments-array'?: boolean;
-}): Argv
-Configures underlying parser behavior.
+Signature
+```
+yargs.middleware(fn: (argv: Arguments) => any, applyBeforeValidation?: boolean): Yargs
+```
+Invokes `fn` on `argv` before or after validation.
 
-## .completion(cmd?, fn?)
-Signature: Argv.completion(
-  cmd?: string,
-  fn?: (current: string, argv: Arguments, done: (completions: string[]) => void) => void
-): Argv
-Enables shell auto-completion.
+# Configuration
 
-## .recommendCommands()
-Signature: Argv.recommendCommands(): Argv
-Suggests similar commands on unknown command error.
+Signatures
+```
+yargs.strict(enabled?: boolean): Yargs
+yargs.strictCommands(enabled?: boolean): Yargs
+yargs.strictOptions(enabled?: boolean): Yargs
+yargs.recommendCommands(enabled?: boolean): Yargs
+yargs.parserConfiguration(config: {
+  'camel-case-expansion'?: boolean,
+  'boolean-negation'?: boolean,
+  'duplicate-arguments-array'?: boolean,
+  'flatten-duplicate-arrays'?: boolean,
+  'populate--'?: boolean,
+  'combine-arrays'?: boolean,
+  'short-option-groups'?: boolean
+}): Yargs
+yargs.env(prefix?: string | { [key: string]: string }): Yargs
+```
+Overrides default parser behaviors and enables env var defaults.
 
-## .fail(fn)
-Signature: Argv.fail(fn: (msg: string, err: Error | undefined) => void): Argv
-Customizes exit behavior on failure.
+# Troubleshooting
 
-## .help([opt], [msg], [fn]) and .version([opt], [ver], [fn])
-Signature: Argv.help(opt?: string, msg?: string, fn?: () => void): Argv
-      Argv.version(opt?: string, version?: string, fn?: () => void): Argv
-Adds help/version options with custom triggers.
+Signature
+```
+yargs.fail(fn: (msg: string, err: Error) => any): Yargs
+```
+Use to intercept parsing errors or unknown commands.
+
+Expected CLI outputs
+```
+$ node cli.js --help
+Usage: cli <command> [options]
+
+Options:
+  --help     Show help                                             [boolean]
+  --version  Show version number                                   [boolean]
+
+$ node cli.js unknown
+Unknown command: "unknown"
+Run "cli --help" for available commands.
+```
 
 
 ## Attribution
 - Source: Yargs CLI Parser
 - URL: https://github.com/yargs/yargs/blob/master/docs/api.md
 - License: License: MIT
-- Crawl Date: 2025-05-10T06:40:22.251Z
-- Data Size: 579514 bytes
-- Links Found: 4461
+- Crawl Date: 2025-05-10T08:38:49.146Z
+- Data Size: 534165 bytes
+- Links Found: 4344
 
 ## Retrieved
 2025-05-10
