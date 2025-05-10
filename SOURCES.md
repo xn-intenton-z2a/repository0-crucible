@@ -8,6 +8,11 @@ Comprehensive API reference and usage guide for Decimal.js, the arbitrary-precis
 Official documentation for QuickChart’s HTTP chart-rendering API. Includes JSON schema for line, bar, and multi-series charts, style customization, time-series support, and integration examples in Node.js. Critical for automating convergence and distribution visualizations (PNG output) within CLI and HTTP contexts. Reflects updates as of 2024; highly authoritative for chart configuration details.
 ## Unlicense-like free use terms
 
+# Chart.js Documentation
+## https://www.chartjs.org/docs/latest/
+Authoritative guide to Chart.js v4, the underlying visualization library used by QuickChart. Details core chart types (line, bar, scatter), dataset and axis configuration, plugin architecture, animations, and event hooks. Provides deep insight into chart customization, responsive design options, and performance tuning, enabling advanced graph styling and efficient data updates. Licensed under MIT; last updated 2024.
+## MIT License
+
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
 Comprehensive overview of Express 4.x routing, middleware patterns, error handling, and response streaming. Key for building HTTP endpoints (/pi, /benchmark, /pi/stream, /export, /convergence, /distribution, /search, /hex, /decimal) and parsing query parameters securely. Official docs maintained under MIT License.
@@ -53,19 +58,20 @@ MDN reference for JavaScript BigInt and Number.toString(radix), detailing syntax
 Wikipedia entry on the BBP algorithm, including series derivation, complexity analysis, and pseudocode for extracting arbitrary hexadecimal π digits without computing preceding digits. Core reference for the extractPiHex feature. CC BY-SA 3.0.
 ## CC BY-SA 3.0
 
+# Chudnovsky algorithm
+## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
+Detailed Wikipedia article on the Chudnovsky series for π, covering the mathematical derivation, convergence rate, and implementation pseudocode. Offers essential guidance on implementing high-performance arithmetical loops, factorial handling, and convergence thresholds for Chudnovsky-based π computation. CC BY-SA 3.0.
+## CC BY-SA 3.0
+
 # mpmath π module
 ## https://mpmath.org/doc/current/pi.html
 Documentation for mpmath’s π routines in Python, covering algorithmic choices, convergence rates, and performance benchmarks. Offers comparative insight for optimizing JavaScript implementations and benchmarking results. Last updated 2023; BSD License.
 ## BSD License
 
-# MPFR Manual
+# MPFR & GMP Manuals
 ## https://www.mpfr.org/mpfr-current/mpfr.html
-Official manual for the MPFR library, a C library for correct-rounding multiple-precision floating-point computations. Includes detailed algorithmic descriptions, rounding mode behaviors, and performance tuning options. Useful for understanding low-level implementation details and optimizing arbitrary-precision arithmetic. Last updated 2024; LGPL License.
-## LGPL License
-
-# GMP Manual
 ## https://gmplib.org/manual/
-Documentation of the GNU Multiple Precision Arithmetic Library (GMP), focusing on integer, rational, and floating-point routines. Covers function references, performance recommendations, and low-level optimizations. Valuable for insights into high-performance arbitrary-precision arithmetic strategies. Last updated 2024; LGPL License.
+Combined reference for MPFR and GMP, two foundational C libraries for multiple-precision floating-point and integer arithmetic. Includes detailed algorithmic descriptions, rounding mode behaviors, performance tuning options, function references, and low-level optimizations. Useful for understanding and benchmarking arbitrary-precision arithmetic strategies under LGPL License. Last updated 2024.
 ## LGPL License
 
 # Pi Delivery API Reference
