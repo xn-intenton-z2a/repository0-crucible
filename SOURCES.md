@@ -1,6 +1,6 @@
 # Decimal.js
 ## https://mikemcl.github.io/decimal.js/
-Comprehensive API reference and usage guide for Decimal.js, the arbitrary-precision arithmetic library used for all π computations in this project. Covers configuration of precision, rounding modes, performance considerations, and detailed examples for high-precision series algorithms (Machin, Gauss–Legendre, Chudnovsky). Essential for correctly setting precision margins, avoiding rounding errors, and optimizing speed. Last updated 2024; maintained by MikeMcl.
+Comprehensive API reference and usage guide for Decimal.js, the arbitrary-precision arithmetic library used for all π computations in this project. Covers configuration of precision, rounding modes, performance considerations, and detailed examples for high-precision series algorithms (Machin, Gauss–Legendre, Chudnovsky). Essential for correctly setting precision margins, avoiding rounding errors, and optimizing speed. Last updated 2024; highly authoritative as the library’s official site.
 ## MIT License
 
 # QuickChart API Reference
@@ -13,9 +13,14 @@ Official documentation for QuickChart’s HTTP chart-rendering API. Includes JSO
 Authoritative guide to Chart.js v4, the underlying visualization library used by QuickChart. Details core chart types (line, bar, scatter), dataset and axis configuration, plugin architecture, animations, and event hooks. Provides deep insight into chart customization, responsive design options, and performance tuning, enabling advanced graph styling and efficient data updates. Licensed under MIT; last updated 2024.
 ## MIT License
 
+# QuickChart.js Client Library
+## https://github.com/typpo/quickchart-js
+Official JavaScript client library for QuickChart.io, providing a fluent API to build chart configurations, request rendered images or URLs, and handle SSL, custom fonts, and advanced rendering options. Offers convenient promise-based methods for Node.js and browser environments, simplifying integration without manual HTTP calls. Last updated 2024; widely used in production; MIT License.
+## MIT License
+
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
-Comprehensive overview of Express 4.x routing, middleware patterns, error handling, and response streaming. Key for building HTTP endpoints (/pi, /benchmark, /pi/stream, /export, /convergence, /distribution, /search, /hex, /decimal) and parsing query parameters securely. Official docs maintained under MIT License.
+Comprehensive overview of Express 4.x routing, middleware patterns, error handling, and response streaming. Key for building RESTful endpoints, query parsing, and middleware integrations in the HTTP API and server-sent events infrastructure. Official docs maintained under MIT License.
 ## MIT License
 
 # Server-Sent Events (SSE)
@@ -25,7 +30,7 @@ MDN guide detailing the text/event-stream MIME type, SSE message formatting, rec
 
 # Node.js API Reference
 ## https://nodejs.org/api/
-Comprehensive reference for Node.js core modules in v20, including worker_threads (parallel computation), fs.promises (atomic file operations), perf_hooks (high-resolution timing), process (memoryUsage metrics), and global AbortController (cancellation patterns). Provides essential technical specifications and best practices for threading, file I/O, performance measurement, memory diagnostics, and graceful abort logic in long-running operations.
+Comprehensive reference for Node.js core modules in v20, including worker_threads (parallel computation), fs.promises (atomic file operations), perf_hooks (high-resolution timing), process.memoryUsage (diagnostics), and AbortController (operation timeouts). Essential for threading, file I/O, performance measurement, and cancellation patterns. Licensed under Node.js License.
 ## Node.js License
 
 # cli-progress
@@ -35,7 +40,7 @@ GitHub repository and API docs for cli-progress, a flexible console progress bar
 
 # zod
 ## https://github.com/colinhacks/zod
-Declarative schema validation library docs, covering object schemas, refinements, custom error messages, and asynchronous parsing. Crucial for CLI flag validation, script schema enforcement, and merging config with runtime arguments. Maintained under MIT License.
+Declarative schema validation library docs, covering object schemas, refinements, asynchronous parsing, and error formatting. Crucial for validating CLI flags, scripting mode schemas, and configuration inputs. Maintained under MIT License.
 ## MIT License
 
 # js-yaml
@@ -45,7 +50,7 @@ Official npm package documentation for js-yaml, detailing YAML parsing and strin
 
 # cosmiconfig
 ## https://github.com/davidtheclark/cosmiconfig
-Comprehensive guide to using cosmiconfig for configuration file discovery (JSON, YAML, JS), search order, caching strategies, and error handling. Key for the PI Configuration feature to load defaults before CLI parsing. Last updated 2024; MIT License.
+Comprehensive guide to using cosmiconfig for configuration file discovery (JSON, YAML, JS), search order, caching strategies, and error handling. Key for PI Configuration feature to load defaults before CLI parsing. Last updated 2024; MIT License.
 ## MIT License
 
 # MDN BigInt & Number Conversion
@@ -60,21 +65,17 @@ Wikipedia entry on the BBP algorithm, including series derivation, complexity an
 
 # Chudnovsky algorithm
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
-Detailed Wikipedia article on the Chudnovsky series for π, covering the mathematical derivation, convergence rate, and implementation pseudocode. Offers essential guidance on implementing high-performance arithmetical loops, factorial handling, and convergence thresholds for Chudnovsky-based π computation. CC BY-SA 3.0.
+Detailed Wikipedia article on the Chudnovsky series for π, covering the mathematical derivation, convergence rate, and implementation pseudocode. Offers essential guidance on implementing high-performance arithmetic loops, factorial handling, and convergence thresholds for Chudnovsky-based π computation. CC BY-SA 3.0.
 ## CC BY-SA 3.0
-
-# mpmath π module
-## https://mpmath.org/doc/current/pi.html
-Documentation for mpmath’s π routines in Python, covering algorithmic choices, convergence rates, and performance benchmarks. Offers comparative insight for optimizing JavaScript implementations and benchmarking results. Last updated 2023; BSD License.
-## BSD License
 
 # MPFR & GMP Manuals
 ## https://www.mpfr.org/mpfr-current/mpfr.html
+Manual for MPFR, a foundational C library for multiple-precision floating-point arithmetic, covering function references, rounding modes, performance optimizations, and configuration options.
 ## https://gmplib.org/manual/
-Combined reference for MPFR and GMP, two foundational C libraries for multiple-precision floating-point and integer arithmetic. Includes detailed algorithmic descriptions, rounding mode behaviors, performance tuning options, function references, and low-level optimizations. Useful for understanding and benchmarking arbitrary-precision arithmetic strategies under LGPL License. Last updated 2024.
+Manual for GMP, the GNU multiple-precision library for integer arithmetic, including API details, algorithmic strategies, and low-level optimizations. Useful for understanding and benchmarking arbitrary-precision arithmetic strategies. Last updated 2024.
 ## LGPL License
 
 # Pi Delivery API Reference
 ## https://api.pi.delivery/v1/documentation
-Public REST API for retrieving π digits with support for offset, digit count, and base conversion. Demonstrates practical patterns for HTTP-based digit access and can inform your repository’s HTTP API design. No authentication required; usage subject to service terms.
+Public REST API for retrieving π digits with support for offset, digit count, and base conversion. Demonstrates practical patterns for HTTP-based digit access and can inform the repository’s HTTP API design. No authentication required; usage subject to service terms.
 ## Public API (free to use without authentication)
