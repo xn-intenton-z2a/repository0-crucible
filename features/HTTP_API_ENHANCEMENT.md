@@ -1,65 +1,70 @@
-# Overview
+# HTTP API Enhancement Feature
 
-Extend the HTTP API server to provide dedicated endpoints for pi digit distribution, convergence visualization, and performance benchmarking without writing files locally. Clients can fetch PNG charts or JSON metrics via REST calls.
+## Overview
 
-# GET /distribution
+Extend the HTTP API server to provide dedicated endpoints for pi digit distribution, convergence visualization, and performance benchmarking. Clients receive PNG charts or JSON metrics directly over REST without writing files locally.
 
+## Endpoints
+
+### GET /distribution
 - Query parameters:
   - digits: integer, required, minimum 1, maximum 1e6
-  - algorithm: optional, one of machin, gauss-legendre, chudnovsky, default machin
-- Validate parameters; respond 400 with JSON error on invalid inputs
-- Compute pi using calculatePi(digits, algorithm)
-- Remove decimal point and count occurrences of digits 0 through 9
-- Build a QuickChart bar chart configuration with labels 0 through 9 and frequency data
+  - algorithm: optional, one of machin, gauss-legendre, chudnovsky (default machin)
+- Validate parameters; on error respond 400 with JSON error message
+- Compute π using calculatePi
+- Count occurrences of digits 0–9 in the decimal string (remove decimal point)
+- Build QuickChart bar chart configuration with labels 0–9 and counts
 - Render chart to PNG buffer and respond:
   - Status: 200
   - Header: Content-Type: image/png
-  - Body: PNG buffer
+  - Body: PNG data
 
-# GET /convergence
-
+### GET /convergence
 - Query parameters:
   - digits: integer, required, minimum 10, maximum 1e6
-  - algorithm: optional, one of machin, gauss-legendre, chudnovsky, default machin
-  - iterations: optional, integer, minimum 2, default 10
-- Validate parameters; respond 400 with JSON error on invalid inputs
-- Compute final pi using calculatePi(digits, algorithm)
-- For each sample i from 1 to iterations:
-  - sampleDigits = floor(digits * i / iterations)
-  - approx = calculatePi(sampleDigits, algorithm)
-  - error = absolute difference between approx and final pi
-- Build a QuickChart line chart configuration with labels = sampleDigits array and data = error values
+  - algorithm: optional, one of machin, gauss-legendre, chudnovsky (default machin)
+  - iterations: optional integer, minimum 2, default 10
+- Validate parameters; on error respond 400 with JSON error
+- Compute final π and sample approximations at increasing precision
+- Measure absolute error at each sample point
+- Build QuickChart line chart configuration with labels = sample digits and data = error values
 - Render chart to PNG buffer and respond image/png
 
-# GET /benchmark
-
+### GET /benchmark
 - Query parameters:
   - minDigits: integer, required, minimum 1
-  - maxDigits: integer, required, minimum = minDigits
-  - step: optional, integer, minimum 1, default = minDigits
-  - algorithm: optional, machin or gauss-legendre, default machin
-  - chart: optional boolean; if true return PNG chart, otherwise JSON
-- Validate parameters; respond 400 with JSON error on invalid inputs
-- Invoke benchmarkPi({minDigits, maxDigits, step, algorithm}) to obtain array of {digits, timeMs}
+  - maxDigits: integer, required, ≥ minDigits
+  - step: optional integer, minimum 1, default = minDigits
+  - algorithm: optional, machin or gauss-legendre (default machin)
+  - chart: optional boolean; if true return PNG chart, otherwise JSON metrics
+- Validate parameters; respond 400 on invalid input
+- Invoke benchmarkPi to obtain performance data array of { digits, timeMs }
 - If chart=true:
-  - Build a QuickChart line chart configuration with digit labels and timeMs data
-  - Render to PNG buffer and respond image/png
+  - Build QuickChart line chart with digit labels and timeMs data
+  - Render and respond image/png
 - Else:
-  - Respond 200 with Content-Type application/json and body JSON array
+  - Respond 200 with Content-Type application/json and JSON array of metrics
 
-# Dependencies
+## Implementation Details
 
-- Ensure quickchart-js is listed in package.json dependencies
-- Import QuickChart from quickchart-js in src/lib/main.js
-- express.json and express.urlencoded middleware already applied
+- In `src/lib/main.js`, import QuickChart from quickchart-js
+- Register the three new routes before the 404 fallback in `startHttpServer`
+- Perform schema validation for query parameters using zod or manual checks
+- Use built-in `calculatePi`, `benchmarkPi` functions
+- Render charts with QuickChart and write to `res` directly without intermediate files
 
-# Testing
+## Dependencies
 
-- Unit tests in tests/unit/http.test.js:
-  - Mock QuickChart to return placeholder PNG buffer
-  - Test GET /distribution, /convergence, and /benchmark with chart=true and without for valid and invalid parameters
-  - Assert status codes, headers, and response body types
-- E2E HTTP tests in tests/e2e/http.test.js:
-  - Start server on ephemeral port
-  - Issue requests to /distribution, /convergence, and /benchmark
-  - Assert status 200, correct Content-Type, PNG signature for images, and valid JSON structure for metrics
+- quickchart-js must be listed in `package.json` dependencies
+- No additional new dependencies required beyond quickchart-js and express
+
+## Testing
+
+- Unit tests in `tests/unit/http.test.js`:
+  - Mock QuickChart render method to return a placeholder PNG buffer
+  - Test each endpoint with valid parameters returns correct status, headers, and body type
+  - Test invalid parameter scenarios yield 400 status and descriptive JSON error
+- E2E HTTP tests in `tests/e2e/http.test.js`:
+  - Start server on an ephemeral port
+  - Issue GET requests to /distribution, /convergence, /benchmark with and without chart=true
+  - Assert status codes, Content-Type headers, PNG signature for image responses, and valid JSON structure for metrics
