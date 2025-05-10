@@ -130264,4 +130264,87 @@ Writable and Readable streams with backpressure in mind, and share
 your knowledge with colleagues and friends.
 Be sure to read up more on Stream for other API functions to help
 improve and unleash your streaming capabilities when building an application with
-Node.js.PrevHow to use streamsNextUser Journey\n\n\n\n
+Node.js.PrevHow to use streamsNextUser Journey\n\n\n\nUser Journey
+These diagnostics guides were created by the Diagnostics Working Group
+and the Node.js Website Team with the objective of providing guidance
+when diagnosing an issue in a user's application.
+The documentation project is organized based on user journey. Those journeys
+are a coherent set of step-by-step procedures that a user can follow to
+root-cause their issues.PrevBackpressuring in StreamsNextMemory\n\n\n\nMemory
+In this document you can learn about how to debug memory related issues.
+My process runs out of memory
+Node.js (JavaScript) is a garbage collected language, so having memory
+leaks is possible through retainers. As Node.js applications are usually
+multi-tenant, business critical, and long-running, providing an accessible and
+efficient way of finding a memory leak is essential.
+You can also fine-tune memory to get specific results. Check out
+Understanding and Tuning Memory for more details.
+Symptoms
+The user observes continuously increasing memory usage (can be fast or slow,
+over days or even weeks) then sees the process crashing and restarting by the
+process manager. The process is maybe running slower than before and the
+restarts cause some requests to fail (load balancer responds with 502).
+Side Effects
+
+Process restarts due to the memory exhaustion and requests are dropped
+on the floor
+Increased GC activity leads to higher CPU usage and slower response time
+
+GC blocking the Event Loop causing slowness
+
+
+Increased memory swapping slows down the process (GC activity)
+May not have enough available memory to get a Heap Snapshot
+
+My process utilizes memory inefficiently
+Symptoms
+The application uses an unexpected amount of memory and/or we observe elevated
+garbage collector activity.
+Side Effects
+
+An elevated number of page faults
+Higher GC activity and CPU usage
+
+Debugging
+Most memory issues can be solved by determining how much space our specific
+type of objects take and what variables are preventing them from being garbage
+collected. It can also help to know the allocation pattern of our program over
+time.
+
+Using Heap Profiler
+Using Heap Snapshot
+GC Traces
+PrevUser JourneyNextLive Debugging\n\n\n\nLive Debugging
+In this document you can learn about how to live debug a Node.js process.
+My application doesn’t behave as expected
+Symptoms
+The user may observe that the application doesn’t provide the expected output
+for certain inputs, for example, an HTTP server returns a JSON response where
+certain fields are empty. Various things can go wrong in the process but in this
+use case, we are mainly focused on the application logic and its correctness.
+Debugging
+In this use case, the user would like to understand the code path that our
+application executes for a certain trigger like an incoming HTTP request. They
+may also want to step through the code and control the execution as well as
+inspect what values variables hold in memory.
+
+Using Inspector
+PrevMemoryNextPoor Performance\n\n\n\nPoor Performance
+In this document you can learn about how to profile a Node.js process.
+My application has a poor performance
+Symptoms
+My applications latency is high and I have already confirmed that the bottleneck
+is not my dependencies like databases and downstream services. So I suspect that
+my application spends significant time to run code or process information.
+You are satisfied with your application performance in general but would like to
+understand which part of our application can be improved to run faster or more
+efficient. It can be useful when we want to improve the user experience or save
+computation cost.
+Debugging
+In this use-case, we are interested in code pieces that use more CPU cycles than
+the others. When we do this locally, we usually try to optimize our code.
+This document provides two simple ways to profile a Node.js application:
+
+Using V8 Sampling Profiler
+Using Linux Perf
+PrevLive DebuggingNextFlame Graphs\n\n\n\n

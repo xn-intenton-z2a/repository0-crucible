@@ -1,368 +1,262 @@
 # WORKER_THREADS
 
 ## Crawl Summary
-Worker constructor signature: new Worker(filename[, options]) with options: argv, env or SHARE_ENV, eval, execArgv, stdin, stdout, stderr, workerData, trackUnmanagedFds, transferList, resourceLimits, name. Worker instance APIs: postMessage(value[, transferList][, timeout]) returns Promise when using postMessageToThread, terminate() returns Promise<exitCode>, getHeapStatistics(), getHeapSnapshot(options), performance.eventLoopUtilization(), ref/unref, threadId, resourceLimits, stdio streams. Parent-port message passing via parentPort.postMessage and worker.on('message'). MessageChannel ports: port1, port2, postMessage, on('message'), close, ref/unref, hasRef, start. BroadcastChannel: BroadcastChannel(name), postMessage, onmessage, onmessageerror, close, ref, unref. Transfer list semantics: transferable types, SharedArrayBuffer always shared, markAsUntransferable, isMarkedAsUntransferable, markAsUncloneable, moveMessagePortToContext. Environment data: setEnvironmentData, getEnvironmentData, SHARE_ENV. Resource limits: maxYoungGenerationSizeMb, maxOldGenerationSizeMb, codeRangeSizeMb, stackSizeMb. Error codes: ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST, ERR_WORKER_MESSAGING_FAILED, ERR_WORKER_MESSAGING_SAME_THREAD, ERR_WORKER_MESSAGING_TIMEOUT. 
+module node:worker_threads; import ESM/CommonJS; Worker constructor: new Worker(filename:string|URL, options?:{argv:any[],env:Object|symbol,execArgv:string[],stdin:boolean,stdout:boolean,stderr:boolean,eval:boolean,workerData:any,trackUnmanagedFds:boolean,transferList:Object[],resourceLimits:{maxOldGenerationSizeMb:number,maxYoungGenerationSizeMb:number,codeRangeSizeMb:number,stackSizeMb:number},name:string}); Worker properties: threadId:number, resourceLimits:Object, stdout|stderr|stdin streams, performance:Performance, workerData:any; Worker events/message API; MessageChannel: port1,port2; MessagePort methods and events; BroadcastChannel(name:any) methods; Utility APIs: isMainThread, isInternalThread, set/getEnvironmentData, markAsUntransferable/uncloneable, moveMessagePortToContext, postMessageToThread, receiveMessageOnPort; focus on transferList and structured clone rules; pool recommendation with AsyncResource.
 
 ## Normalised Extract
 Table of Contents:
-1. Worker Constructor and Options
-2. Worker Instance APIs and Events
-3. parentPort Messaging
-4. MessageChannel and MessagePort
-5. BroadcastChannel
-6. Transfer and Clone Operations
-7. Environment Data APIs
-8. Resource Limits Configuration
-9. Error Codes and Troubleshooting
+1. Worker Creation
+2. Messaging Patterns
+3. Data Transfer & Cloning
+4. Environment Data
+5. Resource Limits
+6. Utility APIs
 
-1. Worker Constructor and Options
-new Worker(filename[, options])
-Options:
-  argv: any[] appended to process.argv
-  env: Object or SHARE_ENV (shared env symbol)
-  eval: boolean interpret filename as code
-  execArgv: string[] CLI flags passed to worker
-  stdin, stdout, stderr: boolean streams
-  workerData: any cloneable value
-  trackUnmanagedFds: boolean (default true)
-  transferList: Object[] MessagePort-like objects in workerData
-  resourceLimits: {
-    maxOldGenerationSizeMb: number,
-    maxYoungGenerationSizeMb: number,
-    codeRangeSizeMb: number,
-    stackSizeMb: number (default 4)
-  }
-  name: string thread title prefix (default 'WorkerThread')
+1. Worker Creation
+Signature: new Worker(filename:string|URL, options?: WorkerOptions)
+WorkerOptions:
+  argv:any[]       default []
+  env:Object|symbol (worker.SHARE_ENV) default process.env
+  execArgv:string[] inherited from parent
+  stdin:boolean    default false
+  stdout:boolean   default false
+  stderr:boolean   default false
+  eval:boolean     default false
+  workerData:any   default undefined
+  trackUnmanagedFds:boolean default true
+  transferList:Object[]
+  resourceLimits:{ maxOldGenerationSizeMb:number; maxYoungGenerationSizeMb:number; codeRangeSizeMb:number; stackSizeMb:number }
+  name:string      default 'WorkerThread'
 
-2. Worker Instance APIs and Events
-Properties:
-  threadId: integer unique per thread
-  resourceLimits: as passed in options or {} in main thread
-  stdin, stdout, stderr: Stream if enabled
-Methods:
-  postMessage(value[, transferList][, timeout]) → Promise when using postMessageToThread, void when direct
-  terminate() → Promise<integer exitCode>
-  getHeapStatistics() → Promise<Object>
-  getHeapSnapshot([options]) → Promise<Readable Stream>
-  performance.eventLoopUtilization([prevUtil[,currUtil]]) → { idle, active, utilization }
-  ref()/unref(): control event loop
-Events:
-  'error'(Error)
-  'exit'(exitCode)
-  'online'()
-  'message'(any)
-  'messageerror'(Error)
+2. Messaging Patterns
+Parent thread:
+  worker.postMessage(value, transferList?)
+  worker.on('message', handler)
+Worker thread:
+  parentPort.postMessage(value)
+  parentPort.on('message', handler)
+Nested threads or cross-tree:
+  postMessageToThread(threadId:number, value:any, transferList?:Object[], timeout?:number): Promise<void>
+Receive single message:
+  receiveMessageOnPort(port:MessagePort|BroadcastChannel): {message:any}|undefined
 
-3. parentPort Messaging
-In worker thread: parentPort is MessagePort or null.
-Use parentPort.postMessage(value[, transferList]) to send to parent.
-parentPort.on('message', value=>{}) to receive from parent.
+3. Data Transfer & Cloning
+Structured clone rules: circular refs, built-in types, TypedArrays, SharedArrayBuffer.
+transferList moves ArrayBuffer or MessagePort, leaving source unusable.
+markAsUntransferable(obj) prevents transfer, throws on transfer attempt.
+markAsUncloneable(obj) prevents cloning, throws on postMessage.
+Considerations: Buffer pooling, uncloneable prototyped objects lose descriptors.
 
-4. MessageChannel and MessagePort
-const { port1, port2 } = new MessageChannel()
-port.postMessage(value[, transferList]) to send
-port.on('message', listener)
-port.on('messageerror', listener)
-port.close()
-port.ref(), port.unref(), port.hasRef(), port.start()
+4. Environment Data
+setEnvironmentData(key:any, value?:any) propagates to new Workers; getEnvironmentData(key) retrieves clone.
+worker.SHARE_ENV symbol to share process.env between parent and child.
 
-5. BroadcastChannel
-const bc = new BroadcastChannel(name)
-bc.postMessage(message)
-bc.onmessage = event=>{}
-bc.onmessageerror = event=>{}
-bc.close(), bc.ref(), bc.unref()
+5. Resource Limits
+Define per-Worker JS engine constraints via options.resourceLimits:
+  maxOldGenerationSizeMb:number
+  maxYoungGenerationSizeMb:number
+  codeRangeSizeMb:number
+  stackSizeMb:number
+Access current: worker.resourceLimits
 
-6. Transfer and Clone Operations
-TransferList items: ArrayBuffer, MessagePort, FileHandle
-SharedArrayBuffer instances always shared
-markAsUntransferable(object): no-op for primitive; cannot be reversed; throws DataCloneError if included in transferList
-isMarkedAsUntransferable(object): returns boolean
-markAsUncloneable(object): no-op for primitive; cannot be reversed; throws DataCloneError if object used as message
-moveMessagePortToContext(port, contextifiedSandbox) → MessagePort created in target vm context
-
-7. Environment Data APIs
-setEnvironmentData(key, value?): undefined, removes key if value undefined
-getEnvironmentData(key) → any clone of value set in spawning thread
-SHARE_ENV: symbol to share process.env object between threads
-
-8. Resource Limits Configuration
-resourceLimits object keys:
-  maxYoungGenerationSizeMb: number
-  maxOldGenerationSizeMb: number
-  codeRangeSizeMb: number
-  stackSizeMb: number
-Default in main thread: {}
-Worker.resourceLimits matches options.resourceLimits
-
-9. Error Codes and Troubleshooting
-ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST thrown when MessagePort-like object in value without transferList
-ERR_WORKER_MESSAGING_FAILED when postMessageToThread to invalid ID or no listener
-ERR_WORKER_MESSAGING_SAME_THREAD when threadId equals current thread
-ERR_WORKER_MESSAGING_TIMEOUT when timeout reached in postMessageToThread
+6. Utility APIs
+isMainThread:boolean
+isInternalThread:boolean
+moveMessagePortToContext(port, contextifiedSandbox):MessagePort
 
 
 ## Supplementary Details
-Worker Pool Implementation Pattern:
-1. Use AsyncResource to correlate tasks and callbacks:
+Implementation Steps:
+1. Create WorkerPool: reuse Worker instances rather than spawn per task.
+2. Use AsyncResource from 'async_hooks' to correlate tasks:
    const { AsyncResource } = require('async_hooks');
-   class TaskResource extends AsyncResource {
-     constructor(callback) { super('TaskResource'); this.callback = callback; }
-     run(taskData) { this.runInAsyncScope(this.callback, null, taskData); }
-   }
-2. Pre-spawn worker threads:
-   const pool = new Set();
-   for (let i=0; i<poolSize; i++) {
-     const worker = new Worker(scriptPath, { workerData: null });
-     pool.add(worker);
-   }
-3. Dispatch tasks:
-   function execTask(data) {
-     return new Promise((resolve, reject) => {
-       const resource = new TaskResource(resolve);
-       const worker = getAvailableWorker();
-       worker.once('message', result => resource.run(result));
-       worker.once('error', err => reject(err));
-       worker.postMessage(data);
-     });
-   }
-
-Configuration Options Defaults and Effects:
-- trackUnmanagedFds: true  (closes raw FDs on exit)
-- resourceLimits.stackSizeMb: 4 (minimum to avoid crashes)
-- resourceLimits.maxOldGenerationSizeMb: inherited from --max-old-space-size or V8 default
-- execArgv: inherits parent thread execArgv
-
-Best Practice:
-- Reuse worker instances instead of spawning per task to minimize overhead
-- Use transferList for large ArrayBuffers to avoid copying
-- Mark internal buffers as untransferable with markAsUntransferable()
-- Share environment sparingly; prefer explicit data passing
-
+   class TaskResource extends AsyncResource { run(fn){ this.runInAsyncScope(fn); } }
+3. WorkerPool: assign idle Workers, postMessage, attach message/error/exit, release or recycle.
+4. Custom channels: new MessageChannel(), worker.postMessage({port}, [port]); parent/listener attaches on port2.
+5. Performance Monitoring: worker.performance.eventLoopUtilization([prev]); returns { idle, active, utilization }.
+6. Heap Analysis: worker.getHeapSnapshot({ exposeInternals?:boolean, exposeNumericValues?:boolean }) -> ReadableStream; worker.getHeapStatistics() -> Promise<{ total_heap_size, used_heap_size, ... }>
+7. TransferList: always verify markAsUntransferable when Buffer pooling; to clone buffers use Buffer.from(buffer).
+8. Error Handling: listen for 'messageerror', 'error', 'exit' with non-zero code; wrap postMessageToThread in try/catch and handle ERR_WORKER_MESSAGING_TIMEOUT.
+9. Preload scripts: launching threads from preload must use process.emit('workerMessage').
 
 
 ## Reference Details
-Worker Constructor:
-Signature: new Worker(filename: string|URL, options?: {
-  argv?: any[];
-  env?: NodeJS.ProcessEnv|typeof SHARE_ENV;
-  eval?: boolean;
-  execArgv?: string[];
-  stdin?: boolean;
-  stdout?: boolean;
-  stderr?: boolean;
-  workerData?: any;
-  trackUnmanagedFds?: boolean;
-  transferList?: (ArrayBuffer|MessagePort|FileHandle)[];
+## WorkerOptions Interface
+interface WorkerOptions {
+  argv?: any[]; // default []
+  env?: { [key:string]: string } | symbol; // default process.env, use worker.SHARE_ENV to share
+  execArgv?: string[]; // default process.execArgv
+  stdin?: boolean; // default false
+  stdout?: boolean; // default false
+  stderr?: boolean; // default false
+  eval?: boolean; // default false
+  workerData?: any; // cloneable
+  trackUnmanagedFds?: boolean; // default true
+  transferList?: Object[];
   resourceLimits?: {
     maxOldGenerationSizeMb?: number;
     maxYoungGenerationSizeMb?: number;
     codeRangeSizeMb?: number;
     stackSizeMb?: number;
   };
-  name?: string;
-})
-Throws: ERR_WORKER_INVALID_PATH if filename invalid
-Defaults: env=process.env, trackUnmanagedFds=true, name='WorkerThread'
+  name?: string; // default 'WorkerThread'
+}
 
-Worker Methods:
-postMessage(value: any, transferList?: (ArrayBuffer|MessagePort|FileHandle)[]): void
-terminate(): Promise<number>
-getHeapSnapshot(options?: { exposeInternals?: boolean; exposeNumericValues?: boolean; }): Promise<Readable>
-getHeapStatistics(): Promise<import('v8').HeapInfo>
-performance.eventLoopUtilization(util1?: object, util2?: object): { idle: number; active: number; utilization: number }
-ref(): void
-unref(): void
+## new Worker(filename, options)
+Parameters:
+  filename: string | URL (absolute, './', '../', data: or file: URL)
+  options: WorkerOptions
+Returns: Worker instance
+Throws: ERR_WORKER_PATH must be valid; ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST if transferList missing for MessagePort in workerData
 
-Worker Properties:
-threadId: number (read-only)
-resourceLimits: { maxYoungGenerationSizeMb:number; maxOldGenerationSizeMb:number; codeRangeSizeMb:number; stackSizeMb:number }
-stdin: Writable | null
-stdout: Readable | null
-stderr: Readable | null
+## Worker Methods
+worker.postMessage(value:any, transferList?:Object[], timeout?:number): void
+  Sends value, structured clone, errors: ERR_WORKER_MESSAGING_SAME_THREAD, ERR_WORKER_MESSAGING_FAILED, ERR_WORKER_MESSAGING_TIMEOUT
 
-Worker Events:
-'error': listener(err: Error) → void
-'exit': listener(code: number) → void
-'online': listener() → void
-'message': listener(value: any) → void
-'messageerror': listener(err: Error) → void
+worker.terminate(): Promise<number>
+  Resolves with exitCode upon termination.
 
-parentPort:
-postMessage(value: any, transferList?: (ArrayBuffer|MessagePort|FileHandle)[]): void
-once('message', listener(value: any): void)
+worker.ref(): void // keep event loop alive
+worker.unref(): void // allow exit if only handle
+worker.getHeapSnapshot(options?:{exposeInternals?:boolean;exposeNumericValues?:boolean}): Promise<ReadableStream>
+worker.getHeapStatistics(): Promise<{ total_heap_size:number; total_physical_size:number; total_available_size:number; used_heap_size:number; heap_size_limit:number; malloced_memory:number; peak_malloced_memory:number; does_zap_garbage?:number }>
 
-MessageChannel:
-new MessageChannel(): { port1: MessagePort; port2: MessagePort }
+## Events on Worker
+'online' => no args
+'message' => value:any
+'messageerror' => error: Error
+'error' => err: Error
+'exit' => exitCode:number
 
-MessagePort extends EventTarget:
-postMessage(value: any, transferList?: (ArrayBuffer|MessagePort|FileHandle)[]): void
+## Structured Clone Types
+Transferable: ArrayBuffer, MessagePort, FileHandle
+Cloneable: TypedArray, SharedArrayBuffer, RegExp, Date, BigInt, Map, Set, CryptoKey, KeyObject, X509Certificate, Histogram, BlockList, SocketAddress, etc.
+
+## MessageChannel & MessagePort
+new MessageChannel() => {port1: MessagePort; port2: MessagePort}
+port.postMessage(value:any, transferList?:Object[]): void
+port.close(): void
+port.start(): void
+port.ref(): void
+port.unref(): void
+port.hasRef(): boolean
+Events: 'message'(value), 'messageerror'(error), 'close'
+
+## BroadcastChannel
+new BroadcastChannel(name:any)
+postMessage(message:any): void
 close(): void
 ref(): void
 unref(): void
-hasRef(): boolean
-start(): void
-on('message', listener(value: any): void)
-on('messageerror', listener(err: Error): void)
-on('close', listener(): void)
+onmessage: (event:{data:any})=>void
+onmessageerror: (error:Event)=>void
 
-BroadcastChannel:
-new BroadcastChannel(name: string)
-postMessage(message: any): void
-close(): void
-ref(): void
-unref(): void
-onmessage: (event: { data: any }) => void
-onmessageerror: (event: any) => void
+## Utility Functions
+isMainThread: boolean
+isInternalThread: boolean
+setEnvironmentData(key:any, value?:any): void
+getEnvironmentData(key:any): any
+markAsUntransferable(object:any): void // no-op for primitives
+isMarkedAsUntransferable(object:any): boolean
+markAsUncloneable(object:any): void
+moveMessagePortToContext(port:MessagePort, contextifiedSandbox:Object): MessagePort
+postMessageToThread(threadId:number, value:any, transferList?:Object[], timeout?:number): Promise<void>
+receiveMessageOnPort(port:MessagePort|BroadcastChannel): { message:any }|undefined
 
-Environment Data APIs:
-setEnvironmentData(key: any, value?: any): void
-getEnvironmentData(key: any): any
-SHARE_ENV: symbol
+## Best Practices & Patterns
+- Use a Worker pool; reuse Worker instances
+- Employ AsyncResource to map tasks to diagnostic hooks
+- Use custom MessageChannels for separation of concerns
+- Validate transferable objects with markAsUntransferable before use
+- Monitor performance via performance.eventLoopUtilization
+- Capture heap via getHeapSnapshot for memory leak analysis
 
-Transfer and Clone:
-markAsUntransferable(object: any): void
-isMarkedAsUntransferable(object: any): boolean
-markAsUncloneable(object: any): void
-moveMessagePortToContext(port: MessagePort, contextifiedSandbox: object): MessagePort
-
-Errors and Troubleshooting Commands:
-- ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST: thrown by postMessage when transferList missing
-- ERR_WORKER_MESSAGING_FAILED: thrown by postMessageToThread invalid target
-- ERR_WORKER_MESSAGING_SAME_THREAD: thrown by postMessageToThread same thread
-- ERR_WORKER_MESSAGING_TIMEOUT: thrown by postMessageToThread when timeout reached
-
-Example: postMessageToThread
-import { postMessageToThread, threadId, Worker } from 'node:worker_threads';
-await postMessageToThread(targetId, payload, [], 5000)
-.catch(err => {
-  if (err.code === 'ERR_WORKER_MESSAGING_TIMEOUT') console.error('Timeout');
-});
+## Troubleshooting
+1. ERR_WORKER_MESSAGING_TIMEOUT: increase timeout or ensure destination listener
+2. DataCloneError on postMessage: verify transferList; remove uncloneable fields or markAsUncloneable
+3. Worker stops unexpectedly: listen to 'exit' event and inspect exit code
+4. No messages received: call port.start() or attach 'message' listener before post
+5. Environment not shared: pass env: worker.SHARE_ENV
+6. Unknown errors: run with --trace-warnings or DEBUG=worker_threads
 
 
 ## Information Dense Extract
-Worker: new Worker(file: string|URL, options?: {argv:any[],env:ProcessEnv|SHARE_ENV,eval:boolean,execArgv:string[],stdin:boolean,stdout:boolean,stderr:boolean,workerData:any,trackUnmanagedFds:boolean,transferList:any[],resourceLimits:{maxOldGenerationSizeMb:number,maxYoungGenerationSizeMb:number,codeRangeSizeMb:number,stackSizeMb:number},name:string})
-Properties: threadId:int, resourceLimits:object, stdin/stdout/stderr:Stream|null
-Methods: postMessage(value:any,transferList?:any[],timeout?:number):void|Promise, terminate():Promise<int>, getHeapSnapshot(options?):Promise<Readable>, getHeapStatistics():Promise<HeapInfo>, performance.eventLoopUtilization(prev1?,prev2?):{idle,active,utilization}, ref(), unref()
-Events: 'error'(Error),'exit'(int),'online'(),'message'(any),'messageerror'(Error)
-parentPort: MessagePort|null
-MessageChannel: const {port1,port2}=new MessageChannel()
-MessagePort: postMessage(value:any,transferList?:any[]),close(),ref(),unref(),hasRef():boolean,start(),on('message',value=>{}),on('messageerror',err=>{}),on('close',()=>{})
-BroadcastChannel: new BroadcastChannel(name:string),postMessage(any),onmessage(event),onmessageerror(event),close(),ref(),unref()
-Transfer: transferList items: ArrayBuffer|MessagePort|FileHandle; SharedArrayBuffer always shared; markAsUntransferable(obj),isMarkedAsUntransferable(obj),markAsUncloneable(obj),moveMessagePortToContext(port,vmContext)
-EnvData: setEnvironmentData(key,val?),getEnvironmentData(key),SHARE_ENV
-ResourceLimits: {maxOldGenerationSizeMb,maxYoungGenerationSizeMb,codeRangeSizeMb,stackSizeMb}
-Errors: ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST,ERR_WORKER_MESSAGING_FAILED,ERR_WORKER_MESSAGING_SAME_THREAD,ERR_WORKER_MESSAGING_TIMEOUT
+module node:worker_threads; import Worker,isMainThread,parentPort,workerData,setEnvironmentData,getEnvironmentData; new Worker(filename:string|URL,options?:{argv:any[],env:Object|symbol,execArgv:string[],stdin:boolean,stdout:boolean,stderr:boolean,eval:boolean,workerData:any,trackUnmanagedFds:boolean,transferList:Object[],resourceLimits:{maxOldGenerationSizeMb:number,maxYoungGenerationSizeMb:number,codeRangeSizeMb:number,stackSizeMb:number},name:string}):Worker; Worker.threadId:number; Worker.resourceLimits:Object; Worker.workerData:any; Worker.performance:Performance; Worker.postMessage(value:any,transferList?:Object[],timeout?:number):void; Worker.terminate():Promise<number>; Worker.getHeapSnapshot(opts?:{exposeInternals?:boolean,exposeNumericValues?:boolean}):Promise<ReadableStream>; Worker.getHeapStatistics():Promise<Object>; events:'online','message'(any),'messageerror'(Error),'error'(Error),'exit'(number); MessageChannel=>{port1,port2}; MessagePort.postMessage(value:any,transferList?:Object[]):void; .close(),.start(),.ref(),.unref(),.hasRef():boolean; events:'message','messageerror','close'; BroadcastChannel(name:any).postMessage(any),.close(),.ref(),.unref(),onmessage, onmessageerror; Utility: isMainThread,isInternalThread,set/getEnvironmentData,markAsUntransferable,isMarkedAsUntransferable,markAsUncloneable,moveMessagePortToContext,postMessageToThread(threadId,any,transferList?,timeout?):Promise<void>,receiveMessageOnPort(port):{message:any}|undefined; structured clone supports TypedArray,SharedArrayBuffer,RegExp,Date,BigInt,Map,Set,CryptoKey,KeyObject,X509Certificate,Histogram,BlockList,SocketAddress; transferList moves ArrayBuffer/MessagePort; use AsyncResource for Worker pool; performance.eventLoopUtilization, heap snapshot/statistics; errors: ERR_WORKER_MESSAGING_*, DataCloneError; share env via SHARE_ENV; no Markdown escapes.
 
 ## Sanitised Extract
 Table of Contents:
-1. Worker Constructor and Options
-2. Worker Instance APIs and Events
-3. parentPort Messaging
-4. MessageChannel and MessagePort
-5. BroadcastChannel
-6. Transfer and Clone Operations
-7. Environment Data APIs
-8. Resource Limits Configuration
-9. Error Codes and Troubleshooting
+1. Worker Creation
+2. Messaging Patterns
+3. Data Transfer & Cloning
+4. Environment Data
+5. Resource Limits
+6. Utility APIs
 
-1. Worker Constructor and Options
-new Worker(filename[, options])
-Options:
-  argv: any[] appended to process.argv
-  env: Object or SHARE_ENV (shared env symbol)
-  eval: boolean interpret filename as code
-  execArgv: string[] CLI flags passed to worker
-  stdin, stdout, stderr: boolean streams
-  workerData: any cloneable value
-  trackUnmanagedFds: boolean (default true)
-  transferList: Object[] MessagePort-like objects in workerData
-  resourceLimits: {
-    maxOldGenerationSizeMb: number,
-    maxYoungGenerationSizeMb: number,
-    codeRangeSizeMb: number,
-    stackSizeMb: number (default 4)
-  }
-  name: string thread title prefix (default 'WorkerThread')
+1. Worker Creation
+Signature: new Worker(filename:string|URL, options?: WorkerOptions)
+WorkerOptions:
+  argv:any[]       default []
+  env:Object|symbol (worker.SHARE_ENV) default process.env
+  execArgv:string[] inherited from parent
+  stdin:boolean    default false
+  stdout:boolean   default false
+  stderr:boolean   default false
+  eval:boolean     default false
+  workerData:any   default undefined
+  trackUnmanagedFds:boolean default true
+  transferList:Object[]
+  resourceLimits:{ maxOldGenerationSizeMb:number; maxYoungGenerationSizeMb:number; codeRangeSizeMb:number; stackSizeMb:number }
+  name:string      default 'WorkerThread'
 
-2. Worker Instance APIs and Events
-Properties:
-  threadId: integer unique per thread
-  resourceLimits: as passed in options or {} in main thread
-  stdin, stdout, stderr: Stream if enabled
-Methods:
-  postMessage(value[, transferList][, timeout])  Promise when using postMessageToThread, void when direct
-  terminate()  Promise<integer exitCode>
-  getHeapStatistics()  Promise<Object>
-  getHeapSnapshot([options])  Promise<Readable Stream>
-  performance.eventLoopUtilization([prevUtil[,currUtil]])  { idle, active, utilization }
-  ref()/unref(): control event loop
-Events:
-  'error'(Error)
-  'exit'(exitCode)
-  'online'()
-  'message'(any)
-  'messageerror'(Error)
+2. Messaging Patterns
+Parent thread:
+  worker.postMessage(value, transferList?)
+  worker.on('message', handler)
+Worker thread:
+  parentPort.postMessage(value)
+  parentPort.on('message', handler)
+Nested threads or cross-tree:
+  postMessageToThread(threadId:number, value:any, transferList?:Object[], timeout?:number): Promise<void>
+Receive single message:
+  receiveMessageOnPort(port:MessagePort|BroadcastChannel): {message:any}|undefined
 
-3. parentPort Messaging
-In worker thread: parentPort is MessagePort or null.
-Use parentPort.postMessage(value[, transferList]) to send to parent.
-parentPort.on('message', value=>{}) to receive from parent.
+3. Data Transfer & Cloning
+Structured clone rules: circular refs, built-in types, TypedArrays, SharedArrayBuffer.
+transferList moves ArrayBuffer or MessagePort, leaving source unusable.
+markAsUntransferable(obj) prevents transfer, throws on transfer attempt.
+markAsUncloneable(obj) prevents cloning, throws on postMessage.
+Considerations: Buffer pooling, uncloneable prototyped objects lose descriptors.
 
-4. MessageChannel and MessagePort
-const { port1, port2 } = new MessageChannel()
-port.postMessage(value[, transferList]) to send
-port.on('message', listener)
-port.on('messageerror', listener)
-port.close()
-port.ref(), port.unref(), port.hasRef(), port.start()
+4. Environment Data
+setEnvironmentData(key:any, value?:any) propagates to new Workers; getEnvironmentData(key) retrieves clone.
+worker.SHARE_ENV symbol to share process.env between parent and child.
 
-5. BroadcastChannel
-const bc = new BroadcastChannel(name)
-bc.postMessage(message)
-bc.onmessage = event=>{}
-bc.onmessageerror = event=>{}
-bc.close(), bc.ref(), bc.unref()
+5. Resource Limits
+Define per-Worker JS engine constraints via options.resourceLimits:
+  maxOldGenerationSizeMb:number
+  maxYoungGenerationSizeMb:number
+  codeRangeSizeMb:number
+  stackSizeMb:number
+Access current: worker.resourceLimits
 
-6. Transfer and Clone Operations
-TransferList items: ArrayBuffer, MessagePort, FileHandle
-SharedArrayBuffer instances always shared
-markAsUntransferable(object): no-op for primitive; cannot be reversed; throws DataCloneError if included in transferList
-isMarkedAsUntransferable(object): returns boolean
-markAsUncloneable(object): no-op for primitive; cannot be reversed; throws DataCloneError if object used as message
-moveMessagePortToContext(port, contextifiedSandbox)  MessagePort created in target vm context
-
-7. Environment Data APIs
-setEnvironmentData(key, value?): undefined, removes key if value undefined
-getEnvironmentData(key)  any clone of value set in spawning thread
-SHARE_ENV: symbol to share process.env object between threads
-
-8. Resource Limits Configuration
-resourceLimits object keys:
-  maxYoungGenerationSizeMb: number
-  maxOldGenerationSizeMb: number
-  codeRangeSizeMb: number
-  stackSizeMb: number
-Default in main thread: {}
-Worker.resourceLimits matches options.resourceLimits
-
-9. Error Codes and Troubleshooting
-ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST thrown when MessagePort-like object in value without transferList
-ERR_WORKER_MESSAGING_FAILED when postMessageToThread to invalid ID or no listener
-ERR_WORKER_MESSAGING_SAME_THREAD when threadId equals current thread
-ERR_WORKER_MESSAGING_TIMEOUT when timeout reached in postMessageToThread
+6. Utility APIs
+isMainThread:boolean
+isInternalThread:boolean
+moveMessagePortToContext(port, contextifiedSandbox):MessagePort
 
 ## Original Source
-Worker Threads
+Node.js Worker Threads
 https://nodejs.org/api/worker_threads.html
 
 ## Digest of WORKER_THREADS
 
-# Worker Threads API
+# Worker Threads Overview
 
-Stability: 2 - Stable  
-Source Code: lib/worker_threads.js  
-Imported using:
+The node:worker_threads module enables parallel JavaScript execution threads within a single Node.js process, sharing memory via ArrayBuffer and SharedArrayBuffer.
+
+# Module Import
+
+ESM:
 ```js
 import {
   Worker,
@@ -370,138 +264,129 @@ import {
   parentPort,
   workerData,
   setEnvironmentData,
-  getEnvironmentData,
-  SHARE_ENV,
-  MessageChannel,
-  MessagePort,
-  BroadcastChannel,
-  receiveMessageOnPort,
-  markAsUntransferable,
-  isMarkedAsUntransferable,
-  markAsUncloneable,
-  moveMessagePortToContext
+  getEnvironmentData
 } from 'node:worker_threads';
 ```
-
-# Worker Constructor
-
+CommonJS:
 ```js
-new Worker(filename[, options])
+const {
+  Worker,
+  isMainThread,
+  parentPort,
+  workerData,
+  setEnvironmentData,
+  getEnvironmentData
+} = require('node:worker_threads');
 ```
 
-filename <string|URL>  Path or WHATWG URL to script or code. When options.eval is true, treated as inline script.
+# Worker Constructor and Options
 
-options Object:
-- argv    <any[]>          Appended to process.argv
-- env     <Object>|SHARE_ENV  Initial process.env or shared env
-- eval    <boolean>        Execute code rather than file
-- execArgv<string[]>      CLI flags passed to worker
-- stdin   <boolean>        Enable worker.stdin stream
-- stdout  <boolean>        Expose worker.stdout
-- stderr  <boolean>        Expose worker.stderr
-- workerData<any>          Value available as threadLocal workerData
-- trackUnmanagedFds<boolean>  Auto-close raw FDs on exit
-- transferList<Object[]>   Transferable ports in workerData
-- resourceLimits<Object>   V8 engine limits: codeRangeSizeMb, maxOldGenerationSizeMb, maxYoungGenerationSizeMb, stackSizeMb
-- name<string>             Thread title prefix
-
-# Worker Instance Methods and Properties
-
-- worker.postMessage(value[, transferList][, timeout]) → Promise|void
-- worker.terminate() → Promise<integer>
-- worker.getHeapStatistics() → Promise<Object>
-- worker.getHeapSnapshot([options]) → Promise<ReadableStream>
-- worker.performance.eventLoopUtilization([util1[,util2]]) → Object
-- worker.ref() / worker.unref()
-- worker.threadId   <integer>
-- worker.resourceLimits<Object>
-- worker.stderr, worker.stdin, worker.stdout  <Stream>
-
-Events:
-- 'error'(err)
-- 'exit'(exitCode)
-- 'online'()
-- 'message'(value)
-- 'messageerror'(err)
-
-# Message Passing
-
-## parentPort
-
-In worker:
-```js
-parentPort.postMessage(value[, transferList])
-parentPort.on('message', listener)
+## Signature
+```ts
+new Worker(
+  filename: string | URL,
+  options?: WorkerOptions
+): Worker
 ```
 
-## MessageChannel / MessagePort
+## WorkerOptions
+- argv: any[]  Default: []
+- env: Object | symbol (worker.SHARE_ENV)  Default: process.env
+- execArgv: string[]  Default: parent process.execArgv
+- stdin: boolean  Default: false
+- stdout: boolean  Default: false
+- stderr: boolean  Default: false
+- eval: boolean  Default: false
+- workerData: any  Default: undefined
+- trackUnmanagedFds: boolean  Default: true
+- transferList: Object[]
+- resourceLimits: { maxOldGenerationSizeMb: number; maxYoungGenerationSizeMb: number; codeRangeSizeMb: number; stackSizeMb: number }
+- name: string  Default: 'WorkerThread'
 
-```js
-const { port1, port2 } = new MessageChannel();
-port1.on('message', listener);
-port2.postMessage(value[, transferList]);
-port.close();
-port.ref()/unref();
-port.hasRef();
-port.start();
-```
+# Core Worker Methods and Properties
 
-## BroadcastChannel
+## Properties
+- worker.threadId: number
+- worker.resourceLimits: same as options.resourceLimits
+- worker.stdout: WritableStream
+- worker.stderr: WritableStream
+- worker.stdin: WritableStream
+- worker.performance: Performance
+- worker.workerData: any
 
-```js
-const bc = new BroadcastChannel(name);
-bc.postMessage(message);
-bc.onmessage = listener;
-bc.close()/ref()/unref();
-```
+## Events
+- 'online'
+- 'message' (value: any)
+- 'messageerror' (error: Error)
+- 'error' (err: Error)
+- 'exit' (exitCode: number)
 
-# Transfer and Clone Semantics
+## Methods
+- worker.postMessage(value: any, transferList?: Object[], timeout?: number): void
+- worker.terminate(): Promise<number>
+- worker.ref(): void
+- worker.unref(): void
+- worker.getHeapSnapshot(options?: { exposeInternals?: boolean; exposeNumericValues?: boolean }): Promise<ReadableStream>
+- worker.getHeapStatistics(): Promise<Object>
 
-- TransferList: Array< ArrayBuffer | MessagePort | FileHandle >
-- SharedArrayBuffer always shared
-- markAsUntransferable(object)  Prevent object transfer: throws DataCloneError if in transferList
-- isMarkedAsUntransferable(object)  Boolean
-- markAsUncloneable(object)  Prevent value clone in postMessage
-- moveMessagePortToContext(port, vmContext) → MessagePort in target context
+# MessageChannel & MessagePort
 
-# Environment Data
+## new MessageChannel()
+Returns { port1: MessagePort; port2: MessagePort }
 
-```js
-worker.setEnvironmentData(key[, value]);
-worker.getEnvironmentData(key) → any
-worker.SHARE_ENV  special env symbol
-```
+### MessagePort Methods
+- port.postMessage(value: any, transferList?: Object[]): void
+- port.close(): void
+- port.start(): void
+- port.ref(): void
+- port.unref(): void
+- port.hasRef(): boolean
 
-# Resource Limits
+### Events
+- 'message' (value: any)
+- 'messageerror' (error: Error)
+- 'close'
 
-```js
-resourceLimits = {
-  maxYoungGenerationSizeMb: <number>,
-  maxOldGenerationSizeMb: <number>,
-  codeRangeSizeMb: <number>,
-  stackSizeMb: <number>
-}
-```
+# BroadcastChannel
 
-# Troubleshooting
+## new BroadcastChannel(name: any)
 
-- Missing transferList → ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST
-- Messaging same thread → ERR_WORKER_MESSAGING_SAME_THREAD
-- Messaging invalid thread → ERR_WORKER_MESSAGING_FAILED
-- Timeout in postMessageToThread → ERR_WORKER_MESSAGING_TIMEOUT
+### Methods
+- postMessage(message: any): void
+- close(): void
+- ref(): void
+- unref(): void
 
-Retrieve current date: 2024-06-10
-Data Size: 3,734,810 bytes
-Links Found: 3040
+### Properties
+- onmessage: (event: MessageEvent) => void
+- onmessageerror: (error: Event) => void
+
+# Utility Functions
+
+- isMainThread: boolean
+- isInternalThread: boolean
+- setEnvironmentData(key: any, value?: any): void
+- getEnvironmentData(key: any): any
+- markAsUntransferable(object: any): void
+- isMarkedAsUntransferable(object: any): boolean
+- markAsUncloneable(object: any): void
+- moveMessagePortToContext(port: MessagePort, contextifiedSandbox: Object): MessagePort
+- postMessageToThread(threadId: number, value: any, transferList?: Object[], timeout?: number): Promise<void>
+- receiveMessageOnPort(port: MessagePort | BroadcastChannel): { message: any } | undefined
+
+# Data Size & Links
+- Data Size: 3738703 bytes
+- Links Found: 3107
+- Retrieved: 2024-06-17
 
 
 ## Attribution
-- Source: Worker Threads
+- Source: Node.js Worker Threads
 - URL: https://nodejs.org/api/worker_threads.html
-- License: License: CC-BY-4.0
-- Crawl Date: 2025-05-10T10:58:22.270Z
-- Data Size: 3734810 bytes
-- Links Found: 3040
+- License: Node.js License
+- Crawl Date: 2025-05-10T18:28:35.305Z
+- Data Size: 3738703 bytes
+- Links Found: 3107
 
 ## Retrieved
 2025-05-10
