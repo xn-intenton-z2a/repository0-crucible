@@ -1,53 +1,65 @@
 # Overview
-
-Introduce a robust, structured command-line parser replacing the placeholder console.log to provide a cohesive entry point for all π operations. Users invoke intuitive commands and global flags; handlers dispatch to feature implementations. This foundational feature unlocks all other CLI and HTTP capabilities.
+Replace the existing placeholder main function with a robust CLI parser based on yargs to provide structured commands and global options. This foundational feature will enable all subsequent π calculation, extraction, benchmarking, diagnostics, caching, streaming, and reporting capabilities by dispatching to dedicated handlers.
 
 # CLI Interface
-
-Help and Version
---help                 Display usage information with descriptions of commands and global options and exit with status code zero.
---version              Print current tool version from package.json and exit with status code zero.
+--help
+    Display usage information with descriptions of commands and global options and exit 0.
+--version
+    Print the current package version and exit 0.
 
 Commands
-
-calculate-pi <digits>             Compute π to the given digit count and output to stdout or file (--output).
-extract-digit <position>          Extract a single π digit at zero-based index in hex or decimal (--base, --output).
-serve [--port <number>]           Start the HTTP API server on specified port (default: 3000).
-list-algorithms [--json]          List supported π algorithms in table or JSON format when --json provided.
-benchmark-pi <digits>             Measure performance of one or more algorithms, output JSON summary and optional PNG chart (--algorithms, --output-dir, --chart-file).
-diagnostics [--json]              Print environment and runtime diagnostics in human-readable or JSON format.
+calculate-pi <digits>
+    Compute π to the specified digit count. Supports --output to write result to file.
+extract-digit <position>
+    Extract a single π digit at a zero-based index. Supports --base (hex|decimal) and --output.
+serve
+    Start the HTTP API server. Supports --port <number> and --json for JSON-formatted responses.
+list-algorithms
+    List all supported algorithms. Supports --json for machine-readable output.
+benchmark-pi <digits>
+    Benchmark one or more algorithms. Supports --algorithms, --output-dir, --chart-file, --report-file.
+diagnostics
+    Print environment and runtime diagnostics. Supports --json for structured output.
 
 Global Options
---cache-dir <path>                Directory for persistent cache (default: ~/.pi_cache)
---no-cache                        Disable cache reads and writes for current run.
---show-progress                   Enable terminal progress bar for long-running tasks.
---no-progress                     Disable progress bar.
---verify-digits <count>           Spot-check random digits after calculation (default: 10).
---no-verify                       Disable verification step.
---threads <number>                Number of worker threads for parallel computation.
---no-threads                      Force single-threaded execution.
+--cache-dir <path>
+    Directory for cache files (default: ~/.pi_cache).
+--no-cache
+    Disable cache read/write.
+--show-progress
+    Enable terminal progress bar.
+--no-progress
+    Disable progress bar.
+--verify-digits <count>
+    Number of random digits to verify after calculation (default 10).
+--no-verify
+    Disable spot-check verification.
+--threads <number>
+    Number of worker threads for parallel computation (default 1).
+--no-threads
+    Force single-threaded execution.
 
 # Implementation
-
-- Add yargs dependency in package.json and import into src/lib/main.js.
-- Replace console.log placeholder in exported main(args) with yargs.parse implementation:
-  • Define commands via yargs.command with name, description, builder for options, and a handler that invokes underlying feature functions (e.g., calculatePi, extractDigit, startServer, listAlgorithms, benchmarkPi, outputDiagnostics).
-  • Configure global options with yargs.options and ensure they are parsed and passed into each handler.
-  • Enable automatic help and version handling using yargs.help() and yargs.version().
-  • Use yargs.strict() to reject unknown commands and options with informative errors.
+1. Add yargs dependency in package.json and import in src/lib/main.js.
+2. In main(args:
+    • Initialize yargs with strict mode, help, and version using package.json version field.
+    • Define each command via yargs.command: name, description, builder for its flags, and handler that invokes existing feature functions (calculatePi, extractDigit, startServer, listAlgorithms, benchmarkPi, outputDiagnostics).
+    • Configure global options with yargs.options so they propagate to all commands.
+    • Replace console.log placeholder with yargs.parse to process process.argv.slice(2).
+3. Ensure handlers are passed parsed options and arguments; do not alter core algorithm implementations.
+4. Remove the old console.log branch and preserve the shebang line.
+5. Update package.json scripts if necessary to include version injection for --version.
 
 # Testing
-
 - Update tests/unit/main.test.js:
-  • Test main(["--help"]) writes usage output containing key command names and exits cleanly.
-  • Test main(["--version"]) prints version matching package.json.
-  • Mock each handler function and verify yargs dispatches to correct handler with parsed arguments.
-  • Test unknown command returns nonzero exit code and prints error message.
-  • Verify global options propagate to handlers when multiple commands and flags are combined.
+    • Test main invoked with ["--help"] prints usage text containing command names and exits without error.
+    • Test main invoked with ["--version"] prints a version matching package.json.
+    • Mock handler functions and verify yargs dispatches to correct handler with parsed arguments.
+    • Test unknown command returns nonzero exit code and prints an error.
+    • Verify global options appear in parsed arguments for commands (e.g., --cache-dir is included when calling calculate-pi).
 
 # Documentation
-
-- Update README.md under Features section:
-  • Document each command and global option with examples.
-  • Provide usage snippets for common workflows: computing π, extracting digits, running server, listing algorithms, benchmarking, diagnostics.
-  • Note dependency on yargs and how to contribute additional commands.
+- Update README.md:
+    • Under Features, document each command and global option with a brief description.
+    • Provide example CLI invocations for common workflows (compute π, extract a digit, start server, list algorithms, run benchmarks, diagnostics).
+    • Note dependency on yargs and instructions for contributing new commands.
