@@ -23,14 +23,29 @@ Comprehensive overview of Express 4.x routing, middleware patterns, error handli
 MDN guide detailing the text/event-stream MIME type, SSE message formatting, reconnection behavior, and usage examples in Node.js and browsers. Provides actionable patterns for implementing real-time π digit streaming, handling client disconnects gracefully, and formatting SSE events. Continuously updated; content under CC BY-SA 2.5 license.
 ## CC BY-SA 2.5
 
+# AbortController API
+## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+MDN reference for AbortController and AbortSignal usage, demonstrating patterns for cancelling asynchronous operations, integrating with fetch, timers, and streaming computations. Essential for implementing the Operation Timeout feature and for cancelling SSE and HTTP requests gracefully. Continuously updated; content under CC BY-SA 2.5 license.
+## CC BY-SA 2.5
+
 # Node.js Worker Threads API
 ## https://nodejs.org/api/worker_threads.html
 Official Node.js documentation for the worker_threads module, covering Worker creation, message-passing interfaces, transferable objects, error handling, and performance considerations. Essential for implementing parallel π computation with calculatePiParallel, partitioning work, and aggregating partial results. Node.js v20.
 ## Node.js License
 
+# JavaScript BigInt
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+MDN documentation on the BigInt data type enabling arbitrary-precision integers in JavaScript. Covers syntax, arithmetic operations, conversion methods, and integration with other APIs. Crucial for implementing large factorial computations in the Chudnovsky algorithm and handling high-precision indexing in extraction features. Continuously updated; content under CC BY-SA 2.5 license.
+## CC BY-SA 2.5
+
 # Node.js File System Promises API
 ## https://nodejs.org/api/fs.html#fs_promises_api
 fs.promises API reference covering file reading, writing, renaming, directory operations, and atomic file handling techniques. Crucial for exportPi atomic writes, persistent cache management, script mode file I/O, and HTML report generation. Includes error codes and best practices. Node.js v20.
+## Node.js License
+
+# perf_hooks API
+## https://nodejs.org/api/perf_hooks.html
+Node.js perf_hooks module documentation detailing high-resolution timing APIs like performance.now(), PerformanceObserver, performance.timerify(), and eventLoopUtilization(). Critical for implementing diagnostics features to measure execution time, memory usage, and event-loop metrics. Node.js v20.
 ## Node.js License
 
 # cli-progress
@@ -62,18 +77,3 @@ Official GitHub repository and API reference for proper-lockfile, a library prov
 ## https://ejs.co/#docs
 Official EJS documentation covering template syntax, tags, includes, layouts, and options for compiling or rendering. Essential for HTML report generation with embedded charts, data sections, and Base64-encoded images. Last updated 2024; MIT License.
 ## MIT License
-
-# AbortController API
-## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-MDN reference for AbortController and AbortSignal usage, demonstrating patterns for cancelling asynchronous operations, integrating with fetch, timers, and streaming computations. Essential for implementing the Operation Timeout feature and for cancelling SSE and HTTP requests gracefully. Continuously updated; content under CC BY-SA 2.5 license.
-## CC BY-SA 2.5
-
-# π Calculation Algorithms (Wikipedia)
-## https://en.wikipedia.org/wiki/Pi
-Wikipedia article on π, including detailed sections on computation algorithms such as Chudnovsky, Bailey–Borwein–Plouffe Formula (BBP), Machin-like formulas, and Gauss–Legendre algorithm. Provides mathematical derivations, convergence analysis, pseudocode, and references to foundational literature. Licensed under CC BY-SA 3.0 (Wikipedia).
-## CC BY-SA 3.0
-
-# perf_hooks API
-## https://nodejs.org/api/perf_hooks.html
-Node.js perf_hooks module documentation detailing high-resolution timing APIs like performance.now(), PerformanceObserver, performance.timerify(), and eventLoopUtilization(). Critical for implementing diagnostics features to measure execution time, memory usage, and event-loop metrics. Node.js v20.
-## Node.js License
