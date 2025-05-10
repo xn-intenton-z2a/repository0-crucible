@@ -17,6 +17,16 @@ describe('calculatePi', () => {
     expect(g).toBe('3.1415926535');
   });
 
+  test('chudnovsky algorithm 5 digits', () => {
+    const pi5 = calculatePi(5, 'chudnovsky').toFixed(5);
+    expect(pi5).toBe('3.14159');
+  });
+
+  test('chudnovsky algorithm 10 digits', () => {
+    const pi10 = calculatePi(10, 'chudnovsky').toFixed(10);
+    expect(pi10).toBe('3.1415926535');
+  });
+
   test('invalid digits throws', () => {
     expect(() => calculatePi(0, 'machin')).toThrow(/Invalid digits/);
   });
@@ -72,6 +82,12 @@ describe('CLI', () => {
 
   test('CLI threads=2 uses parallel and prints pi', () => {
     const result = spawnSync('node', [cliPath, '--digits', '10', '--algorithm', 'machin', '--threads', '2']);
+    expect(result.status).toBe(0);
+    expect(result.stdout.toString().trim()).toBe('3.1415926535');
+  });
+
+  test('CLI chudnovsky 10 digits', () => {
+    const result = spawnSync('node', [cliPath, '--digits', '10', '--algorithm', 'chudnovsky']);
     expect(result.status).toBe(0);
     expect(result.stdout.toString().trim()).toBe('3.1415926535');
   });
