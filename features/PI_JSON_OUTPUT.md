@@ -2,51 +2,43 @@
 
 ## Overview
 
-Enable users to obtain the computed value of π in a machine-readable JSON format directly from the CLI. This supports integration into scripts and automated pipelines without manual parsing of standard output.
+Enable machine-readable JSON output for π calculations in the CLI to simplify integration with other tools and scripts.
 
 ## Functional Requirements
 
-- Extend the `main` function in `src/lib/main.js` to accept a new boolean flag `--json`.  
-- When `--json` is provided:
-  - After computing π via `calculatePi` or `calculatePiParallel`, format the result as an object `{ pi: "<digits>" }`.  
-  - Print the JSON string to stdout followed by a newline.  
-- When `--json` is not provided, retain existing behavior of printing the plain π string.  
-- Prevent incompatible flag combinations:  
-  - If `--json` is combined with `--serve`, `--script`, or any mode that does not emit π directly, exit with a descriptive error message and non-zero status code.
+- Update the CLI parser in src/lib/main.js to accept a new boolean flag --json.
+- When --json is provided and not in HTTP serve or script mode:
+  - After computing π (via calculatePi or calculatePiParallel), construct an object with a single key pi and the computed string value.
+  - Print JSON.stringify({ pi: piString }) to stdout followed by a newline.
+  - Exit with status code 0 on success.
+- When --json is not provided, retain existing behavior of printing the plain π string.
+- If --json is combined with --serve, print a descriptive error to stderr and exit with non-zero code.
 
 ## CLI Interface
 
 - New flag:
-  --json           Output π as JSON with key `pi` instead of plain text
+  --json           Output π as JSON with key pi instead of plain text
 - Usage examples:
-  node src/lib/main.js --digits 10 --algorithm machin --json
-  node src/lib/main.js --digits 5 --json
+  node src/lib/main.js --digits 10 --json
+  node src/lib/main.js --digits 5 --algorithm chudnovsky --json
 
 ## Implementation Details
 
-- In `src/lib/main.js`, update argument parsing loop to detect `--json`.  
-- Pass a boolean `json` option into the computation branch.  
-- After obtaining `piValue`, use `JSON.stringify({ pi: piValue })` when `json === true`.  
-- Respect the `digits` and `algorithm` flags as before when emitting JSON.  
-- Ensure process.exit codes:  
-  - `0` on success,  
-  - Non-zero on validation errors or incompatible flag usage.
+- In the main function of src/lib/main.js, extend the flag parsing loop to detect --json and set a boolean.
+- After computing or awaiting the π value, check the json flag:
+  - If true, serialize the result as JSON and print to stdout.
+  - Otherwise, print using console.log(piString).
+- Ensure process.exit codes: 0 on success, non-zero on validation or incompatible flag usage.
 
 ## Testing
 
-### Unit Tests (`tests/unit/main.test.js`)
+### Unit Tests (tests/unit/main.test.js)
 
-- Test that invoking the CLI logic with `--digits 4 --algorithm machin --json` yields stdout exactly `{ "pi":"3.1415" }\n` and exit code `0`.
-- Verify that without `--json`, output remains the plain π string.
-- Confirm that combining `--json` with `--serve` or unsupported modes triggers an error and exit code non-zero.
+- Add tests to simulate calling the main logic with --digits 4 --json and verify stdout is exactly {"pi":"3.1415"}\n and exit code 0.
+- Verify normal output remains unchanged when --json is absent.
+- Test that combining --json with --serve produces an error and exit code non-zero.
 
-### Integration Tests (`tests/e2e/cli.test.js`)
+### CLI Integration Tests (tests/e2e/cli.test.js)
 
-- Spawn the CLI with `--digits 3 --json` and assert valid JSON output with key `pi` and correct value.
-- Confirm exit code `0` on successful JSON output.
-- Test that `node src/lib/main.js --serve --json` results in an error exit and descriptive message.
-
-## Documentation Updates
-
-- Update `README.md` under Features to describe the `--json` flag and show usage examples.
-- Add a section in README demonstrating JSON output and how to integrate in shell scripts.
+- Spawn the CLI with --digits 3 --json and assert stdout matches JSON with key pi and correct value, and exit code 0.
+- Confirm that node src/lib/main.js --serve --json exits with an error and descriptive message.
