@@ -5,20 +5,20 @@ The authoritative reference for Node.js built-in modules including HTTP/HTTPS se
 
 # CLI Parsing and Validation
 ## https://github.com/yargs/yargs/blob/master/docs/api.md
-The official API documentation for yargs, covering command definitions, option parsing, nested commands, middleware hooks, and auto-generated help/version interfaces. Critical for the repository’s structured CLI supporting flags such as --calculate-pi, --digits, --algorithm, --benchmark, --use-cache, and --progress. Released under the MIT License and actively maintained.
+The official API documentation for yargs, covering command definitions, option parsing, nested commands, middleware hooks, and auto-generated help/version interfaces. Critical for the repository’s structured CLI supporting flags such as --calculate-pi, --digits, --algorithm, --benchmark, --use-cache, and --progress. Actively maintained with comprehensive examples.
 ## License: MIT
 
 # Configuration and Environment Management
 ## https://github.com/nodeca/js-yaml#readme
-Detailed guide on parsing YAML and JSON configurations with js-yaml, including schema definitions, custom types, and error handling. Enables hierarchical defaults and flexible overrides for precision, benchmarks, and server settings.
+Detailed guide on parsing YAML and JSON configurations with js-yaml, including schema definitions, custom types, and error handling. Enables hierarchical defaults and flexible overrides for precision settings, benchmark parameters, and server configurations. Last updated 2024.
 
 ## https://github.com/motdotla/dotenv#readme
-Practical instructions for loading and validating environment variables from .env files, managing secrets, and avoiding accidental exposure in version control. Supports secure configuration for production and development.
+Practical instructions for loading and validating environment variables from .env files, managing secrets, and preventing accidental exposure in version control. Supports secure configuration for development and production. Last updated 2024.
 ## License: MIT (js-yaml), BSD-2-Clause (dotenv)
 
 # Decimal.js Arbitrary-Precision Arithmetic
 ## https://mikemcl.github.io/decimal.js/
-Comprehensive reference for Decimal.js, detailing APIs for arbitrary-precision decimal arithmetic, configurable rounding modes, precision control, and performance benchmarks. Fundamental for implementing Chudnovsky, Machin, and Gauss–Legendre series with predictable accuracy and speed trade-offs. Last updated 2023; MIT License.
+Comprehensive reference for Decimal.js, detailing API methods for arbitrary-precision decimal arithmetic, configurable rounding modes, precision control, and performance benchmarks. Fundamental for implementing Machin, Gauss–Legendre, and Chudnovsky π series with predictable accuracy and speed trade-offs. Last updated 2023.
 ## License: MIT
 
 # High-Precision π Calculation Algorithms
@@ -30,15 +30,15 @@ Authoritative overviews of advanced π algorithms: the binary-splitting Chudnovs
 
 # Testing Frameworks and HTTP Testing Tools
 ## https://vitest.dev/guide/
-Modern ESM-native test runner with built-in mocking, snapshot testing, coverage reports, and watch mode. Ideal for unit and integration tests of calculation functions, caching logic, and CLI handlers.
+Modern ESM-native test runner with built-in mocking, snapshot testing, coverage reports, and watch mode. Ideal for unit and integration tests of calculation functions, caching logic, CLI handlers, and HTTP endpoints.
 
 ## https://github.com/visionmedia/supertest
-High-level abstraction for testing HTTP endpoints and streaming responses in Express or similar frameworks. Simplifies assertions for JSON payloads, status codes, headers, and timeouts. Last updated 2024; MIT License.
+High-level abstraction for testing HTTP endpoints and streaming responses in Express or similar frameworks. Simplifies assertions for JSON payloads, status codes, headers, and timeouts. Last updated 2024.
 ## License: MIT
 
 # CLI Progress Bars
 ## https://github.com/cli-progress/cli-progress#readme
-Detailed usage of cli-progress for single and multi-bar setups, custom formatting tokens, TTY detection, and graceful teardown. Crucial for real-time feedback during lengthy π computations and benchmarking tasks. Last updated 2024; MIT License.
+Detailed usage of cli-progress for single and multi-bar setups, custom formatting tokens, TTY detection, and graceful teardown. Crucial for real-time feedback during lengthy π computations and benchmarking tasks. Last updated 2024.
 ## License: MIT
 
 # Observability Tools (Prometheus & OpenTelemetry)
@@ -46,7 +46,7 @@ Detailed usage of cli-progress for single and multi-bar setups, custom formattin
 Official API for prom-client, covering metric types (counters, gauges, histograms), registries, and custom exporter integration. Enables /metrics endpoints for scraping performance and error rates.
 
 ## https://opentelemetry.io/docs/instrumentation/js/
-Guidance on instrumenting Node.js applications with OpenTelemetry: tracer setup, automatic instrumentation, metric collection, and exporting to backends like Jaeger or Prometheus. Last updated 2024; Apache-2.0.
+Guidance on instrumenting Node.js applications with OpenTelemetry: tracer setup, automatic instrumentation, metric collection, and exporting to backends like Jaeger or Prometheus. Last updated 2024.
 ## License: MIT (prom-client), Apache-2.0 (OpenTelemetry)
 
 # Asynchronous Data Flow and Streaming Protocols
@@ -66,12 +66,12 @@ Official guide to the Worker Threads module, detailing Worker creation, parent-w
 ## https://www.chartjs.org/docs/latest/
 ## https://github.com/Automattic/node-canvas
 ## https://ejs.co/#docs
-A comprehensive suite for generating visual and textual benchmark reports: Chart.js for dynamic chart expressions, node-canvas for server-side rendering to image formats, and EJS for templating HTML or Markdown outputs. Covers performance considerations and embedding patterns. Last updated 2024; MIT License.
+A comprehensive suite for generating visual and textual benchmark reports: Chart.js for dynamic chart expressions, node-canvas for server-side rendering to image formats, and EJS for templating HTML or Markdown outputs. Covers performance considerations and embedding patterns. Last updated 2024.
 ## License: MIT
 
 # Piscina Worker Thread Pool Library
 ## https://github.com/piscinajs/piscina#readme
-High-performance worker thread pool implementation for Node.js. Explains pool creation, task queuing, concurrency controls, timeout handling, and performance tuning. Offers a scalable alternative to manual Worker management for parallel π computations. Last updated March 2024; widely used in production. MIT License.
+High-performance worker thread pool implementation for Node.js. Explains pool creation, task queuing, concurrency controls, timeout handling, and performance tuning. Offers a scalable alternative to manual Worker management for parallel π computations. Last updated March 2024; widely used in production.
 ## License: MIT
 
 # QuickChart API and Node.js Client
@@ -82,15 +82,15 @@ Comprehensive reference for QuickChart’s REST API and quickchart-js client lib
 
 # Node.js HTTP Framework - Express.js
 ## https://expressjs.com/en/4x/api.html
-Authoritative API reference for Express.js, covering routing, middleware composition, request/response handling, streaming responses, and error management. Essential for serving π computation results via REST or streaming endpoints. Last updated 2024; MIT License.
+Authoritative API reference for Express.js, covering routing, middleware composition, request/response handling, streaming responses, and error management. Essential for serving π computation results via REST or streaming endpoints. Last updated 2024.
 ## License: MIT
 
 # Server-Sent Events (SSE)
 ## https://developer.mozilla.org/docs/Web/API/Server-sent_events/Using_server-sent_events
-Practical guide to implementing Server-Sent Events for one-way real-time data streams over HTTP. Covers EventSource API usage in browsers, reconnection strategies, SSE formats, and compatibility considerations. Ideal for streaming π digits or progress updates to web clients. Last updated 2024; CC BY-SA 2.5.
+Practical guide to implementing Server-Sent Events for one-way real-time data streams over HTTP. Covers EventSource API usage in browsers, reconnection strategies, SSE formats, and compatibility considerations. Ideal for streaming π digits or progress updates to web clients. Last updated 2024.
 ## License: CC BY-SA 2.5
 
-# Node.js WebAssembly API
-## https://nodejs.org/api/webassembly.html
-Detailed documentation of the WebAssembly APIs in Node.js, including module compilation, instantiation, memory management, and host bindings. Enables performance-critical numerical kernels (e.g., FFT multiplications) to be implemented in Wasm modules for accelerated π computations. Last updated June 2024; maintained by OpenJS Foundation.
-## License: CC-BY-4.0
+# Data Schema Validation with Zod
+## https://github.com/colinhacks/zod
+The official Zod documentation covers schema-based validation of JavaScript objects and command-line arguments, including type inference, custom validators, asynchronous checks, and integration patterns with CLI parsers. Essential for robust input validation in both CLI and HTTP endpoints, enabling consistent error handling and developer-friendly messages. Last updated 2024; widely adopted in TypeScript and JavaScript projects.
+## License: MIT
