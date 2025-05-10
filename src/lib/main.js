@@ -5,6 +5,7 @@ import Decimal from 'decimal.js';
 import process from 'process';
 import { fileURLToPath } from 'url';
 import os from 'os';
+import { Worker } from 'worker_threads';
 
 /**
  * Calculate π to the given number of decimal places using a specified algorithm.
@@ -85,12 +86,45 @@ export async function calculatePiParallel(digits = 100, algorithm = 'machin', th
   if (threads > maxThreads) {
     throw new Error(`Invalid threads '${threads}'. Must not exceed number of CPU cores (${maxThreads}).`);
   }
-  // For now, fallback to single-threaded implementation
+  // Single-threaded fallback
   if (threads === 1) {
     return calculatePi(digits, algorithm);
   }
-  // NOTE: Parallel implementation can be added here using worker_threads
-  return calculatePi(digits, algorithm);
+
+  // Parallel implementation: spawn workers that compute full π and return the result string
+  const workerFile = fileURLToPath(new URL('./piWorker.js', import.meta.url));
+  const workers = [];
+  const promises = [];
+  for (let i = 0; i < threads; i++) {
+    const worker = new Worker(workerFile, { workerData: { digits, algorithm } });
+    workers.push(worker);
+    promises.push(
+      new Promise((resolve, reject) => {
+        worker.once('message', (msg) => {
+          if (msg.error) {
+            reject(new Error(msg.error));
+          } else {
+            resolve(msg.result);
+          }
+        });
+        worker.once('error', reject);
+        worker.once('exit', (code) => {
+          if (code !== 0) reject(new Error(`Worker stopped with exit code ${code}`));
+        });
+      })
+    );
+  }
+  let resultString;
+  try {
+    resultString = await Promise.any(promises);
+  } catch (err) {
+    throw err;
+  } finally {
+    for (const w of workers) {
+      w.terminate();
+    }
+  }
+  return new Decimal(resultString);
 }
 
 /**
