@@ -1,68 +1,74 @@
-# HTTP API Feature
+# HTTP API Enhancement Feature
 
 ## Overview
 
-Extend the existing HTTP API to fully expose all core π operations, visualizations, searches, and streaming endpoints. Clients can interact with π calculation, benchmarking, chart generation, digit distribution, pattern search, digit extraction, exports, and real-time streaming over RESTful routes.
+Extend the existing HTTP API to provide PNG endpoints for π digit distribution, π convergence visualization, and performance benchmark charts using QuickChart. This complements the current `/pi` endpoint and enables clients to retrieve graphical representations directly over HTTP.
 
 ## Functional Requirements
 
-### Server Setup
-- In `src/lib/main.js`, within `startHttpServer`, register additional routes before the 404 fallback.
-- Ensure Express middleware `express.json()` and `express.urlencoded({ extended: true })` are applied.
+### GET /distribution
 
-### GET /benchmark
-- Query: `minDigits` (integer ≥1, default 100), `maxDigits` (integer ≥minDigits, required), `step` (integer ≥1, default = minDigits), `algorithm` (machin|gauss-legendre, default machin), `outputCsv` (boolean, default false)
-- Invoke `benchmarkPi` to get array of `{ digits, timeMs }`.
-- If `outputCsv=true`, respond with `text/csv` lines `digits,timeMs`.
-- Otherwise respond with JSON array.
-- Validate inputs; return 400 on invalid values.
+- Query parameters:
+  - `digits` (integer, required, ≥1, ≤1e6)
+  - `algorithm` (string, optional, one of machin, gauss-legendre, chudnovsky; default machin)
+- Validate inputs with HTTP 400 on error.
+- Invoke `visualizePiDigits({ digits, algorithm, output: null })` or adapt to return a PNG buffer instead of writing to file.
+- Set response headers:
+  - `Content-Type: image/png`
+- Send the PNG image buffer as the response body.
 
 ### GET /convergence
-- Query: `digits` (integer ≥10, default 1000), `algorithm` (machin|gauss-legendre|chudnovsky, default machin), `iterations` (integer ≥2, default 10)
-- Require `convergenceOutput` flag by query or default to buffer response.
-- Invoke `visualizePiConvergence`; set `Content-Type: image/png`; stream PNG buffer in response.
-- Validate; return 400 on invalid values.
 
-### GET /distribution
-- Query: `digits` (integer ≥1, default 1000), `algorithm` (machin|gauss-legendre|chudnovsky, default machin)
-- Invoke `visualizePiDigits`; set `Content-Type: image/png`; send PNG buffer.
-- Validate inputs; 400 on error.
+- Query parameters:
+  - `digits` (integer, required, ≥10, ≤1e6)
+  - `algorithm` (string, optional, one of machin, gauss-legendre, chudnovsky; default machin)
+  - `iterations` (integer, optional, ≥2; default 10)
+- Validate inputs with HTTP 400 on error.
+- Invoke `visualizePiConvergence({ digits, algorithm, iterations, output: null })` or adapt to return a PNG buffer.
+- Set response headers:
+  - `Content-Type: image/png`
+- Send the PNG image buffer.
 
-### GET /distribution-json
-- Query: same digits and algorithm parameters.
-- Invoke `countPiDigitsJson`; respond with JSON object mapping digits "0"–"9" to counts.
+### GET /benchmark
 
-### GET /search
-- Query: `pattern` (string of digits, required), `digits` (integer ≥1, default 1000), `algorithm` (default machin), `all` (boolean)
-- Invoke `searchPi({ pattern, digits, algorithm, all })`.
-- Respond with JSON: `{ position: number|null }` or `{ positions: number[] }`.
-- Validate pattern and parameters; 400 on invalid.
+- Query parameters:
+  - `minDigits` (integer, required, ≥1)
+  - `maxDigits` (integer, required, ≥minDigits)
+  - `step` (integer, optional, ≥1; default = minDigits)
+  - `algorithm` (string, optional, machin or gauss-legendre; default machin)
+  - `chart` (boolean, optional; if true, return PNG chart, otherwise return JSON array)
+- Validate inputs with HTTP 400 on error.
+- Invoke `benchmarkPi({ minDigits, maxDigits, step, algorithm })` to obtain an array of `{ digits, timeMs }`.
+- If `chart` is truthy:
+  - Build a QuickChart configuration for a line chart with labels as digit values and data as timeMs.
+  - Use QuickChart to generate a PNG buffer.
+  - Set response headers:
+    - `Content-Type: image/png`
+  - Send the PNG buffer.
+- Otherwise:
+  - Respond with `application/json` and the JSON array.
 
-### GET /hex
-- Query: `position` (integer ≥0, required), `count` (integer ≥1, default 1)
-- Invoke `extractPiHex`; respond with `text/plain` hex string.
-- Validate; 400 on invalid.
+## Middleware and Routing
 
-### GET /decimal
-- Query: `position` (integer ≥0, required), `count` (integer ≥1, required), `algorithm` (machin|gauss-legendre, default machin)
-- Invoke `extractPiDecimal`; respond with `text/plain` decimal substring.
-- Validate; 400 on invalid.
-
-### GET /export
-- Query: `digits`, `algorithm`, `format` (txt|json, default txt)
-- Invoke `exportPi`; if `format=json`, respond JSON `{ pi: string }`; else send plain text.
-- Validate; 400 on missing output path or invalid parameters.
-
-### GET /pi/stream
-- Query: `digits`, `algorithm` parameters.
-- Register `/pi/stream` SSE endpoint; set headers `text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`.
-- Stream π digits in chunks via `EventSource` format: `data: <chunk>`, `event: end`, `event: error`.
-- Invoke or adapt existing SSE logic.
+- In `startHttpServer`:
+  - Ensure `express.json()` and `express.urlencoded({ extended: true })` are applied.
+  - Register the above routes before the 404 fallback.
 
 ## Dependencies
-- Ensure dependencies in `package.json`: `express`, `quickchart-js`, `js-yaml` for any YAML script support, and built-in fs/promises.
+
+- Import `QuickChart` from `quickchart-js`.
+- No additional dependencies; reuse existing visualization functions or adapt them to return buffers.
 
 ## Testing
 
-- **Unit Tests** (`tests/unit/main.test.js`): mock `Req`/`Res` to verify each route returns correct status, content-type, and body for valid and invalid queries; check CSV vs JSON for `/benchmark`; verify PNG endpoints produce valid PNG signature; test SSE logic by mocking response.write.
-- **Integration Tests** (`tests/e2e/http.test.js`): start server on ephemeral port and issue HTTP requests to all endpoints; assert correct status codes, headers, and response bodies; validate error codes for invalid inputs.
+- **Unit Tests** (`tests/unit/main.test.js`):
+  - Mock visualization functions to return a known PNG buffer, verify routes send correct headers and body.
+  - Test validation errors produce 400 responses with JSON error messages.
+- **E2E HTTP Tests** (`tests/e2e/http.test.js`):
+  - Start server on ephemeral port.
+  - Issue GET requests to `/distribution`, `/convergence`, and `/benchmark?chart=true` and assert:
+    - Status code 200.
+    - `Content-Type: image/png`.
+    - Response body begins with PNG signature bytes (`89 50 4E 47 0D 0A 1A 0A`).
+  - Issue GET `/benchmark` without `chart` and assert JSON response with correct array structure.
+
