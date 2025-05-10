@@ -6,6 +6,7 @@ The authoritative reference for Node.js built-in modules including HTTP/HTTPS se
 # CLI Parsing and Validation
 ## https://github.com/yargs/yargs/blob/master/docs/api.md
 The official API docs for yargs, covering command definitions, option parsing, nested commands, middleware, and auto-generated help/version interfaces. Critical for the repository’s structured CLI interface supporting flags like --calculate-pi, --timeout, --serve, and global options.
+
 ## https://zod.dev/
 Comprehensive guide to Zod, a TypeScript-first runtime schema validation library. Describes schema definitions, transformations, union/intersection types, parsing/coercion, and structured error reporting. Used for validating CLI arguments and HTTP request inputs with strict type safety. Version 3.x, last updated 2024.
 ## License: MIT
@@ -45,33 +46,24 @@ Reference docs for Vitest—a fast, modern test runner with mocking, snapshot, a
 Detailed usage of cli-progress for single and multi-bar configurations, custom formatting, TTY detection, and graceful redirection. Crucial for real-time visual feedback during long-running π calculations and benchmarks. Last updated 2024.
 ## License: MIT
 
-# Streaming Protocols and Libraries
-## https://datatracker.ietf.org/doc/html/rfc7230#section-4.1
-## https://tools.ietf.org/html/rfc6455
-## https://github.com/websockets/ws
-RFC 7230 §4.1 defines HTTP/1.1 chunked transfer framing; RFC 6455 specifies the WebSocket protocol. The ws library offers a Node.js WebSocket server implementation. This trio is foundational for real-time digit streaming over HTTP and WebSocket with proper framing and backpressure handling. RFCs published 2014/2011; ws updated 2024.
-## License: IETF Trust (RFCs), MIT (ws)
-
 # Observability Tools (Prometheus & OpenTelemetry)
 ## https://github.com/siimon/prom-client#readme
 ## https://opentelemetry.io/docs/instrumentation/js/
 Combined documentation for prom-client metrics and OpenTelemetry JavaScript instrumentation. Covers metric types, registries, tracer APIs, exporters, and auto-instrumentation. Supports /metrics endpoints and distributed tracing for π computation workflows. Last updated 2024.
 ## License: MIT (prom-client), Apache-2.0 (OpenTelemetry)
 
+# Asynchronous Data Flow and Streaming Protocols
+## https://datatracker.ietf.org/doc/html/rfc7230#section-4.1
+## https://tools.ietf.org/html/rfc6455
+## https://nodejs.org/api/stream.html
+## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+Integrated guidance on HTTP/1.1 chunked transfer framing, WebSocket messaging, Node.js stream primitives (Readable, Writable, Duplex, Transform), backpressure semantics, and abortable asynchronous operations with AbortController. Essential for building robust, cancellable, real-time digit streaming and data pipelines. RFCs published 2011/2014; Node and MDN updated 2024.
+## License: IETF Trust (RFCs), MIT (Node.js), CC BY-SA 2.5 (MDN)
+
 # Worker Threads
 ## https://nodejs.org/api/worker_threads.html
 Official guide to the worker_threads module, detailing Worker creation, parent–worker messaging, SharedArrayBuffer usage, and pool patterns. Enables parallelizing π calculations across CPU cores with safe data transfer and concurrency control. Last updated June 2024; maintained by the OpenJS Foundation.
 ## License: CC-BY-4.0
-
-# Node.js Streams API
-## https://nodejs.org/api/stream.html
-Comprehensive documentation for Readable, Writable, Duplex, and Transform streams, pipeline utilities, backpressure semantics, and async iteration. Essential for efficient chunked HTTP responses, CLI streaming, and handling large digit datasets without high memory overhead. Last updated June 2024.
-## License: CC-BY-4.0
-
-# AbortController & Timeout Patterns
-## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-Detailed MDN guide on AbortController and AbortSignal for abortable asynchronous operations. Explains integrating timeouts, cancellation signals, and graceful cleanup. Fundamental for --timeout support in both CLI and HTTP handlers. Last updated 2024; maintained by Mozilla.
-## License: CC BY-SA 2.5
 
 # Visualization and Reporting Libraries
 ## https://www.chartjs.org/docs/latest/
@@ -89,3 +81,14 @@ Official documentation for the OpenAI Node.js client library, including setup, a
 ## https://docs.github.com/en/actions/using-workflows/reusing-workflows
 Detailed guidelines for creating and consuming reusable workflows in GitHub Actions. Explains workflow call syntax, inputs/outputs definitions, triggering strategies, and best practices for modular CI/CD pipelines. Fundamental for the repository’s template-based automation using agentic-lib workflows. Last updated 2024.
 ## License: CC-BY-4.0
+
+# Piscina Worker Thread Pool Library
+## https://github.com/piscinajs/piscina#readme
+High-performance worker thread pool implementation for Node.js. Details pool creation, task queuing, concurrency controls, timeout management, and performance tuning. Provides an alternative to manual Worker management for scalable parallel π calculations. Last updated March 2024; widely adopted in production.
+## License: MIT
+
+# QuickChart API and Node.js Client
+## https://quickchart.io/documentation/
+## https://github.com/typpo/quickchart-js#readme
+Comprehensive reference for QuickChart’s REST API and the quickchart-js client library. Covers JSON-based chart configuration, server-side image generation endpoints, authentication, URL length considerations, and client integration patterns for automated performance charting. REST docs updated 2024; client library maintained MIT.
+## License: MIT
