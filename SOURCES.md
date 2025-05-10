@@ -67,3 +67,13 @@ Wikipedia entry on the BBP algorithm, including series derivation, complexity an
 ## https://mpmath.org/doc/current/pi.html
 Documentation for mpmath’s π routines in Python, covering algorithmic choices, convergence rates, and performance benchmarks. Offers comparative insight for optimizing JavaScript implementations. Last updated 2023; BSD License.  
 ## BSD License
+
+# Node.js AbortController
+## https://nodejs.org/api/globals.html#class-abortcontroller
+Official Node.js documentation for the global AbortController and AbortSignal classes. Explains usage patterns for creating controllers, listening for abort events, and integrating signal-based cancellation into long-running operations (e.g., π calculations, HTTP requests). Essential for implementing the --timeout CLI feature and graceful abort logic in async flows. Node.js v20 reference; highly authoritative.  
+## Node.js License
+
+# Node.js process.memoryUsage
+## https://nodejs.org/api/process.html#process_memoryusage
+Documentation of the process.memoryUsage API, detailing heapUsed, heapTotal, rss, and other memory metrics. Critical for the Diagnostics feature to capture and report memory consumption before and after π computations and other operations. Node.js v20 reference; under Node.js License.  
+## Node.js License
