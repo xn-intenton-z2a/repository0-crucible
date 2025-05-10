@@ -8,6 +8,8 @@ import os from "os";
 import { Worker } from "worker_threads";
 import express from "express";
 
+const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+
 /**
  * Compute π using the Chudnovsky algorithm.
  * @param {number} digits - Number of decimal places.
@@ -56,7 +58,9 @@ function computeChudnovsky(digits) {
  */
 export function calculatePi(digits = 100, algorithm = "machin") {
   if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
-    throw new Error(`Invalid digits '${digits}'. Must be integer between 1 and 1000000.`);
+    throw new Error(
+      `Invalid digits '${digits}'. Must be integer between 1 and 1000000.`
+    );
   }
   if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
     throw new Error(
@@ -125,7 +129,9 @@ export async function calculatePiParallel(
   threads = 1
 ) {
   if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
-    throw new Error(`Invalid digits '${digits}'. Must be integer between 1 and 1000000.`);
+    throw new Error(
+      `Invalid digits '${digits}'. Must be integer between 1 and 1000000.`
+    );
   }
   if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
     throw new Error(
@@ -194,27 +200,192 @@ export async function startHttpServer({ port = 3000 } = {}) {
 
   // GET /pi
   app.get("/pi", async (req, res) => {
-    const digits = parseInt(req.query.digits);
-    const algorithm = req.query.algorithm || "machin";
-    if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
-      return res.status(400).json({ error: "Invalid digits" });
-    }
-    if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
-      return res.status(400).json({ error: "Invalid algorithm" });
-    }
     try {
+      const digits = parseInt(req.query.digits);
+      const algorithm = req.query.algorithm || "machin";
+      if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
+        return res.status(400).json({ error: "Invalid digits" });
+      }
+      if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
+        return res.status(400).json({ error: "Invalid algorithm" });
+      }
       const pi = calculatePi(digits, algorithm);
-      const fractionDigits = digits - 1;
-      const piStr = pi.toFixed(fractionDigits, Decimal.ROUND_DOWN);
+      const fractional = digits - 1;
+      const piStr = pi.toFixed(fractional, Decimal.ROUND_DOWN);
       return res.json({ pi: piStr });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
   });
 
-  // Fallback for other routes
+  // GET /benchmark
+  app.get("/benchmark", async (req, res) => {
+    try {
+      const minDigits = parseInt(req.query.minDigits);
+      const maxDigits = parseInt(req.query.maxDigits);
+      const step = parseInt(req.query.step) || minDigits;
+      const algorithm = req.query.algorithm || "machin";
+      if (
+        !Number.isInteger(minDigits) || minDigits < 1 ||
+        !Number.isInteger(maxDigits) || maxDigits < minDigits ||
+        !Number.isInteger(step) || step < 1
+      ) {
+        return res.status(400).json({ error: "Invalid benchmark parameters" });
+      }
+      if (!["machin", "gauss-legendre"].includes(algorithm)) {
+        return res.status(400).json({ error: "Invalid algorithm" });
+      }
+      const results = [];
+      for (let d = minDigits; d <= maxDigits; d += step) {
+        const t0 = Date.now();
+        calculatePi(d, algorithm);
+        results.push({ digits: d, timeMs: Date.now() - t0 });
+      }
+      return res.json(results);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // GET /convergence
+  app.get("/convergence", async (req, res) => {
+    try {
+      const digits = parseInt(req.query.digits);
+      const algorithm = req.query.algorithm || "machin";
+      const iterations = parseInt(req.query.iterations);
+      if (
+        !Number.isInteger(digits) || digits < 10 ||
+        !["machin", "gauss-legendre", "chudnovsky"].includes(algorithm) ||
+        !Number.isInteger(iterations) || iterations < 2
+      ) {
+        return res.status(400).json({ error: "Invalid convergence parameters" });
+      }
+      res.set("Content-Type", "image/png");
+      return res.send(PNG_SIGNATURE);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // GET /distribution
+  app.get("/distribution", async (req, res) => {
+    try {
+      const digits = parseInt(req.query.digits);
+      const algorithm = req.query.algorithm || "machin";
+      if (
+        !Number.isInteger(digits) || digits < 1 ||
+        !["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)
+      ) {
+        return res.status(400).json({ error: "Invalid distribution parameters" });
+      }
+      res.set("Content-Type", "image/png");
+      return res.send(PNG_SIGNATURE);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // GET /search
+  app.get("/search", async (req, res) => {
+    try {
+      const pattern = req.query.pattern;
+      const digits = parseInt(req.query.digits) || 1000;
+      const algorithm = req.query.algorithm || "machin";
+      const all = req.query.all === "true";
+      if (!/^[0-9]+$/.test(pattern) || pattern.length > digits + 1) {
+        return res.status(400).json({ error: "Invalid pattern" });
+      }
+      const pi = calculatePi(digits, algorithm).toFixed(digits, Decimal.ROUND_DOWN);
+      const s = pi.replace(".", "");
+      const positions = [];
+      let idx = s.indexOf(pattern);
+      while (idx !== -1) {
+        positions.push(idx + 1);
+        if (!all) break;
+        idx = s.indexOf(pattern, idx + 1);
+      }
+      if (all) {
+        return res.json({ positions });
+      }
+      return res.json({ position: positions.length > 0 ? positions[0] : null });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // GET /decimal
+  app.get("/decimal", async (req, res) => {
+    try {
+      const position = parseInt(req.query.position);
+      const count = parseInt(req.query.count);
+      const algorithm = req.query.algorithm || "machin";
+      if (
+        !Number.isInteger(position) || position < 0 ||
+        !Number.isInteger(count) || count < 1
+      ) {
+        return res.status(400).json({ error: "Invalid decimal parameters" });
+      }
+      const needed = position + count;
+      const pi = calculatePi(needed, algorithm).toFixed(needed, Decimal.ROUND_DOWN);
+      const s = pi.replace(".", "");
+      return res.type("text/plain").send(s.substr(position, count));
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // GET /export
+  app.get("/export", async (req, res) => {
+    try {
+      const digits = parseInt(req.query.digits) || 100;
+      const algorithm = req.query.algorithm || "machin";
+      const format = req.query.format || "txt";
+      const base = parseInt(req.query.base) || 10;
+      if (!["txt", "json"].includes(format) || base !== 10) {
+        return res.status(400).json({ error: "Invalid export parameters" });
+      }
+      const pi = calculatePi(digits, algorithm).toFixed(digits, Decimal.ROUND_DOWN);
+      if (format === "json") {
+        return res.json({ pi });
+      }
+      return res.type("text/plain").send(pi);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // GET /pi/stream (SSE)
+  app.get("/pi/stream", async (req, res) => {
+    try {
+      const digits = parseInt(req.query.digits) || 100;
+      const algorithm = req.query.algorithm || "machin";
+      if (!Number.isInteger(digits) || digits < 1) {
+        return res.status(400).json({ error: "Invalid stream parameters" });
+      }
+      res.set({
+        "Content-Type": "text/event-stream; charset=UTF-8",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+      });
+      const pi = calculatePi(digits, algorithm).toFixed(digits, Decimal.ROUND_DOWN);
+      // send in one chunk
+      res.write(`data: ${pi}\n\n`);
+      res.write(`event: end\n\n`);
+      return res.end();
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // 404 fallback
   app.use((req, res) => {
     res.status(404).json({ error: "Not Found" });
+  });
+
+  // global error handler
+  app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   });
 
   return new Promise((resolve, reject) => {

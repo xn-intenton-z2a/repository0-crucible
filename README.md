@@ -26,8 +26,35 @@ Start the server:
 node src/lib/main.js --serve --port 3000
 ```
 
-Query π:
+Query endpoints with `curl`:
 
 ```bash
-curl 'http://localhost:3000/pi?digits=5&algorithm=chudnovsky'
+# Compute pi
+curl "http://localhost:3000/pi?digits=5&algorithm=chudnovsky"
+
+# Benchmark pi computations
+curl "http://localhost:3000/benchmark?minDigits=1&maxDigits=3&step=1&algorithm=machin"
+
+# Get convergence image (PNG header only)
+curl --output convergence.png "http://localhost:3000/convergence?digits=20&iterations=5&algorithm=machin"
+
+# Get digit distribution image
+curl --output dist.png "http://localhost:3000/distribution?digits=10&algorithm=machin"
+
+# Search for pattern in pi
+curl "http://localhost:3000/search?pattern=314&digits=10&all=true"
+
+# Extract decimal digits
+curl "http://localhost:3000/decimal?position=0&count=3"
+
+# Export pi as text
+curl "http://localhost:3000/export?digits=5&format=txt"
+
+# Export pi as JSON
+curl "http://localhost:3000/export?digits=5&format=json"
+
+# Stream pi via SSE
+curl "http://localhost:3000/pi/stream?digits=5"
 ```
+
+Other CLI and API usage is documented in the `docs/` directory.

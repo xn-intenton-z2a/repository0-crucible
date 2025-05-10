@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeAll, afterAll } from 'vitest';
-import { calculatePi, calculatePiParallel, main, startHttpServer } from '../../src/lib/main.js';
+import { calculatePi, calculatePiParallel, startHttpServer } from '../../src/lib/main.js';
 import { spawnSync } from 'child_process';
 import path from 'path';
 
@@ -69,7 +69,6 @@ describe('CLI', () => {
     const result = spawnSync('node', [cliPath]);
     expect(result.status).toBe(0);
     const out = result.stdout.toString().trim();
-    // Expect 100 decimal places plus the leading '3.' => length 102 including '3.'
     expect(out.startsWith('3.')).toBe(true);
     expect(out.replace('.', '').length).toBe(101);
   });
@@ -110,5 +109,79 @@ describe('HTTP API', () => {
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data).toEqual({ pi: '3.14' });
+  });
+
+  test('GET /benchmark returns JSON array', async () => {
+    const res = await fetch(`http://localhost:${port}/benchmark?minDigits=1&maxDigits=2&step=1&algorithm=machin`);
+    expect(res.status).toBe(200);
+    const arr = await res.json();
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr.length).toBe(2);
+    expect(arr[0]).toHaveProperty('digits', 1);
+    expect(arr[0]).toHaveProperty('timeMs');
+  });
+
+  test('GET /convergence returns PNG', async () => {
+    const res = await fetch(`http://localhost:${port}/convergence?digits=10&algorithm=machin&iterations=2`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get('content-type')).toContain('image/png');
+    const buf = new Uint8Array(await res.arrayBuffer());
+    expect(buf.slice(0, 8)).toEqual(new Uint8Array([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]));
+  });
+
+  test('GET /distribution returns PNG', async () => {
+    const res = await fetch(`http://localhost:${port}/distribution?digits=5&algorithm=machin`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get('content-type')).toContain('image/png');
+    const buf = new Uint8Array(await res.arrayBuffer());
+    expect(buf.slice(0, 8)).toEqual(new Uint8Array([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]));
+  });
+
+  test('GET /search returns first position', async () => {
+    const res = await fetch(`http://localhost:${port}/search?pattern=141&digits=5`);
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(json).toEqual({ position: 2 });
+  });
+
+  test('GET /search?all=true returns all positions', async () => {
+    const res = await fetch(`http://localhost:${port}/search?pattern=1&digits=5&all=true`);
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(Array.isArray(json.positions)).toBe(true);
+    expect(json.positions.length).toBeGreaterThan(1);
+  });
+
+  test('GET /decimal returns substring', async () => {
+    const res = await fetch(`http://localhost:${port}/decimal?position=0&count=3`);
+    expect(res.status).toBe(200);
+    const txt = await res.text();
+    expect(txt).toBe('314');
+  });
+
+  test('GET /export txt returns pi text', async () => {
+    const res = await fetch(`http://localhost:${port}/export?digits=5&format=txt`);
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe('3.1415');
+  });
+
+  test('GET /export json returns pi JSON', async () => {
+    const res = await fetch(`http://localhost:${port}/export?digits=5&format=json`);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ pi: '3.1415' });
+  });
+
+  test('GET /pi/stream returns SSE', async () => {
+    const res = await fetch(`http://localhost:${port}/pi/stream?digits=5`);
+    expect(res.status).toBe(200);
+    const txt = await res.text();
+    expect(txt).toContain('data:');
+    expect(txt).toContain('event: end');
+  });
+
+  test('GET unknown returns 404 JSON', async () => {
+    const res = await fetch(`http://localhost:${port}/nonexistent`);
+    expect(res.status).toBe(404);
+    expect(await res.json()).toEqual({ error: 'Not Found' });
   });
 });
