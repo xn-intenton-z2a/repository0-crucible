@@ -1,313 +1,278 @@
 # COSMICONFIG
 
 ## Crawl Summary
-Default async searchPlaces array of 21 entries. Sync searchPlaces array of 17 entries. API method signatures: cosmiconfig, explorer.search/load/clear*. cosmiconfigOptions with types and defaults: searchStrategy, searchPlaces, loaders, packageProp, stopDir, cache, transform, ignoreEmptySearchPlaces. DefaultLoaders mapping extensions to loader functions. JS module loading conditions. Caching behavior and cache-clearing methods. End-user file places and $import merging.
+cosmiconfig module exposes async and sync entry points. Async: cosmiconfig(name,options), sync: cosmiconfigSync(name,options). Default search path includes package.json, rc files in root and .config subdir, config files with extensions. Explorer methods: search, load, clearLoadCache, clearSearchCache, clearCaches. Options control searchStrategy, searchPlaces, loaders, packageProp, stopDir, cache, transform, ignoreEmptySearchPlaces. Default loaders map extensions to loadJson, loadYaml, loadJs, loadTs. JS modules loaded via dynamic import in async API; sync API uses require. Caching per-explorer, clearable. Differs from rc: stops at first match, supports JS/TS.
 
 ## Normalised Extract
 Table of Contents
-1  Instance Creation and Core Methods
-2  Default Search Places
-3  cosmiconfigOptions with Defaults
-4  Loader Configuration
-5  JS Module Loading
-6  Caching Control
-7  End-User File Locations and $import
 
-1  Instance Creation and Core Methods
-- Create explorer: const explorer = cosmiconfig(moduleName, options)
-- search(searchFrom?: string): Promise<Result|null>
-  Returns first matching config or null.
-- load(loadPath: string): Promise<Result>
-  Loads specific file or rejects.
-- clearLoadCache(): void
-- clearSearchCache(): void
-- clearCaches(): void
-- Sync counterparts in cosmiconfigSync; methods return Result or void and throw on error.
+1. Async API Instantiation
+2. Explorer.search
+3. Explorer.load
+4. Cache Management
+5. Configuration Options
+   5.1 searchStrategy
+   5.2 searchPlaces
+   5.3 loaders
+   5.4 packageProp
+   5.5 stopDir
+   5.6 cache
+   5.7 transform
+   5.8 ignoreEmptySearchPlaces
+6. Default Search Places
+7. Default Loaders
+8. Loading JS Modules
+9. Caching
+10. Differences from rc
 
-2  Default Search Places
-- Async default searchPlaces[21]:
-  package.json
-  .${moduleName}rc
-  .${moduleName}rc.json
-  .${moduleName}rc.yaml
-  .${moduleName}rc.yml
-  .${moduleName}rc.js
-  .${moduleName}rc.ts
-  .${moduleName}rc.mjs
-  .${moduleName}rc.cjs
-  .config/${moduleName}rc
-  .config/${moduleName}rc.json
-  .config/${moduleName}rc.yaml
-  .config/${moduleName}rc.yml
-  .config/${moduleName}rc.js
-  .config/${moduleName}rc.ts
-  .config/${moduleName}rc.mjs
-  .config/${moduleName}rc.cjs
-  ${moduleName}.config.js
-  ${moduleName}.config.ts
-  ${moduleName}.config.mjs
-  ${moduleName}.config.cjs
-- Sync variant omits mjs entries.
+1. Async API Instantiation
+Function signature: cosmiconfig(moduleName: string, options?: CosmiconfigOptions): Explorer
+moduleName must be filename-safe, no scoped names
+Returns Explorer with initialized caches
 
-3  cosmiconfigOptions with Defaults
-- searchStrategy: none|project|global (none unless stopDir set => global)
-- searchPlaces: string[] (default above)
-- loaders: Record<string,SyncLoader|AsyncLoader> merged with defaults
-- packageProp: string|string[] (default moduleName)
-- stopDir: string (default user home)
-- cache: boolean (default true)
-- transform: (Result)=>Result|Promise<Result> cached output
-- ignoreEmptySearchPlaces: boolean (default true)
+2. Explorer.search
+Signature: search(searchFrom?: string): Promise<Result|null>
+Default searchFrom: process.cwd()
+Result object structure: { config: any; filepath: string; isEmpty?: true }
+Search order per directory: package.json property, .moduleName rc, .rc.json/.yaml/.yml/.js/.ts/.mjs/.cjs, .config subdir variants, moduleName.config.js/.ts/.mjs/.cjs
+Strategy after current directory determined by searchStrategy: none, project, or global. global then checks OS config dir ~/.config/moduleName/
 
-4  Loader Configuration
-- defaultLoaders keys: .mjs,.cjs,.js,.ts,.json,.yaml,.yml,noExt
-- defaultLoadersSync keys: .cjs,.js,.ts,.json,.yaml,.yml,noExt
-- Custom loader signature sync: (filepath: string, content: string)=>object|null
-- Async loader signature: (filepath: string, content: string)=>object|null|Promise<object|null>
-- Custom loader merge: specify only needed keys
+3. Explorer.load
+Signature: load(loadPath: string): Promise<Result>
+Reads loadPath via loader based on extension or noExt
+Throws if file missing or parse error
 
-5  JS Module Loading
-- Async: dynamic import for .mjs and ESM .js files
-- Sync: CommonJS require only; ignores .mjs
+4. Cache Management
+clearLoadCache(): void clears load cache
+clearSearchCache(): void clears search cache
+clearCaches(): void calls both
 
-6  Caching Control
-- By default cache enabled per explorer instance
-- Disable: options.cache=false
-- Clear caches via explorer.clearLoadCache, clearSearchCache, clearCaches or create new instance
+5. Configuration Options
+5.1 searchStrategy: none|project|global default none or global if stopDir set
+5.2 searchPlaces: string[] default 22 paths built from moduleName
+5.3 loaders: { [ext]: loader } merged with defaultLoaders; keys ext include ".js", ".json", ".yaml", ".ts", ".mjs", ".cjs", "noExt"
+5.4 packageProp: string|string[] default moduleName
+5.5 stopDir: string default home directory
+5.6 cache: boolean default true
+5.7 transform: (result)=>Result|Promise<Result> transform cached result
+5.8 ignoreEmptySearchPlaces: boolean default true
 
-7  End-User File Locations and $import
-- Supported files: package.json, .{NAME}rc(.json|.yaml|.yml|.js|.ts|.cjs|.mjs), .config/{NAME}rc(.json|.yaml|.yml|.js|.ts|.cjs|.mjs), {NAME}.config.(js|ts|cjs|mjs)
-- $import: string or array; imported in declaration order; last wins
+6. Default Search Places
+Asynchronous default searchPlaces list of 22 file paths as above
 
+7. Default Loaders
+Ext to defaultLoaders mapping: see defaultLoaders export
+Sync version excludes .mjs
+
+8. Loading JS Modules
+Async uses dynamic import for .js/.ts/.mjs/.cjs
+Sync uses require for .js/.cjs only
+
+9. Caching
+Per-instance caches for search and load
+Cache disabled by option cache=false or by clear methods
+
+10. Differences from rc
+Finds first config then stops, no merging
+Built-in JSON, YAML, CommonJS support
+Asynchronous by default
 
 ## Supplementary Details
-Implementation Steps:
-1  Installation: npm install cosmiconfig
-2  Import:
-   const { cosmiconfig, cosmiconfigSync, defaultLoaders } = require('cosmiconfig')
-3  Create explorer:
-   const explorer = cosmiconfig('moduleName', { searchStrategy:'global', cache:true })
-4  Search:
-   explorer.search().then(res=>{ if(res) use res.config })
-5  Load:
-   explorer.load('path/to/config.json')
-6  Custom loader example:
-   const json5Loader = (path,content)=>require('json5').parse(content)
-   cosmiconfig('mod',{ loaders:{ '.json': json5Loader } })
-7  Disable cache:
-   cosmiconfig('mod',{ cache:false })
-8  Clear caches:
-   explorer.clearLoadCache()
-   explorer.clearSearchCache()
-9  Sync usage:
-   const explorerSync = cosmiconfigSync('moduleName',options)
-   const res = explorerSync.search(); const cfg = explorerSync.load(path)
+Default values
+searchStrategy: none or global if stopDir set
+searchPlaces: see normalisedExtract section 6
+loaders: defaultLoaders Async with .mjs,.cjs,.js,.ts,.json,.yaml,.yml,noExt; Sync excludes .mjs
+packageProp: moduleName
+stopDir: os.homedir()
+cache: true
+ignoreEmptySearchPlaces: true
 
-Configuration Options Summary:
-- searchStrategy: none|project|global
-- searchPlaces: custom array to override default
-- loaders: override or extend defaultLoaders
-- packageProp: property path in package.json
-- stopDir: directory to stop upward search
-- cache: toggle in-memory caches
-- transform: function to post-process and cache output
-- ignoreEmptySearchPlaces: include empty files when false
+Implementation Steps
+1. npm install cosmiconfig
+2. import { cosmiconfig } from 'cosmiconfig'
+3. const explorer = cosmiconfig('myapp',{ cache:false, searchStrategy:'project' })
+4. const result = await explorer.search('/path/to/start')
+5. if(result) use result.config; else handle no config
+6. explorer.clearCaches() before program exit to free memory
 
+Loader Customization Example
+cosmiconfig('foo',{ loaders:{ '.json':defaultLoadersSync['.json'] } }) // enforce strict JSON
+
+Transform Example
+cosmiconfig('foo',{ transform:result=>{ result.config.env=process.env.NODE_ENV; return result } })
 
 ## Reference Details
-Type Definitions:
+Async API
 
-type Result = {
-  config: any,
-  filepath: string,
-  isEmpty?: boolean
-}
+import { cosmiconfig, defaultLoaders } from 'cosmiconfig'
 
-type SyncLoader = (filepath:string,content:string)=>object|null
+const explorer = cosmiconfig('appName',{
+  searchStrategy:'global',
+  searchPlaces:[
+    'package.json',
+    '.appnrc',
+    '.appnrc.json',
+    '.config/appnrc.yaml',
+    'appn.config.js'
+  ],
+  loaders: {
+    '.yaml': defaultLoaders['.yaml'],
+    'noExt': defaultLoaders['.json']
+  },
+  packageProp:['configs','appName'],
+  stopDir:'/project/root',
+  cache:false,
+  transform: async result => ({ ...result, config: sanitize(result.config) }),
+  ignoreEmptySearchPlaces:false
+})
 
-type AsyncLoader = (filepath:string,content:string)=>object|null|Promise<object|null>
+// search()
+// Returns Promise<{ config:any; filepath:string; isEmpty?:true } | null>
 
-interface CosmiconfigOptions {
-  searchStrategy?: 'none'|'project'|'global',
-  searchPlaces?: string[],
-  loaders?: Record<string,SyncLoader|AsyncLoader>,
-  packageProp?: string|string[],
-  stopDir?: string,
-  cache?: boolean,
-  transform?: (result:Result)=>Result|Promise<Result>,
-  ignoreEmptySearchPlaces?: boolean
-}
+explorer.search('/cwd/subdir')
+  .then(result=>{
+    if(!result) throw new Error('No config found')
+    applyConfig(result.config)
+  })
+  .catch(err=>console.error('config load error',err))
 
-interface Explorer {
-  search(searchFrom?:string):Promise<Result|null>
-  load(loadPath:string):Promise<Result>
-  clearLoadCache():void
-  clearSearchCache():void
-  clearCaches():void
-}
+// load()
+// Returns Promise<Result>
 
-interface ExplorerSync {
-  search(searchFrom?:string):Result|null
-  load(loadPath:string):Result
-  clearLoadCache():void
-  clearSearchCache():void
-  clearCaches():void
-}
+explorer.load('/config/path/app.config.yaml')
+  .then(({config,filepath})=> console.log('loaded',filepath))
+  .catch(err=> console.error(err))
 
-Function Signatures:
+// Caching methods
+e.explorer.clearLoadCache()
+explorer.clearSearchCache()
+explorer.clearCaches()
 
-cosmiconfig(moduleName:string, options?:CosmiconfigOptions):Explorer
-cosmiconfigSync(moduleName:string, options?:CosmiconfigOptions):ExplorerSync
+Sync API
 
-Default searchPlaces array definition in code:
-const defaultSearchPlaces = [
-  'package.json',
-  `.${moduleName}rc`,
-  `.${moduleName}rc.json`,
-  `.${moduleName}rc.yaml`,
-  `.${moduleName}rc.yml`,
-  `.${moduleName}rc.js`,
-  `.${moduleName}rc.ts`,
-  `.${moduleName}rc.mjs`,
-  `.${moduleName}rc.cjs`,
-  `.config/${moduleName}rc`,
-  `.config/${moduleName}rc.json`,
-  `.config/${moduleName}rc.yaml`,
-  `.config/${moduleName}rc.yml`,
-  `.config/${moduleName}rc.js`,
-  `.config/${moduleName}rc.ts`,
-  `.config/${moduleName}rc.mjs`,
-  `.config/${moduleName}rc.cjs`,
-  `${moduleName}.config.js`,
-  `${moduleName}.config.ts`,
-  `${moduleName}.config.mjs`,
-  `${moduleName}.config.cjs`
-]
+import { cosmiconfigSync, defaultLoadersSync } from 'cosmiconfig'
 
-Default loaders mapping in code:
-const defaultLoaders = {
-  '.mjs':loadJs,
-  '.cjs':loadJs,
-  '.js':loadJs,
-  '.ts':loadTs,
-  '.json':loadJson,
-  '.yaml':loadYaml,
-  '.yml':loadYaml,
-  'noExt':loadYaml
-}
+const explorerSync = cosmiconfigSync('appName',{ cache:true })
+const resultSync = explorerSync.search('/start')
+if(resultSync) use(resultSync.config)
 
-Code Examples:
+Configuration Options Table
 
-// Async search example
-const { cosmiconfig } = require('cosmiconfig')
-const explorer = cosmiconfig('myapp')
-explorer.search().then(res=>{
-  if(res){
-    console.log('config:',res.config)
-    console.log('path:',res.filepath)
-  } else console.log('No config found')
-}).catch(err=>console.error(err))
+| Option                  | Type                         | Default                                        | Effect                                          |
+|-------------------------|------------------------------|------------------------------------------------|-------------------------------------------------|
+| searchStrategy          | 'none'|'project'|'global'  | 'none' if no stopDir, 'global' if stopDir set  | Controls directory traversal strategy           |
+| searchPlaces            | string[]                     | default 22 module-based places                 | Defines files and paths to check per directory  |
+| loaders                 | { [ext]: loader }            | defaultLoaders/Sync                            | Maps extensions to parse functions              |
+| packageProp             | string  string[]       | moduleName                                     | Property path in package.json                   |
+| stopDir                 | string                       | os.homedir()                                   | Directory where search stops                    |
+| cache                   | boolean                      | true                                           | Enables caching of results                      |
+| transform               | (Result)=>ResultPromise | identity                                       | Transforms result before caching                |
+| ignoreEmptySearchPlaces | boolean                      | true                                           | Skip empty files during search                  |
 
-// Sync search example
-const { cosmiconfigSync } = require('cosmiconfig')
-const explorerSync = cosmiconfigSync('myapp',{cache:false})
-try{
-  const resSync = explorerSync.search()
-  if(resSync) console.log(resSync.config)
-} catch(e){ console.error(e) }
+Best Practice Example
 
-Best Practices:
-- Use transform option to post-process and cache expensive operations.
-- Disable cache in development for deterministic behavior: options.cache=false.
-- Provide custom loaders for non-standard file types and merge with defaultLoaders.
+// Enforce strict JSON for rc files and disable caching
+const explorerStrict = cosmiconfig('myapp',{
+  cache:false,
+  loaders:{ noExt:defaultLoaders['.json'] }
+})
 
-Troubleshooting:
-# Clear caches if stale results:
-node -e "require('cosmiconfig')('mod').clearCaches()"
-# Error loading malformed YAML:
-Expected: .yaml file with valid syntax, error thrown includes file path and parse location.
-# Missing config returns null, not error. Check result===null.
-# Dynamic import errors for ESM require Node >=12.17.0 and correct file extension or package.json type field.
+const resultStrict = await explorerStrict.search()
+if(resultStrict) console.log(JSON.stringify(resultStrict.config))
+
+Troubleshooting
+
+1. No config found but file exists
+   Command: console.log(explorer.searchPlaces)
+   Expected: array includes your filename
+   Fix: add custom searchPlaces covering extension
+
+2. Syntax error in JS config
+   Command: try explorer.load('path.js').catch(console.error)
+   Expected: SyntaxError with stack trace
+   Fix: ensure file exports via module.exports or use ESM with .mjs and async API
+
+3. Transform not applied
+   Check: option transform is async vs sync API mismatch
+   Fix: use sync-only transform for cosmiconfigSync
 
 
 ## Information Dense Extract
-cosmiconfig(moduleName:string,options?:CosmiconfigOptions):Explorer; Explorer.search(searchFrom?:string):Promise<Result|null>; Explorer.load(loadPath:string):Promise<Result>; clearLoadCache()/clearSearchCache()/clearCaches():void; cosmiconfigSync returns ExplorerSync with same methods sync. Default searchPlaces async: ['package.json',`.${name}rc`,`.${name}rc.json`,`.${name}rc.yaml`,`.${name}rc.yml`,`.${name}rc.js`,`.${name}rc.ts`,`.${name}rc.mjs`,`.${name}rc.cjs`,`.config/${name}rc`,`.config/${name}rc.json`,`.config/${name}rc.yaml`,`.config/${name}rc.yml`,`.config/${name}rc.js`,`.config/${name}rc.ts`,`.config/${name}rc.mjs`,`.config/${name}rc.cjs`,`${name}.config.js`,`${name}.config.ts`,`${name}.config.mjs`,`${name}.config.cjs`]; sync omits .mjs entries. Options: searchStrategy:none|project|global (none by default), searchPlaces:string[], loaders:Record<string,SyncLoader|AsyncLoader>, packageProp:string|string[], stopDir:string, cache:boolean=true, transform:(Result)=>Result|Promise<Result>, ignoreEmptySearchPlaces:boolean=true. defaultLoaders: .mjs/.cjs/.js=>loadJs, .ts=>loadTs, .json=>loadJson, .yaml/.yml/noExt=>loadYaml. Sync loaders exclude .mjs. Loader signatures: SyncLoader(filepath,content)=>object|null; AsyncLoader returns object|null or Promise. JS modules: dynamic import for async, require for sync. Cache control via options.cache=false or clear methods. $import key merges base files in order. End-user file locations as above.
+cosmiconfig(name,options) returns Explorer with methods search(searchFrom?), load(path), clearLoadCache(), clearSearchCache(), clearCaches(). Default search files per directory: package.json->packageProp, .name rc (noExt->YAML/JSON), .rc.json/.yaml/.yml/.js/.ts/.mjs/.cjs, .config subdir variants, name.config.js/.ts/.mjs/.cjs. Options: searchStrategy('none'|'project'|'global'), searchPlaces(string[]), loaders({ext:loader}), packageProp(string|string[]), stopDir(string), cache(boolean), transform(function), ignoreEmptySearchPlaces(boolean). Default loaders Async: .mjs,.cjs,.js(loadJs),.ts(loadTs),.json(loadJson),.yaml/.yml(loadYaml),noExt(loadYaml). JS modules loaded via dynamic import in async API; sync API uses require, ignores .mjs. Caching per instance, clearable. cosmiconfigSync for sync API identical signatures without promises.
 
 ## Sanitised Extract
 Table of Contents
-1  Instance Creation and Core Methods
-2  Default Search Places
-3  cosmiconfigOptions with Defaults
-4  Loader Configuration
-5  JS Module Loading
-6  Caching Control
-7  End-User File Locations and $import
 
-1  Instance Creation and Core Methods
-- Create explorer: const explorer = cosmiconfig(moduleName, options)
-- search(searchFrom?: string): Promise<Result|null>
-  Returns first matching config or null.
-- load(loadPath: string): Promise<Result>
-  Loads specific file or rejects.
-- clearLoadCache(): void
-- clearSearchCache(): void
-- clearCaches(): void
-- Sync counterparts in cosmiconfigSync; methods return Result or void and throw on error.
+1. Async API Instantiation
+2. Explorer.search
+3. Explorer.load
+4. Cache Management
+5. Configuration Options
+   5.1 searchStrategy
+   5.2 searchPlaces
+   5.3 loaders
+   5.4 packageProp
+   5.5 stopDir
+   5.6 cache
+   5.7 transform
+   5.8 ignoreEmptySearchPlaces
+6. Default Search Places
+7. Default Loaders
+8. Loading JS Modules
+9. Caching
+10. Differences from rc
 
-2  Default Search Places
-- Async default searchPlaces[21]:
-  package.json
-  .${moduleName}rc
-  .${moduleName}rc.json
-  .${moduleName}rc.yaml
-  .${moduleName}rc.yml
-  .${moduleName}rc.js
-  .${moduleName}rc.ts
-  .${moduleName}rc.mjs
-  .${moduleName}rc.cjs
-  .config/${moduleName}rc
-  .config/${moduleName}rc.json
-  .config/${moduleName}rc.yaml
-  .config/${moduleName}rc.yml
-  .config/${moduleName}rc.js
-  .config/${moduleName}rc.ts
-  .config/${moduleName}rc.mjs
-  .config/${moduleName}rc.cjs
-  ${moduleName}.config.js
-  ${moduleName}.config.ts
-  ${moduleName}.config.mjs
-  ${moduleName}.config.cjs
-- Sync variant omits mjs entries.
+1. Async API Instantiation
+Function signature: cosmiconfig(moduleName: string, options?: CosmiconfigOptions): Explorer
+moduleName must be filename-safe, no scoped names
+Returns Explorer with initialized caches
 
-3  cosmiconfigOptions with Defaults
-- searchStrategy: none|project|global (none unless stopDir set => global)
-- searchPlaces: string[] (default above)
-- loaders: Record<string,SyncLoader|AsyncLoader> merged with defaults
-- packageProp: string|string[] (default moduleName)
-- stopDir: string (default user home)
-- cache: boolean (default true)
-- transform: (Result)=>Result|Promise<Result> cached output
-- ignoreEmptySearchPlaces: boolean (default true)
+2. Explorer.search
+Signature: search(searchFrom?: string): Promise<Result|null>
+Default searchFrom: process.cwd()
+Result object structure: { config: any; filepath: string; isEmpty?: true }
+Search order per directory: package.json property, .moduleName rc, .rc.json/.yaml/.yml/.js/.ts/.mjs/.cjs, .config subdir variants, moduleName.config.js/.ts/.mjs/.cjs
+Strategy after current directory determined by searchStrategy: none, project, or global. global then checks OS config dir ~/.config/moduleName/
 
-4  Loader Configuration
-- defaultLoaders keys: .mjs,.cjs,.js,.ts,.json,.yaml,.yml,noExt
-- defaultLoadersSync keys: .cjs,.js,.ts,.json,.yaml,.yml,noExt
-- Custom loader signature sync: (filepath: string, content: string)=>object|null
-- Async loader signature: (filepath: string, content: string)=>object|null|Promise<object|null>
-- Custom loader merge: specify only needed keys
+3. Explorer.load
+Signature: load(loadPath: string): Promise<Result>
+Reads loadPath via loader based on extension or noExt
+Throws if file missing or parse error
 
-5  JS Module Loading
-- Async: dynamic import for .mjs and ESM .js files
-- Sync: CommonJS require only; ignores .mjs
+4. Cache Management
+clearLoadCache(): void clears load cache
+clearSearchCache(): void clears search cache
+clearCaches(): void calls both
 
-6  Caching Control
-- By default cache enabled per explorer instance
-- Disable: options.cache=false
-- Clear caches via explorer.clearLoadCache, clearSearchCache, clearCaches or create new instance
+5. Configuration Options
+5.1 searchStrategy: none|project|global default none or global if stopDir set
+5.2 searchPlaces: string[] default 22 paths built from moduleName
+5.3 loaders: { [ext]: loader } merged with defaultLoaders; keys ext include '.js', '.json', '.yaml', '.ts', '.mjs', '.cjs', 'noExt'
+5.4 packageProp: string|string[] default moduleName
+5.5 stopDir: string default home directory
+5.6 cache: boolean default true
+5.7 transform: (result)=>Result|Promise<Result> transform cached result
+5.8 ignoreEmptySearchPlaces: boolean default true
 
-7  End-User File Locations and $import
-- Supported files: package.json, .{NAME}rc(.json|.yaml|.yml|.js|.ts|.cjs|.mjs), .config/{NAME}rc(.json|.yaml|.yml|.js|.ts|.cjs|.mjs), {NAME}.config.(js|ts|cjs|mjs)
-- $import: string or array; imported in declaration order; last wins
+6. Default Search Places
+Asynchronous default searchPlaces list of 22 file paths as above
+
+7. Default Loaders
+Ext to defaultLoaders mapping: see defaultLoaders export
+Sync version excludes .mjs
+
+8. Loading JS Modules
+Async uses dynamic import for .js/.ts/.mjs/.cjs
+Sync uses require for .js/.cjs only
+
+9. Caching
+Per-instance caches for search and load
+Cache disabled by option cache=false or by clear methods
+
+10. Differences from rc
+Finds first config then stops, no merging
+Built-in JSON, YAML, CommonJS support
+Asynchronous by default
 
 ## Original Source
 cosmiconfig
@@ -315,50 +280,53 @@ https://github.com/davidtheclark/cosmiconfig
 
 ## Digest of COSMICONFIG
 
-# Cosmiconfig Detailed Digest
+# Installation
 
-Retrieved on: 2024-06-25
-Data size: 664411 bytes
+Installation Command
 
-## 1. Asynchronous API
+npm install cosmiconfig
 
-### cosmiconfig(moduleName, cosmiconfigOptions)
-Creates an explorer instance with caches initialized.
+Supported Environments
 
-Arguments:
-- moduleName: string (required)
-- cosmiconfigOptions: object (optional)
+Node.js >=14
 
-### explorer.search([searchFrom])
-Returns Promise<Result|null>. Resolves with first found configuration or null.
+# Asynchronous API
 
-### explorer.load(loadPath)
-Returns Promise<Result>. Loads file at loadPath or rejects on error.
+Function: cosmiconfig(moduleName: string, options?: CosmiconfigOptions): Explorer
 
-### explorer.clearLoadCache()
-Clears load cache.
+Explorer Methods:
 
-### explorer.clearSearchCache()
-Clears search cache.
+search(searchFrom?: string): Promise<Result|null>
+load(loadPath: string): Promise<Result>
+clearLoadCache(): void
+clearSearchCache(): void
+clearCaches(): void
 
-### explorer.clearCaches()
-Clears both load and search caches.
+# Synchronous API
 
-## 2. Synchronous API
+Function: cosmiconfigSync(moduleName: string, options?: CosmiconfigOptions): ExplorerSync
 
-### cosmiconfigSync(moduleName, cosmiconfigOptions)
-Creates explorerSync with caches initialized.
+ExplorerSync Methods:
 
-Methods identical to async but return values directly and throw on errors:
-- explorerSync.search([searchFrom]): Result|null
-- explorerSync.load(loadPath): Result
-- explorerSync.clearLoadCache(): void
-- explorerSync.clearSearchCache(): void
-- explorerSync.clearCaches(): void
+search(searchFrom?: string): Result|null
+load(loadPath: string): Result
+clearLoadCache(): void
+clearSearchCache(): void
+clearCaches(): void
 
-## 3. Default Search Places
+# CosmiconfigOptions
 
-Asynchronous defaults (array order):
+searchStrategy: 'none' | 'project' | 'global'  default none unless stopDir is set then global
+searchPlaces: string[]  default array of 22 paths based on moduleName
+loaders: {[ext: string]: SyncLoader|AsyncLoader}  merged with defaultLoaders
+packageProp: string|string[]  default moduleName
+stopDir: string  default user home directory
+cache: boolean  default true
+transform: (result: Result)=> Result|Promise<Result>
+ignoreEmptySearchPlaces: boolean  default true
+
+# Default searchPlaces (async)
+
 package.json
 .${moduleName}rc
 .${moduleName}rc.json
@@ -381,53 +349,44 @@ ${moduleName}.config.ts
 ${moduleName}.config.mjs
 ${moduleName}.config.cjs
 
-In sync API .mjs entries are omitted.
+# Default loaders (async)
 
-## 4. Default Loaders
+Extension to function mapping:
+.mjs -> loadJs
+.cjs -> loadJs
+.js  -> loadJs
+.ts  -> loadTs
+.json-> loadJson
+.yaml-> loadYaml
+.yml -> loadYaml
+noExt-> loadYaml
 
-Exported defaults:
-- '.mjs' => loadJs
-- '.cjs' => loadJs
-- '.js'  => loadJs
-- '.ts'  => loadTs
-- '.json'=> loadJson
-- '.yaml'=> loadYaml
-- '.yml' => loadYaml
-- 'noExt'=> loadYaml
+# Loading JS modules
 
-Sync loaders exclude '.mjs'.
+Async API uses dynamic import for .js,.ts,.mjs,.cjs
+Sync API treats all .js/.cjs as CommonJS, ignores .mjs
 
-## 5. cosmiconfigOptions
+# Caching
 
-- searchStrategy: 'none'|'project'|'global' (default none unless stopDir set => global)
-- searchPlaces: string[] (default above)
-- loaders: object mapping extension to loader function
-- packageProp: string|string[] (default moduleName)
-- stopDir: string (default user home dir)
-- cache: boolean (default true)
-- transform: function(Result)=>Result|Promise<Result>
-- ignoreEmptySearchPlaces: boolean (default true)
+Each Explorer instance has separate caches for search and load
+default cache=true
+clearLoadCache clears load cache
+e.g. explorer.clearLoadCache()
 
-## 6. Loading JS Modules
+# Differences from rc
 
-Async API uses dynamic import for .mjs and .js under ESM conditions.
-Sync API treats all JS as CommonJS; ignores .mjs.
+Stops at first found config, does not merge up-tree
+Built-in JSON,YAML,CommonJS support
+Asynchronous by default
 
-## 7. Caching
-
-By default cache enabled per explorer instance. Disable via options.cache=false or use clearLoadCache, clearSearchCache, clearCaches repeatedly.
-
-## 8. End-User Usage and $import
-
-Supports $import key to merge base configurations. Import paths array processed in order, last wins.
 
 ## Attribution
 - Source: cosmiconfig
 - URL: https://github.com/davidtheclark/cosmiconfig
 - License: MIT License
-- Crawl Date: 2025-05-10T14:58:31.177Z
-- Data Size: 664411 bytes
-- Links Found: 4978
+- Crawl Date: 2025-05-10T23:33:14.117Z
+- Data Size: 1796518 bytes
+- Links Found: 7855
 
 ## Retrieved
 2025-05-10
