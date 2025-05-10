@@ -76,7 +76,8 @@ Documentation for prom-client, covering metric types (Counters, Gauges, Histogra
 Combined overview of EJS templating and Chart.js server-side rendering via ChartjsNodeCanvas. EJS provides templating syntax, partials, includes, and integration with Node.js for dynamic report generation in Markdown or HTML. ChartjsNodeCanvas enables headless rendering of Chart.js charts to PNG buffers. Together, they power the generation of formatted benchmark reports with embedded performance visualizations. Last updated 2023–2024.
 ## License: MIT
 
-# Minimatch Glob Patterns
-## https://github.com/isaacs/minimatch#minimatch
-API reference for minimatch, a glob matching library used for matching file paths with patterns. Covers syntax for patterns, options for matching behavior, and examples for inclusion/exclusion lists. Handy for configuration file scanning, test file discovery, and file-based batching operations. Last updated 2024.
+# Markdown-it and GitHub Flavored Markdown Plugin
+## https://github.com/markdown-it/markdown-it#readme
+## https://github.com/markdown-it-github/markdown-it-github#readme
+Combined documentation for Markdown-it parser and the markdown-it-github plugin, covering extensible syntax parsing, token structure, plugin integration, customization of rendering rules, and GFM extensions such as tables, task lists, and autolinks. Essential for rendering dynamic markdown reports and documentation templates in the library. Last updated 2024; maintained by the markdown-it community.
 ## License: MIT
