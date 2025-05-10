@@ -22,9 +22,9 @@ Centralized documentation for Node.js core modules including fs.promises, readli
 Node.js v20; Node.js License.
 ## Node.js License
 
-# Node.js Readline API
-## https://nodejs.org/api/readline.html
-Official Node.js documentation for the readline module, covering interactive input/output interfaces, prompts, line events, history management, custom completers, and interface customization. Fundamental for implementing interactive REPL mode, scripting workflows, and user prompts in the CLI tool.
+# Node.js Worker Threads API
+## https://nodejs.org/api/worker_threads.html
+Official Node.js documentation for the worker_threads module, covering the Worker class, workerData serialization, message passing, and thread pool management. Essential for implementing the calculatePiParallel function to distribute π computation across multiple threads and aggregate partial results efficiently.
 Node.js v20; Node.js License.
 ## Node.js License
 
@@ -38,6 +38,12 @@ Maintained under MIT License.
 ## https://github.com/davidtheclark/cosmiconfig
 Comprehensive guide to using cosmiconfig for discovering and loading configuration files (JSON, YAML, JS), search order, caching strategies, and error handling. Vital for the PI Configuration feature that merges defaults, environment settings, and CLI flags.
 Last updated 2024.
+## MIT License
+
+# js-yaml
+## https://github.com/nodeca/js-yaml
+Official documentation for js-yaml, covering YAML parsing and dumping in JavaScript, handling custom schemas, safeLoad vs load, and serialization options. Crucial for parsing YAML scripts in batch `--script` mode, enabling flexible command sequencing in JSON or YAML formats.
+Last updated 2024; maintained under MIT License.
 ## MIT License
 
 # proper-lockfile
@@ -55,12 +61,6 @@ Last updated 2024.
 # EJS
 ## https://ejs.co/#docs
 Embedded JavaScript templating engine docs covering template syntax, partials, includes, and custom filters. Fundamental for HTML report generation to template dashboards, embed Base64 images, and render code blocks in static reports.
-Last updated 2024.
-## MIT License
-
-# Vitest Testing Framework
-## https://vitest.dev/api/
-Official Vitest documentation for writing unit, integration, and end-to-end tests in Node.js. Covers test suite APIs (`describe`, `test`, `expect`), mocking, setup/teardown hooks, configuration options, and coverage reporting. Critical for maintaining robust test suites across core features and HTTP endpoints.
 Last updated 2024.
 ## MIT License
 
