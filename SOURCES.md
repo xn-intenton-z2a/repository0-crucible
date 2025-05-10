@@ -68,11 +68,15 @@ Official guide to the Worker Threads module, detailing Worker creation, parent-w
 
 # Visualization and Reporting Libraries
 ## https://www.chartjs.org/docs/latest/
+Comprehensive client-side charting library documentation covering configuration options, plugin architecture, and performance considerations for rendering large datasets. Useful for embedding performance or digit distribution charts in front-end dashboards.
 ## https://github.com/Automattic/node-canvas
+Node.js port of the Canvas API enabling server-side rendering of Chart.js, EJS templates, and custom graphics. Includes installation notes, headless operation, and performance tuning.
 ## https://ejs.co/#docs
+Embedded JavaScript templating engine guides for generating HTML and Markdown reports dynamically from computed data. Covers custom tags, layouts, and file-based templates.
 ## https://quickchart.io/documentation/
+Official QuickChart API documentation for on-demand chart image generation via REST. Details URL-based configuration, chart types, size limits, and caching strategies for efficient PNG outputs.
 ## https://github.com/typpo/quickchart-js#readme
-A comprehensive suite for generating dynamic charts and reports: Chart.js for client-side chart definitions, node-canvas for server-side rendering, EJS for templating HTML/Markdown outputs, and QuickChart for on-demand image generation via REST. Covers JSON config, performance considerations, URL length limits, and integration patterns in Node.js. Last updated 2024.
+Node.js client library for QuickChart, including API methods, error handling patterns, and advanced chart customization examples. Last updated 2024.
 ## License: MIT
 
 # Piscina Worker Thread Pool Library
@@ -94,5 +98,10 @@ Practical guide to implementing Server-Sent Events for one-way real-time data st
 ## https://github.com/npm/write-file-atomic#readme
 Comprehensive guide to write-file-atomic for atomic file writes in Node.js, ensuring complete file replacement and preventing partial writes. Supports safe persistence of cache files under concurrent access. Last updated 2023.
 ## https://github.com/atomicjolt/proper-lockfile#readme
-Detailed instructions on file-level locking patterns using proper-lockfile, offering cross-process locks, lock stale keeping, and automatic retries. Essential for preventing cache corruption during simultaneous cache reads/writes. Last updated 2022.
+Detailed instructions on file-level locking patterns using proper-lockfile, offering cross-process locks, lock stale checking, and automatic retries. Essential for preventing cache corruption during simultaneous cache reads/writes. Last updated 2022.
 ## License: MIT
+
+# ECMAScript Modules (ESM)
+## https://nodejs.org/api/esm.html
+Official Node.js guide to ECMAScript Modules, describing import/export syntax, module resolution algorithm, loader hooks, package scope, and interoperability with CommonJS. Crucial for structuring the library and CLI as ESM packages in Node 20+. Last updated June 2024; maintained by the OpenJS Foundation.
+## License: CC-BY-4.0
