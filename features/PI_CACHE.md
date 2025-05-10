@@ -1,35 +1,50 @@
-# Overview
+# PI Cache Feature
 
-This feature introduces persistent caching of π computation results to speed up repeated calculations. A local cache file stores results for combinations of digit count and algorithm. When caching is enabled, the library checks the cache for existing results and returns them if available; otherwise it computes the value and stores it for future reuse.
+## Overview
 
-# Functional Requirements
+Introduce persistent caching of π computation results to dramatically speed up repeated calculations for identical digit and algorithm combinations. Cache entries are stored in a local JSON file with safe, atomic writes and file locking to prevent corruption under concurrent access.
 
-- Extend calculatePi to accept cache options:
-  - Add optional parameters useCache (boolean default false) and cacheFile (string default .pi_cache.json)
-  - Before computation, load cacheFile and look for an entry keyed by algorithm|digits
-  - If a cached entry exists, return its value without recomputing
-  - If no entry exists, compute π, then write the new result to cacheFile under the same key
-- Cache file format:
-  - JSON mapping keys of the form algorithm|digits to the string representation of π
-  - Create cacheFile if it does not exist and handle concurrent reads and writes safely
-  - Use file locks or atomic writes to prevent corruption
+## Functional Requirements
 
-# CLI Interface
+- Extend `calculatePi` in `src/lib/main.js` to accept two optional parameters:
+  - `useCache` (boolean, default false)
+  - `cacheFile` (string, default ".pi_cache.json")
+- When `useCache` is true:
+  - Acquire a shared lock on `cacheFile` using `proper-lockfile`.
+  - Read and parse the JSON cache file, or initialize an empty object if missing.
+  - Generate a key of the form `<algorithm>|<digits>`.
+  - If the key exists, return a `Decimal` instance from the cached string without recomputing.
+  - If the key is absent:
+    - Release the shared lock.
+    - Compute π normally.
+    - Acquire an exclusive lock on `cacheFile`.
+    - Reload the cache file to merge concurrent updates.
+    - Insert the new entry keyed by `<algorithm>|<digits>` with the string value of π.
+    - Atomically write the updated JSON to a temporary file and rename to `cacheFile`.
+    - Release the lock and return the computed `Decimal`.
+  - Ensure locks are always released even on errors.
 
-- Add flags --use-cache and --cache-file <path> to src/lib/main.js
-- When --use-cache is present, enable caching; otherwise ignore cache options
-- --cache-file allows specifying a custom cache file path
-- Example invocations:
-  node src/lib/main.js --digits 1000 --algorithm gauss-legendre --use-cache
-  node src/lib/main.js --digits 200 --use-cache --cache-file custom_cache.json
+## CLI Interface
 
-# Dependencies
+- In `src/lib/main.js`, extend the CLI parser to accept flags:
+  - `--use-cache` (boolean) to enable caching
+  - `--cache-file <path>` to specify a custom cache file
+- When `--use-cache` is provided, pass `useCache=true` and `cacheFile` to `calculatePi` or `calculatePiParallel`.
+- Display a log message when a cached result is served or when a new entry is cached.
+- Update the help output to document the new flags and defaults.
 
-- Use built in fs and fs promises APIs; no new dependencies are required
+## Dependencies
 
-# Testing
+- Add `proper-lockfile` to `package.json` dependencies.
+- Import `lockfile` from `proper-lockfile` and `fs/promises` in `src/lib/main.js`.
 
-- Add unit tests that mock file system operations to simulate cache hits and misses
-- Verify calculatePi returns the cached value when available and skips heavy computation on cache hit
-- Verify that on cache miss the new result is added to cacheFile
-- Test CLI flag parsing to ensure --use-cache and --cache-file correctly control caching behavior
+## Testing
+
+- **Unit Tests** in `tests/unit/main.test.js`:
+  - Mock file system and `proper-lockfile` to simulate cache hits and misses.
+  - Verify that `calculatePi` returns cached values when present and avoids computation.
+  - Confirm that on cache miss, the new result is written to the cache file atomically.
+  - Test error scenarios: corrupted cache file, lock acquisition failure.
+- **CLI Tests** in `tests/e2e/cli.test.js`:
+  - Invoke the CLI with `--digits 10 --algorithm machin --use-cache` and assert that a cache file is created.
+  - Re-run with the same flags and assert that the output is served from cache (e.g., by observing a log message).
