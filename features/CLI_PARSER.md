@@ -1,26 +1,28 @@
 # Overview
 
-Integrate a structured, extensible command-line interface for all core operations using yargs and unify global options for configuration, caching, logging, and timeouts. The CLI should support discrete commands for π calculation, digit extraction, benchmarking, diagnostics, and HTTP server startup with clear help output, version display, and unified error handling.
+Integrate a structured, extensible command-line interface using yargs to unify all core operations under clear commands and global options. This feature lays the foundation for the CLI tool to parse commands, flags, and environment configuration consistently, enabling future features to plug into defined subcommands.
 
-# Commands
+# Commands and Options
+
+Define discrete commands for key operations:
 
 calculate-pi <digits>
-    Compute π to the specified number of digits. Supports options: --output, --threads, --no-threads, --show-progress, --no-progress, --verify-digits, --no-verify, --cache-dir, --no-cache, --cache-ttl, --clear-cache, --timeout, --config, --openapi, --openapi-output
+    Compute π to the specified number of digits. Supports options: --output, --threads, --timeout, --config, --cache-dir, --no-cache, --show-progress, --no-progress, --verify-digits, --no-verify
 
 extract-digit <position>
-    Extract a single π digit by zero-based index. Supports options: --base, --output, --config
+    Extract a single π digit at the given index. Supports options: --base, --output, --config
 
 extract-range <start>-<end>
-    Extract a contiguous range of π digits. Supports options: --base, --output, --config
+    Extract a range of π digits. Supports options: --base, --output, --config
 
 benchmark-pi <digits>
-    Benchmark one or more algorithms for the specified digit count. Supports options: --algorithms, --output-dir, --chart-file, --report-file, --timeout, --config
+    Benchmark algorithms for π computation. Supports options: --algorithms, --output-dir, --chart-file, --report-file, --timeout, --config
 
 list-algorithms
-    List all supported π calculation and extraction algorithms. Supports options: --json
+    List supported π calculation and extraction algorithms. Supports option: --json
 
 diagnostics
-    Print system diagnostics including Node version, platform, CPU and memory metrics. Supports options: --json
+    Print system diagnostics. Supports option: --json
 
 serve
     Start the HTTP API server. Supports options: --port, --metrics, --stream, --timeout, --config
@@ -28,48 +30,48 @@ serve
 version
     Print package version and exit
 
-# Global Options
+Global Options:
 
 --config <path>
-    Load CLI defaults from YAML or JSON configuration file. Overrides default search order: ./pi-config.yaml, ./pi-config.yml, ./pi-config.json
+    Load CLI defaults from a JSON or YAML file
 
 --cache-dir <path>
-    Directory for cache files. Overrides default ~/.pi_cache
+    Directory for cache files
 
 --no-cache
     Disable cache lookup and writes
 
 --verbose
-    Enable detailed debug and info logging
+    Enable debug and info logging
 
 --quiet
     Suppress non-error output
 
 --timeout <seconds>
-    Abort long-running operations after specified seconds
+    Abort long-running operations after the specified seconds
 
 # Implementation
 
-- Add yargs as a dependency and import in src/lib/main.js
-- Use yargs.command to define each subcommand with its positional arguments, description, option builders, and async handlers that invoke underlying logic
-- Register global options via yargs.option and apply middleware to:
-  • Load configuration from file or environment using js-yaml and dotenv
-  • Initialize logging utility based on --verbose, --quiet, and LOG_LEVEL
-  • Parse and validate --timeout using Zod schemas
-- Use yargs.fail to handle parsing and validation errors consistently, printing messages to stderr and exiting with appropriate status codes
-- Ensure that commands like --openapi and --openapi-output run before any server startup or computation, emitting the OpenAPI JSON and exiting immediately
-- Call yargs.parseAsync(process.argv.slice(2)) at the end of main
+- Add a dependency on yargs in package.json
+- In src/lib/main.js, import yargs and define commands via yargs.command with description, builder for options, and handler that invokes existing or placeholder logic
+- Register global options via yargs.option and middleware to:
+    • Load configuration from file using js-yaml and merge with CLI flags
+    • Initialize logging based on --verbose, --quiet, and LOG_LEVEL environment variable
+    • Validate flags (e.g., digits and positions) using zod schemas
+- Use yargs.fail to handle parsing errors, printing messages to stderr and exiting with code 1
+- At end of main, call yargs.parseAsync(args)
 
 # Testing
 
-- Update tests in tests/unit/main.test.js to:
-  • Verify that invoking main with --help prints usage information containing all command names
-  • Mock handler functions and confirm that each command dispatches correctly with parsed arguments
-  • Test version command returns the correct version and exit code 0
-  • Simulate unknown commands and verify a nonzero exit and error message
+- Update tests/unit/main.test.js to verify:
+    • main invoked with --help prints usage information containing all commands and global options
+    • main invoked with version command prints the correct version and exits code 0
+    • Commands dispatch to the correct handler based on parsed arguments (mock handlers if necessary)
+    • Invalid commands or flags result in exit code 1 and descriptive error messages
 
 # Documentation
 
-- Update README.md under Features:
-  • Document each CLI command, its description, available flags, and example usage
-  • Provide sample workflows demonstrating combined options and commands
+- Update README.md under Features to:
+    • Describe each CLI command with its options and usage examples
+    • Show how to load configuration from a file and override with flags
+    • Provide sample workflows combining commands and global flags
