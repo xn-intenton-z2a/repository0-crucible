@@ -1,6 +1,6 @@
 # Node.js Platform & Performance
 ## https://nodejs.org/api/
-Comprehensive reference to Node.js core APIs, including file I/O, HTTP, streams, URL handling, and performance hooks. Essential for implementing high-performance CLI tools with caching, HTTP servers, and diagnostic metrics. Last updated June 2024 under the OpenJS Foundation; authoritative as the official Node.js documentation.
+Comprehensive reference to Node.js core APIs, including file I/O, HTTP servers and clients, streams, URL handling, and performance hooks. Essential for implementing high-performance CLI tools with caching, metrics, and benchmark endpoints. Last updated June 2024 under the OpenJS Foundation; authoritative as the official Node.js documentation.
 ## License: CC-BY-4.0
 
 # ECMAScript Modules (ESM) in Node.js
@@ -25,38 +25,23 @@ Guidance on composing and invoking reusable workflows across repositories. Highl
 
 # agentic-lib Documentation
 ## https://github.com/xn-intenton-z2a/agentic-lib#readme
-Readme and tutorials for the agentic-lib library powering self-evolving CI/CD workflows. Offers patterns for seeding repositories, managing issue lifecycles, and orchestrating automated feature development, directly influencing this repository's automation. MIT License.
+Readme and tutorials for the agentic-lib library powering self-evolving CI/CD workflows. Offers patterns for seeding repositories, managing issue lifecycles, and orchestrating automated feature development, directly influencing this repository's automation. Last updated 2024; MIT License.
 ## License: MIT
 
 # OpenAI JavaScript SDK
 ## https://github.com/openai/openai-node#readme
-Official client library documentation for OpenAI’s Node.js SDK. Covers installation, authentication, and examples for chat and completion endpoints. Key for integrating language models into automated code generation and intelligent agents. Version 4.x; MIT.
+Official client library documentation for OpenAI’s Node.js SDK. Covers installation, authentication, and examples for chat and completion endpoints. Key for integrating language models into automated code generation and intelligent agents. Version 4.x; MIT License.
 ## License: MIT
 
-# ESLint Official Documentation
+# Linting & Formatting Tools
 ## https://eslint.org/docs/latest/
-Comprehensive guide to linting JavaScript/TypeScript code. Covers rule customization, plugin development, and configuration file formats. Central for enforcing code quality and consistent style in Node.js projects. Last updated 2024; MIT License.
-## License: MIT
-
-# Prettier Official Documentation
-## https://prettier.io/docs/en/index.html
-Formatter documentation detailing supported languages, configuration options, plugin usage, and IDE integration. Ensures consistent code style across the codebase. Last updated May 2024; MIT License.
+Comprehensive guide to code quality enforcement and formatting. Includes ESLint rule customization, plugin development, and configuration formats alongside Prettier integration for consistent style. Essential for maintaining clean and standardized code in large Node.js projects. ESLint last updated 2024; Prettier last updated May 2024.
 ## License: MIT
 
 # Vitest Testing Framework
 ## https://vitest.dev/guide/
 Next-gen, fast test runner with built-in mocking and coverage support. Includes ESM compatibility and watch mode for rapid feedback in unit and integration tests. Version 3.x; MIT License.
 ## License: MIT
-
-# dotenv Environment Management
-## https://github.com/motdotla/dotenv#readme
-Library for loading environment variables from .env files into process.env. Simplifies secret and configuration handling in both local and CI environments. MIT License.
-## License: MIT
-
-# npm CLI Reference
-## https://docs.npmjs.com/cli/v10/commands
-Official documentation for npm commands, script handling, and package lifecycle management. Critical for standardizing build, test, and release scripts in package.json. CC-BY-4.0.
-## License: CC-BY-4.0
 
 # cli-progress Library
 ## https://github.com/cli-progress/cli-progress#readme
@@ -73,7 +58,22 @@ Official documentation for Decimal.js, providing arbitrary-precision decimal ari
 Guide to rendering Chart.js charts server-side using Node.js. Covers chart configuration, canvas setup, and exporting PNG/Buffer outputs. Vital for generating performance visualizations in CLI benchmarks. MIT License.
 ## License: MIT
 
-# Node.js HTTP & URL Modules
-## https://nodejs.org/api/http.html
-In-depth reference for Node.js HTTP server and client APIs, including request/response lifecycles, headers, and routing basics. Also covers URL parsing and querystring handling—foundational for the repository’s HTTP API feature. Last updated June 2024.
+# Yargs CLI Parser
+## https://github.com/yargs/yargs/blob/master/docs/api.md
+Comprehensive documentation for yargs, a powerful command-line argument parser for Node.js. Covers command, option, and positional argument definitions, parsing strategies, middleware, and automated help/version generation. Key for building robust and user-friendly CLI interfaces. Last updated July 2024; MIT License.
+## License: MIT
+
+# prom-client Library
+## https://github.com/siimon/prom-client#readme
+In-depth documentation for prom-client, a Prometheus metrics instrumentation library for Node.js. Details metric types (Counters, Gauges, Histograms, Summaries), registry management, and exposition formats. Critical for implementing the Prometheus metrics endpoint and ensuring standards-compliant monitoring. Last updated 2024; MIT License.
+## License: MIT
+
+# Node.js worker_threads API
+## https://nodejs.org/api/worker_threads.html
+Official documentation for Node.js worker_threads, enabling parallel execution using lightweight threads. Covers Worker instantiation, message passing, SharedArrayBuffer usage, and error handling. Fundamental for distributing computation across CPU cores in high-performance applications. Last updated June 2024; CC-BY-4.0.
 ## License: CC-BY-4.0
+
+# Bailey–Borwein–Plouffe Formula
+## https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
+Authoritative overview of the BBP digit-extraction algorithm for π, enabling the calculation of hexadecimal (and converted decimal) digits at an arbitrary position without computing preceding digits. Essential theoretical foundation for the extract-digit feature. Last edited June 2024; CC BY-SA 3.0.
+## License: CC BY-SA 3.0
