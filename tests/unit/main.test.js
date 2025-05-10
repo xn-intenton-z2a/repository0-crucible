@@ -1,5 +1,5 @@
-import { describe, test, expect } from 'vitest';
-import { calculatePi, calculatePiParallel, main } from '@src/lib/main.js';
+import { describe, test, expect, beforeAll, afterAll } from 'vitest';
+import { calculatePi, calculatePiParallel, main, startHttpServer } from '../../src/lib/main.js';
 import { spawnSync } from 'child_process';
 import path from 'path';
 
@@ -90,5 +90,25 @@ describe('CLI', () => {
     const result = spawnSync('node', [cliPath, '--digits', '10', '--algorithm', 'chudnovsky']);
     expect(result.status).toBe(0);
     expect(result.stdout.toString().trim()).toBe('3.1415926535');
+  });
+});
+
+// HTTP API Unit tests
+describe('HTTP API', () => {
+  let server;
+  let port;
+
+  beforeAll(async () => {
+    const res = await startHttpServer({ port: 0 });
+    server = res.server;
+    port = server.address().port;
+  });
+  afterAll(() => server.close());
+
+  test('GET /pi returns pi JSON', async () => {
+    const res = await fetch(`http://localhost:${port}/pi?digits=3&algorithm=machin`);
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data).toEqual({ pi: '3.14' });
   });
 });
