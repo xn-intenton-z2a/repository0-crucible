@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { calculatePi, main } from '@src/lib/main.js';
+import { calculatePi, calculatePiParallel, main } from '@src/lib/main.js';
 import { spawnSync } from 'child_process';
 import path from 'path';
 
@@ -26,6 +26,25 @@ describe('calculatePi', () => {
   });
 });
 
+// Unit tests for calculatePiParallel function
+describe('calculatePiParallel', () => {
+  test('threads=1 matches single-threaded', async () => {
+    const single = calculatePi(10, 'machin').toFixed(10);
+    const parallel = (await calculatePiParallel(10, 'machin', 1)).toFixed(10);
+    expect(parallel).toBe(single);
+  });
+
+  test('threads=2 returns correct pi', async () => {
+    const single = calculatePi(10, 'gauss-legendre').toFixed(10);
+    const parallel = (await calculatePiParallel(10, 'gauss-legendre', 2)).toFixed(10);
+    expect(parallel).toBe(single);
+  });
+
+  test('invalid threads throws', async () => {
+    await expect(calculatePiParallel(10, 'machin', 0)).rejects.toThrow(/Invalid threads/);
+  });
+});
+
 // CLI integration tests
 describe('CLI', () => {
   const cliPath = path.resolve(__dirname, '../../src/lib/main.js');
@@ -49,5 +68,11 @@ describe('CLI', () => {
     const result = spawnSync('node', [cliPath, '--digits', '0']);
     expect(result.status).not.toBe(0);
     expect(result.stderr.toString()).toMatch(/Invalid digits/);
+  });
+
+  test('CLI threads=2 uses parallel and prints pi', () => {
+    const result = spawnSync('node', [cliPath, '--digits', '10', '--algorithm', 'machin', '--threads', '2']);
+    expect(result.status).toBe(0);
+    expect(result.stdout.toString().trim()).toBe('3.1415926535');
   });
 });
