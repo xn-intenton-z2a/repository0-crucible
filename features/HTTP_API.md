@@ -1,74 +1,68 @@
 # HTTP API Enhancement Feature
 
 ## Overview
-
-Extend the existing HTTP API to provide PNG endpoints for π digit distribution, π convergence visualization, and performance benchmark charts using QuickChart. This complements the current `/pi` endpoint and enables clients to retrieve graphical representations directly over HTTP.
+Extend the existing HTTP API server to expose endpoints for π digit distribution, convergence visualization, and performance benchmarks. Clients can retrieve PNG charts or JSON metrics over HTTP without writing files locally.
 
 ## Functional Requirements
+
+### Middleware
+
+- In startHttpServer (src/lib/main.js), ensure the following middleware is applied:
+  - express.json() for JSON bodies
+  - express.urlencoded({ extended: true }) for URL-encoded forms
 
 ### GET /distribution
 
 - Query parameters:
-  - `digits` (integer, required, ≥1, ≤1e6)
-  - `algorithm` (string, optional, one of machin, gauss-legendre, chudnovsky; default machin)
-- Validate inputs with HTTP 400 on error.
-- Invoke `visualizePiDigits({ digits, algorithm, output: null })` or adapt to return a PNG buffer instead of writing to file.
-- Set response headers:
-  - `Content-Type: image/png`
-- Send the PNG image buffer as the response body.
+  - digits (integer, required, ≥1, ≤1e6)
+  - algorithm (string, optional; machin, gauss-legendre, chudnovsky; default machin)
+- Validate parameters, respond 400 JSON error on invalid inputs.
+- Compute π string via calculatePi(digits, algorithm), strip decimal point, count occurrences of digits 0–9.
+- Build a QuickChart bar chart configuration with labels ["0"…"9"] and frequency data.
+- Use QuickChart to generate a PNG buffer.
+- Respond with status 200, header Content-Type: image/png, and send the PNG buffer.
 
 ### GET /convergence
 
 - Query parameters:
-  - `digits` (integer, required, ≥10, ≤1e6)
-  - `algorithm` (string, optional, one of machin, gauss-legendre, chudnovsky; default machin)
-  - `iterations` (integer, optional, ≥2; default 10)
-- Validate inputs with HTTP 400 on error.
-- Invoke `visualizePiConvergence({ digits, algorithm, iterations, output: null })` or adapt to return a PNG buffer.
-- Set response headers:
-  - `Content-Type: image/png`
-- Send the PNG image buffer.
+  - digits (integer, required, ≥10, ≤1e6)
+  - algorithm (string, optional; machin, gauss-legendre, chudnovsky; default machin)
+  - iterations (integer, optional; ≥2; default 10)
+- Validate parameters, respond 400 JSON error on invalid inputs.
+- Compute convergence samples: for each i from 1 to iterations, compute π at floor(digits*i/iterations), measure absolute error against final π.
+- Build a QuickChart line chart configuration with sample digit counts as labels and error values as data.
+- Generate a PNG buffer.
+- Respond with Content-Type: image/png and send the buffer.
 
 ### GET /benchmark
 
 - Query parameters:
-  - `minDigits` (integer, required, ≥1)
-  - `maxDigits` (integer, required, ≥minDigits)
-  - `step` (integer, optional, ≥1; default = minDigits)
-  - `algorithm` (string, optional, machin or gauss-legendre; default machin)
-  - `chart` (boolean, optional; if true, return PNG chart, otherwise return JSON array)
-- Validate inputs with HTTP 400 on error.
-- Invoke `benchmarkPi({ minDigits, maxDigits, step, algorithm })` to obtain an array of `{ digits, timeMs }`.
-- If `chart` is truthy:
-  - Build a QuickChart configuration for a line chart with labels as digit values and data as timeMs.
-  - Use QuickChart to generate a PNG buffer.
-  - Set response headers:
-    - `Content-Type: image/png`
-  - Send the PNG buffer.
-- Otherwise:
-  - Respond with `application/json` and the JSON array.
-
-## Middleware and Routing
-
-- In `startHttpServer`:
-  - Ensure `express.json()` and `express.urlencoded({ extended: true })` are applied.
-  - Register the above routes before the 404 fallback.
+  - minDigits (integer, required, ≥1)
+  - maxDigits (integer, required, ≥minDigits)
+  - step (integer, optional, ≥1; default = minDigits)
+  - algorithm (string, optional; machin or gauss-legendre; default machin)
+  - chart (boolean, optional; if true return PNG, otherwise JSON)
+- Validate parameters, respond 400 JSON error on invalid inputs.
+- Invoke benchmarkPi({ minDigits, maxDigits, step, algorithm }) to obtain array of { digits, timeMs }.
+- If chart=true:
+  - Build QuickChart configuration for a line chart with digit labels and timeMs data.
+  - Generate PNG buffer and respond with Content-Type: image/png.
+- Otherwise respond with Content-Type: application/json and the JSON array.
 
 ## Dependencies
 
-- Import `QuickChart` from `quickchart-js`.
-- No additional dependencies; reuse existing visualization functions or adapt them to return buffers.
+- Ensure quickchart-js is listed in package.json and imported:
+  import QuickChart from 'quickchart-js';
+- Express is already a dependency.
 
 ## Testing
 
-- **Unit Tests** (`tests/unit/main.test.js`):
-  - Mock visualization functions to return a known PNG buffer, verify routes send correct headers and body.
-  - Test validation errors produce 400 responses with JSON error messages.
-- **E2E HTTP Tests** (`tests/e2e/http.test.js`):
-  - Start server on ephemeral port.
-  - Issue GET requests to `/distribution`, `/convergence`, and `/benchmark?chart=true` and assert:
-    - Status code 200.
-    - `Content-Type: image/png`.
-    - Response body begins with PNG signature bytes (`89 50 4E 47 0D 0A 1A 0A`).
-  - Issue GET `/benchmark` without `chart` and assert JSON response with correct array structure.
-
+- Unit tests in tests/unit/main.test.js:
+  - Mock QuickChart to return a placeholder buffer.
+  - Test GET /distribution returns 200, PNG signature, correct content-type.
+  - Test /distribution with invalid digits returns 400 and JSON error.
+  - Test GET /convergence valid and invalid params.
+  - Test GET /benchmark?chart=true returns PNG; without chart returns JSON array.
+- E2E HTTP tests in tests/e2e/http.test.js:
+  - Start server on ephemeral port and issue requests to /distribution, /convergence, /benchmark.
+  - Assert status 200, correct headers, PNG signature or JSON structure.
