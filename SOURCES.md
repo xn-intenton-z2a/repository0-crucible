@@ -43,11 +43,6 @@ Official repository and documentation for js-yaml, detailing YAML parsing and st
 Comprehensive guide to using cosmiconfig for configuration file discovery (JSON, YAML, JS), search order, caching strategies, and error handling. Key for the configuration feature to load defaults before CLI parsing. Last updated 2024; MIT License.
 ## MIT License
 
-# Node.js AbortController
-## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-MDN documentation on AbortController and AbortSignal for request and operation cancellation. Covers signal propagation patterns, integration with streams, timers, and fetch, as well as error handling when aborted. Valuable for implementing CLI timeouts and HTTP request cancellation. Last reviewed 2024; CC BY-SA 2.5.
-## CC BY-SA 2.5
-
 # proper-lockfile
 ## https://github.com/moxystudio/node-proper-lockfile
 Official GitHub repository and API reference for proper-lockfile, a library providing file-based locking with shared/exclusive modes, automatic cleanup, and retry strategies. Crucial for implementing persistent cache of π computations with atomic writes and preventing concurrent corruption. Last updated 2024; MIT License.
@@ -63,11 +58,6 @@ Official EJS documentation covering template syntax, tags, includes, layouts, an
 Official guide to Node.js perf_hooks module for high-resolution timings, performance.mark and measure, performance observers, and eventLoopUtilization. Critical for implementing detailed diagnostics features to capture execution time and event-loop metrics. Last updated v20; Node.js License.
 ## Node.js License
 
-# Bailey–Borwein–Plouffe (BBP) Formula
-## https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
-Wikipedia entry on the BBP algorithm, including series derivation, complexity analysis, and pseudocode for extracting arbitrary hexadecimal π digits without computing preceding digits. Core reference for the extractPiHex feature. CC BY-SA 3.0.
-## CC BY-SA 3.0
-
 # Node.js Worker Threads
 ## https://nodejs.org/api/worker_threads.html
 Official Node.js documentation covering the worker_threads module, including Worker class usage, parentPort communication, workerData, message passing patterns, error handling, and performance considerations. Crucial for parallelizing π computations to leverage multi-core processors. Last updated v20; authoritative as part of the official Node.js docs.
@@ -76,4 +66,14 @@ Official Node.js documentation covering the worker_threads module, including Wor
 # Node.js fs/promises API
 ## https://nodejs.org/api/fs.html#fs_fspromises_api
 Official Node.js fs.promises API documentation detailing asynchronous file system methods, including readFile, writeFile, rename, and watch. Covers atomic write patterns, error handling, and permission flags. Essential for implementing features requiring file I/O such as caching, exporting π to files, script loading, and atomic report generation. Last updated v20; authoritative as part of the Node.js docs.
+## Node.js License
+
+# Node.js URL Module
+## https://nodejs.org/api/url.html#url_fileurltopath_url
+Official documentation for Node.js URL module, including fileURLToPath, pathToFileURL, URL parsing APIs, URLSearchParams, and WHATWG URL support. Essential for converting between file URLs and file system paths (e.g., handling import.meta.url), manipulating query strings, and building robust path utilities. Last updated v20; authoritative as part of the official Node.js docs.
+## Node.js License
+
+# Node.js Fetch API
+## https://nodejs.org/api/globals.html#fetch
+Official documentation for the globally available fetch API in Node.js, detailing Request and Response objects, streaming bodies, built-in support for AbortSignal, error handling patterns, and integration with native HTTP and HTTPS modules. Critical for writing HTTP integration tests and making programmatic HTTP calls within the CLI or script mode without external libraries. Last updated v20; authoritative as part of the official Node.js docs.
 ## Node.js License
