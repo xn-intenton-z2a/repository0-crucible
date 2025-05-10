@@ -3,16 +3,6 @@
 Comprehensive reference to Node.js core modules, including HTTP/HTTPS server and client APIs, Streams (including async iterables and chunked transfer encoding), Worker Threads for parallel execution, AbortController for cancellation patterns, Performance Hooks for precise timing, fs/promises for file I/O, URL/QueryString utilities for parsing request parameters, and built-in util, events, and timers modules. This authoritative documentation is essential for implementing HTTP API endpoints, streaming π digit blocks, multithreaded Chudnovsky calculations, robust timeout control, cancellation via AbortSignal, error handling patterns, and backpressure management. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
 ## License: CC-BY-4.0
 
-# Worker Threads API
-## https://nodejs.org/api/worker_threads.html
-Official Node.js Worker Threads documentation, covering creation and management of Worker instances, parentPort messaging, transferable objects, SharedArrayBuffer and Atomics for shared memory, and performance considerations. Essential for implementing parallel π computation by distributing series term workloads across threads, handling partial result aggregation, error propagation, and orderly shutdown. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
-## License: CC-BY-4.0
-
-# HTTP Module
-## https://nodejs.org/api/http.html
-Comprehensive guide to Node.js HTTP server and client APIs, detailing request and response handling, headers management, streaming request bodies, chunked transfer encoding, and integration with URL/QueryString utilities. Crucial for building the HTTP API endpoints for π calculation, digit extraction, streaming outputs, rate limiting, and metrics exposition. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
-## License: CC-BY-4.0
-
 # Node.js Crypto Module
 ## https://nodejs.org/api/crypto.html
 Official documentation for the Crypto module, covering cryptographic primitives such as randomBytes for secure random number generation, hashing algorithms, HMAC, and cipher/decipher APIs. Essential for generating high-quality random positions during π digit verification, securing tokens or session data, and any future enhancements requiring cryptographic operations. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
@@ -81,3 +71,13 @@ Combined overview of EJS templating and Chart.js server-side rendering via Chart
 ## https://github.com/markdown-it-github/markdown-it-github#readme
 Combined documentation for Markdown-it parser and the markdown-it-github plugin, covering extensible syntax parsing, token structure, plugin integration, customization of rendering rules, and GFM extensions such as tables, task lists, and autolinks. Essential for rendering dynamic markdown reports and documentation templates in the library. Last updated 2024; maintained by the markdown-it community.
 ## License: MIT
+
+# JavaScript BigInt
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+Comprehensive guide to the BigInt primitive in JavaScript, detailing syntax for literal and constructor usage, arithmetic operations, bitwise operations, and conversion to/from strings. Covers performance characteristics, V8 implementation nuances, and memory implications when dealing with large integers. Critical for implementing factorial and binary-splitting steps using BigInt when precision and speed are paramount. Last updated 2024; MDN is maintained by Mozilla and widely regarded as authoritative.
+## License: CC BY-SA-2.5
+
+# HTTP Chunked Transfer Encoding (RFC 7230 Section 4.1)
+## https://datatracker.ietf.org/doc/html/rfc7230#section-4.1
+Official IETF specification for HTTP/1.1 chunked transfer-coding, covering syntax, chunk extensions, trailers, and state management for streaming data. Essential for implementing real-time π digit streaming over HTTP with proper framing, backpressure compatibility, and client interoperability. Published May 2014 by the IETF; authoritative standard.
+## License: IETF Trust
