@@ -204,7 +204,8 @@ export async function startHttpServer({ port = 3000 } = {}) {
     }
     try {
       const pi = calculatePi(digits, algorithm);
-      const piStr = pi.toFixed(digits, Decimal.ROUND_DOWN);
+      const fractionDigits = digits - 1;
+      const piStr = pi.toFixed(fractionDigits, Decimal.ROUND_DOWN);
       return res.json({ pi: piStr });
     } catch (err) {
       return res.status(500).json({ error: err.message });
