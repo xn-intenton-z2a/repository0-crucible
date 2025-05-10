@@ -22,27 +22,9 @@ MDN reference illustrating AbortController and AbortSignal usage across fetch re
 Continuously updated; content under CC BY-SA 2.5 license.
 ## CC BY-SA 2.5
 
-# Node.js Worker Threads API
-## https://nodejs.org/api/worker_threads.html
-Official Node.js documentation for the worker_threads module, covering Worker creation, message passing, transferable objects, error handling, and performance considerations. Includes guidance on using os.cpus() to partition workloads across CPU cores for parallel π computation via calculatePiParallel.
-Node.js v20; Node.js License.
-## Node.js License
-
-# Node.js Readline Module
-## https://nodejs.org/api/readline.html
-Official documentation for the readline module, detailing creation of interactive command-line interfaces, REPL patterns, input/output control, event handling, and SIGINT management. Crucial for implementing the REPL mode, parsing user commands, and managing interactive sessions.
-Node.js v20; Node.js License.
-## Node.js License
-
-# Node.js File System Promises API
-## https://nodejs.org/api/fs.html#fs_promises_api
-fs.promises API reference covering file reading, writing, renaming, directory operations, and atomic file-handling strategies. Vital for exportPi atomic writes, persistent cache management, script mode file I/O, HTML report generation, and safe concurrent access.
-Node.js v20; Node.js License.
-## Node.js License
-
-# perf_hooks API
-## https://nodejs.org/api/perf_hooks.html
-Detailed guide to high-resolution timing APIs such as performance.now(), PerformanceObserver, performance.timerify(), and eventLoopUtilization(). Key for diagnostics features to measure execution time, memory usage, and event-loop metrics across core and HTTP-bound operations.
+# Node.js Core API Reference
+## https://nodejs.org/api/
+Centralized documentation for Node.js core modules including worker_threads, fs.promises, readline, perf_hooks, and others. This consolidated reference covers Worker creation and message passing, file I/O promises, interactive CLI interfaces, high-resolution timing, and event-loop metrics. Crucial for parallel π computation, atomic file operations, REPL mode, diagnostics, and more across Node 20.
 Node.js v20; Node.js License.
 ## Node.js License
 
@@ -93,3 +75,21 @@ Continuously updated; CC BY-SA 2.5 license.
 Official Vitest documentation for writing unit, integration, and end-to-end tests in Node.js. Covers test suite APIs (`describe`, `test`, `expect`), mocking, setup/teardown hooks, configuration options, and coverage reporting. Critical for maintaining robust test suites across core features and HTTP endpoints.
 Last updated 2024; MIT License.
 ## MIT License
+
+# OpenAPI Specification
+## https://spec.openapis.org/oas/latest.html
+The authoritative specification for OpenAPI (formerly Swagger) detailing the OpenAPI 3.1.0 schema for describing RESTful APIs. Includes definitions for paths, components, parameters, and responses. Essential for implementing and synchronizing the Swagger UI documentation, ensuring the HTTP API spec stays up-to-date.
+Last updated 2023; maintained by the OpenAPI Initiative under the OSI-Critical Open Group Public License.
+## OSP-1.0
+
+# swagger-ui-express
+## https://github.com/scottie1984/swagger-ui-express
+Official middleware package for serving Swagger UI in Express applications. Provides `serve` and `setup` functions to mount interactive API documentation. Key for integrating API explorer and enabling live testing of π HTTP endpoints.
+Last updated 2024; MIT License.
+## MIT License
+
+# Bailey–Borwein–Plouffe (BBP) Formula
+## https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
+Comprehensive explanation of the BBP algorithm for extracting hexadecimal digits of π without computing prior digits. Includes the series derivation, implementation considerations, and examples. Crucial for the extractPiHex feature enabling random-access extraction of π digits.
+Content under CC BY-SA 3.0; Wikipedia is highly authoritative and continuously updated.
+## CC BY-SA 3.0
