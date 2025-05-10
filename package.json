@@ -33,7 +33,8 @@
     "ejs": "^3.1.10",
     "js-yaml": "^4.1.0",
     "minimatch": "^9.0.5",
-    "zod": "^3.24.3"
+    "zod": "^3.24.3",
+    "decimal.js": "^10.4.3"
   },
   "devDependencies": {
     "eslint": "^9.24.0",
@@ -66,7 +67,15 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
+  "eslintIgnore": [
+    "archive/**",
+    "build/",
+    "coverage/",
+    "dist/",
+    "exports/",
+    "node_modules/",
+    "eslint.config.js"
+  ],
   "eslintConfig": {
     "rules": {
       "sonarjs/cognitive-complexity": "off"
