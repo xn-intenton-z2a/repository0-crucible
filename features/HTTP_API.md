@@ -1,118 +1,103 @@
 # HTTP API Feature
 
 ## Overview
+Extend the existing HTTP server registration in src/lib/main.js to fully implement a RESTful HTTP API exposing all core π operations, visualizations, benchmarks, searches, and streaming.  Each endpoint must validate inputs, invoke the appropriate library function, and return JSON, CSV, PNG, text, or SSE as specified.
 
-Provide a comprehensive RESTful HTTP API that exposes core π operations, benchmarking, visualizations, and search or extraction endpoints. This enables external applications and services to integrate with the π toolkit over HTTP without invoking the CLI.
+## Endpoints
 
-## Functional Requirements
-
-### Server Startup
-
-- In `startHttpServer(options)` within `src/lib/main.js`, extend Express routing to register the following endpoints.
-- Ensure JSON and URL-encoded body parsing middleware are in place.
-- Global error handler for uncaught exceptions returning HTTP 500 with JSON `{ "error": "<message>" }`.
-
-### Endpoints
-
-#### GET /pi
+### GET /pi
 - Query params:
-  - `digits` (integer ≥ 1, ≤ 1e6; default 100)
-  - `algorithm` (`machin`, `gauss-legendre`, `chudnovsky`; default `machin`)
-- Validate inputs, respond 400 on invalid with JSON `{ "error": "<message>" }`.
-- Compute π and return 200 JSON `{ "pi": "<string>" }`.
+  - digits (integer ≥ 1, ≤ 1e6; default 100)  
+  - algorithm ("machin", "gauss-legendre", "chudnovsky"; default "machin")
+- Response: 200 JSON `{ "pi": "<string>" }` with exactly `digits` total characters including integer part
+- Errors: 400 JSON `{ "error": "<message>" }` on invalid inputs
 
-#### GET /benchmark
+### GET /benchmark
 - Query params:
-  - `minDigits` (integer ≥ 1; default 100)
-  - `maxDigits` (integer ≥ minDigits; required)
-  - `step` (integer ≥ 1; default = minDigits)
-  - `algorithm` (`machin` | `gauss-legendre`; default `machin`)
-  - `outputCsv` (boolean; default false)
-- Validate, respond 400 on invalid.
-- Invoke `benchmarkPi` and:
-  - If `outputCsv=true`, return text/csv CSV lines `digits,timeMs`.
-  - Otherwise respond JSON array of `{ digits, timeMs }`.
+  - minDigits (integer ≥ 1; default 100)  
+  - maxDigits (integer ≥ minDigits; required)  
+  - step (integer ≥ 1; default = minDigits)  
+  - algorithm ("machin"|"gauss-legendre"; default "machin")  
+  - outputCsv (boolean; default false)
+- Behavior: invoke benchmarkPi, then
+  - If outputCsv=true, return `text/csv` lines `digits,timeMs`
+  - Else return 200 JSON array `[ { digits: n, timeMs: m }, ... ]`
+- Errors: 400 JSON on invalid parameters
 
-#### GET /convergence
+### GET /convergence
 - Query params:
-  - `digits` (integer ≥ 10; default 1000)
-  - `algorithm` (supported values; default `machin`)
-  - `iterations` (integer ≥ 2; default 10)
-  - `output` (string; PNG file path optional when serving inline)
-- Validate, respond 400 on invalid.
-- Generate PNG via `visualizePiConvergence` and respond `image/png` with binary data.
+  - digits (integer ≥ 10; default 1000)  
+  - algorithm (supported values; default "machin")  
+  - iterations (integer ≥ 2; default 10)  
+  - output (string file path; optional when serving inline)
+- Behavior: call visualizePiConvergence to write PNG or generate chart; respond `image/png` with binary data when output omitted or serve file otherwise
+- Errors: 400 JSON on invalid inputs, 500 JSON on rendering failures
 
-#### GET /distribution
+### GET /distribution
 - Query params:
-  - `digits` (integer ≥ 1; default 1000)
-  - `algorithm` (supported values; default `machin`)
-- Validate, respond 400 on invalid.
-- Generate PNG via `visualizePiDigits` and respond `image/png`.
+  - digits (integer ≥ 1; default 1000)  
+  - algorithm (supported; default "machin")
+- Behavior: call visualizePiDigits; respond `image/png` with binary data
+- Errors: 400 or 500 JSON
 
-#### GET /search
+### GET /distribution-json
 - Query params:
-  - `pattern` (digit string; required)
-  - `digits`, `algorithm`, `all` (boolean)
-- Validate, respond 400 on invalid.
-- Invoke `searchPi({ pattern, digits, algorithm, all })` and return:
-  - If `all=false`, JSON `{ "position": <number|null> }`.
-  - If `all=true`, JSON `{ "positions": [<numbers>] }`.
+  - digits, algorithm
+- Behavior: call countPiDigitsJson; respond JSON object `{ "0": count0, …, "9": count9 }`
+- Errors: 400 JSON
 
-#### GET /hex
+### GET /search
 - Query params:
-  - `position` (integer ≥ 0; required)
-  - `count` (integer ≥ 1; default 1)
-- Validate, respond 400 on invalid.
-- Invoke `extractPiHex(position, count)` and return `text/plain` with the hex string.
+  - pattern (digit string; required)  
+  - digits, algorithm, all (boolean)
+- Behavior: call searchPi; return JSON `{ "position": n|null }` or `{ "positions": [n,…] }`
+- Errors: 400 JSON
 
-#### GET /decimal
+### GET /hex
 - Query params:
-  - `position` (integer ≥ 0; required)
-  - `count` (integer ≥ 1; required)
-  - `algorithm` (supported; default `machin`)
-- Validate, respond 400 on invalid.
-- Invoke `extractPiDecimal(position, count, algorithm)` and return `text/plain` with digits.
+  - position (integer ≥ 0; required)  
+  - count (integer ≥ 1; default 1)
+- Behavior: call extractPiHex; return `text/plain` hex string
+- Errors: 400 JSON
 
-#### GET /export
+### GET /decimal
 - Query params:
-  - `digits`, `algorithm`
-  - `format` (`txt`|`json`; default `txt`)
-  - `base` (`2`|`10`|`16`; default `10`)
-- Validate, respond 400 on invalid.
-- Compute π and respond:
-  - `text/plain` for `format=txt`.
-  - `application/json` `{ "pi": "<string>" }` for `format=json`.
+  - position (integer ≥ 0; required)  
+  - count (integer ≥ 1; required)  
+  - algorithm (supported; default "machin")
+- Behavior: call extractPiDecimal; return `text/plain` digits substring
+- Errors: 400 JSON
 
-#### GET /pi/stream
+### GET /export
 - Query params:
-  - `digits`, `algorithm`
-- Validate, respond 400 on invalid.
-- Set SSE headers, compute π in chunks (e.g. 100 digits), send Server-Sent Events stream with data events of digit blocks, end with an `end` event.
+  - digits, algorithm  
+  - format ("txt"|"json"; default "txt")  
+  - base ("10"|"16"|"2"; default "10")
+- Behavior: compute π and respond:
+  - text/plain for format=txt
+  - application/json `{ "pi": "…" }` for format=json
+- Errors: 400 or 500 JSON
+
+### GET /pi/stream
+- Query params:
+  - digits, algorithm
+- Behavior: register SSE endpoint streaming blocks of π digits as Server-Sent Events; set `Content-Type: text/event-stream`, send `data:` events for each chunk and an `event: end` on completion or `event: error` on failure
+- Errors: 400 initial JSON response or SSE error event
 
 ## CLI Interface
-
-- Extend `main` in `src/lib/main.js` to accept flags:
-  - `--serve` (boolean) to start HTTP server and ignore other CLI modes.
-  - `--port <n>` to set server port (default 3000, `0` for ephemeral).
-- On `--serve`, call `startHttpServer({ port })` and keep process alive.
-- Update CLI help text to document `--serve` and `--port` flags.
+- In src/lib/main.js main(): retain `--serve` and `--port` flags; when `--serve` is provided, ignore other modes and start the full HTTP API server
+- Update CLI help to document all HTTP flags
 
 ## Dependencies
-
-- Ensure `express` is listed in `package.json` and imported in `src/lib/main.js`.
-- Import QuickChart, js-yaml, and other libraries as needed by route handlers (quickchart-js for on‐the‐fly chart rendering, js-yaml for script parsing if reusing script mode internally).
+- Ensure express, quickchart-js, js-yaml, and json middleware are imported
+- No new external dependencies required beyond those already declared
 
 ## Testing
-
-- **Unit tests** in `tests/unit/main.test.js`:
-  - Mock Express `req`/`res` to test each route handler directly.
-  - Validate correct status codes, headers, and response bodies on valid and invalid inputs.
-  - Stub underlying library functions (`calculatePi`, `benchmarkPi`, etc.) to isolate handler logic.
-
-- **Integration tests** in `tests/e2e/http.test.js`:
-  - Start server on ephemeral port.
-  - Issue HTTP requests to each endpoint with valid parameters and assert:
-    - Correct HTTP status, headers (`Content-Type`), and body content.
-  - Test error scenarios: missing or invalid params return 400 with JSON error.
-  - Test internal failures return 500 with JSON error.
-  - Test SSE stream endpoint: accumulate events, assert event types (`data`, `end`) and content.
+- **Unit Tests**: in tests/unit/main.test.js or new tests/unit/http.test.js
+  - Mock Express req/res to test each route handler: valid inputs yield correct status, headers, and body; invalid inputs yield 400 with JSON error
+  - Stub underlying library functions to isolate route logic
+  - Test SSE endpoint behavior by mocking response streams and event formatting
+- **Integration Tests**: in tests/e2e/http.test.js
+  - Start server on ephemeral port and issue HTTP requests to each endpoint
+  - Assert correct status codes, response headers, body formats (JSON, CSV, PNG, plain text)
+  - For SSE, connect and accumulate events until `end`, verify event order and content
