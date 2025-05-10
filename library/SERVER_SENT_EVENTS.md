@@ -1,251 +1,166 @@
 # SERVER_SENT_EVENTS
 
 ## Crawl Summary
-Client API: EventSource(url, options). Properties: url, withCredentials, readyState(0,1,2). Methods: close(), add/removeEventListener(). Handlers: onopen, onmessage, onerror. Server protocol: HTTP headers Content-Type:text/event-stream, Cache-Control:no-cache, Connection:keep-alive. Message fields: data, id, event, retry. Lines prefixed by field name, terminated by empty line. Keep-alive via comment `: text`. Automatic reconnection with 3000ms default or server-specified retry. CORS support requires Access-Control-Allow-Origin.
+EventSource API: constructor(url, {withCredentials}), properties (readyState, url, withCredentials), handlers (onopen, onmessage, onerror). Server must stream text/event-stream with fields event, data, id, retry; blank line dispatches event. Default retry 3000ms; override via retry field. SSE supported in Web Workers.
 
 ## Normalised Extract
-Table of Contents
-1 EventSource Interface
-2 Message Format
-3 Server Implementation
-4 Error Handling & Reconnect
-5 Troubleshooting
+Table of Contents:
+1. EventSource API
+2. Server HTTP Requirements
+3. SSE Stream Fields
+4. Reconnection Strategy
+5. Web Worker Usage
+6. PHP Server Example
 
-1 EventSource Interface
-Constructor: new EventSource(url: string, options?: {withCredentials?: boolean})
-Properties:
- readyState: number (0 CONNECTING,1 OPEN,2 CLOSED)
- url: string
- withCredentials: boolean(default false)
- CONNECTING=0, OPEN=1, CLOSED=2
-Methods:
- close(): void
- addEventListener(type: string, listener: (evt: MessageEvent)⇒void): void
- removeEventListener(type: string, listener: (evt: MessageEvent)⇒void): void
-Event Handlers:
- onopen(Event), onmessage(MessageEvent), onerror(Event)
+1. EventSource API
+Constructor: url: string, options.withCredentials: boolean (default false)
+Properties: readyState: 0|1|2, url: string, withCredentials: boolean
+Events: onopen(event), onmessage(event.data: string, event.lastEventId: string), onerror(event)
 
-2 Message Format
-Server must send UTF-8 text with headers:
- Content-Type: text/event-stream
- Cache-Control: no-cache
- Connection: keep-alive
-Fields per event:
- data: <text>
- id: <text>
- event: <type>
- retry: <milliseconds>
-Multiple data lines concatenated with "\n"; blank line ends event.
-Keep-alive: lines beginning with ":"
+2. Server HTTP Requirements
+Headers: Content-Type=text/event-stream; charset=UTF-8, Cache-Control=no-cache, Connection=keep-alive
 
-3 Server Implementation
-Node.js Express pattern:
- res.setHeader('Content-Type','text/event-stream');
- res.setHeader('Cache-Control','no-cache');
- res.setHeader('Connection','keep-alive');
- res.flushHeaders();
- function sendEvent(data,id,event,retry){…}
- setInterval(()=> sendEvent(...), interval)
- req.on('close',()=> res.end())
+3. SSE Stream Fields
+Lines prefixed by event, data, id, retry, or ":" for comments
+Multiple data lines concatenate with "\n"
+Blank line emitted to client signals complete message dispatch
 
-PHP pattern:
- header('Content-Type: text/event-stream');
- header('Cache-Control: no-cache');
- while(true){ echo "data: ...\n\n"; ob_flush();flush(); sleep(1); }
+4. Reconnection Strategy
+Default reconnect: 3000ms
+Client reconnects on network drop; closed when readyState=2 (CLOSED) or server sends 204
+Server override: send "retry: <ms>"
 
-4 Error Handling & Reconnect
-Client auto-reconnect Delay: default 3000ms or server retry value. Abort with close().
-onerror checks readyState===CLOSED.
+5. Web Worker Usage
+Instantiate EventSource inside worker global scope; identical API to window
 
-5 Troubleshooting
-Use curl -i to verify headers. Check for proper SSE headers. For CORS add Access-Control-Allow-Origin.
+6. PHP Server Example
+Set headers as above; loop: echo id, event, data (JSON), retry, blank line; flush buffers; sleep
 
 ## Supplementary Details
-HTTP headers required by server:
- Content-Type: text/event-stream; charset=utf-8
- Cache-Control: no-cache
- Connection: keep-alive
-Optional:
- Access-Control-Allow-Origin: *
+Server-side implementation steps:
+1. Set HTTP/1.1 headers:
+   Content-Type: text/event-stream; charset=UTF-8
+   Cache-Control: no-cache
+   Connection: keep-alive
+2. Optionally include Access-Control-Allow-Origin for CORS
+3. Stream events in following format per packet:
+   id: <string or integer>\n
+   event: <eventName>\n
+   data: <payload>\n (one or more data lines)\n
+   retry: <ms>\n (only if customizing retry)
+   \n (blank line)
+4. Flush output each iteration to push to client
+5. Manage long-running loop and resource cleanup on client disconnect
 
-Server-side steps:
- 1. Set headers.
- 2. Flush headers.
- 3. Emit events: write 'field: value\n' lines, end with '\n'.
- 4. Keep connection alive: interval, comment lines, ping.
- 5. Clean up on client disconnect.
+Configuration options:
+- withCredentials: send cookies and HTTP credentials if true
+- retry field: sets client reconnect delay
 
-Client options:
- withCredentials: false by default. Set to true to send cookies.
+Implementation patterns:
+- Heartbeat comment: send ":heartbeat\n\n" every N seconds to keep proxy connections alive
+- Incremental data: batch multiple data fields into one event for complex payloads
 
-reconnection:
- Default retry: 3000ms. Overridden by server 'retry' field in ms.
-
-Event types:
- 'message' (default), or custom via event field.
-
-Event ID handling:
- Browser stores lastEventId, sends Last-Event-ID header on reconnect.
-
-Buffering:
- Ensure res.flushHeaders() or res.flush() to send data immediately.
 
 
 ## Reference Details
-EventSource API
+EventSource API Reference
+
 Constructor:
- new EventSource(input: string | URL, options?: {
-   withCredentials?: boolean
- }): EventSource
+EventSource(url: string, eventSourceInit?: { withCredentials?: boolean }): EventSource
+Throws SyntaxError if URL is invalid; SecurityError if mixed content
 
 Properties:
- EventSource.CONNECTING: 0
- EventSource.OPEN: 1
- EventSource.CLOSED: 2
- url: string
- withCredentials: boolean
- readyState: number
+readyState: number (0 CONNECTING, 1 OPEN, 2 CLOSED)
+url: string (absolute URL)
+withCredentials: boolean
+
+Constants:
+EventSource.CONNECTING = 0
+EventSource.OPEN = 1
+EventSource.CLOSED = 2
 
 Methods:
- close(): void
- addEventListener(type: string, listener: (evt: MessageEvent) => void, options?: boolean | AddEventListenerOptions): void
- removeEventListener(type: string, listener: (evt: MessageEvent) => void, options?: boolean | EventListenerOptions): void
+close(): void  // closes connection and sets readyState=2
+addEventListener(type: string, listener: function, options?: boolean|{capture?: boolean}): void
+removeEventListener(type: string, listener: function, options?: boolean|{capture?: boolean}): void
 
-Event Handlers:
- onopen: (evt: Event) => void
- onmessage: (evt: MessageEvent) => void
- onerror: (evt: Event) => void
+Event handlers:
+onopen: (event: Event) => void
+onmessage: (event: MessageEvent) => void  // event.data: string, event.lastEventId: string
+onerror: (event: Event) => void
 
-MessageEvent properties:
- data: string
- origin: string
- lastEventId: string
+Example usage:
+const es = new EventSource('https://example.com/stream', { withCredentials: true });
+es.onopen = () => console.log('Connection opened');
+es.onmessage = e => console.log('Received', e.data); 
+es.onerror = e => console.error('Error', e);
+// Close after 60s
+timeout = setTimeout(() => { es.close(); clearTimeout(timeout); }, 60000);
 
-Server-Side Example Node.js (Express):
-```js
-const express = require('express');
-const app = express();
-app.get('/events', (req, res) => {
-  res.setHeader('Content-Type','text/event-stream');
-  res.setHeader('Cache-Control','no-cache');
-  res.setHeader('Connection','keep-alive');
-  res.flushHeaders();
-  let id = 0;
-  const timer = setInterval(() => {
-    id++;
-    res.write(`id: ${id}\n`);
-    res.write(`event: update\n`);
-    res.write(`data: ${new Date().toISOString()}\n\n`);
-  }, 1000);
-  req.on('close', () => { clearInterval(timer); res.end(); });
-});
-app.listen(3000);
-```
+Server Response Format:
+HTTP/1.1 200 OK
+Content-Type: text/event-stream; charset=UTF-8
+Cache-Control: no-cache
+Connection: keep-alive
 
-PHP Example:
-```php
-<?php
-header('Content-Type: text/event-stream');
-header('Cache-Control: no-cache');
-header('Connection: keep-alive');
-$counter = 0;
-while (true) {
-  $counter++;
-  echo "id: {$counter}\n";
-  echo "data: Hello {$counter}\n\n";
-  ob_flush(); flush();
-  sleep(1);
-}
-```
+:ping
+retry: 5000
+id: 1
+event: update
+data: {"status":"ok"}
 
-Client Usage:
-```js
-const src = new EventSource('https://example.com/events', { withCredentials: true });
-src.onopen = () => console.log('Connected');
-src.onmessage = e => console.log('Message:', e.data);
-src.onerror = e => {
-  if (src.readyState === EventSource.CLOSED) console.log('Connection closed');
-  else console.log('Error occurred');
-};
-// Custom event
-src.addEventListener('update', e => console.log('Update:', e.data));
-// To close
-src.close();
-```
+
+
+HTTP 204 No Content => client readyState -> CLOSED, no reconnect
 
 Best Practices:
-• Send keep-alive comments to prevent proxy timeouts: `res.write(': ping\n\n');`
-• Include retry field periodically: `retry: 5000`.
-• Use id field to resume streams.
-• Avoid large idle time; send heartbeat every 15s.
+- Send heartbeat comment every 15s to maintain proxy timeouts
+- Batch small events into single dispatch to reduce overhead
+- Use custom event types to separate message streams
 
 Troubleshooting:
-1. Verify headers: `curl -i https://host/events` expects headers above.
-2. No data arriving: check flush; call res.flush() or obj_flush().
-3. CORS errors: add `Access-Control-Allow-Origin: *` and `Access-Control-Allow-Credentials: true` if withCredentials.
-4. HTTP 204 responses close connection; ensure 200.
-5. Proxy buffering: disable buffering with `X-Accel-Buffering: no` for Nginx.
+Command: curl -i https://example.com/stream
+Expected headers: Content-Type: text/event-stream; charset=UTF-8
+Response body: lines starting with data:, id:, event:, blank line separators
+If no data, verify server flush() and network keep-alive
+If readyState stuck at CONNECTING, check CORS and mixed-content issues
 
 
 ## Information Dense Extract
-EventSource(url, {withCredentials?}) ⇒ CONNECTING(0)/OPEN(1)/CLOSED(2), properties: url, withCredentials, readyState, methods: close(), add/removeEventListener(), events: onopen, onmessage, onerror. Server: set headers Content-Type:text/event-stream;Cache-Control:no-cache;Connection:keep-alive; flush. Format: 'id:', 'event:', 'retry:', 'data:' lines; blank line terminates. retry in ms overrides default 3000ms. data lines concatenated with newline. Keep-alive with ': comment'. Client auto-reconnect on error. Last-Event-ID header sent on reconnect. Enable CORS via Access-Control-Allow-Origin/Credentials. Proxy: disable buffering (X-Accel-Buffering:no).
+EventSource(url:string,{withCredentials?:boolean}) readyState0|1|2 url:string withCredentials:boolean onopen(e),onmessage(e.data:string,e.lastEventId:string),onerror(e) close() add/removeEventListener(type,listener,options) Server headers: Content-Type:text/event-stream; charset=UTF-8,Cache-Control:no-cache,Connection:keep-alive Fields:event,data,id,retry,:comment blank line=dispatch Default retry=3000ms override via retry field HTTP204=>closed, no reconnect Web Workers: identical API Implementation: heartbeat comment, flush(), CORS header, resource cleanup Troubleshoot: curl -i expect headers and stream lines
 
 ## Sanitised Extract
-Table of Contents
-1 EventSource Interface
-2 Message Format
-3 Server Implementation
-4 Error Handling & Reconnect
-5 Troubleshooting
+Table of Contents:
+1. EventSource API
+2. Server HTTP Requirements
+3. SSE Stream Fields
+4. Reconnection Strategy
+5. Web Worker Usage
+6. PHP Server Example
 
-1 EventSource Interface
-Constructor: new EventSource(url: string, options?: {withCredentials?: boolean})
-Properties:
- readyState: number (0 CONNECTING,1 OPEN,2 CLOSED)
- url: string
- withCredentials: boolean(default false)
- CONNECTING=0, OPEN=1, CLOSED=2
-Methods:
- close(): void
- addEventListener(type: string, listener: (evt: MessageEvent)void): void
- removeEventListener(type: string, listener: (evt: MessageEvent)void): void
-Event Handlers:
- onopen(Event), onmessage(MessageEvent), onerror(Event)
+1. EventSource API
+Constructor: url: string, options.withCredentials: boolean (default false)
+Properties: readyState: 0|1|2, url: string, withCredentials: boolean
+Events: onopen(event), onmessage(event.data: string, event.lastEventId: string), onerror(event)
 
-2 Message Format
-Server must send UTF-8 text with headers:
- Content-Type: text/event-stream
- Cache-Control: no-cache
- Connection: keep-alive
-Fields per event:
- data: <text>
- id: <text>
- event: <type>
- retry: <milliseconds>
-Multiple data lines concatenated with ''n'; blank line ends event.
-Keep-alive: lines beginning with ':'
+2. Server HTTP Requirements
+Headers: Content-Type=text/event-stream; charset=UTF-8, Cache-Control=no-cache, Connection=keep-alive
 
-3 Server Implementation
-Node.js Express pattern:
- res.setHeader('Content-Type','text/event-stream');
- res.setHeader('Cache-Control','no-cache');
- res.setHeader('Connection','keep-alive');
- res.flushHeaders();
- function sendEvent(data,id,event,retry){}
- setInterval(()=> sendEvent(...), interval)
- req.on('close',()=> res.end())
+3. SSE Stream Fields
+Lines prefixed by event, data, id, retry, or ':' for comments
+Multiple data lines concatenate with ''n'
+Blank line emitted to client signals complete message dispatch
 
-PHP pattern:
- header('Content-Type: text/event-stream');
- header('Cache-Control: no-cache');
- while(true){ echo 'data: ...'n'n'; ob_flush();flush(); sleep(1); }
+4. Reconnection Strategy
+Default reconnect: 3000ms
+Client reconnects on network drop; closed when readyState=2 (CLOSED) or server sends 204
+Server override: send 'retry: <ms>'
 
-4 Error Handling & Reconnect
-Client auto-reconnect Delay: default 3000ms or server retry value. Abort with close().
-onerror checks readyState===CLOSED.
+5. Web Worker Usage
+Instantiate EventSource inside worker global scope; identical API to window
 
-5 Troubleshooting
-Use curl -i to verify headers. Check for proper SSE headers. For CORS add Access-Control-Allow-Origin.
+6. PHP Server Example
+Set headers as above; loop: echo id, event, data (JSON), retry, blank line; flush buffers; sleep
 
 ## Original Source
 Server-Sent Events (SSE)
@@ -253,125 +168,64 @@ https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
 
 ## Digest of SERVER_SENT_EVENTS
 
-# EventSource Interface
+# Server-Sent Events (SSE)
 
-Defines client-side API for receiving server-sent events.
+## EventSource interface
+- Constructor: EventSource(url: string, eventSourceInit?: { withCredentials?: boolean })
+- Properties:
+  - readyState: number (0=CONNECTING, 1=OPEN, 2=CLOSED)
+  - url: string
+  - withCredentials: boolean
+- Event handlers:
+  - onopen: (event: Event) => void
+  - onmessage: (event: MessageEvent) => void  // event.data: string, event.lastEventId: string
+  - onerror: (event: Event) => void
 
-Constructor:
-```js
-new EventSource(url: string, options?: { withCredentials?: boolean })
-```
+## Server Response Format
+- Required HTTP headers:
+  - Content-Type: text/event-stream; charset=UTF-8
+  - Cache-Control: no-cache
+  - Connection: keep-alive
+- Data stream fields (each line ends with "\n"):
+  - event: <event-name>       // optional, defines custom event type
+  - data: <text>              // one or more data lines concatenated with "\n"
+  - id: <last-event-id>       // optional, sets event.lastEventId
+  - retry: <milliseconds>     // optional, overrides default reconnection delay
+  - :<comment>                // optional, comment line ignored by client
+- Message dispatch: blank line denotes dispatch of accumulated fields as one event
 
-Properties:
-- url: string (readonly)
-- withCredentials: boolean (default: false)
-- readyState: number (0=CONNECTING, 1=OPEN, 2=CLOSED)
-- CONNECTING: 0
-- OPEN: 1
-- CLOSED: 2
+## Reconnection and Error Handling
+- Default retry interval: 3000 ms
+- Browser reconnects automatically on network interruption
+- To override interval: send "retry: <ms>\n\n"
+- On HTTP 204 or explicit close: readyState becomes CLOSED, no reconnection
 
-Methods:
-- close(): void — closes the connection
-- addEventListener(type: string, listener: (evt: MessageEvent) ⇒ void): void
-- removeEventListener(type: string, listener: (evt: MessageEvent) ⇒ void): void
+## Using SSE in Web Workers
+- Feature available in dedicated and shared workers
+- Worker global scope has EventSource support identical to window
 
-Event handlers:
-- onopen: Event ⇒ void — when connection opens
-- onmessage: MessageEvent ⇒ void — when message arrives
-- onerror: Event ⇒ void — on network error or parsing error
-
-
-# Message Format
-
-Server must send UTF-8 encoded text with Content-Type: text/event-stream. Messages separated by \n\n. Fields:
-- data: <text>  (can appear multiple times; data lines concatenated with "\n")
-- id: <text>    (sets lastEventId)
-- event: <type> (dispatches event of this name)
-- retry: <ms>   (suggests reconnection interval)
-
-Empty lines terminate event.
-
-Keep-alive comment lines begin with colon: `: keep-alive`.
-
-
-# Server Implementation (Node.js Express)
-
-```js
-app.get('/sse', (req, res) => {
-  res.setHeader('Content-Type','text/event-stream');
-  res.setHeader('Cache-Control','no-cache');
-  res.setHeader('Connection','keep-alive');
-  res.flushHeaders();
-
-  const sendEvent = (data, id, event, retry) => {
-    if (retry != null) res.write(`retry: ${retry}\n`);
-    if (id != null)    res.write(`id: ${id}\n`);
-    if (event != null) res.write(`event: ${event}\n`);
-    data.split('\n').forEach(line => res.write(`data: ${line}\n`));
-    res.write('\n');
-  };
-
-  const interval = setInterval(() => {
-    sendEvent(Date.now().toString(), null, null, null);
-  }, 1000);
-
-  req.on('close', () => {
-    clearInterval(interval);
-    res.end();
-  });
-});
-```
-
-Simple PHP demo:
+## Example: PHP SSE Server
 ```php
+<?php
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
-
-$counter = 0;
 while (true) {
-  echo "data: {\"time\": " . time() . "}\n\n";
+  echo "id: " . date('U') . "\n";
+  echo "event: time\n";
+  echo "data: {\"time\": \"" . date('c') . "\"}\n";
+  echo "retry: 5000\n\n";
   ob_flush(); flush();
   sleep(1);
-  $counter++;
-  if ($counter > 100) exit;
 }
 ```
-
-
-# Error Handling & Reconnect
-
-Client reconnects automatically after network error or non-200 status. Default reconnect delay is 3,000ms or last retry value from server. Use `evtSource.close()` to stop.
-
-Listen for errors:
-```js
-evtSource.onerror = (err) => {
-  if (evtSource.readyState === EventSource.CLOSED) {
-    // connection closed permanently
-  }
-};
-```
-
-
-# Troubleshooting
-
-Use `curl -i http://host/sse` to check headers:
-```
-HTTP/1.1 200 OK
-Content-Type: text/event-stream
-Cache-Control: no-cache
-Connection: keep-alive
-```
-
-Check browser console for CORS errors and add `res.setHeader('Access-Control-Allow-Origin','*')` if needed.
-
 
 ## Attribution
 - Source: Server-Sent Events (SSE)
 - URL: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
 - License: CC BY-SA 2.5
-- Crawl Date: 2025-05-10T15:58:14.560Z
-- Data Size: 2134043 bytes
-- Links Found: 24339
+- Crawl Date: 2025-05-10T17:31:23.243Z
+- Data Size: 1718391 bytes
+- Links Found: 18391
 
 ## Retrieved
 2025-05-10
