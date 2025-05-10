@@ -12,19 +12,13 @@ Last updated 2024.
 
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
-Authoritative guide to Express 4.x, detailing routing, middleware design, error handling, request parsing, response streaming, and static file serving. Foundational for building HTTP API endpoints, SSE streaming, JSON services, and integrating diagnostic middleware in our π service.
+Authoritative guide to Express 4.x, detailing routing, middleware design, error handling, request parsing, response streaming, and static file serving. Foundational for building HTTP API endpoints, SSE streaming, JSON services, CORS integration, and integrating diagnostic middleware in our π service.
 Official docs under MIT License.
 ## MIT License
 
 # Node.js Core API Reference
 ## https://nodejs.org/api/
-Centralized documentation for Node.js core modules including fs.promises, readline, worker_threads, perf_hooks, os, and others. Covers file I/O, interactive CLI interfaces, threading primitives, high-resolution timing, and event-loop metrics. Crucial for parallel π computation, atomic file operations, REPL mode, diagnostics, and more across Node 20.
-Node.js v20; Node.js License.
-## Node.js License
-
-# Node.js Worker Threads API
-## https://nodejs.org/api/worker_threads.html
-Official Node.js documentation for the worker_threads module, covering the Worker class, workerData serialization, message passing, and thread pool management. Essential for implementing the calculatePiParallel function to distribute π computation across multiple threads and aggregate partial results efficiently.
+Centralized documentation for Node.js core modules and globals including fs.promises, path, url, readline, worker_threads, perf_hooks, AbortController, and fetch. Covers file I/O, atomic writes, interactive CLI interfaces, threading primitives, high-resolution timing, event-loop metrics, URL/file path utilities, and global web APIs support. Crucial for parallel π computation, atomic file operations, REPL mode, scripting, HTTP server features, diagnostics, and JS-language interfaces across Node 20.
 Node.js v20; Node.js License.
 ## Node.js License
 
@@ -42,7 +36,7 @@ Last updated 2024.
 
 # js-yaml
 ## https://github.com/nodeca/js-yaml
-Official documentation for js-yaml, covering YAML parsing and dumping in JavaScript, handling custom schemas, safeLoad vs load, and serialization options. Crucial for parsing YAML scripts in batch `--script` mode, enabling flexible command sequencing in JSON or YAML formats.
+Official documentation for js-yaml, covering YAML parsing and dumping in JavaScript, handling custom schemas, safeLoad vs load, and serialization options. Crucial for script mode parsing in batch operations, enabling flexible command sequencing via JSON or YAML.
 Last updated 2024; maintained under MIT License.
 ## MIT License
 
@@ -76,20 +70,26 @@ Official middleware to integrate Swagger UI into Express applications. Provides 
 Last updated 2024; MIT License.
 ## MIT License
 
-# Node.js Performance Hooks API
-## https://nodejs.org/api/perf_hooks.html
-Centralized documentation for the Node.js `perf_hooks` module, including `performance.now()`, `performance.timerify()`, `PerformanceObserver`, and `performance.eventLoopUtilization()`. Covers collection of high-resolution timing and event-loop metrics. Essential for implementing the Diagnostics feature to measure compute time, memory usage, and event-loop utilization in π computations and HTTP responses.
-Node.js v20; Node.js License.
-## Node.js License
-
-# MDN Web API: AbortController
-## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-Comprehensive guide to the `AbortController` and `AbortSignal` Web API, detailing usage patterns for aborting fetch requests, timers, and custom asynchronous workflows. Covers signal event listeners, `abort()` semantics, timeout patterns, and integration in both browser and Node.js environments. Vital for the Operation Timeout feature to create and propagate abort signals for graceful cancellation of long-running π computations and HTTP requests.
-Continuously updated; CC BY-SA 2.5 license.
-## CC BY-SA 2.5
-
 # MDN Web API: Server-Sent Events
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
 Comprehensive guide to Server-Sent Events (SSE), detailing the `EventSource` API, event types, reconnection behavior, and custom headers. Explains both server and client usage patterns, including establishing a persistent `text/event-stream`, sending formatted SSE messages, and handling events in JavaScript. Vital for implementing the `/pi/stream` SSE endpoint to stream π digits in real time.
 Continuously updated; CC BY-SA 2.5 license.
 ## CC BY-SA 2.5
+
+# Node.js Readline API
+## https://nodejs.org/api/readline.html
+Authoritative documentation for the Node.js `readline` module, covering the creation and configuration of interactive command-line interfaces, input/output streams, custom prompts, history management, and event handling. Essential for implementing REPL mode and scripting interfaces in the CLI, including graceful handling of `SIGINT` and command dispatch.
+Node.js v20; Node.js License.
+## Node.js License
+
+# Node.js FS Promises API
+## https://nodejs.org/api/fs.html#fspromises-api
+Detailed reference for the `fs.promises` API, including file reading, writing, renaming, directory operations, streams, and error handling. Crucial for features requiring atomic file writes (exportPi, HTML report generation) and script mode file loading, ensuring data integrity and efficient I/O in Node.js applications.
+Node.js v20; Node.js License.
+## Node.js License
+
+# CORS middleware for Express
+## https://github.com/expressjs/cors
+Official documentation for the `cors` middleware package for Express. Explains configuration of Access-Control-Allow-Origin, methods, headers, credentials support, and options for dynamic origin handling. Vital for implementing robust CORS support in the HTTP API server, including custom origin settings and preflight response handling.
+Last updated 2024; MIT License.
+## MIT License
