@@ -8,6 +8,11 @@ Comprehensive API reference and usage guide for Decimal.js, the arbitrary-precis
 Official JavaScript client library for QuickChart.io, offering a fluent API to build chart configurations, request rendered images or URLs, and handle SSL, custom fonts, and advanced rendering options. Provides promise-based methods for Node.js and browser environments, simplifying integration of line, bar, and multi-dataset charts for convergence, distribution, and benchmarking results. Last updated 2024; widely used in production.
 ## MIT License
 
+# QuickChart REST API
+## https://quickchart.io/documentation
+Official QuickChart.io REST API documentation detailing chart configuration schema, URL-based generation of PNG and SVG charts, authentication parameters, performance tuning options, and embedding strategies. Crucial for constructing custom chart payloads for convergence, distribution, benchmarking, and comparative visualizations. Continuously updated; license not specified.
+## Unknown License
+
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
 Comprehensive overview of Express 4.x routing, middleware patterns, error handling, request parsing, and response streaming. Key resource for building RESTful HTTP endpoints, error handlers, static asset serving, and implementing SSE streams in the HTTP API feature. Official docs maintained under MIT License.
@@ -17,6 +22,16 @@ Comprehensive overview of Express 4.x routing, middleware patterns, error handli
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
 MDN guide detailing the text/event-stream MIME type, SSE message formatting, reconnection behavior, and usage examples in Node.js and browsers. Provides actionable patterns for implementing real-time π digit streaming, handling client disconnects gracefully, and formatting SSE events. Continuously updated; content under CC BY-SA 2.5 license.
 ## CC BY-SA 2.5
+
+# Node.js Worker Threads API
+## https://nodejs.org/api/worker_threads.html
+Official Node.js documentation for the worker_threads module, covering Worker creation, message-passing interfaces, transferable objects, error handling, and performance considerations. Essential for implementing parallel π computation with calculatePiParallel, partitioning work, and aggregating partial results. Node.js v20.
+## Node.js License
+
+# Node.js File System Promises API
+## https://nodejs.org/api/fs.html#fs_promises_api
+fs.promises API reference covering file reading, writing, renaming, directory operations, and atomic file handling techniques. Crucial for exportPi atomic writes, persistent cache management, script mode file I/O, and HTML report generation. Includes error codes and best practices. Node.js v20.
+## Node.js License
 
 # cli-progress
 ## https://github.com/cli-progress/cli-progress
@@ -30,7 +45,7 @@ Declarative schema validation library docs, covering object schemas, refinements
 
 # js-yaml
 ## https://github.com/nodeca/js-yaml
-Official repository and documentation for js-yaml, detailing YAML parsing and stringification APIs, custom schema creation, and security considerations. Essential for script mode and HTML report generation via YAML-based command scripts. Last published 2024; content under BSD-2-Clause.
+Official repository and documentation for js-yaml, detailing YAML parsing and stringification APIs, custom schema creation, and security considerations. Essential for script mode and HTML report generation via YAML-based command scripts. Last published 2024; content under BSD-2-Clause license.
 ## BSD-2-Clause
 
 # cosmiconfig
@@ -48,27 +63,17 @@ Official GitHub repository and API reference for proper-lockfile, a library prov
 Official EJS documentation covering template syntax, tags, includes, layouts, and options for compiling or rendering. Essential for HTML report generation with embedded charts, data sections, and Base64-encoded images. Last updated 2024; MIT License.
 ## MIT License
 
-# Node.js Official Documentation
-## https://nodejs.org/api/
-Comprehensive official documentation for Node.js core APIs, including Readline for REPL mode, fs/promises for file I/O, worker_threads for parallel computation, perf_hooks for performance diagnostics, AbortController for timeouts, and global fetch. Critical for implementing REPL mode, operation timeouts, parallelization, diagnostics, and robust file and HTTP operations. Official Node.js docs updated for v20.
-## Node.js License
-
-# JavaScript BigInt
-## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
-Detailed MDN documentation on the BigInt type, including literal notation, operations, compatibility, and performance considerations. Crucial for implementing the BBP algorithm factorials and high-precision integer arithmetic in the Chudnovsky series and continued fraction computations. Continuously updated; content under CC BY-SA 2.5 license.
-## CC BY-SA 2.5
-
 # AbortController API
 ## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
 MDN reference for AbortController and AbortSignal usage, demonstrating patterns for cancelling asynchronous operations, integrating with fetch, timers, and streaming computations. Essential for implementing the Operation Timeout feature and for cancelling SSE and HTTP requests gracefully. Continuously updated; content under CC BY-SA 2.5 license.
 ## CC BY-SA 2.5
 
-# Chudnovsky Algorithm
-## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
-Authoritative description of the Chudnovsky series for π, including derivation of constants, convergence properties, and computational complexity. Provides mathematical details necessary to optimize term iteration limits and tolerance levels. Licensed under CC BY-SA 3.0 (Wikipedia).
+# π Calculation Algorithms (Wikipedia)
+## https://en.wikipedia.org/wiki/Pi
+Wikipedia article on π, including detailed sections on computation algorithms such as Chudnovsky, Bailey–Borwein–Plouffe Formula (BBP), Machin-like formulas, and Gauss–Legendre algorithm. Provides mathematical derivations, convergence analysis, pseudocode, and references to foundational literature. Licensed under CC BY-SA 3.0 (Wikipedia).
 ## CC BY-SA 3.0
 
-# Bailey–Borwein–Plouffe Formula
-## https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
-Detailed explanation of the BBP formula enabling direct computation of hexadecimal digits of π at arbitrary positions. Includes implementation pseudocode and convergence analysis, critical for the PI Digit Extraction Feature. Licensed under CC BY-SA 3.0 (Wikipedia).
-## CC BY-SA 3.0
+# perf_hooks API
+## https://nodejs.org/api/perf_hooks.html
+Node.js perf_hooks module documentation detailing high-resolution timing APIs like performance.now(), PerformanceObserver, performance.timerify(), and eventLoopUtilization(). Critical for implementing diagnostics features to measure execution time, memory usage, and event-loop metrics. Node.js v20.
+## Node.js License
