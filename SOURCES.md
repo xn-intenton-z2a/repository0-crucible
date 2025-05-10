@@ -58,12 +58,6 @@ Embedded JavaScript templating engine docs covering template syntax, partials, i
 Last updated 2024.
 ## MIT License
 
-# Server-Sent Events (SSE)
-## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-MDN guide to Server-Sent Events usage, detailing HTTP headers, event formatting, reconnection strategies, and stream management. Essential for implementing real-time π digit streaming via SSE in the HTTP API.
-Continuously updated; CC BY-SA 2.5 license.
-## CC BY-SA 2.5
-
 # Vitest Testing Framework
 ## https://vitest.dev/api/
 Official Vitest documentation for writing unit, integration, and end-to-end tests in Node.js. Covers test suite APIs (`describe`, `test`, `expect`), mocking, setup/teardown hooks, configuration options, and coverage reporting. Critical for maintaining robust test suites across core features and HTTP endpoints.
@@ -87,8 +81,14 @@ Official middleware package for serving Swagger UI in Express applications. Prov
 Last updated 2024.
 ## MIT License
 
-# Bailey–Borwein–Plouffe (BBP) Formula
-## https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
-Comprehensive explanation of the BBP algorithm for extracting hexadecimal digits of π without computing prior digits. Includes the series derivation, implementation considerations, and examples. Crucial for the extractPiHex feature enabling random-access extraction of π digits.
-Content under CC BY-SA 3.0; Wikipedia is highly authoritative and continuously updated.
-## CC BY-SA 3.0
+# Node.js Performance Hooks API
+## https://nodejs.org/api/perf_hooks.html
+Centralized documentation for the Node.js `perf_hooks` module, including `performance.now()`, `performance.timerify()`, `PerformanceObserver`, and `performance.eventLoopUtilization()`. Covers collection of high-resolution timing and event-loop metrics. Essential for implementing the Diagnostics feature to measure compute time, memory usage, and event-loop utilization in π computations and HTTP responses.
+Node.js v20; Node.js License.
+## Node.js License
+
+# MDN Web API: AbortController
+## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+Comprehensive guide to the `AbortController` and `AbortSignal` Web API, detailing usage patterns for aborting fetch requests, timers, and custom asynchronous workflows. Covers signal event listeners, `abort()` semantics, timeout patterns, and integration in both browser and Node.js environments. Vital for the Operation Timeout feature to create and propagate abort signals for graceful cancellation of long-running π computations and HTTP requests.
+Continuously updated; CC BY-SA 2.5 license.
+## CC BY-SA 2.5
