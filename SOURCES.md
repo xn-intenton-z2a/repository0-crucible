@@ -1,103 +1,79 @@
 # Node.js Core APIs
 ## https://nodejs.org/api/
-Comprehensive reference for Node.js core modules, including HTTP/HTTPS server and client APIs, Streams for efficient I/O, Worker Threads for parallel execution, AbortController for cancellation patterns, Performance Hooks for precise timing, fs/promises for file operations, URL and QueryString utilities, built-in util, events, timers, and Crypto primitives. This documentation is the authoritative source for implementing HTTP endpoints, chunked transfer encoding, backpressure management, precise timeouts, secure token generation, and multithreaded π computations.
-Last updated June 2024; maintained by the OpenJS Foundation.
+The authoritative reference for Node.js built-in modules including HTTP/HTTPS servers, Streams, Worker Threads, Performance Hooks, Crypto primitives, and fs/promises. Essential for implementing HTTP endpoints with chunked transfer encoding, backpressure management, precise timing, secure token generation, file I/O, and multithreaded π computations via worker_threads. Last updated June 2024; maintained by the OpenJS Foundation.
 ## License: CC-BY-4.0
 
-# Yargs CLI Parser
+# CLI Parsing and Validation
 ## https://github.com/yargs/yargs/blob/master/docs/api.md
-Official API documentation for yargs, detailing command definitions, option parsing, nested commands, middleware hooks, and automatic help/version generation. Critical for building a structured CLI interface that supports flags like --calculate-pi, --timeout, --serve, and global options. Includes examples on custom command modules and advanced parsing strategies to ensure robust user input handling.
-Last updated July 2024; actively maintained by the yargs community.
-## License: MIT
-
-# Zod Schema Validation
+The official API docs for yargs, covering command definitions, option parsing, nested commands, middleware, and auto-generated help/version interfaces. Critical for the repository’s structured CLI interface supporting flags like --calculate-pi, --timeout, --serve, and global options. Last updated July 2024.
 ## https://zod.dev/
-Comprehensive guide to Zod, a TypeScript-first runtime schema validation library. Covers schema declarations, transformations, union and intersection types, parsing and coercion, and detailed error reporting. Essential for validating CLI arguments, configuration files, HTTP query parameters, and request payloads with strict type safety and consistent error messages across all features.
-Version 3.x; last updated 2024.
-## License: MIT
+Comprehensive guide to Zod, a TypeScript-first runtime schema validation library. Describes schema definitions, transformations, union/intersection types, parsing/coercion, and structured error reporting. Used for validating CLI arguments and HTTP request inputs with strict type safety. Version 3.x, last updated 2024.
+## License: MIT (yargs & Zod)
 
 # Configuration and Environment Management
 ## https://github.com/nodeca/js-yaml#readme
 ## https://github.com/motdotla/dotenv#readme
-Combined documentation for js-yaml and dotenv, enabling YAML/JSON configuration parsing and environment variable loading. Provides patterns for hierarchical configuration, secure .env management, and validation integration. Critical for implementing --config file support, default values, and secret management without hardcoding sensitive settings.
-Last updated 2024.
+Combined documentation for js-yaml and dotenv. Details YAML/JSON parsing patterns, hierarchical configuration overrides, environment variable loading, and secure .env management. Vital for --config support and default value handling without hardcoding sensitive data. Last updated 2024.
 ## License: MIT (js-yaml), BSD-2-Clause (dotenv)
 
 # Decimal.js Arbitrary-Precision Arithmetic
 ## https://mikemcl.github.io/decimal.js/
-Official reference for Decimal.js, detailing API methods for arbitrary-precision decimal arithmetic, configurable rounding modes, performance tuning, and precision control. Key for implementing Chudnovsky and Ramanujan π algorithms with predictable accuracy and performance, and for converting BBP outputs to decimal when necessary.
-Last updated 2023.
+Official reference for Decimal.js, detailing API for arbitrary-precision decimal arithmetic, configurable rounding modes, precision control, and performance considerations. Key to implementing Chudnovsky, Ramanujan, and Gauss–Legendre series with predictable accuracy and efficiency. Last updated 2023.
 ## License: MIT
 
-# π Computation Algorithms
+# High-Precision π Calculation Algorithms
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
-## https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
-## https://en.wikipedia.org/wiki/Ramanujan%E2%80%93Sato_series
-Authoritative overview of high-precision π algorithms: the Chudnovsky series (binary splitting approach and convergence analysis), the BBP formula for direct digit extraction, and Ramanujan–Sato series for rapid convergence via modular equations. Essential for implementing bulk π calculation, digit-range extraction, and algorithm selection.
-Last edited June 2024; licensed CC BY-SA 3.0.
+## https://en.wikipedia.org/wiki/Bailey–Borwein–Plouffe_formula
+## https://en.wikipedia.org/wiki/Ramanujan–Sato_series
+Authoritative overviews of advanced π algorithms: the binary-splitting Chudnovsky series, direct-digit-extraction BBP formula, and rapidly convergent Ramanujan–Sato series. Provides mathematical foundations, convergence analysis, and implementation guidance for bulk computation and selective digit extraction. Last edited June 2024; CC BY-SA 3.0.
 ## License: CC BY-SA 3.0
 
 # OpenAPI Documentation
 ## https://spec.openapis.org/oas/v3.0.3
 ## https://github.com/Surnet/swagger-jsdoc#readme
-Combined guide to the OpenAPI 3.0 Specification and swagger-jsdoc. Provides instruction on defining paths, parameters, schemas, security schemes, and tooling to generate interactive API docs and client SDKs. Crucial for generating machine-readable contracts from JSDoc and ensuring consistent HTTP API definitions.
-Spec last revised July 2023; swagger-jsdoc updated 2024.
+Comprehensive coverage of the OpenAPI 3.0 specification and swagger-jsdoc integration. Explains defining paths, parameters, schemas, security schemes, and JSDoc-based spec generation. Essential for generating interactive API docs and client SDKs from in-code annotations. Spec revised July 2023; swagger-jsdoc updated 2024.
 ## License: CC0 (OpenAPI), MIT (swagger-jsdoc)
 
 # Testing Frameworks and HTTP Testing Tools
 ## https://vitest.dev/guide/
 ## https://github.com/visionmedia/supertest
-Reference documentation for Vitest, a fast and modern testing framework with mocking, snapshot testing, and coverage, and Supertest for high-level HTTP assertions. Together they enable unit, integration, and end-to-end tests for algorithms, CLI parsing, HTTP endpoints, and error-handling logic.
-Versions 2024; actively maintained.
-## License: MIT
+Reference docs for Vitest—a fast, modern test runner with mocking, snapshot, and coverage support—and Supertest for HTTP assertions. Enables writing unit, integration, and end-to-end tests for CLI commands, computation modules, and HTTP endpoints. Versions 2024; actively maintained.## License: MIT
 
-# cli-progress Library
+# CLI Progress Bars
 ## https://github.com/cli-progress/cli-progress#readme
-Extensive documentation for cli-progress, covering single and multi-bar setups, custom formatting, manual and automatic TTY detection, and graceful output redirection. Essential for integrating real-time progress bars in the CLI during long-running π computations and benchmarks.
-Last updated 2024.
-## License: MIT
-
-# JavaScript BigInt
-## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
-In-depth MDN guide to the BigInt primitive, including literal and constructor usage, arithmetic and bitwise operations, and conversion methods. Covers performance considerations and memory trade-offs when handling very large integers in π computation steps like factorials and binary splitting.
-Last updated 2024; maintained by Mozilla.
-## License: CC BY-SA 2.5
+Detailed usage of cli-progress for single and multi-bar configurations, custom formatting, TTY detection, and graceful redirection. Crucial for real-time visual feedback during long-running π calculations and benchmarks. Last updated 2024.## License: MIT
 
 # Streaming Protocols and Libraries
 ## https://datatracker.ietf.org/doc/html/rfc7230#section-4.1
 ## https://tools.ietf.org/html/rfc6455
 ## https://github.com/websockets/ws
-Comprehensive resources on HTTP/1.1 chunked transfer encoding (RFC 7230 §4.1), the WebSocket protocol (RFC 6455), and the ws Node.js library. Provides framing details, backpressure handling, and multi-client support necessary for robust real-time π digit streaming over HTTP and WebSocket.
-RFCs published 2014 and 2011; ws library updated 2024.
-## License: IETF Trust (RFCs), MIT (ws)
+RFC 7230 §4.1 defines HTTP/1.1 chunked transfer framing; RFC 6455 specifies the WebSocket protocol. The ws library offers a Node.js WebSocket server implementation. This trio is foundational for real-time digit streaming over HTTP and WebSocket with proper framing and backpressure handling. RFCs published 2014/2011; ws updated 2024.## License: IETF Trust (RFCs), MIT (ws)
 
 # Observability Tools (Prometheus & OpenTelemetry)
 ## https://github.com/siimon/prom-client#readme
 ## https://opentelemetry.io/docs/instrumentation/js/
-Combined documentation for prom-client and OpenTelemetry JS instrumentation. Covers metric types, registries, tracer APIs, exporters, and auto-instrumentation modules. Critical for collecting application metrics, exposing a /metrics endpoint, and performing distributed tracing of π computations.
-Last updated 2024.
-## License: MIT (prom-client), Apache-2.0 (OpenTelemetry)
+Combined documentation for prom-client metrics and OpenTelemetry JavaScript instrumentation. Covers metric types, registries, tracer APIs, exporters, and auto-instrumentation. Supports /metrics endpoints and distributed tracing for π computation workflows. Last updated 2024.## License: MIT (prom-client), Apache-2.0 (OpenTelemetry)
 
 # Worker Threads
 ## https://nodejs.org/api/worker_threads.html
-Official guide to the worker_threads module, detailing Worker and WorkerPool creation, parentPort communication, SharedArrayBuffer usage, and error handling. Essential for parallelizing π calculations across CPU cores with safe data transfer and performance tuning.
-Last updated June 2024; maintained by the OpenJS Foundation.
-## License: CC-BY-4.0
+Official guide to the worker_threads module, detailing Worker creation, parent–worker messaging, SharedArrayBuffer usage, and pool patterns. Enables parallelizing π calculations across CPU cores with safe data transfer and concurrency control. Last updated June 2024; maintained by the OpenJS Foundation.## License: CC-BY-4.0
 
 # Node.js Streams API
 ## https://nodejs.org/api/stream.html
-Definitive documentation for the Node.js Streams API, covering Readable, Writable, Duplex, and Transform streams, backpressure management, pipeline utilities, and async iteration. Crucial for implementing chunked HTTP responses, CLI streaming, and efficient memory usage when handling large π digit datasets.
-Last updated June 2024.
-## License: CC-BY-4.0
+Comprehensive documentation for Readable, Writable, Duplex, and Transform streams, pipeline utilities, backpressure semantics, and async iteration. Essential for efficient chunked HTTP responses, CLI streaming, and handling large digit datasets without high memory overhead. Last updated June 2024.## License: CC-BY-4.0
 
-# AbortController and AbortSignal (MDN)
+# AbortController & Timeout Patterns
 ## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-Detailed MDN documentation on AbortController and AbortSignal, describing how to implement cancellation and timeouts for Promises, fetch requests, and custom APIs. Key for implementing robust timeout control (--timeout) and graceful abort handling across CLI and HTTP operations.
-Last updated 2024; maintained by Mozilla.
-## License: CC BY-SA 2.5
+Detailed MDN guide on AbortController and AbortSignal for abortable asynchronous operations. Explains integrating timeouts, cancellation signals, and graceful cleanup. Fundamental for --timeout support in both CLI and HTTP handlers. Last updated 2024; maintained by Mozilla.## License: CC BY-SA 2.5
 
-# Express-rate-limit Middleware
-## https://github.com/express-rate-limit/express-rate-limit#readme
-API documentation for the express-rate-limit middleware, demonstrating configurable rate limiting strategies, sliding windows, IP-based quotas, and integration with Express apps. Provides actionable patterns for enforcing per-client request limits, back-off strategies, and custom error handlers.
-Last updated 2024; widely adopted in production Node.js services.
-## License: MIT
+# Chart.js Visualization Library
+## https://www.chartjs.org/docs/latest/
+Official Chart.js docs for creating responsive, customizable charts using JavaScript. Provides guidance on configuring line charts and exporting to canvas, a core step in generating benchmark performance visualizations. Latest v4.x documentation; actively maintained.## License: MIT
+
+# Node-Canvas Server-Side Canvas
+## https://github.com/Automattic/node-canvas
+Documentation for node-canvas, a Cairo-backed Canvas API implementation for Node.js. Enables server-side rendering of Chart.js charts into PNG files for embedding in benchmark reports. Last updated 2024; widely adopted.## License: MIT
+
+# EJS Templating Engine
+## https://ejs.co/#docs
+EJS documentation covering template syntax, rendering methods, partials, and custom delimiters. Used to generate markdown or HTML benchmark reports from data objects. Version 3.x; last updated 2022.## License: MIT
