@@ -1,253 +1,305 @@
 # DECIMALJS
 
 ## Crawl Summary
-Decimal.js provides arbitrary-precision decimal arithmetic. Configuration via Decimal.set or Decimal.clone adjusts precision (1–1e9), rounding mode (0–8), exponent limits (minE,maxE), display thresholds (toExpNeg,toExpPos), modulo mode (0–9) and crypto random. Core API: constructor accepts Number,string,Decimal; static methods for arithmetic, logs, trig, hyperbolic, roots, random, formatting; instance methods mirror static but chainable. Default settings: precision=20, rounding=4, minE=–9e15, maxE=9e15, toExpNeg=–7, toExpPos=20, modulo=1, crypto=false. Rounding constants exposed on constructor. clone isolates settings. noConflict restores previous Decimal.
+Constructor signature: Decimal(value:number|string|Decimal) ⇒ Decimal supports decimal, binary, hex, octal strings with e/E and p/P exponent notation. Configuration via Decimal.set({precision:1–1e9=20, rounding:0–8=4, toExpNeg:-9e15–0=-7, toExpPos:0–9e15=20, minE:-9e15=default, maxE:9e15, modulo:0–9=1, crypto:false}). Clone via Decimal.clone([object]). Static methods (abs, add, sub, mul, div, pow, sqrt, cbrt, round, floor, ceil, clamp, random(dp), log, log2, log10, exp, ln, max, min, atan2, trigonometric, hyperbolic). Instance methods same aliases plus comparison (cmp, eq, gt etc.) and conversion (toString, toNumber, toFixed, toExponential, toDP, toPrecision, toSD, toBinary, toHex, toOctal, toFraction, toNearest, toJSON). Properties and defaults, rounding mode constants.
 
 ## Normalised Extract
 Table of Contents:
-1 Constructor
-2 Global Configuration
-3 Static Methods
-4 Instance Methods
-5 Configuration Properties
-6 Rounding Modes
+1  Constructor and Value Types
+2  Configuration & Cloning
+3  Core Arithmetic Methods
+4  Random Number Generation
+5  Trigonometric & Hyperbolic Functions
+6  Logarithm & Exponential Functions
+7  Comparison Methods
+8  Conversion & Formatting Methods
+9  Properties & Rounding Modes
 
-1 Constructor
-Decimal(value: number|string|Decimal) => Decimal
- value: integer|float|±0|±Infinity|NaN|string(decimal|binary|hex|octal with prefixes 0b,0x,0o)
- supports fixed or exponential notation (e/E for decimal, p/P for non-decimal)
-Throws DecimalError on invalid value
+1  Constructor and Value Types
+Signature: Decimal(value) ⇒ Decimal
+Parameters: value: number|string|Decimal
+Supports: decimal, binary (0b/0B), hexadecimal (0x/0X), octal (0o/0O); exponential notation 'e'/'E' for decimal, 'p'/'P' for non-decimal
+Throws: DecimalError on invalid value
 
-2 Global Configuration
-Decimal.set({
- precision?:1-1e9,
- rounding?:0-8,
- minE?:-9e15-0,
- maxE?:0-9e15,
- toExpNeg?:-9e15-0,
- toExpPos?:0-9e15,
- modulo?:0-9,
- crypto?:boolean,
- defaults?:boolean
-}) => DecimalConstructor
-Decimal.clone(config?) => new DecimalConstructor
- defaults:true resets all to defaults
+2  Configuration & Cloning
+Decimal.set(object) ⇒ this
+object properties:
+  precision: integer 1–1e9 (default 20)
+  rounding: integer 0–8 (default 4)
+  toExpNeg: integer -9e15–0 (default -7)
+  toExpPos: integer 0–9e15 (default 20)
+  minE: integer -9e15–0 (default -9e15)
+  maxE: integer 0–9e15 (default 9e15)
+  modulo: integer 0–9 (default 1)
+  crypto: boolean (default false)
+  defaults: boolean (true resets to defaults)
+Decimal.clone([object]) ⇒ new Decimal constructor
 
-3 Static Methods
-abs(x) | acos(x) | acosh(x) | add(x,y) | asin(x) | asinh(x) | atan(x) | atanh(x) | atan2(y,x)
-cbrt(x) | ceil(x) | clamp(min,max) | clone() | cos(x) | cosh(x)
-div(x,y) | exp(x) | floor(x) | hypot(...values)
-ln(x) | log(x,base?) | log2(x) | log10(x)
-max(...values) | min(...values) | mod(x,y) | mul(x,y) | noConflict()
-pow(x,y) | random(dp?) | round(x) | set() | sign(x)
-sin(x) | sinh(x) | sqrt(x) | sub(x,y) | sum(...values)
-tan(x) | tanh(x) | trunc(x)
+3  Core Arithmetic Methods
+Static and instance:
+  abs(x) / x.abs()
+  add(x,y) / x.plus(y)
+  sub(x,y) / x.minus(y)
+  mul(x,y) / x.times(y)
+  div(x,y) / x.dividedBy(y)
+  pow(x,y) / x.pow(y)
+  sqrt(x) / x.sqrt()
+  cbrt(x) / x.cbrt()
+  round(x) / x.round()
+  floor(x) / x.floor()
+  ceil(x) / x.ceil()
+  clamp(min,max) / x.clampedTo(min,max)
 
-4 Instance Methods
-plus(x) | minus(x) | times(x) | dividedBy(x) | divToInt(x)
-modulo(x) | pow(exp) | sqrt() | logarithm(base?) | naturalLogarithm()
-naturalExponential() | sine() | cosine() | tangent() | inverse... | hyperbolic... | abs()
-ceil() | floor() | round() | trunc() | clampedTo(min,max)
-comparedTo(x) => number | eq(x), lt(x), lte(x), gt(x), gte(x) => boolean
-isFinite() | isNaN() | isZero() | isNeg() | isPos() | isInt()
-decimalPlaces() => number | precision(includeZeros?) => number
-toDP(dp,rm?), toFixed(dp,rm?), toExponential(dp,rm?), toHexadecimal(dp,rm?), toOctal(dp,rm?), toPrecision(sd,rm?), toSD(sd,rm?), toString(), toJSON(), valueOf()
+4  Random Number Generation
+Signature: Decimal.random([dp]) ⇒ Decimal
+dp: integer 0–1e9 inclusive (default current precision)
+crypto: if true and global.crypto available uses crypto.getRandomValues or crypto.randomBytes; else Math.random; throws if crypto=true but no crypto API
 
-5 Configuration Properties
-precision:1-1e9 default20
-rounding:0-8 default4
-minE:-9e15 default-9e15
-maxE:0-9e15 default9e15
-toExpNeg:-9e15 default-7
-toExpPos:0-9e15 default20
-modulo:0-9 default1
-crypto:boolean defaultfalse
+5  Trigonometric & Hyperbolic Functions
+sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh with x: number|string|Decimal, returns Decimal rounded to precision with rounding mode; domain & range per standard
 
-6 Rounding Modes
-0=UP,1=DOWN,2=CEIL,3=FLOOR,4=HALF_UP,5=HALF_DOWN,6=HALF_EVEN,7=HALF_CEIL,8=HALF_FLOOR,9=EUCLID
+6  Logarithm & Exponential Functions
+log(x[,base]) / x.log(base), default base=10; log2, log10; exp, ln; returns correctly rounded except naturalLogarithm limited to ~1000 digits
+
+7  Comparison Methods
+cmp(x)/comparedTo(x) ⇒ -1|0|1|NaN; eq/equals(x) ⇒ boolean; gt,gte,lt,lte,isFinite(),isNaN(),isZero(),isNeg()/isNegative(),isPos()/isPositive(),isInt()/isInteger()
+
+8  Conversion & Formatting Methods
+toString(), toNumber(), toFixed(dp), toExponential(dp), toDecimalPlaces(dp, rm), toPrecision(sd, rm), toSignificantDigits(sd, rm), toBinary(), toHexadecimal(), toOctal(), toFraction(maxDenominator), toNearest(step, rm), toJSON()
+
+9  Properties & Rounding Modes
+Decimal.precision, rounding, toExpNeg, toExpPos, minE, maxE, modulo, crypto
+Rounding mode constants: ROUND_UP(0), ROUND_DOWN(1), ROUND_CEIL(2), ROUND_FLOOR(3), ROUND_HALF_UP(4), ROUND_HALF_DOWN(5), ROUND_HALF_EVEN(6), ROUND_HALF_CEIL(7), ROUND_HALF_FLOOR(8), EUCLID(9)
+
 
 ## Supplementary Details
-Configuration Defaults & Validation:
- precision: integer 1–1e9; DecimalError if outside range
- rounding: integer 0–8; enumerated on Decimal constructor
- minE: integer –9e15–0; underflow yields zero
- maxE: integer 0–9e15; overflow yields Infinity
- toExpNeg: integer –9e15–0; threshold for exponential output
- toExpPos: integer 0–9e15; threshold for exponential output
- modulo: integer 0–9; modes: 1 truncate,3 floor,0 up,6 half-even,9 euclid
- crypto: boolean; true uses crypto.getRandomValues or crypto.randomBytes; throws if unavailable
+Configuration defaults and valid ranges
+  precision: integer ∈ [1,1e9], default 20
+  rounding: integer ∈ [0,8], default 4 (ROUND_HALF_UP)
+  toExpNeg: integer ∈ [-9e15,0], default -7
+  toExpPos: integer ∈ [0,9e15], default 20
+  minE: integer ∈ [-9e15,0], default -9e15
+  maxE: integer ∈ [0,9e15], default 9e15
+  modulo: integer ∈ [0,9], default 1 (ROUND_DOWN behavior)
+  crypto: boolean, default false
 
-Usage:
- Decimal.set({precision:50, rounding:Decimal.ROUND_HALF_EVEN})
- const D=Decimal.clone({defaults:true, precision:30})
- D.set({minE:-500, maxE:500})
- Decimal.noConflict() restores original Decimal
+Configuring crypto in Node.js:
+  global.crypto = require('crypto')
+  Decimal.set({ crypto: true })
+  Throws DecimalError if crypto API missing when crypto=true
 
+Cloning constructors:
+  const D1 = Decimal.clone()
+  const D2 = D1.clone({ precision:50 })
+  functions shared; separate settings
+
+Error handling:
+  Decimal.set({ precision:0 }) throws DecimalError: "Invalid argument: precision: 0"
+  new Decimal('invalid') throws DecimalError: "Invalid argument: value"
 
 ## Reference Details
-Constructor Signature:
- Decimal(value: number|string|Decimal) => Decimal
- Throws DecimalError on invalid input
+API Specifications:
 
-Static Method Signatures:
- abs(x: number|string|Decimal): Decimal
- add(x: number|string|Decimal, y: number|string|Decimal): Decimal
- sub(x: number|string|Decimal, y: number|string|Decimal): Decimal
- mul(x: number|string|Decimal, y: number|string|Decimal): Decimal
- div(x: number|string|Decimal, y: number|string|Decimal): Decimal
- mod(x: number|string|Decimal, y: number|string|Decimal): Decimal
- pow(base: number|string|Decimal, exponent: number|string|Decimal): Decimal
- sqrt(x: number|string|Decimal): Decimal
- cbrt(x: number|string|Decimal): Decimal
- ln(x: number|string|Decimal): Decimal
- log(x: number|string|Decimal, base?: number|string|Decimal): Decimal
- log2(x: number|string|Decimal): Decimal
- log10(x: number|string|Decimal): Decimal
- exp(x: number|string|Decimal): Decimal
- sin(x: number|string|Decimal), cos(x), tan(x), asin(x), acos(x), atan(x), asinh(x), acosh(x), atanh(x), sinh(x), cosh(x), tanh(x)
- atan2(y: number|string|Decimal, x: number|string|Decimal): Decimal
- hypot(...values: Array<number|string|Decimal>): Decimal
- sum(...values: Array<number|string|Decimal>): Decimal
- max(...values: Array<number|string|Decimal>): Decimal
- min(...values: Array<number|string|Decimal>): Decimal
- random(dp?: number): Decimal
- set(config: object): DecimalConstructor
- clone(config?: object): DecimalConstructor
- noConflict(): DecimalConstructor
- sign(x: number|string|Decimal): number
+Constructor:
+Signature: Decimal(value: number|string|Decimal) ⇒ Decimal
+Throws: DecimalError on invalid value
 
-Instance Method Signatures:
- plus(x: number|string|Decimal): Decimal
- minus(x: number|string|Decimal): Decimal
- times(x: number|string|Decimal): Decimal
- dividedBy(x: number|string|Decimal): Decimal
- divToInt(x: number|string|Decimal): Decimal
- modulo(x: number|string|Decimal): Decimal
- pow(exp: number|string|Decimal): Decimal
- sqrt(): Decimal
- naturalLogarithm(): Decimal
- logarithm(base?: number|string|Decimal): Decimal
- naturalExponential(): Decimal
- sine(), cosine(), tangent(), inverseCosine(), inverseSine(), inverseTangent(), hyperbolicCosine(), hyperbolicSine(), hyperbolicTangent(), inverseHyperbolicCosine(), inverseHyperbolicSine(), inverseHyperbolicTangent()
- absoluteValue(): Decimal
- ceil(): Decimal, floor(): Decimal, round(): Decimal, trunc(): Decimal
- clampedTo(min: number|string|Decimal, max: number|string|Decimal): Decimal
- comparedTo(x: number|string|Decimal): number
- eq(x), lt(x), lte(x), gt(x), gte(x): boolean
- isFinite(), isNaN(), isZero(), isNeg(), isPos(), isInt(): boolean
- decimalPlaces(): number
- precision(includeZeros?: boolean): number
- toDP(dp: number, rm?: number): Decimal
- toFixed(dp: number, rm?: number): string
- toExponential(dp: number, rm?: number): string
- toHexadecimal(dp: number, rm?: number): string
- toOctal(dp: number, rm?: number): string
- toPrecision(sd: number, rm?: number): string
- toSD(sd: number, rm?: number): string
- toString(): string
- toJSON(): string
- valueOf(): string
+Decimal.set(config: object) ⇒ this
+Throws: DecimalError on invalid property or value
+Properties of config:
+  precision: integer[1,1e9]
+  rounding: integer[0,8]
+  toExpNeg: integer[-9e15,0]
+  toExpPos: integer[0,9e15]
+  minE: integer[-9e15,0]
+  maxE: integer[0,9e15]
+  modulo: integer[0,9]
+  crypto: boolean
+  defaults: boolean
 
-Code Examples:
- // Configure global settings
- Decimal.set({precision:10, rounding:Decimal.ROUND_HALF_UP})
+Decimal.clone(config?: object) ⇒ DecimalConstructor
 
- // Clone for high-precision
- const HighP = Decimal.clone({precision:50})
- console.log(HighP.div(1,7)) // '0.14285714285714285714285714285714285714285714285714'
+Static Methods:
+abs(x: number|string|Decimal): Decimal
+acos(x: number|string|Decimal): Decimal
+acosh(x: number|string|Decimal): Decimal
+add(x: number|string|Decimal, y: number|string|Decimal): Decimal
+asin(x: number|string|Decimal): Decimal
+asinh(x: number|string|Decimal): Decimal
+atan(x: number|string|Decimal): Decimal
+atanh(x: number|string|Decimal): Decimal
+atan2(y: number|string|Decimal, x: number|string|Decimal): Decimal
+cbrt(x: number|string|Decimal): Decimal
+ceil(x: number|string|Decimal): Decimal
+clamp(min: number|string|Decimal, max: number|string|Decimal): Decimal
+div(x: number|string|Decimal, y: number|string|Decimal): Decimal
+exp(x: number|string|Decimal): Decimal
+floor(x: number|string|Decimal): Decimal
+hypot(...values: Array<number|string|Decimal>): Decimal
+ln(x: number|string|Decimal): Decimal
+log(x: number|string|Decimal, base?: number|string|Decimal): Decimal
+log2(x: number|string|Decimal): Decimal
+log10(x: number|string|Decimal): Decimal
+max(...values: Array<number|string|Decimal>): Decimal
+min(...values: Array<number|string|Decimal>): Decimal
+mod(x: number|string|Decimal, y: number|string|Decimal): Decimal
+mul(x: number|string|Decimal, y: number|string|Decimal): Decimal
+noConflict(): DecimalConstructor
+pow(x: number|string|Decimal, y: number|string|Decimal): Decimal
+random(dp?: number): Decimal
+round(x: number|string|Decimal): Decimal
+sign(x: number|string|Decimal): number
+sin(x: number|string|Decimal): Decimal
+sinh(x: number|string|Decimal): Decimal
+sqrt(x: number|string|Decimal): Decimal
+sub(x: number|string|Decimal, y: number|string|Decimal): Decimal
+sum(...values: Array<number|string|Decimal>): Decimal
+tan(x: number|string|Decimal): Decimal
+tanh(x: number|string|Decimal): Decimal
+trunc(x: number|string|Decimal): Decimal
+set(object: object): DecimalConstructor
 
- // Cryptographic random
- global.crypto = require('crypto') // Node.js
- Decimal.set({crypto:true})
- console.log(Decimal.random(20))
+Instance Methods:
+absoluteValue(): Decimal
+acos(): Decimal
+acosh(): Decimal
+add(x: number|string|Decimal): Decimal
+asin(): Decimal
+asinh(): Decimal
+atan(): Decimal
+atanh(): Decimal
+atan2(x: number|string|Decimal): Decimal
+cbrt(): Decimal
+ceil(): Decimal
+clampedTo(min: number|string|Decimal, max: number|string|Decimal): Decimal
+cmp(x: number|string|Decimal): number
+dp(): number
+div(x: number|string|Decimal): Decimal
+divToInt(x: number|string|Decimal): Decimal
+eq(x: number|string|Decimal): boolean
+floor(): Decimal
+gt(x: number|string|Decimal): boolean
+gte(x: number|string|Decimal): boolean
+hypot(...values: Array<number|string|Decimal>): Decimal
+isDecimal(object: any): boolean
+isFinite(): boolean
+isInt(): boolean
+isNaN(): boolean
+isNeg(): boolean
+isPos(): boolean
+isZero(): boolean
+log(x?: number|string|Decimal): Decimal
+minus(x: number|string|Decimal): Decimal
+mod(x: number|string|Decimal): Decimal
+neg(): Decimal
+plus(x: number|string|Decimal): Decimal
+sd(includeZeros?: boolean): number
+sin(): Decimal
+sinh(): Decimal
+sqrt(): Decimal
+tan(): Decimal
+tanh(): Decimal
+toBinary(): string
+toDecimalPlaces(dp: number, rm?: number): string
+toExponential(dp?: number): string
+toFixed(dp?: number): string
+toFraction(maxDenominator?: number): [Decimal, Decimal]
+toHexadecimal(dp?: number): string
+toJSON(): string
+toNearest(step: number|string|Decimal, rm?: number): Decimal
+toNumber(): number
+toOctal(dp?: number): string
+toPower(exp: number|string|Decimal): Decimal
+toPrecision(sd?: number, rm?: number): string
+toSD(sd?: number, rm?: number): string
+toString(): string
+trunc(): Decimal
+valueOf(): string
+
+Configuration Patterns:
+  require('decimal.js') ⇒ Decimal
+  global.crypto = require('crypto'); Decimal.set({crypto:true}); Decimal.random(10)
 
 Best Practices:
- Use clone to isolate custom settings and prevent side effects on global Decimal
- Validate external input before constructing Decimal to avoid DecimalError
- Reset to defaults with clone({defaults:true}) after localized precision changes
+  Always set precision before heavy operations: Decimal.set({precision:50})
+  Use separate clones for independent configs
+  For cryptographic randomness, enable crypto and load global.crypto
 
 Troubleshooting:
- Command: Decimal.set({precision:0})
- Expected Error: [DecimalError] Invalid argument: precision: 0
-
- Command: Decimal.precision = 0
- Outcome: No error thrown; results unreliable
-
- Command: Decimal.set({crypto:true}) without global.crypto
- Expected Error: [Error] Crypto not available
-
- Command: new Decimal('1e10000000000000000')
- Outcome: 'Infinity' due to maxE overflow
-
- Command: Decimal.set({minE:-2}); new Decimal(0.0001)
- Outcome: '0' due to underflow
-
+  Error "Invalid argument: precision: 0": use valid precision range 1–1e9
+  "crypto undefined" when crypto=true: set global.crypto in Node.js
+  Incorrect logarithm rounding beyond 1000 digits: increase LN10 precision in source or reduce required digits
 
 ## Information Dense Extract
-Decimal(value)->Decimal; set({precision1-1e9=20,rounding0-8=4,minE-9e15= -9e15,maxE9e15,toExpNeg-7,toExpPos20,modulo1,cryptofalse}); clone({…}); abs,add,sub,mul,div,mod,pow,sqrt,cbrt,ln,log,log2,log10,exp, trig,hyper,atan2,sum,max,min,random(dp0-1e9),noConflict; instance plus,minus,times,dividedBy,divToInt,modulo,pow,sqrt,ln,log,exp,trig,hyper,abs,ceil,floor,round,trunc,clamp,comparedTo,eq,lt,lte,gt,gte,isFinite,isNaN,isZero,isNeg,isPos,isInt,dp,sd,toDP,toFixed,toExponential,toHexadecimal,toOctal,toPrecision,toSD,toString; modes:0-UP,1-DOWN,2-CEIL,3-FLOOR,4-HALF_UP,5-HALF_DOWN,6-HALF_EVEN,7-HALF_CEIL,8-HALF_FLOOR,9-EUCLID
+Decimal(value:number|string|Decimal)->Decimal; supports decimal,binary,hex,octal,exp notation; errors on invalid. Config via set({precision:1–1e9=20,rounding:0–8=4,toExpNeg:-9e15–0=-7, toExpPos:0–9e15=20,minE:-9e15,maxE:9e15,modulo:0–9=1,crypto:false}); clone with clone([config]). Static methods: abs,acos,acosh,add,asin,asinh,atan,atanh,atan2,cbrt,ceil,clamp,div,exp,floor,hypot,ln,log,log2,log10,max,min,mod,mul,noConflict,pow,random,round,sign,sin,sinh,sqrt,sub,sum,tan,tanh,trunc. Instance methods mirror static with short names plus cmp,eq,gt,gte,lt,lte,isFinite,isNaN,isZero,isNeg,isPos,isInt,dp,sd,toString,toNumber,toFixed,toExponential,toDecimalPlaces,toPrecision,toSD,toBinary,toHexadecimal,toOctal,toFraction,toNearest,toJSON,toPower. Properties: Decimal.precision,rounding,toExpNeg,toExpPos,minE,maxE,modulo,crypto. Rounding constants: ROUND_UP(0),ROUND_DOWN(1),ROUND_CEIL(2),ROUND_FLOOR(3),ROUND_HALF_UP(4),ROUND_HALF_DOWN(5),ROUND_HALF_EVEN(6),ROUND_HALF_CEIL(7),ROUND_HALF_FLOOR(8),EUCLID(9).
 
 ## Sanitised Extract
 Table of Contents:
-1 Constructor
-2 Global Configuration
-3 Static Methods
-4 Instance Methods
-5 Configuration Properties
-6 Rounding Modes
+1  Constructor and Value Types
+2  Configuration & Cloning
+3  Core Arithmetic Methods
+4  Random Number Generation
+5  Trigonometric & Hyperbolic Functions
+6  Logarithm & Exponential Functions
+7  Comparison Methods
+8  Conversion & Formatting Methods
+9  Properties & Rounding Modes
 
-1 Constructor
-Decimal(value: number|string|Decimal) => Decimal
- value: integer|float|0|Infinity|NaN|string(decimal|binary|hex|octal with prefixes 0b,0x,0o)
- supports fixed or exponential notation (e/E for decimal, p/P for non-decimal)
-Throws DecimalError on invalid value
+1  Constructor and Value Types
+Signature: Decimal(value)  Decimal
+Parameters: value: number|string|Decimal
+Supports: decimal, binary (0b/0B), hexadecimal (0x/0X), octal (0o/0O); exponential notation 'e'/'E' for decimal, 'p'/'P' for non-decimal
+Throws: DecimalError on invalid value
 
-2 Global Configuration
-Decimal.set({
- precision?:1-1e9,
- rounding?:0-8,
- minE?:-9e15-0,
- maxE?:0-9e15,
- toExpNeg?:-9e15-0,
- toExpPos?:0-9e15,
- modulo?:0-9,
- crypto?:boolean,
- defaults?:boolean
-}) => DecimalConstructor
-Decimal.clone(config?) => new DecimalConstructor
- defaults:true resets all to defaults
+2  Configuration & Cloning
+Decimal.set(object)  this
+object properties:
+  precision: integer 11e9 (default 20)
+  rounding: integer 08 (default 4)
+  toExpNeg: integer -9e150 (default -7)
+  toExpPos: integer 09e15 (default 20)
+  minE: integer -9e150 (default -9e15)
+  maxE: integer 09e15 (default 9e15)
+  modulo: integer 09 (default 1)
+  crypto: boolean (default false)
+  defaults: boolean (true resets to defaults)
+Decimal.clone([object])  new Decimal constructor
 
-3 Static Methods
-abs(x) | acos(x) | acosh(x) | add(x,y) | asin(x) | asinh(x) | atan(x) | atanh(x) | atan2(y,x)
-cbrt(x) | ceil(x) | clamp(min,max) | clone() | cos(x) | cosh(x)
-div(x,y) | exp(x) | floor(x) | hypot(...values)
-ln(x) | log(x,base?) | log2(x) | log10(x)
-max(...values) | min(...values) | mod(x,y) | mul(x,y) | noConflict()
-pow(x,y) | random(dp?) | round(x) | set() | sign(x)
-sin(x) | sinh(x) | sqrt(x) | sub(x,y) | sum(...values)
-tan(x) | tanh(x) | trunc(x)
+3  Core Arithmetic Methods
+Static and instance:
+  abs(x) / x.abs()
+  add(x,y) / x.plus(y)
+  sub(x,y) / x.minus(y)
+  mul(x,y) / x.times(y)
+  div(x,y) / x.dividedBy(y)
+  pow(x,y) / x.pow(y)
+  sqrt(x) / x.sqrt()
+  cbrt(x) / x.cbrt()
+  round(x) / x.round()
+  floor(x) / x.floor()
+  ceil(x) / x.ceil()
+  clamp(min,max) / x.clampedTo(min,max)
 
-4 Instance Methods
-plus(x) | minus(x) | times(x) | dividedBy(x) | divToInt(x)
-modulo(x) | pow(exp) | sqrt() | logarithm(base?) | naturalLogarithm()
-naturalExponential() | sine() | cosine() | tangent() | inverse... | hyperbolic... | abs()
-ceil() | floor() | round() | trunc() | clampedTo(min,max)
-comparedTo(x) => number | eq(x), lt(x), lte(x), gt(x), gte(x) => boolean
-isFinite() | isNaN() | isZero() | isNeg() | isPos() | isInt()
-decimalPlaces() => number | precision(includeZeros?) => number
-toDP(dp,rm?), toFixed(dp,rm?), toExponential(dp,rm?), toHexadecimal(dp,rm?), toOctal(dp,rm?), toPrecision(sd,rm?), toSD(sd,rm?), toString(), toJSON(), valueOf()
+4  Random Number Generation
+Signature: Decimal.random([dp])  Decimal
+dp: integer 01e9 inclusive (default current precision)
+crypto: if true and global.crypto available uses crypto.getRandomValues or crypto.randomBytes; else Math.random; throws if crypto=true but no crypto API
 
-5 Configuration Properties
-precision:1-1e9 default20
-rounding:0-8 default4
-minE:-9e15 default-9e15
-maxE:0-9e15 default9e15
-toExpNeg:-9e15 default-7
-toExpPos:0-9e15 default20
-modulo:0-9 default1
-crypto:boolean defaultfalse
+5  Trigonometric & Hyperbolic Functions
+sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, asinh, acosh, atanh with x: number|string|Decimal, returns Decimal rounded to precision with rounding mode; domain & range per standard
 
-6 Rounding Modes
-0=UP,1=DOWN,2=CEIL,3=FLOOR,4=HALF_UP,5=HALF_DOWN,6=HALF_EVEN,7=HALF_CEIL,8=HALF_FLOOR,9=EUCLID
+6  Logarithm & Exponential Functions
+log(x[,base]) / x.log(base), default base=10; log2, log10; exp, ln; returns correctly rounded except naturalLogarithm limited to ~1000 digits
+
+7  Comparison Methods
+cmp(x)/comparedTo(x)  -1|0|1|NaN; eq/equals(x)  boolean; gt,gte,lt,lte,isFinite(),isNaN(),isZero(),isNeg()/isNegative(),isPos()/isPositive(),isInt()/isInteger()
+
+8  Conversion & Formatting Methods
+toString(), toNumber(), toFixed(dp), toExponential(dp), toDecimalPlaces(dp, rm), toPrecision(sd, rm), toSignificantDigits(sd, rm), toBinary(), toHexadecimal(), toOctal(), toFraction(maxDenominator), toNearest(step, rm), toJSON()
+
+9  Properties & Rounding Modes
+Decimal.precision, rounding, toExpNeg, toExpPos, minE, maxE, modulo, crypto
+Rounding mode constants: ROUND_UP(0), ROUND_DOWN(1), ROUND_CEIL(2), ROUND_FLOOR(3), ROUND_HALF_UP(4), ROUND_HALF_DOWN(5), ROUND_HALF_EVEN(6), ROUND_HALF_CEIL(7), ROUND_HALF_FLOOR(8), EUCLID(9)
 
 ## Original Source
 Decimal.js
@@ -255,113 +307,110 @@ https://mikemcl.github.io/decimal.js/
 
 ## Digest of DECIMALJS
 
-# DECIMAL.JS API
+# Constructor
 
-## Constructor
-Decimal(value: number|string|Decimal) => Decimal  
-value: integer|float|±0|±Infinity|NaN; string: decimal|binary (prefix 0b|0B)|hexadecimal (0x|0X)|octal (0o|0O); fixed or exponential notation (e|E for decimal, p|P for non-decimal)  
-Throws DecimalError on invalid value  
+Decimal(value) ⇒ Decimal
+
+Parameters:
+  value: number | string | Decimal
+
+Description:
+  Creates a new immutable Decimal instance. Accepts integer, float (±0), ±Infinity, or NaN. Unlimited digits subject to JavaScript array limits and processing time. Strings may use decimal, binary (0b/0B), hexadecimal (0x/0X), or octal (0o/0O) notation. Exponential notation: 'e'/'E' for decimal, 'p'/'P' for non-decimal.
+
 Examples:
-new Decimal('0b1.1p-5') => '0.046875'
-new Decimal(4.321e+4) => '43210'
+  new Decimal(9)                       // '9'
+  new Decimal('0xff.8')                // '255.5'
+  new Decimal('-0b101.1')              // '-5.5'
 
-## Static Methods
-abs(x: number|string|Decimal) => Decimal
-acos(x) => Decimal
-acosh(x) => Decimal
-add(x,y: number|string|Decimal) => Decimal
-asin(x) => Decimal
-asinh(x) => Decimal
-atan(x) => Decimal
-atanh(x) => Decimal
-atan2(y,x) => Decimal  Range [-pi,pi]
-cbrt(x) => Decimal
-ceil(x) => Decimal
-clamp(min,max) => Decimal
-clone(config?) => DecimalConstructor
-cos(x) => Decimal
-cosh(x) => Decimal
-div(x,y) => Decimal
-exp(x) => Decimal
-floor(x) => Decimal
-hypot(...values: number|string|Decimal[]) => Decimal
-ln(x) => Decimal
-log(x,base?) => Decimal  default base 10
-log2(x) => Decimal
-log10(x) => Decimal
-max(...values) => Decimal
-min(...values) => Decimal
-mod(x,y) => Decimal
-mul(x,y) => Decimal
-noConflict() => DecimalConstructor
-pow(x,y) => Decimal
-random(dp?: number) => Decimal  dp: integer 0 to 1e9
-round(x) => Decimal
-set(config: object) => DecimalConstructor
-sign(x) => number
-sin(x) => Decimal
-sinh(x) => Decimal
-sqrt(x) => Decimal
-sub(x,y) => Decimal
-sum(...values) => Decimal
-tan(x) => Decimal
-tanh(x) => Decimal
-trunc(x) => Decimal
+# Configuration & Cloning
 
-## Instance Methods
-plus(x) => Decimal
-minus(x) => Decimal
-times(x) => Decimal
-dividedBy(x) => Decimal
-divToInt(x) => Decimal
-modulo(x) => Decimal
-pow(exp) => Decimal
-sqrt() => Decimal
-logarithm(base?) => Decimal  default base 10
-naturalLogarithm() => Decimal
-naturalExponential() => Decimal
-sine(), cosine(), tangent(), inverse..., hyperbolic..., inverseHyperbolic...  all return Decimal
-absoluteValue() => Decimal
-ceil(), floor(), round(), trunc() => Decimal
-clampedTo(min,max) => Decimal
-comparedTo(x) => number  returns 1,0,-1 or NaN
-eq(x), lt(x), lte(x), gt(x), gte(x) => boolean
-isFinite(), isNaN(), isZero(), isNeg(), isPos(), isInt() => boolean
-decimalPlaces() => number
-precision(includeZeros?) => number
-toDP(dp,rm?), toFixed(dp,rm?), toExponential(dp,rm?), toHexadecimal(dp,rm?), toOctal(dp,rm?), toPrecision(sd,rm?), toSD(sd,rm?), toString(), toJSON(), valueOf()
+Decimal.set(object) ⇒ Decimal constructor
 
-## Configuration Properties
-precision: integer, 1 to 1e9 inclusive; default 20
-rounding: integer, 0 to 8 inclusive; default 4 (ROUND_HALF_UP)
-minE: integer, -9e15 to 0 inclusive; default -9e15
-maxE: integer, 0 to 9e15 inclusive; default 9e15
-toExpNeg: integer, -9e15 to 0 inclusive; default -7
-toExpPos: integer, 0 to 9e15 inclusive; default 20
-modulo: integer, 0 to 9 inclusive; default 1
-crypto: boolean; default false
+Properties of object:
+  precision: integer 1 to 1e+9 (default 20)
+  rounding: integer 0 to 8 (default 4)
+  toExpNeg: integer -9e15 to 0 (default -7)
+  toExpPos: integer 0 to 9e15 (default 20)
+  minE: integer -9e15 to 0 (default -9e15)
+  maxE: integer 0 to 9e15 (default 9e15)
+  modulo: integer 0 to 9 (default 1)
+  crypto: boolean (default false)
+  defaults: boolean (true resets unspecified props to defaults)
 
-Use Decimal.set({precision, rounding, minE, maxE, toExpNeg, toExpPos, modulo, crypto}) to apply validated settings. Direct assignment bypasses validation.
-Clone constructor: Decimal.clone(config?) isolates new DecimalConstructor with inherited or overridden settings. Use {defaults:true} to reset defaults.
+Examples:
+  Decimal.set({ precision: 50, rounding: Decimal.ROUND_CEIL })
+  Decimal.set({ defaults: true })
 
-## Rounding Modes
-ROUND_UP = 0       rounds away from zero
-ROUND_DOWN = 1     towards zero
-ROUND_CEIL = 2     towards +Infinity
-ROUND_FLOOR = 3    towards -Infinity
-ROUND_HALF_UP = 4  nearest; ties away from zero
-ROUND_HALF_DOWN = 5 nearest; ties towards zero
-ROUND_HALF_EVEN = 6 nearest; ties to even
-ROUND_HALF_CEIL = 7 nearest; ties to +Infinity
-ROUND_HALF_FLOOR = 8 nearest; ties to -Infinity
-EUCLID = 9         not a rounding mode; modulo mode for positive remainder
+Decimal.clone([object]) ⇒ independent Decimal constructor
+  object: optional config object as for set or { defaults: true }
+
+Examples:
+  const Decimal9 = Decimal.clone({ precision: 9 })
+  Decimal9.div(1, 3)                  // '0.333333333'
+
+# Static Methods
+
+abs(x) ⇒ Decimal
+add(x, y) ⇒ Decimal
+sub(x, y) ⇒ Decimal
+mul(x, y) ⇒ Decimal
+div(x, y) ⇒ Decimal
+pow(x, y) ⇒ Decimal
+sqrt(x) ⇒ Decimal
+cbrt(x) ⇒ Decimal
+round(x) ⇒ Decimal
+floor(x) ⇒ Decimal
+ceil(x) ⇒ Decimal
+clamp(min, max) ⇒ Decimal
+random([dp]) ⇒ Decimal (0 ≤ result < 1)
+log(x [, base]) ⇒ Decimal
+log2(x) ⇒ Decimal
+log10(x) ⇒ Decimal
+exp(x) ⇒ Decimal
+ln(x) ⇒ Decimal
+max(x, y, …) ⇒ Decimal
+min(x, y, …) ⇒ Decimal
+atan2(y, x) ⇒ Decimal
+# … plus trigonometric and hyperbolic functions
+
+# Instance Methods
+
+x.abs() ⇒ Decimal   alias of absoluteValue
+x.plus(y) ⇒ Decimal   alias of add
+x.minus(y) ⇒ Decimal  alias of sub
+x.times(y) ⇒ Decimal  alias of mul
+x.dividedBy(y) ⇒ Decimal  alias of div
+x.pow(y) ⇒ Decimal    alias of toPower
+x.sqrt() ⇒ Decimal    alias of squareRoot
+x.cbrt() ⇒ Decimal
+x.round() ⇒ Decimal
+x.floor() ⇒ Decimal
+x.ceil() ⇒ Decimal
+x.clampedTo(min, max) ⇒ Decimal
+x.random([dp]) ⇒ Decimal
+x.log(y) ⇒ Decimal
+x.log2() ⇒ Decimal
+x.log10() ⇒ Decimal
+x.exp() ⇒ Decimal
+x.ln() ⇒ Decimal
+x.max(y, z, …) ⇒ Decimal
+x.min(y, z, …) ⇒ Decimal
+x.atan2(x) ⇒ Decimal
+# … trigonometric, inverse, hyperbolic, comparison, conversion methods
+
+# Properties & Modes
+
+Decimal.precision, Decimal.rounding, Decimal.toExpNeg, Decimal.toExpPos, Decimal.minE, Decimal.maxE, Decimal.modulo, Decimal.crypto
+
+Rounding mode constants:
+  ROUND_UP (0), ROUND_DOWN (1), ROUND_CEIL (2), ROUND_FLOOR (3), ROUND_HALF_UP (4), ROUND_HALF_DOWN (5), ROUND_HALF_EVEN (6), ROUND_HALF_CEIL (7), ROUND_HALF_FLOOR (8), EUCLID (9)
 
 
 ## Attribution
 - Source: Decimal.js
 - URL: https://mikemcl.github.io/decimal.js/
 - License: MIT License
-- Crawl Date: 2025-05-10T13:34:24.410Z
+- Crawl Date: 2025-05-10T22:37:43.853Z
 - Data Size: 13874875 bytes
 - Links Found: 21129
 
