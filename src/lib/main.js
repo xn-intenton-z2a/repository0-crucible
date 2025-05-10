@@ -194,8 +194,14 @@ export async function startHttpServer({ port = 3000 } = {}) {
 
   // GET /pi
   app.get("/pi", async (req, res) => {
-    const digits = parseInt(req.query.digits);
     const algorithm = req.query.algorithm || "machin";
+    // Default to 1 integer digit + 100 fractional digits if not provided
+    let digits;
+    if (req.query.digits === undefined) {
+      digits = 1 + 100;
+    } else {
+      digits = parseInt(req.query.digits, 10);
+    }
     if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
       return res.status(400).json({ error: "Invalid digits" });
     }
@@ -227,6 +233,7 @@ export async function startHttpServer({ port = 3000 } = {}) {
   });
 }
 
+// ... rest of main unchanged ...
 /**
  * Command-line interface entry point.
  * @param {string[]} [inputArgs] - Arguments (defaults to process.argv.slice(2)).

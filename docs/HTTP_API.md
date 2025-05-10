@@ -20,7 +20,8 @@ node src/lib/main.js --serve --port 3000
 Compute π.
 
 Query Parameters:
-- `digits` (integer, required): total number of π digits to return (including the integer part), minimum `1`, maximum `1e6`. For example, `digits=3` returns `"3.14"`.
+
+- `digits` (integer, optional): total number of π digits to return (including the integer part), minimum `1`, maximum `1e6`. Default: `101` (1 integer digit + decimal point + 100 fractional digits). For example, `digits=3` returns `"3.14"`; omitting `digits` returns 101 digits (`1` + `.` + `100` decimals).
 - `algorithm` (string, optional): `machin`, `gauss-legendre`, or `chudnovsky` (default `machin`).
 
 Response: `200 OK`, JSON:
