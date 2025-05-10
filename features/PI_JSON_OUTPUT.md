@@ -1,41 +1,52 @@
 # PI JSON Output Feature
 
 ## Overview
-Enable the CLI tool to emit the computed value of π in a machine-readable JSON format. This facilitates integration in shell scripts and other automation without manual parsing of plain-text output.
+
+Enable users to obtain the computed value of π in a machine-readable JSON format directly from the CLI. This supports integration into scripts and automated pipelines without manual parsing of standard output.
 
 ## Functional Requirements
 
-- Extend the `main` function in `src/lib/main.js` to accept a new boolean flag `--json`.
+- Extend the `main` function in `src/lib/main.js` to accept a new boolean flag `--json`.  
 - When `--json` is provided:
-  - Compute π using existing logic (`calculatePi` or `calculatePiParallel`).
-  - Format the result as a JSON object with a single key `pi` whose value is the π string, for example:
-    ```json
-    { "pi": "3.1415926535" }
-    ```
-  - Print this JSON string to stdout followed by a newline.
-- If `--json` is not provided, existing plain-text output behavior must remain unchanged.
-- Validation:
-  - The `--json` flag may be combined with `--digits`, `--algorithm`, and `--threads` but must not be used with `--serve` or any other mode flags that do not emit π directly. If combined with `--serve`, print a descriptive error and exit with a non-zero code.
+  - After computing π via `calculatePi` or `calculatePiParallel`, format the result as an object `{ pi: "<digits>" }`.  
+  - Print the JSON string to stdout followed by a newline.  
+- When `--json` is not provided, retain existing behavior of printing the plain π string.  
+- Prevent incompatible flag combinations:  
+  - If `--json` is combined with `--serve`, `--script`, or any mode that does not emit π directly, exit with a descriptive error message and non-zero status code.
 
 ## CLI Interface
 
-- Add flag:
-  - `--json` (boolean) to enable JSON output mode.
+- New flag:
+  --json           Output π as JSON with key `pi` instead of plain text
 - Usage examples:
-  - `node src/lib/main.js --digits 10 --algorithm machin --json`
-  - `node src/lib/main.js --digits 5 --json` (defaults algorithm to machin)
+  node src/lib/main.js --digits 10 --algorithm machin --json
+  node src/lib/main.js --digits 5 --json
 
-## Dependencies
+## Implementation Details
 
-- No new external dependencies required; reuse built-in APIs and existing code.
+- In `src/lib/main.js`, update argument parsing loop to detect `--json`.  
+- Pass a boolean `json` option into the computation branch.  
+- After obtaining `piValue`, use `JSON.stringify({ pi: piValue })` when `json === true`.  
+- Respect the `digits` and `algorithm` flags as before when emitting JSON.  
+- Ensure process.exit codes:  
+  - `0` on success,  
+  - Non-zero on validation errors or incompatible flag usage.
 
 ## Testing
 
-- **Unit Tests** in `tests/unit/main.test.js`:
-  - Spawn the CLI with `--digits 4 --algorithm machin --json` and assert stdout is exactly `{"pi":"3.1415"}\n` and exit code `0`.
-  - Verify that without `--json`, the CLI prints the plain π string and not JSON.
-  - Test invalid combinations, e.g., `--serve --json`, to confirm descriptive error on stderr and non-zero exit.
-- **Integration Tests** in `tests/e2e/cli.test.js`:
-  - Invoke `node src/lib/main.js --digits 3 --json` and assert output is valid JSON with key `pi` and correct value.
-  - Confirm the CLI exit code is `0` when `--json` is used correctly and non-zero when misused.
+### Unit Tests (`tests/unit/main.test.js`)
 
+- Test that invoking the CLI logic with `--digits 4 --algorithm machin --json` yields stdout exactly `{ "pi":"3.1415" }\n` and exit code `0`.
+- Verify that without `--json`, output remains the plain π string.
+- Confirm that combining `--json` with `--serve` or unsupported modes triggers an error and exit code non-zero.
+
+### Integration Tests (`tests/e2e/cli.test.js`)
+
+- Spawn the CLI with `--digits 3 --json` and assert valid JSON output with key `pi` and correct value.
+- Confirm exit code `0` on successful JSON output.
+- Test that `node src/lib/main.js --serve --json` results in an error exit and descriptive message.
+
+## Documentation Updates
+
+- Update `README.md` under Features to describe the `--json` flag and show usage examples.
+- Add a section in README demonstrating JSON output and how to integrate in shell scripts.
