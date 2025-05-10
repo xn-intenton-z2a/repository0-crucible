@@ -1,44 +1,64 @@
 # Overview
 
-This feature introduces a structured command-line argument parser to transform the existing placeholder into a fully functional CLI framework. It provides built-in support for help, version information, and dispatching subcommands or flags consistently across all pi-related operations.
+This feature replaces the existing placeholder output in src/lib/main.js with a robust, structured command-line interface using yargs. It defines commands and options for all π operations, provides built-in help and version display, and dispatches to the appropriate handler functions based on user input.
 
 # CLI Interface
 
---help                  Display usage information and list available commands and options
---version               Show the current version of the tool
---calculate-pi <digits> Compute pi to the specified number of digits
---extract-digit <pos>   Extract a single digit of π at the given zero-based position
---serve                 Start the HTTP API server
---list-algorithms       List all supported π calculation algorithms
---benchmark-pi <digits> Run benchmarks for selected algorithms
---diagnostics           Output system and runtime diagnostic information
---cache-dir <path>      Specify cache directory for results
---no-cache              Disable persistent caching
+--help
+    Display usage information for all commands and options and exit with status zero.
+
+--version
+    Print the current tool version (from package.json) and exit with status zero.
+
+calculate-pi <digits>
+    Compute π to the specified number of digits and print to stdout or save to a file with --output.
+
+extract-digit <position> [--base <decimal|hex>] [--output <path>]
+    Extract a single digit of π at the given zero-based position in hex or decimal and write to stdout or file.
+
+serve [--port <number>]
+    Start the HTTP API server on the given port (default: 3000).
+
+list-algorithms [--json]
+    List all supported π algorithms in table format or JSON when --json is provided.
+
+benchmark-pi <digits> [--algorithms <list>] [--output-dir <path>] [--chart-file <path>]
+    Run benchmarks for specified algorithms and digit counts, output JSON summary and optional PNG chart.
+
+diagnostics [--json]
+    Print system and runtime diagnostics in human-readable form or JSON when --json is provided.
+
+Global options:
+--cache-dir <path>     Specify cache directory (default: ~/.pi_cache)
+--no-cache             Disable persistent caching
+--show-progress        Enable progress bar in terminal
+--no-progress          Disable progress bar
+--verify-digits <count>  Spot-check <count> random digits after calculation
+--no-verify            Disable verification step
 
 # Implementation
 
-- Add a dependency on yargs for robust argument parsing.
+- Add yargs dependency in package.json and install.
 - In src/lib/main.js:
-  • Import yargs and configure the CLI with commands and global flags.
-  • Define a yargs command for each existing functional feature (calculate, extract-digit, serve, list-algorithms, benchmark-pi, diagnostics).
-  • Map each command or option to the corresponding handler function stub that will later invoke the algorithm logic.
-  • Enable automatic help and version output based on package.json metadata.
-  • Ensure unknown commands or options show an error and suggest --help.
-- Update package.json dependencies to include yargs.
-- Maintain the existing import signature for main(args) to allow direct invocation in tests.
+    • Import yargs and package metadata for version.
+    • Define commands using yargs.command with name, description, builder for options, and handler functions stubbed or imported.
+    • Handlers call existing or future functions such as calculatePi, extractDigit, startServer, listAlgorithms, benchmarkPi, outputDiagnostics, etc.
+    • Configure global options (--cache-dir, --no-cache, --show-progress, --no-progress, --verify-digits, --no-verify) in yargs options.
+    • Enable automatic help and version output.
+    • Use yargs.parse(args) inside the exported main(args) function so that tests can invoke CLI logic directly.
+
+- Maintain ESM imports and export signature for main(args) to support both direct CLI use and programmatic invocation in tests.
 
 # Testing
 
-- Add unit tests in tests/unit/main.test.js:
-  • Verify that running main with --help prints usage information and exits code zero.
-  • Verify that --version prints a semantic version matching package.json.
-  • Mock yargs commands to simulate invocation of each stub handler and assert correct dispatch based on provided args.
-  • Test that unknown commands produce an error message and nonzero exit code.
+- Update tests/unit/main.test.js:
+    • Test that main(["--help"]) writes usage information to stdout and exits code zero.
+    • Test that main(["--version"]) prints a version matching package.json.
+    • Mock handler functions for each command and verify that invoking commands dispatches to the correct handler with parsed arguments.
+    • Test unknown command yields an error message and nonzero exit code.
+    • Verify global options are parsed and passed through to handlers.
 
 # Documentation
 
-- Update README.md under Features:
-  • Document the new CLI framework and list all supported commands and flags with brief descriptions.
-  • Provide example usages:
-    node src/lib/main.js --help
-    node src/lib/main.js calculate-pi 1000
+- Update README.md under Features to list all supported commands and global options with brief descriptions.
+- Provide example usages for each major command, including calculate-pi, extract-digit, serve, list-algorithms, benchmark-pi, diagnostics, and global flags.
