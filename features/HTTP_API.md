@@ -1,34 +1,57 @@
-# HTTP API Feature
+# Overview
 
-## Overview
-Provide an HTTP server interface on top of the existing π computation and benchmarking library to enable programmatic access via RESTful endpoints. This allows integration with other services and simplifies automation without invoking the CLI.
+Extend the existing HTTP server interface to expose all core library functions as RESTful JSON endpoints, SSE streams, and image or file downloads. This enhancement enables programmatic access to calculation, export, visualization, search, and extraction capabilities over HTTP without invoking the CLI.
 
-## Functional Requirements
+# Functional Requirements
 
-- Add a `startHttpServer(options)` function in `src/lib/main.js`.
-  - `options.port` (integer): port to listen on (default 3000).
-- Parse query parameters from HTTP GET requests and invoke the existing library functions:
-  - `/pi` endpoint:
-    - Query `digits` (integer, default 100) and `algorithm` (string, `machin` or `gauss-legendre`, default `machin`).
-    - Return JSON `{ pi: string }` with π to the requested precision.
-  - `/benchmark` endpoint:
-    - Query `minDigits`, `maxDigits`, `step`, and `algorithm` parameters.
-    - Return JSON array of `{ digits: number, timeMs: number }` for each benchmark run.
-- Validate parameters and return HTTP 400 with descriptive JSON error on invalid input.
-- Handle server start failures with process exit and error log.
+- In src/lib/main.js, enhance startHttpServer(options):
+  - Accept options.port (integer, default 3000).
+  - Register endpoints:
+    - GET /pi
+      - Query parameters: digits (integer, default 100), algorithm (machin|gauss-legendre|chudnovsky, default machin)
+      - Return JSON { pi: string } with π to the requested precision.
+    - GET /benchmark
+      - Query parameters: minDigits, maxDigits, step (integers), algorithm (machin|gauss-legendre, default machin)
+      - Return JSON array of { digits: number, timeMs: number }.
+    - GET /pi/stream
+      - Query parameters: digits (integer, default 1000), algorithm (machin|gauss-legendre|chudnovsky)
+      - Use Server-Sent Events (Content-Type: text/event-stream) to stream digit blocks as defined in the PI Streaming feature.
+    - GET /export
+      - Query parameters: digits, algorithm, format (txt|json, default txt), base (2|10|16, default 10)
+      - Return a file download or JSON response with the converted π string. For txt, Content-Type: text/plain; for json, application/json.
+    - GET /convergence
+      - Query parameters: digits, algorithm, iterations, output not required (response is PNG)
+      - Generate a PNG chart illustrating convergence and return Content-Type: image/png.
+    - GET /distribution
+      - Query parameters: digits, algorithm
+      - Generate a PNG bar chart of digit frequencies and return Content-Type: image/png.
+    - GET /search
+      - Query parameters: pattern (digits), digits, algorithm, all (boolean, default false)
+      - Return JSON { position: number|null } or { positions: number[] }.
+    - GET /hex
+      - Query parameters: position (integer), count (integer, default 1)
+      - Return the lowercase hexadecimal string of the requested digits with Content-Type: text/plain.
+    - GET /decimal
+      - Query parameters: position (integer), count (integer), algorithm
+      - Return the decimal digit substring with Content-Type: text/plain.
+  - Validate all parameters; on invalid values respond with status 400 and JSON { error: string }.
+  - Handle server errors and port conflicts with appropriate HTTP status codes and logs.
 
-## HTTP Endpoints
+# CLI Interface
 
-- GET `/pi?digits=200&algorithm=gauss-legendre`
-- GET `/benchmark?minDigits=100&maxDigits=500&step=100&algorithm=machin`
+- Add a --serve flag in src/lib/main.js. When provided, start the HTTP server and ignore standalone computation flags.
+- Add a --port <n> flag to specify the listening port.
+- Update CLI help output to document --serve and --port.
 
-## Dependencies
+# Dependencies
 
-- Add `express` to `package.json` dependencies for routing and parsing query parameters.
+- Use the existing express dependency for routing and SSE support; no new dependencies required.
+- Import express, use express.json middleware for error responses.
 
-## Testing
+# Testing
 
-- Add integration tests in `tests/unit/main.test.js` or `tests/e2e/http.test.js`:
+- Add integration tests in tests/e2e/http.test.js:
   - Start server on an ephemeral port.
-  - Issue HTTP requests to `/pi` and `/benchmark` and assert JSON response structure and content.
-  - Validate error responses for missing or invalid query parameters.
+  - Issue GET requests to each endpoint with valid parameters and assert response status, headers, and body content.
+  - Test SSE streaming endpoint by connecting and collecting events until end event.
+  - Verify error responses for missing or invalid query parameters produce status 400 and descriptive JSON error.
