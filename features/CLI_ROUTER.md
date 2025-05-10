@@ -1,49 +1,35 @@
 # Overview
-
-This feature implements a comprehensive command-line parser and dispatcher in src/lib/main.js. It interprets user flags, validates inputs using zod schemas, and invokes the appropriate library functions: calculatePi, visualizePiDigits, benchmarkPi, or startHttpServer. It also supports shared options such as algorithm selection, caching, threading, and progress display.
+Extend the existing command-line router to support operation timeouts via AbortController, enabling users to specify a maximum execution time for long-running π computations and related tasks.
 
 # Functional Requirements
 
-- In src/lib/main.js, replace the stub main function with a CLI router:
-  - Define a zod schema for CLI flags: digits, algorithm, chartOutput, benchmark, minDigits, maxDigits, step, outputCsv, outputChart, useCache, cacheFile, progress, threads, serve, port, diagnostics.
-  - Validate process.argv against the schema and provide descriptive error messages on invalid input.
-  - Dispatch logic:
-    - If serve is true, start the HTTP server on the specified port by calling startHttpServer({ port, progress }).
-    - Else if benchmark is true, call benchmarkPi({ minDigits, maxDigits, step, algorithm, progress }) and output CSV or chart based on flags.
-    - Else if chartOutput is provided (and not in benchmark mode), call visualizePiDigits({ digits, algorithm, output: chartOutput }) and exit.
-    - Otherwise, call calculatePi(digits, algorithm, useCache, cacheFile, threads, progress) and print the resulting pi string to stdout.
-  - Implement a --help flag that prints usage instructions, available commands, and default values.
-  - Exit with code zero on successful execution or non-zero on validation or runtime errors.
+- Update the zod schema in src/lib/main.js to include an optional timeout flag:
+  - timeout: positive integer (milliseconds), minimum 1, optional (default unlimited).
+- In the main entry point:
+  - If timeout is provided, create an AbortController and start a timer that calls controller.abort() after the specified duration.
+  - Pass controller.signal into each dispatched operation: calculatePi, calculatePiParallel, benchmarkPi, visualizePiDigits, visualizePiConvergence, exportPi, searchPi, extractPiHex, extractPiDecimal, and startHttpServer.
+  - Wrap each operation call in a Promise.race between the operation and a promise that rejects when signal.aborted with an OperationTimedOutError.
+  - On abort, cancel the timer, print an error message "Operation timed out after <timeout> ms", and exit with non-zero code.
+  - On successful completion, clear the timeout timer to prevent leaks.
+- Ensure existing dispatch logic, help output, and error handling remain intact.
 
 # CLI Interface
 
-- Flags:
-  --digits <n>          Positive integer, default 100
-  --algorithm <name>    machin, gauss-legendre, chudnovsky, default machin
-  --chart-output <path> Path to PNG for digit distribution
-  --benchmark           Enable performance benchmarking mode
-  --min-digits <n>      Starting digit count for benchmarking, default 100
-  --max-digits <n>      Required ending digit count for benchmarking
-  --step <n>            Step increment for benchmarking, default equals min-digits
-  --output-csv          Print benchmark results as CSV
-  --output-chart <path> Path to PNG for benchmark visualization
-  --use-cache           Enable caching of pi values
-  --cache-file <path>   Path to cache file, default .pi_cache.json
-  --threads <n>         Number of worker threads, default 1
-  --progress            Show console progress bars
-  --serve               Start HTTP API server
-  --port <n>            Port for HTTP API, default 3000
-  --help                Show help and exit
+- Add flag --timeout <ms> to src/lib/main.js help output and zod schema.
+- Example usages:
+  node src/lib/main.js --digits 100000 --algorithm chudnovsky --timeout 5000
+  node src/lib/main.js --benchmark --min-digits 100 --max-digits 1000 --timeout 10000
 
 # Dependencies
 
-- Use existing zod dependency for flag validation; no new dependencies.
-- Import library functions: calculatePi, visualizePiDigits, benchmarkPi, startHttpServer.
+- Use built-in AbortController and setTimeout/clearTimeout; no new dependencies required.
 
 # Testing
 
-- Add unit tests in tests/unit/main.test.js:
-  - Mock process.argv to cover each command path: default pi calculation, digit distribution, benchmarking CSV, benchmarking chart, HTTP serve, error cases.
-  - Verify main executes correct function calls with validated arguments.
-  - Test --help prints usage and exits without invoking computations.
-  - Ensure exit codes for success and failure.
+- Unit tests in tests/unit/main.test.js:
+  - Simulate a long-running stubbed operation and verify that using --timeout aborts execution, prints the timeout error, and exits with non-zero code.
+  - Verify correct zod validation rejects negative, zero, or non-integer timeout values.
+  - Confirm normal operation when timeout is omitted or set sufficiently large.
+- CLI integration tests in tests/e2e/cli.test.js:
+  - Invoke CLI with a low timeout against a deliberately slow calculation and assert timeout behavior.
+  - Confirm that without --timeout or with ample timeout, commands complete successfully.
