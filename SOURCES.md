@@ -18,7 +18,13 @@ Official docs under MIT License.
 
 # Node.js Core API Reference
 ## https://nodejs.org/api/
-Centralized documentation for Node.js core modules including worker_threads, fs.promises, readline, perf_hooks, and others. Covers Worker creation and message passing, file I/O promises, interactive CLI interfaces, high-resolution timing, and event-loop metrics. Crucial for parallel π computation, atomic file operations, REPL mode, diagnostics, and more across Node 20.
+Centralized documentation for Node.js core modules including fs.promises, readline, perf_hooks, and others. Covers file I/O, interactive CLI interfaces, high-resolution timing, and event-loop metrics. Crucial for parallel π computation, atomic file operations, REPL mode, diagnostics, and more across Node 20.
+Node.js v20; Node.js License.
+## Node.js License
+
+# Node.js Worker Threads API
+## https://nodejs.org/api/worker_threads.html
+Detailed reference for the Node.js `worker_threads` module, including creating and managing `Worker` instances, messaging with `workerData` and `parentPort`, transferable objects, and lifecycle methods. Essential for implementing `calculatePiParallel`, partitioning computations, and aggregating results across multiple threads.
 Node.js v20; Node.js License.
 ## Node.js License
 
@@ -64,22 +70,11 @@ Official Vitest documentation for writing unit, integration, and end-to-end test
 Last updated 2024.
 ## MIT License
 
-# Wikipedia: Computation of π
-## https://en.wikipedia.org/wiki/Computation_of_pi
-Comprehensive overview of historical and modern algorithms for computing π, including Machin-like formulas, Gauss–Legendre, Chudnovsky, and BBP series. Details convergence rates, implementation considerations, and performance characteristics. Valuable for understanding algorithmic foundations, error bounds, and selecting optimal methods. Continuously updated; highly authoritative.
-## CC BY-SA 3.0
-
-# OpenAPI Specification
+# OpenAPI Specification & Swagger UI Middleware
 ## https://spec.openapis.org/oas/latest.html
-The authoritative specification for OpenAPI (formerly Swagger) detailing the OpenAPI 3.1.0 schema for describing RESTful APIs. Includes definitions for paths, components, parameters, and responses. Essential for implementing and synchronizing the Swagger UI documentation, ensuring the HTTP API spec stays up-to-date.
+The authoritative specification for OpenAPI detailing the OpenAPI 3.1.0 schema for describing RESTful APIs, including paths, components, parameters, and responses. Essential for defining and synchronizing the Swagger UI documentation served via `swagger-ui-express`, ensuring the HTTP API spec stays up-to-date and interactive.
 Last updated 2023; maintained by the OpenAPI Initiative under the OSI-Critical Open Group Public License.
 ## OSP-1.0
-
-# swagger-ui-express
-## https://github.com/scottie1984/swagger-ui-express
-Official middleware package for serving Swagger UI in Express applications. Provides `serve` and `setup` functions to mount interactive API documentation. Key for integrating API explorer and enabling live testing of π HTTP endpoints.
-Last updated 2024.
-## MIT License
 
 # Node.js Performance Hooks API
 ## https://nodejs.org/api/perf_hooks.html
@@ -92,3 +87,8 @@ Node.js v20; Node.js License.
 Comprehensive guide to the `AbortController` and `AbortSignal` Web API, detailing usage patterns for aborting fetch requests, timers, and custom asynchronous workflows. Covers signal event listeners, `abort()` semantics, timeout patterns, and integration in both browser and Node.js environments. Vital for the Operation Timeout feature to create and propagate abort signals for graceful cancellation of long-running π computations and HTTP requests.
 Continuously updated; CC BY-SA 2.5 license.
 ## CC BY-SA 2.5
+
+# Wikipedia: Continued fraction
+## https://en.wikipedia.org/wiki/Continued_fraction
+Detailed overview of continued fraction representations, term generation, and convergent approximation theory. Includes mathematical background, algorithmic derivation, and examples of convergents used to approximate irrational numbers like π. Valuable for understanding and implementing the computePiContinuedFraction feature and deriving rational approximations.
+Continuously updated; CC BY-SA 3.0
