@@ -15,15 +15,9 @@ Last updated 2024; MIT License.
 Comprehensive overview of Express 4.x routing, middleware patterns, error handling, request parsing, and response streaming. Key resource for building RESTful HTTP endpoints, error handlers, static asset serving, and implementing SSE streams in the HTTP API feature. Official docs maintained under MIT License.
 ## MIT License
 
-# Server-Sent Events (SSE)
-## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-MDN guide detailing the text/event-stream MIME type, SSE message formatting, reconnection behavior, and usage examples in Node.js and browsers. Provides actionable patterns for implementing real-time π digit streaming, handling client disconnects gracefully, and formatting SSE events.
-Continuously updated; content under CC BY-SA 2.5 license.
-## CC BY-SA 2.5
-
 # AbortController API
 ## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-MDN reference for AbortController and AbortSignal usage, demonstrating patterns for cancelling asynchronous operations, integrating with fetch, timers, and streaming computations. Essential for implementing the Operation Timeout feature and for cancelling SSE and HTTP requests gracefully.
+MDN reference for AbortController and AbortSignal usage, demonstrating patterns for cancelling asynchronous operations, integrating with fetch, timers, and streaming computations. Essential for implementing the Operation Timeout feature and for cancelling HTTP requests gracefully.
 Continuously updated; content under CC BY-SA 2.5 license.
 ## CC BY-SA 2.5
 
@@ -67,26 +61,31 @@ Comprehensive guide to using cosmiconfig for configuration file discovery (JSON,
 Last updated 2024; MIT License.
 ## MIT License
 
-# Machin-like Formula
-## https://en.wikipedia.org/wiki/Machin-like_formula
-Wikipedia article on Machin-like formulas for π, detailing the arctan series expansions and convergence properties. Provides mathematical derivations and criteria for selecting arctan arguments to optimize convergence speed. Essential theoretical background for implementing and comparing Machin series in `calculatePi`.
-License: CC BY-SA 3.0.
+# Computation of π (Wikipedia)
+## https://en.wikipedia.org/wiki/Computation_of_%CF%80
+Wikipedia overview of the computational methods for π including Machin-like formulas, the Gauss–Legendre algorithm, the Chudnovsky series, and BBP digit extraction. Provides mathematical derivations, convergence properties, and historical context. Useful for understanding algorithmic trade-offs and implementation considerations.
+Last updated 2024; authoritative community-maintained encyclopedia.
 ## CC BY-SA 3.0
 
-# Gauss–Legendre Algorithm
-## https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm
-Wikipedia page describing the Gauss–Legendre algorithm for π computation, including iterative arithmetic-geometric mean steps, convergence proofs, and error bounds. Crucial for understanding and verifying the implementation of the Gauss–Legendre path in `calculatePi`.
-License: CC BY-SA 3.0.
-## CC BY-SA 3.0
+# proper-lockfile
+## https://www.npmjs.com/package/proper-lockfile
+Official npm package for safe file locking and atomic write operations in Node.js. Covers acquiring and releasing shared and exclusive locks, retry strategies, and ensuring data integrity under concurrent access. Essential for implementing the PI Cache feature with atomic cache updates and safe concurrent reads.
+Last published 2024; MIT License.
+## MIT License
 
-# Chudnovsky Algorithm
-## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
-Authoritative description of the Chudnovsky algorithm on Wikipedia, covering its series formula, convergence rate, and implementation considerations. Includes term-by-term error analysis and parameter selection. Fundamental reference for the high-performance Chudnovsky implementation.
-License: CC BY-SA 3.0.
-## CC BY-SA 3.0
+# cli-progress
+## https://github.com/cli-progress/cli-progress
+A versatile progress bar library for Node.js that supports single and multi-bar displays, custom formatting, and real-time updates. Crucial for implementing live console progress bars in long-running π computations and benchmarks with `--progress`. Well-documented with examples on customizing themes and formatting tokens.
+Last updated 2024; MIT License.
+## MIT License
 
-# Bailey–Borwein–Plouffe (BBP) Formula
-## https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
-Wikipedia documentation of the BBP formula for π digit extraction in base-16. Describes the series used to compute arbitrary hexadecimal digits without full preceding computation, which underpins the `extractPiHex` feature. Error analysis and algorithmic complexity details provided.
-License: CC BY-SA 3.0.
-## CC BY-SA 3.0
+# EJS
+## https://ejs.co/#docs
+Embedded JavaScript templating engine. Provides syntax for generating HTML with embedded JavaScript, partials, includes, and filters. Essential for the HTML Report Generation feature to template dashboards, embed images, and render code blocks. Official docs include examples of templates and configuration options.
+Last updated 2024; MIT License.
+## MIT License
+
+# Node.js Readline API
+## https://nodejs.org/api/readline.html
+Node.js readline module documentation covering creating interactive command-line interfaces, handling input/output streams, defining custom prompts, and managing key events. Crucial for implementing REPL mode with prompt loops, command parsing, and SIGINT handling.
+## Node.js License
