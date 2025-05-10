@@ -1,26 +1,11 @@
 # Node.js Core APIs
 ## https://nodejs.org/api/
-Comprehensive reference to Node.js core modules, including HTTP/HTTPS server and client APIs, Streams (including async iterables and chunked transfer encoding), Worker Threads, Performance Hooks for precise timing, fs/promises for file I/O, URL/QueryString utilities for parsing request parameters, and built-in util, events, and timers modules. This authoritative documentation is essential for implementing HTTP API endpoints, streaming π digit computations, multithreaded Chudnovsky calculations, robust timeout control, error handling patterns, and backpressure management. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
-## License: CC-BY-4.0
-
-# Node.js Worker Threads
-## https://nodejs.org/api/worker_threads.html
-Detailed documentation of the Worker Threads module, covering Worker, parentPort, MessageChannel/BroadcastChannel, thread pooling, and resource management. Critical for distributing π computation workloads across multiple cores, handling inter-thread messaging, merging partial results, and ensuring proper cleanup on completion or error. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
+Comprehensive reference to Node.js core modules, including HTTP/HTTPS server and client APIs, Streams (including async iterables and chunked transfer encoding), Worker Threads for parallel execution, AbortController for cancellation patterns, Performance Hooks for precise timing, fs/promises for file I/O, URL/QueryString utilities for parsing request parameters, and built-in util, events, and timers modules. This authoritative documentation is essential for implementing HTTP API endpoints, streaming π digit blocks, multithreaded Chudnovsky calculations with worker_threads, robust timeout control, cancellation via AbortSignal, error handling patterns, and backpressure management. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
 ## License: CC-BY-4.0
 
 # Node.js Crypto Module
 ## https://nodejs.org/api/crypto.html
 Official documentation for the Crypto module, covering cryptographic primitives such as randomBytes for secure random number generation, hashing algorithms, HMAC, and cipher/decipher APIs. Essential for generating high-quality random positions during π digit verification, securing tokens or session data, and any future enhancements requiring cryptographic operations. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
-## License: CC-BY-4.0
-
-# Node.js Streams API
-## https://nodejs.org/api/stream.html
-In-depth coverage of Node.js Streams, including stream.Readable, stream.Writable, Transform streams, pipeline utility, and async iterator interfaces. Essential for building chunked transfer encoding in HTTP responses, streaming π digits to clients in real time, managing backpressure, and efficient memory usage during large-scale computations. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
-## License: CC-BY-4.0
-
-# Node.js AbortController
-## https://nodejs.org/api/globals.html#class-abortcontroller
-Documentation for AbortController and AbortSignal classes in Node.js, detailing signal creation, cancellation patterns, integration with Timers and Promise-based APIs, and best practices for implementing timeouts and abortable operations in long-running π computations. Last updated June 2024 under the OpenJS Foundation; official Node.js documentation.
 ## License: CC-BY-4.0
 
 # Yargs CLI Parser
@@ -79,4 +64,20 @@ Documentation for prom-client, covering metric types (Counters, Gauges, Histogra
 ## https://github.com/mde/ejs#readme
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
 Combined overview of EJS templating and Chart.js server-side rendering via ChartjsNodeCanvas. EJS provides templating syntax, partials, includes, and integration with Node.js for dynamic report generation in Markdown or HTML. ChartjsNodeCanvas enables headless rendering of Chart.js charts to PNG buffers. Together, they power the generation of formatted benchmark reports with embedded performance visualizations. Last updated 2023–2024.
+## License: MIT
+
+# OpenAI Node.js API
+## https://github.com/openai/openai-node
+Comprehensive documentation for the official OpenAI Node.js client library, covering authentication setup, API methods for completions, chat endpoints, file uploads, streaming responses, and rate limit handling. Useful for integrating LLM-powered features or analysis into CLI and HTTP workflows. Last released 2024; maintained by OpenAI.
+## License: MIT
+
+# Minimatch Glob Patterns
+## https://github.com/isaacs/minimatch#minimatch
+API reference for minimatch, a glob matching library used for matching file paths with patterns. Covers syntax for patterns, options for matching behavior, and examples for inclusion/exclusion lists. Handy for configuration file scanning, test file discovery, and file-based batching operations. Last updated 2024.
+## License: MIT
+
+# Markdown-It Parser and Plugins
+## https://github.com/markdown-it/markdown-it
+## https://github.com/markdown-it/github
+Documentation for markdown-it, a pluggable Markdown parser, and its GitHub integration plugin. Details on customizing the parser, extending syntax with plugins, and rendering secure, GitHub-flavored Markdown. Useful for dynamic report rendering, CLI help formatting, or generating markdown-based documentation. Last updated 2024.
 ## License: MIT
