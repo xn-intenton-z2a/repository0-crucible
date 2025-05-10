@@ -10,8 +10,8 @@ Import and invoke the `calculatePi` function:
 import { calculatePi } from '@xn-intenton-z2a/repository0-crucible/src/lib/main.js';
 
 (async () => {
-  // Calculate π to 50 decimal places using Machin algorithm
-  const pi = await calculatePi(50, 'machin');
+  // Calculate π to 50 decimal places using Machin, Gauss-Legendre, or Chudnovsky algorithm
+  const pi = await calculatePi(50, 'chudnovsky');
   console.log(pi.toFixed(50));
 })();
 ```
@@ -19,7 +19,7 @@ import { calculatePi } from '@xn-intenton-z2a/repository0-crucible/src/lib/main.
 ### Parameters
 
 - `digits` (number): Number of decimal places (integer between 1 and 1e6). Default: 100.
-- `algorithm` (string): `'machin'` or `'gauss-legendre'`. Default: `'machin'`.
+- `algorithm` (string): `'machin'`, `'gauss-legendre'`, or `'chudnovsky'`. Default: `'machin'`.
 
 ### Returns
 
@@ -35,23 +35,24 @@ node src/lib/main.js
 
 # Specify digits and algorithm
 node src/lib/main.js --digits 20 --algorithm gauss-legendre
+node src/lib/main.js --digits 20 --algorithm chudnovsky
 ```
 
 ### Options
 
 - `--digits <n>`: Number of decimal places (1 to 1000000). Default: 100.
-- `--algorithm <machin|gauss-legendre>`: Algorithm to use. Default: `machin`.
+- `--algorithm <machin|gauss-legendre|chudnovsky>`: Algorithm to use. Default: `machin`.
 - `--help`: Show help message.
 
 ## Examples
 
 ```bash
-# 5 decimal places
+# 5 decimal places using Machin
 node src/lib/main.js --digits 5
 # Output: 3.14159
 
-# 10 decimal places, Gauss-Legendre algorithm
-node src/lib/main.js --digits 10 --algorithm gauss-legendre
+# 10 decimal places, Chudnovsky algorithm
+node src/lib/main.js --digits 10 --algorithm chudnovsky
 # Output: 3.1415926535
 ```
 

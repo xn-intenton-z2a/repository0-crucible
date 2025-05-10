@@ -1,11 +1,51 @@
 #!/usr/bin/env node
 // src/lib/main.js
 
-import Decimal from 'decimal.js';
-import process from 'process';
-import { fileURLToPath } from 'url';
-import os from 'os';
-import { Worker } from 'worker_threads';
+import Decimal from "decimal.js";
+import process from "process";
+import { fileURLToPath } from "url";
+import os from "os";
+import { Worker } from "worker_threads";
+
+/**
+ * Compute π using the Chudnovsky algorithm.
+ * @param {number} digits - Number of decimal places.
+ * @returns {Decimal} Decimal instance representing π.
+ */
+function computeChudnovsky(digits) {
+  // Configure precision with safety margin
+  Decimal.set({ precision: digits + 5, rounding: Decimal.ROUND_DOWN });
+  const C = new Decimal(426880).times(Decimal.sqrt(new Decimal(10005)));
+  const tol = new Decimal(`1e-${digits + 2}`);
+  let sum = new Decimal(0);
+  let k = 0;
+  while (true) {
+    // Helper to compute factorial using BigInt
+    const factorial = (n) => {
+      let f = 1n;
+      for (let i = 1; i <= n; i++) {
+        f *= BigInt(i);
+      }
+      return f;
+    };
+    const factorial6k = factorial(6 * k);
+    const factorial3k = factorial(3 * k);
+    const factorialk = factorial(k);
+    const multiplier = BigInt(545140134) * BigInt(k) + BigInt(13591409);
+    const numeratorBI = factorial6k * multiplier;
+    const denomBI =
+      factorial3k * factorialk ** 3n * (BigInt(640320) ** BigInt(3 * k));
+    const term = new Decimal(numeratorBI.toString()).dividedBy(
+      new Decimal(denomBI.toString())
+    );
+    if (term.abs().lte(tol)) {
+      break;
+    }
+    sum = sum.plus(term);
+    k++;
+  }
+  return C.dividedBy(sum);
+}
 
 /**
  * Calculate π to the given number of decimal places using a specified algorithm.
@@ -13,17 +53,19 @@ import { Worker } from 'worker_threads';
  * @param {string} algorithm - "machin", "gauss-legendre", or "chudnovsky".
  * @returns {Decimal} Decimal instance representing π.
  */
-export function calculatePi(digits = 100, algorithm = 'machin') {
+export function calculatePi(digits = 100, algorithm = "machin") {
   if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
     throw new Error(`Invalid digits '${digits}'. Must be integer between 1 and 1000000.`);
   }
-  if (!['machin', 'gauss-legendre'].includes(algorithm)) {
-    throw new Error(`Invalid algorithm '${algorithm}'. Must be 'machin' or 'gauss-legendre'.`);
+  if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
+    throw new Error(
+      `Invalid algorithm '${algorithm}'. Must be 'machin', 'gauss-legendre', or 'chudnovsky'.`
+    );
   }
   // Set precision with a small safety margin and truncate (round down) results
   Decimal.set({ precision: digits + 5, rounding: Decimal.ROUND_DOWN });
 
-  if (algorithm === 'machin') {
+  if (algorithm === "machin") {
     const arctan = (x) => {
       let sum = new Decimal(0);
       let term = new Decimal(x);
@@ -43,6 +85,10 @@ export function calculatePi(digits = 100, algorithm = 'machin') {
     const a2 = arctan(new Decimal(1).dividedBy(239));
     // π = 4 * (4*arctan(1/5) - arctan(1/239))
     return a1.times(4).minus(a2).times(4);
+  }
+
+  if (algorithm === "chudnovsky") {
+    return computeChudnovsky(digits);
   }
 
   // Gauss-Legendre algorithm
@@ -72,19 +118,27 @@ export function calculatePi(digits = 100, algorithm = 'machin') {
  * @param {number} threads - Number of worker threads (>=1).
  * @returns {Promise<Decimal>} Decimal instance representing π.
  */
-export async function calculatePiParallel(digits = 100, algorithm = 'machin', threads = 1) {
+export async function calculatePiParallel(
+  digits = 100,
+  algorithm = "machin",
+  threads = 1
+) {
   if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
     throw new Error(`Invalid digits '${digits}'. Must be integer between 1 and 1000000.`);
   }
-  if (!['machin', 'gauss-legendre', 'chudnovsky'].includes(algorithm)) {
-    throw new Error(`Invalid algorithm '${algorithm}'. Must be 'machin', 'gauss-legendre', or 'chudnovsky'.`);
+  if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
+    throw new Error(
+      `Invalid algorithm '${algorithm}'. Must be 'machin', 'gauss-legendre', or 'chudnovsky'.`
+    );
   }
   if (!Number.isInteger(threads) || threads < 1) {
     throw new Error(`Invalid threads '${threads}'. Must be integer >= 1.`);
   }
   const maxThreads = os.cpus().length;
   if (threads > maxThreads) {
-    throw new Error(`Invalid threads '${threads}'. Must not exceed number of CPU cores (${maxThreads}).`);
+    throw new Error(
+      `Invalid threads '${threads}'. Must not exceed number of CPU cores (${maxThreads}).`
+    );
   }
   // Single-threaded fallback
   if (threads === 1) {
@@ -92,7 +146,7 @@ export async function calculatePiParallel(digits = 100, algorithm = 'machin', th
   }
 
   // Parallel implementation: spawn workers that compute full π and return the result string
-  const workerFile = fileURLToPath(new URL('./piWorker.js', import.meta.url));
+  const workerFile = fileURLToPath(new URL("./piWorker.js", import.meta.url));
   const workers = [];
   const promises = [];
   for (let i = 0; i < threads; i++) {
@@ -100,15 +154,15 @@ export async function calculatePiParallel(digits = 100, algorithm = 'machin', th
     workers.push(worker);
     promises.push(
       new Promise((resolve, reject) => {
-        worker.once('message', (msg) => {
+        worker.once("message", (msg) => {
           if (msg.error) {
             reject(new Error(msg.error));
           } else {
             resolve(msg.result);
           }
         });
-        worker.once('error', reject);
-        worker.once('exit', (code) => {
+        worker.once("error", reject);
+        worker.once("exit", (code) => {
           if (code !== 0) reject(new Error(`Worker stopped with exit code ${code}`));
         });
       })
@@ -133,35 +187,35 @@ export async function calculatePiParallel(digits = 100, algorithm = 'machin', th
  */
 export async function main(inputArgs = process.argv.slice(2)) {
   let digits = 100;
-  let algorithm = 'machin';
+  let algorithm = "machin";
   let threads = 1;
   const usage = [
-    'Usage: node src/lib/main.js [--digits <n>] [--algorithm <machin|gauss-legendre|chudnovsky>] [--threads <n>]',
-    '',
-    'Options:',
-    '  --digits <n>        Number of decimal places (1 to 1000000). Default: 100',
+    "Usage: node src/lib/main.js [--digits <n>] [--algorithm <machin|gauss-legendre|chudnovsky>] [--threads <n>]",
+    "",
+    "Options:",
+    "  --digits <n>        Number of decimal places (1 to 1000000). Default: 100",
     "  --algorithm <a>    'machin', 'gauss-legendre', or 'chudnovsky'. Default: machin",
-    '  --threads <n>       Number of worker threads (>=1). Default: 1',
-    '  --help              Show this help message',
-  ].join('\n');
+    "  --threads <n>       Number of worker threads (>=1). Default: 1",
+    "  --help              Show this help message",
+  ].join("\n");
 
   for (let i = 0; i < inputArgs.length; i++) {
     const arg = inputArgs[i];
-    if (arg === '--help') {
+    if (arg === "--help") {
       console.log(usage);
       process.exit(0);
     }
-    if (arg === '--digits') {
+    if (arg === "--digits") {
       i += 1;
       digits = Number(inputArgs[i]);
       continue;
     }
-    if (arg === '--algorithm') {
+    if (arg === "--algorithm") {
       i += 1;
       algorithm = inputArgs[i];
       continue;
     }
-    if (arg === '--threads') {
+    if (arg === "--threads") {
       i += 1;
       threads = Number(inputArgs[i]);
       continue;
