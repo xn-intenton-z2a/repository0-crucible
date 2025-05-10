@@ -6,6 +6,7 @@ import process from "process";
 import { fileURLToPath } from "url";
 import os from "os";
 import { Worker } from "worker_threads";
+import express from "express";
 
 /**
  * Compute π using the Chudnovsky algorithm.
@@ -182,6 +183,50 @@ export async function calculatePiParallel(
 }
 
 /**
+ * Start HTTP server exposing Pi API.
+ * @param {{port?: number}} options
+ * @returns {Promise<{app: import('express').Express, server: import('http').Server}>}
+ */
+export async function startHttpServer({ port = 3000 } = {}) {
+  const app = express();
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+
+  // GET /pi
+  app.get("/pi", async (req, res) => {
+    const digits = parseInt(req.query.digits);
+    const algorithm = req.query.algorithm || "machin";
+    if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
+      return res.status(400).json({ error: "Invalid digits" });
+    }
+    if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
+      return res.status(400).json({ error: "Invalid algorithm" });
+    }
+    try {
+      const pi = calculatePi(digits, algorithm);
+      const piStr = pi.toFixed(digits, Decimal.ROUND_DOWN);
+      return res.json({ pi: piStr });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Fallback for other routes
+  app.use((req, res) => {
+    res.status(404).json({ error: "Not Found" });
+  });
+
+  return new Promise((resolve, reject) => {
+    const server = app.listen(port, () => {
+      const actualPort = server.address().port;
+      console.log(`HTTP server listening on port ${actualPort}`);
+      resolve({ app, server });
+    });
+    server.on("error", reject);
+  });
+}
+
+/**
  * Command-line interface entry point.
  * @param {string[]} [inputArgs] - Arguments (defaults to process.argv.slice(2)).
  */
@@ -189,13 +234,17 @@ export async function main(inputArgs = process.argv.slice(2)) {
   let digits = 100;
   let algorithm = "machin";
   let threads = 1;
+  let serve = false;
+  let port = 3000;
   const usage = [
-    "Usage: node src/lib/main.js [--digits <n>] [--algorithm <machin|gauss-legendre|chudnovsky>] [--threads <n>]",
+    "Usage: node src/lib/main.js [--digits <n>] [--algorithm <machin|gauss-legendre|chudnovsky>] [--threads <n>] [--serve] [--port <n>]",
     "",
     "Options:",
     "  --digits <n>        Number of decimal places (1 to 1000000). Default: 100",
-    "  --algorithm <a>    'machin', 'gauss-legendre', or 'chudnovsky'. Default: machin",
+    "  --algorithm <a>     'machin', 'gauss-legendre', or 'chudnovsky'. Default: machin",
     "  --threads <n>       Number of worker threads (>=1). Default: 1",
+    "  --serve             Start HTTP API server (ignore other flags)",
+    "  --port <n>          Port for HTTP server (default: 3000; 0 for ephemeral)",
     "  --help              Show this help message",
   ].join("\n");
 
@@ -220,9 +269,29 @@ export async function main(inputArgs = process.argv.slice(2)) {
       threads = Number(inputArgs[i]);
       continue;
     }
+    if (arg === "--serve") {
+      serve = true;
+      continue;
+    }
+    if (arg === "--port") {
+      i += 1;
+      port = Number(inputArgs[i]);
+      continue;
+    }
     console.error(`Unknown option '${arg}'`);
     console.error(usage);
     process.exit(1);
+  }
+
+  if (serve) {
+    try {
+      await startHttpServer({ port });
+      // Server remains running
+    } catch (err) {
+      console.error(err.message);
+      process.exit(1);
+    }
+    return;
   }
 
   try {
