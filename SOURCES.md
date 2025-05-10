@@ -18,13 +18,13 @@ Official docs under MIT License.
 
 # Node.js Core API Reference
 ## https://nodejs.org/api/
-Centralized documentation for Node.js core modules including fs.promises, readline, perf_hooks, and others. Covers file I/O, interactive CLI interfaces, high-resolution timing, and event-loop metrics. Crucial for parallel π computation, atomic file operations, REPL mode, diagnostics, and more across Node 20.
+Centralized documentation for Node.js core modules including fs.promises, readline, worker_threads, perf_hooks, os, and others. Covers file I/O, interactive CLI interfaces, threading primitives, high-resolution timing, and event-loop metrics. Crucial for parallel π computation, atomic file operations, REPL mode, diagnostics, and more across Node 20.
 Node.js v20; Node.js License.
 ## Node.js License
 
-# Node.js Worker Threads API
-## https://nodejs.org/api/worker_threads.html
-Detailed reference for the Node.js `worker_threads` module, including creating and managing `Worker` instances, messaging with `workerData` and `parentPort`, transferable objects, and lifecycle methods. Essential for implementing `calculatePiParallel`, partitioning computations, and aggregating results across multiple threads.
+# Node.js Readline API
+## https://nodejs.org/api/readline.html
+Official Node.js documentation for the readline module, covering interactive input/output interfaces, prompts, line events, history management, custom completers, and interface customization. Fundamental for implementing interactive REPL mode, scripting workflows, and user prompts in the CLI tool.
 Node.js v20; Node.js License.
 ## Node.js License
 
@@ -33,12 +33,6 @@ Node.js v20; Node.js License.
 Declarative schema validation library docs, covering object schemas, refinements, asynchronous parsing, and error formatting. Critical for defining and validating CLI flag schemas, configuration inputs (cosmiconfig), HTTP request parameters, and ensuring robust input handling.
 Maintained under MIT License.
 ## MIT License
-
-# js-yaml
-## https://github.com/nodeca/js-yaml
-Official repository and documentation for js-yaml, detailing YAML parsing and stringification APIs, custom schema creation, and security best practices. Essential for script mode parsing, HTML report generation from YAML scripts, and configuration file handling.
-Last published 2024.
-## BSD-2-Clause
 
 # cosmiconfig
 ## https://github.com/davidtheclark/cosmiconfig
@@ -76,6 +70,12 @@ The authoritative specification for OpenAPI detailing the OpenAPI 3.1.0 schema f
 Last updated 2023; maintained by the OpenAPI Initiative under the OSI-Critical Open Group Public License.
 ## OSP-1.0
 
+# Swagger UI Express Middleware
+## https://github.com/scottie1984/swagger-ui-express
+Official middleware to integrate Swagger UI into Express applications. Provides `serve` and `setup` functions to host interactive API docs from an OpenAPI spec. Demonstrates mounting raw JSON spec at `/docs.json` and UI at `/docs`, CSS/JS customization, and middleware ordering considerations. Essential for the Swagger UI documentation feature in the HTTP server.
+Last updated 2024; MIT License.
+## MIT License
+
 # Node.js Performance Hooks API
 ## https://nodejs.org/api/perf_hooks.html
 Centralized documentation for the Node.js `perf_hooks` module, including `performance.now()`, `performance.timerify()`, `PerformanceObserver`, and `performance.eventLoopUtilization()`. Covers collection of high-resolution timing and event-loop metrics. Essential for implementing the Diagnostics feature to measure compute time, memory usage, and event-loop utilization in π computations and HTTP responses.
@@ -88,7 +88,8 @@ Comprehensive guide to the `AbortController` and `AbortSignal` Web API, detailin
 Continuously updated; CC BY-SA 2.5 license.
 ## CC BY-SA 2.5
 
-# Wikipedia: Continued fraction
-## https://en.wikipedia.org/wiki/Continued_fraction
-Detailed overview of continued fraction representations, term generation, and convergent approximation theory. Includes mathematical background, algorithmic derivation, and examples of convergents used to approximate irrational numbers like π. Valuable for understanding and implementing the computePiContinuedFraction feature and deriving rational approximations.
-Continuously updated; CC BY-SA 3.0
+# MDN Web API: Server-Sent Events
+## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+Comprehensive guide to Server-Sent Events (SSE), detailing the `EventSource` API, event types, reconnection behavior, and custom headers. Explains both server and client usage patterns, including establishing a persistent `text/event-stream`, sending formatted SSE messages, and handling events in JavaScript. Vital for implementing the `/pi/stream` SSE endpoint to stream π digits in real time.
+Continuously updated; CC BY-SA 2.5 license.
+## CC BY-SA 2.5
