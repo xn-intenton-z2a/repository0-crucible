@@ -2,102 +2,67 @@
 
 ## Overview
 
-Implement a full RESTful HTTP API exposing all core π operations, visualizations, benchmarks, searches, extractions, exports, and streaming endpoints using Express. Ensure robust input validation, proper content-type handling, and accurate response formats for each route.
+Extend the existing HTTP API to fully expose all core π operations, visualizations, searches, and streaming endpoints. Clients can interact with π calculation, benchmarking, chart generation, digit distribution, pattern search, digit extraction, exports, and real-time streaming over RESTful routes.
 
-## Endpoints
+## Functional Requirements
 
-### GET /pi
-- Query parameters:
-  - digits (integer ≥ 1 and ≤ 1e6, required)
-  - algorithm (machin | gauss-legendre | chudnovsky, default machin)
-- Response: JSON `{ pi: string }` with exactly `digits` characters including integer part
-- Errors: 400 for invalid inputs, 500 for internal errors
+### Server Setup
+- In `src/lib/main.js`, within `startHttpServer`, register additional routes before the 404 fallback.
+- Ensure Express middleware `express.json()` and `express.urlencoded({ extended: true })` are applied.
 
 ### GET /benchmark
-- Query parameters:
-  - minDigits (integer ≥ 1, default 100)
-  - maxDigits (integer ≥ minDigits, required)
-  - step (integer ≥ 1, default = minDigits)
-  - algorithm (machin | gauss-legendre, default machin)
-  - outputCsv (boolean, default false)
-- Behavior: call `benchmarkPi` to produce timing data
-- Response: `text/csv` of `digits,timeMs` lines when `outputCsv=true`, otherwise JSON array of `{ digits, timeMs }`
-- Errors: 400 on invalid ranges
+- Query: `minDigits` (integer ≥1, default 100), `maxDigits` (integer ≥minDigits, required), `step` (integer ≥1, default = minDigits), `algorithm` (machin|gauss-legendre, default machin), `outputCsv` (boolean, default false)
+- Invoke `benchmarkPi` to get array of `{ digits, timeMs }`.
+- If `outputCsv=true`, respond with `text/csv` lines `digits,timeMs`.
+- Otherwise respond with JSON array.
+- Validate inputs; return 400 on invalid values.
 
 ### GET /convergence
-- Query parameters:
-  - digits (integer ≥ 10, default 1000)
-  - algorithm (machin | gauss-legendre | chudnovsky, default machin)
-  - iterations (integer ≥ 2, default 10)
-- Response: `image/png` of convergence chart generated via `visualizePiConvergence`
-- Errors: 400 for invalid inputs
+- Query: `digits` (integer ≥10, default 1000), `algorithm` (machin|gauss-legendre|chudnovsky, default machin), `iterations` (integer ≥2, default 10)
+- Require `convergenceOutput` flag by query or default to buffer response.
+- Invoke `visualizePiConvergence`; set `Content-Type: image/png`; stream PNG buffer in response.
+- Validate; return 400 on invalid values.
 
 ### GET /distribution
-- Query parameters:
-  - digits (integer ≥ 1, default 1000)
-  - algorithm (machin | gauss-legendre | chudnovsky, default machin)
-- Response: `image/png` of digit frequency bar chart from `visualizePiDigits`
-- Errors: 400 for invalid inputs
+- Query: `digits` (integer ≥1, default 1000), `algorithm` (machin|gauss-legendre|chudnovsky, default machin)
+- Invoke `visualizePiDigits`; set `Content-Type: image/png`; send PNG buffer.
+- Validate inputs; 400 on error.
 
 ### GET /distribution-json
-- Query parameters as `/distribution`
-- Response: JSON object mapping "0"–"9" to counts from `countPiDigitsJson`
+- Query: same digits and algorithm parameters.
+- Invoke `countPiDigitsJson`; respond with JSON object mapping digits "0"–"9" to counts.
 
 ### GET /search
-- Query parameters:
-  - pattern (digit string, required)
-  - digits (integer ≥ 1, default 1000)
-  - algorithm (default machin)
-  - all (boolean, default false)
-- Response: JSON `{ position: number|null }` or `{ positions: number[] }`
-- Errors: 400 on invalid pattern or parameters
+- Query: `pattern` (string of digits, required), `digits` (integer ≥1, default 1000), `algorithm` (default machin), `all` (boolean)
+- Invoke `searchPi({ pattern, digits, algorithm, all })`.
+- Respond with JSON: `{ position: number|null }` or `{ positions: number[] }`.
+- Validate pattern and parameters; 400 on invalid.
 
 ### GET /hex
-- Query parameters:
-  - position (integer ≥ 0, required)
-  - count (integer ≥ 1, default 1)
-- Response: `text/plain` hex string from `extractPiHex`
+- Query: `position` (integer ≥0, required), `count` (integer ≥1, default 1)
+- Invoke `extractPiHex`; respond with `text/plain` hex string.
+- Validate; 400 on invalid.
 
 ### GET /decimal
-- Query parameters:
-  - position (integer ≥ 0, required)
-  - count (integer ≥ 1, required)
-  - algorithm (default machin)
-- Response: `text/plain` decimal substring from `extractPiDecimal`
+- Query: `position` (integer ≥0, required), `count` (integer ≥1, required), `algorithm` (machin|gauss-legendre, default machin)
+- Invoke `extractPiDecimal`; respond with `text/plain` decimal substring.
+- Validate; 400 on invalid.
 
 ### GET /export
-- Query parameters:
-  - digits, algorithm
-  - format (txt | json, default txt)
-- Response: `text/plain` for txt or JSON `{ pi: string }` for json
+- Query: `digits`, `algorithm`, `format` (txt|json, default txt)
+- Invoke `exportPi`; if `format=json`, respond JSON `{ pi: string }`; else send plain text.
+- Validate; 400 on missing output path or invalid parameters.
 
 ### GET /pi/stream
-- Query parameters: digits, algorithm
-- Response: Server-Sent Events at `/pi/stream` streaming π digits in chunks
-- SSE protocol: initial comment, `data: <chunk>` events, `event: end` on completion, `event: error` on failure
-
-## CLI Interface
-
-- Flags in `src/lib/main.js`:
-  - `--serve` (boolean) to start HTTP API server; ignore other modes when set
-  - `--port <n>` to set listening port (default 3000; `0` for ephemeral)
-- When `--serve` is provided, invoke `startHttpServer({ port })` and keep process running
-- Update CLI help output to document available HTTP routes and query parameters
+- Query: `digits`, `algorithm` parameters.
+- Register `/pi/stream` SSE endpoint; set headers `text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`.
+- Stream π digits in chunks via `EventSource` format: `data: <chunk>`, `event: end`, `event: error`.
+- Invoke or adapt existing SSE logic.
 
 ## Dependencies
-
-- Ensure `express` is imported and used
-- Use existing functions: `calculatePi`, `benchmarkPi`, `visualizePiConvergence`, `visualizePiDigits`, `countPiDigitsJson`, `searchPi`, `extractPiHex`, `extractPiDecimal`, `exportPi`, and HTTP streaming logic
-- No new external dependencies required beyond those already listed
+- Ensure dependencies in `package.json`: `express`, `quickchart-js`, `js-yaml` for any YAML script support, and built-in fs/promises.
 
 ## Testing
 
-- Unit tests in `tests/unit/main.test.js`:
-  - Mock `req`/`res` to verify each route returns correct status, headers, and body for valid and invalid inputs
-  - Test CSV vs JSON behavior for `/benchmark`
-  - Test PNG endpoints produce valid image buffers (check PNG signature)
-  - Test SSE endpoint streams events to completion
-- Integration tests in `tests/e2e/http.test.js`:
-  - Start server on ephemeral port and send HTTP requests to all endpoints
-  - Assert correct status codes, content types, and response bodies for JSON, CSV, PNG, SSE, and plain text endpoints
-  - Validate error handling for invalid parameters returns 400 with descriptive JSON error
+- **Unit Tests** (`tests/unit/main.test.js`): mock `Req`/`Res` to verify each route returns correct status, content-type, and body for valid and invalid queries; check CSV vs JSON for `/benchmark`; verify PNG endpoints produce valid PNG signature; test SSE logic by mocking response.write.
+- **Integration Tests** (`tests/e2e/http.test.js`): start server on ephemeral port and issue HTTP requests to all endpoints; assert correct status codes, headers, and response bodies; validate error codes for invalid inputs.
