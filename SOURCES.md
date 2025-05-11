@@ -22,6 +22,24 @@ Centralized documentation for Node.js core modules and globals including fs.prom
 Node.js v20; Node.js License.
 ## Node.js License
 
+# Node.js Worker Threads API
+## https://nodejs.org/api/worker_threads.html
+Official documentation for the Node.js worker_threads module, detailing the Worker class, workerData, parentPort messaging, error handling, and thread lifecycle management. Vital for implementing calculatePiParallel to distribute π computation workloads across CPU cores and aggregate results efficiently.
+Node.js v20; Node.js License.
+## Node.js License
+
+# Node.js Performance Hooks API
+## https://nodejs.org/api/perf_hooks.html
+Comprehensive guide to performance measurement in Node.js, including performance.now(), performance.mark(), performance.measure(), PerformanceObserver, and eventLoopUtilization(). Essential for the Diagnostics feature to capture precise timings, event-loop utilization, and memory usage metrics during π calculations, benchmarking, and server operations.
+Node.js v20; Node.js License.
+## Node.js License
+
+# Node.js AbortController API
+## https://nodejs.org/api/globals.html#class-abortcontroller
+Documentation for the AbortController and AbortSignal classes, covering signal propagation, abort events, integration with fetch, streams, and custom APIs. Crucial for implementing the Operation Timeout feature and graceful cancellation of long-running π computations or HTTP requests.
+Node.js v20; Node.js License.
+## Node.js License
+
 # zod
 ## https://github.com/colinhacks/zod
 Declarative schema validation library docs, covering object schemas, refinements, asynchronous parsing, and error formatting. Critical for defining and validating CLI flag schemas, configuration inputs (cosmiconfig), HTTP request parameters, and ensuring robust input handling.
@@ -58,12 +76,6 @@ Embedded JavaScript templating engine docs covering template syntax, partials, i
 Last updated 2024.
 ## MIT License
 
-# OpenAPI Specification & Swagger UI Middleware
-## https://spec.openapis.org/oas/latest.html
-The authoritative specification for OpenAPI detailing the OpenAPI 3.1.0 schema for describing RESTful APIs, including paths, components, parameters, and responses. Essential for defining and synchronizing the Swagger UI documentation served via `swagger-ui-express`, ensuring the HTTP API spec stays up-to-date and interactive.
-Last updated 2023; maintained by the OpenAPI Initiative under the OSI-Critical Open Group Public License.
-## OSP-1.0
-
 # Swagger UI Express Middleware
 ## https://github.com/scottie1984/swagger-ui-express
 Official middleware to integrate Swagger UI into Express applications. Provides `serve` and `setup` functions to host interactive API docs from an OpenAPI spec. Demonstrates mounting raw JSON spec at `/docs.json` and UI at `/docs`, CSS/JS customization, and middleware ordering considerations. Essential for the Swagger UI documentation feature in the HTTP server.
@@ -75,18 +87,6 @@ Last updated 2024; MIT License.
 Comprehensive guide to Server-Sent Events (SSE), detailing the `EventSource` API, event types, reconnection behavior, and custom headers. Explains both server and client usage patterns, including establishing a persistent `text/event-stream`, sending formatted SSE messages, and handling events in JavaScript. Vital for implementing the `/pi/stream` SSE endpoint to stream π digits in real time.
 Continuously updated; CC BY-SA 2.5 license.
 ## CC BY-SA 2.5
-
-# Node.js Readline API
-## https://nodejs.org/api/readline.html
-Authoritative documentation for the Node.js `readline` module, covering the creation and configuration of interactive command-line interfaces, input/output streams, custom prompts, history management, and event handling. Essential for implementing REPL mode and scripting interfaces in the CLI, including graceful handling of `SIGINT` and command dispatch.
-Node.js v20; Node.js License.
-## Node.js License
-
-# Node.js FS Promises API
-## https://nodejs.org/api/fs.html#fspromises-api
-Detailed reference for the `fs.promises` API, including file reading, writing, renaming, directory operations, streams, and error handling. Crucial for features requiring atomic file writes (exportPi, HTML report generation) and script mode file loading, ensuring data integrity and efficient I/O in Node.js applications.
-Node.js v20; Node.js License.
-## Node.js License
 
 # CORS middleware for Express
 ## https://github.com/expressjs/cors
