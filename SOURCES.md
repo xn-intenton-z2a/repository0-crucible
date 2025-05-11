@@ -63,17 +63,17 @@ Middleware for integrating Swagger UI into Express applications. Provides `serve
 Comprehensive guide to Server-Sent Events (SSE), detailing the `EventSource` API, event formats, reconnection behavior, and custom headers. Explains both server and client usage patterns, including establishing a persistent `text/event-stream`, sending formatted SSE messages, and handling events in JavaScript. Vital for implementing the `/pi/stream` endpoint. Continuously updated; CC BY-SA 2.5.
 ## CC BY-SA 2.5
 
-# CORS middleware for Express
+# CORS Middleware for Express
 ## https://github.com/expressjs/cors
 Official documentation for the `cors` middleware package for Express. Explains configuration of Access-Control-Allow-Origin, methods, headers, credentials support, and dynamic origin handling. Vital for enabling robust CORS support via `--cors` flags in the HTTP API server. Last updated 2024; MIT License.
 ## MIT License
 
-# OpenAPI Specification 3.0.3
-## https://spec.openapis.org/oas/3.0.3
-Authoritative schema definition for OpenAPI 3.0, detailing syntax for defining RESTful API contracts: paths, parameters, request/response schemas, components, servers, and security configurations. Fundamental for generating and validating OpenAPI docs and ensuring consistency between implementation and interactive Swagger UI. Last updated 2021; CC0.
-## CC0
-
 # express-rate-limit
 ## https://github.com/express-rate-limit/express-rate-limit
 Express middleware for request rate limiting to protect APIs against abuse. Documents configuration options such as `windowMs`, `max`, key generation, and custom handlers. Essential for implementing the HTTP rate-limiting feature via `--rate-limit` flags. Last updated 2024.
+## MIT License
+
+# prom-client
+## https://github.com/siimon/prom-client
+Official GitHub repository and documentation for prom-client, a Prometheus client for Node.js, providing registry configuration, metric types (Counter, Gauge, Histogram, Summary), default metrics collection, and best practices for labeling and metric exposition. Crucial for implementing the `/metrics` endpoint in the HTTP API, recording request counters and duration histograms, and exposing metrics in Prometheus format. Last updated 2024.
 ## MIT License
