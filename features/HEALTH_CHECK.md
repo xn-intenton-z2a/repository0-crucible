@@ -1,40 +1,38 @@
-# Health Check Endpoint Feature
+# Health Check Feature
 
 ## Overview
-Provide a lightweight health check endpoint that enables readiness and liveness probes for containerized and production deployments. Clients can verify the service is running and retrieve basic uptime metrics without invoking heavy π computations.
+Provide a lightweight readiness and liveness endpoint for the HTTP API server to support monitoring and deployment probes. This endpoint allows clients and orchestration systems to verify that the service is running and healthy without invoking expensive π computations.
 
 ## Functional Requirements
 
-- In `startHttpServer` within `src/lib/main.js`, register a new route:
-
-  GET /health
-
-- The endpoint must respond with status code 200 and a JSON object containing:
-  - `status`: string, always "ok"
-  - `uptime`: number, service uptime in seconds (use `process.uptime()`)
-  - `timestamp`: string, current server time in ISO 8601 format (use `new Date().toISOString()`)
-
-- Set the `Content-Type` header to `application/json` for this response.
-
-- Ensure this route is declared before the 404 fallback handler.
-
-## Implementation Details
-
-- Import `process` and use `process.uptime()` and `Date` APIs available.
-- In the Express app setup of `startHttpServer`, add `app.get('/health', (req, res) => { ... })` before other routes or the catch-all middleware.
-- Construct and send the JSON response object and end the request.
+- In `startHttpServer` within `src/lib/main.js`, register a new route GET `/health` before any other routes:
+  - Respond with status code `200` and a JSON object:
+    {
+      "status": "ok",
+      "uptime": <number>,
+      "timestamp": "<ISO 8601 string>"
+    }
+  - `uptime` must be obtained from `process.uptime()` (in seconds, as a number).
+  - `timestamp` must be `new Date().toISOString()`.
+  - Set `Content-Type` header to `application/json`.
 
 ## Testing
 
-- **Unit Tests** in `tests/unit/http.test.js`:
-  - Spin up or mock `startHttpServer` and perform a GET request to `/health` on an ephemeral port.
-  - Assert that the response status is 200.
-  - Assert the JSON body has keys `status`, `uptime`, and `timestamp`.
-  - Validate that `status` equals "ok`, `uptime` is a non-negative number, and `timestamp` is a valid ISO timestamp string.
+- **Unit Tests** (`tests/unit/http.test.js`):
+  - After starting the server on an ephemeral port, issue a GET request to `/health`:
+    - Assert status `200`.
+    - Assert `Content-Type` is `application/json`.
+    - Assert response JSON has keys `status`, `uptime`, and `timestamp`.
+    - Assert `status` is the string "ok".
+    - Assert `uptime` is a non-negative number.
+    - Assert `timestamp` is a valid ISO 8601 string.
 
-- **Integration Tests** in `tests/e2e/http.test.js`:
-  - Launch the HTTP server on an ephemeral port.
-  - Perform an HTTP GET `/health`:
-    - Verify the `Content-Type` header is `application/json`.
-    - Verify the JSON response structure and values.
-  - Confirm that an unexpected route (e.g., `/healthz`) returns 404 as before.
+- **Integration Tests** (`tests/e2e/http.test.js`):
+  - Start the server with `--serve --port 0`, then GET `/health`:
+    - Verify `200` and JSON structure as above.
+    - Ensure unexpected routes (e.g., `/healthz`) still return `404` JSON error as before.
+
+## Documentation Changes
+
+- Update `README.md` under the **HTTP API** section to document the new `/health` endpoint.
+- In `docs/HTTP_API.md`, add a **GET /health** section with description, response schema, and examples.
