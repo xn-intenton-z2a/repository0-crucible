@@ -1,34 +1,35 @@
 # repository0-crucible
 
-`repository0-crucible` is a JavaScript library and CLI tool for exploring and computing π (pi) to arbitrary precision. It supports multiple algorithms, caching, benchmarking, live progress bars, and an HTTP API for seamless integration.
+`repository0-crucible` is a JavaScript library and CLI tool for exploring and computing π (pi) to arbitrary precision. It supports multiple algorithms, worker threads, benchmarking, caching, progress bars, and an HTTP API for seamless integration.
 
 ## Installation
 
-Install from npm:
+Install the CLI and library from npm:
+
 ```bash
-npm install @xn-intenton-z2a/repository0-crucible decimal.js cli-progress quickchart-js express
+npm install --save @xn-intenton-z2a/repository0-crucible
 ```
 
 ## Features
 
-- **π Calculation**: `calculatePi(digits, algorithm)`
-  - `digits` (positive integer, default `100`)
-  - `algorithm`: `machin`, `gauss-legendre`, or `chudnovsky`
-- **Worker Threads**: `calculatePiParallel(digits, algorithm, threads)`
-  - `threads`: number of worker threads (default `1`)
-- **HTTP API**: start a RESTful API server to compute π and query results over HTTP
+- **π Calculation**: compute π to arbitrary precision with `calculatePi(digits, algorithm)`.
+- **Worker Threads**: parallel π computation using `calculatePiParallel(digits, algorithm, threads)`.
+- **HTTP API**: start a RESTful server to compute π over HTTP.
+- **Benchmarking**, **Caching**, **Visualizations**, **Progress Bars**, and more.
 
-### CLI Usage
+## CLI Usage
 
-Flags:
-- `--digits <n>`: integer ≥1 and ≤1e6; default: 100
-- `--algorithm <machin|gauss-legendre|chudnovsky>`: default: machin
-- `--threads <n>`: integer ≥1 and ≤ number of CPU cores; default: 1
-- `--serve`: start the HTTP API server; default: false
-- `--port <n>`: HTTP server port; default: 3000; use 0 for ephemeral port
-- `--help`: show help and exit
+Usage: `node src/lib/main.js [options]`
 
-### CLI Examples
+Options:
+- `--digits <n>`           Number of decimal places (1 to 1e6). Default: 100.
+- `--algorithm <a>`        Algorithm: `machin`, `gauss-legendre`, or `chudnovsky`. Default: `machin`.
+- `--threads <n>`          Number of worker threads (≥1, ≤ CPU cores). Default: 1.
+- `--serve`                Start the HTTP API server. Default: `false`.
+- `--port <n>`             Port for HTTP server (`0` for ephemeral). Default: 3000.
+- `--help`                 Show help and exit.
+
+## CLI Examples
 
 ```bash
 # Compute 10 digits using Gauss-Legendre
@@ -41,33 +42,37 @@ node src/lib/main.js --digits 1000 --algorithm chudnovsky --threads 4
 node src/lib/main.js --serve --port 8080
 ```
 
-### HTTP API
+## HTTP API
 
-#### GET /pi
+Start the server:
+
+```bash
+node src/lib/main.js --serve --port 3000
+```
+
+### GET /pi
 
 Compute π and return as JSON.
 
 **Query Parameters:**
-
-- `digits` (integer ≥1 and ≤1e6; default: 101 total characters — 1 integer digit + decimal point + 100 fractional digits)
-- `algorithm` (string — `machin`, `gauss-legendre`, or `chudnovsky`; default: `machin`)
+- `digits` (integer ≥1 and ≤1e6; default: 1 integer digit + `.` + 100 fractional digits = 101 total characters)
+- `algorithm` (string: `machin`, `gauss-legendre`, or `chudnovsky`; default: `machin`)
 
 **Responses:**
+- `200 OK`  
+  ```json
+  { "pi": "<string>" }
+  ```
+- `400 Bad Request`  
+  ```json
+  { "error": "Invalid digits" }
+  ```  
+or  
+  ```json
+  { "error": "Invalid algorithm" }
+  ```
 
-- `200 OK`: 
-```json
-{ "pi": "<string>" }
-```
-- `400 Bad Request`: 
-```json
-{ "error": "Invalid digits" }
-```
-or
-```json
-{ "error": "Invalid algorithm" }
-```
-
-**Examples:**
+### HTTP API Examples
 
 ```bash
 curl 'http://localhost:3000/pi?digits=5&algorithm=chudnovsky'
