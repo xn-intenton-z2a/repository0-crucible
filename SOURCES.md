@@ -10,33 +10,20 @@ Official JavaScript client for QuickChart.io providing a fluent API to build cha
 Last updated 2024.
 ## MIT License
 
+# QuickChart API Documentation
+## https://quickchart.io/documentation/
+Technical reference for QuickChart’s REST API, detailing chart configuration schema, HTTP endpoints, request payload structure, response formats, and advanced features such as time-series charts, custom fonts, and server-side rendering options. Crucial for understanding the JSON chart spec and troubleshooting direct API interactions beyond client library abstractions. Last updated 2024; authoritative official documentation.
+## Public Domain
+
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
 Authoritative guide to Express 4.x, detailing routing, middleware design, error handling, request parsing, response streaming, and static file serving. Foundational for building HTTP API endpoints, SSE streaming, JSON services, CORS integration, and integrating diagnostic middleware in our π service.
 Official docs under MIT License.
 ## MIT License
 
-# Node.js Core API Reference
+# Node.js Core and Advanced APIs
 ## https://nodejs.org/api/
-Centralized documentation for Node.js core modules and globals including fs.promises, path, url, readline, worker_threads, perf_hooks, AbortController, and fetch. Covers file I/O, atomic writes, interactive CLI interfaces, threading primitives, high-resolution timing, event-loop metrics, URL/file path utilities, and global web APIs support. Crucial for parallel π computation, atomic file operations, REPL mode, scripting, HTTP server features, diagnostics, and JS-language interfaces across Node 20.
-Node.js v20; Node.js License.
-## Node.js License
-
-# Node.js Worker Threads API
-## https://nodejs.org/api/worker_threads.html
-Official documentation for the Node.js worker_threads module, detailing the Worker class, workerData, parentPort messaging, error handling, and thread lifecycle management. Vital for implementing calculatePiParallel to distribute π computation workloads across CPU cores and aggregate results efficiently.
-Node.js v20; Node.js License.
-## Node.js License
-
-# Node.js Performance Hooks API
-## https://nodejs.org/api/perf_hooks.html
-Comprehensive guide to performance measurement in Node.js, including performance.now(), performance.mark(), performance.measure(), PerformanceObserver, and eventLoopUtilization(). Essential for the Diagnostics feature to capture precise timings, event-loop utilization, and memory usage metrics during π calculations, benchmarking, and server operations.
-Node.js v20; Node.js License.
-## Node.js License
-
-# Node.js AbortController API
-## https://nodejs.org/api/globals.html#class-abortcontroller
-Documentation for the AbortController and AbortSignal classes, covering signal propagation, abort events, integration with fetch, streams, and custom APIs. Crucial for implementing the Operation Timeout feature and graceful cancellation of long-running π computations or HTTP requests.
+Centralized documentation for Node.js core modules (fs, path, url), with dedicated sections on worker_threads, perf_hooks, AbortController, and global web APIs including fetch. Covers file I/O, atomic operations, threading primitives, high-resolution timing, abort signals, concurrent locks, and HTTP server essentials in Node 20. Essential for implementing parallel computation, performance diagnostics, graceful cancellation, and robust server features.
 Node.js v20; Node.js License.
 ## Node.js License
 
@@ -85,7 +72,7 @@ Last updated 2024; MIT License.
 # MDN Web API: Server-Sent Events
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
 Comprehensive guide to Server-Sent Events (SSE), detailing the `EventSource` API, event types, reconnection behavior, and custom headers. Explains both server and client usage patterns, including establishing a persistent `text/event-stream`, sending formatted SSE messages, and handling events in JavaScript. Vital for implementing the `/pi/stream` SSE endpoint to stream π digits in real time.
-Continuously updated; CC BY-SA 2.5 license.
+Continuously updated; CC BY-SA 2.5.
 ## CC BY-SA 2.5
 
 # CORS middleware for Express
@@ -93,3 +80,13 @@ Continuously updated; CC BY-SA 2.5 license.
 Official documentation for the `cors` middleware package for Express. Explains configuration of Access-Control-Allow-Origin, methods, headers, credentials support, and options for dynamic origin handling. Vital for implementing robust CORS support in the HTTP API server, including custom origin settings and preflight response handling.
 Last updated 2024; MIT License.
 ## MIT License
+
+# OpenAPI Specification 3.0.3
+## https://spec.openapis.org/oas/3.0.3
+Authoritative schema definition for OpenAPI 3.0, detailing syntax for defining RESTful API contracts, including paths, parameters, request/response schemas, components, servers, and security configurations. Fundamental for generating and validating OpenAPI docs and ensuring consistency between server implementation and interactive Swagger UI. Last updated 2021; provided by the OpenAPI Initiative under CC0.
+## CC0
+
+# Wikipedia: Pi Computation Algorithms
+## https://en.wikipedia.org/wiki/Pi#Computation
+Comprehensive overview of π calculation methods, including Machin-like formulas, the Gauss–Legendre algorithm, the Chudnovsky algorithm, and series convergence properties. Offers mathematical context, algorithmic complexity, and implementation considerations that guide selection of appropriate algorithms based on performance and precision requirements. Continuously updated under CC BY-SA 3.0.
+## CC BY-SA 3.0
