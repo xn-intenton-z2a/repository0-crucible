@@ -55,3 +55,40 @@ describe("CLI Output", () => {
     spy.mockRestore();
   });
 });
+
+// New diagnostics tests
+describe("CLI Diagnostics", () => {
+  test("Leibniz diagnostics", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--diagnostics", "--digits", "3"]);
+    expect(spy).toHaveBeenCalledTimes(1);
+    const output = spy.mock.calls[0][0];
+    expect(output).toEqual(
+      expect.objectContaining({
+        algorithm: "leibniz",
+        digits: 3,
+        result: 3.142,
+        durationMs: expect.any(Number),
+        iterations: expect.any(Number),
+      })
+    );
+    spy.mockRestore();
+  });
+
+  test("Monte Carlo diagnostics", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--diagnostics", "--algorithm", "montecarlo", "--samples", "1000"]);
+    expect(spy).toHaveBeenCalledTimes(1);
+    const output = spy.mock.calls[0][0];
+    expect(output).toEqual(
+      expect.objectContaining({
+        algorithm: "montecarlo",
+        samples: 1000,
+        result: expect.any(Number),
+        durationMs: expect.any(Number),
+        samplesUsed: 1000,
+      })
+    );
+    spy.mockRestore();
+  });
+});

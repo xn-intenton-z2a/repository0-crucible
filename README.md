@@ -26,6 +26,7 @@ npm install repository0-crucible
 * π Calculation: Calculate π to a specified number of decimal places using the Leibniz series algorithm.
   - `--digits <number>`: Number of decimal places (default: 5).
   - `--algorithm <string>`: Calculation method (default: "leibniz").
+  - `--diagnostics`: Outputs a JSON object with execution diagnostics (algorithm, parameters, durationMs, iterations/samplesUsed, and result).
 
 ## Usage
 
@@ -37,7 +38,7 @@ node src/lib/main.js --help
 
 ### π Calculation
 
-Calculate �� to 10 decimal places:
+Calculate π to 10 decimal places:
 
 ```bash
 node src/lib/main.js --digits 10
@@ -59,6 +60,13 @@ node src/lib/main.js --digits 5 --algorithm leibniz
   npm run start
   # Outputs: 3.14159
   ```
+
+### Diagnostics
+
+```bash
+node src/lib/main.js --digits 5 --diagnostics
+# Outputs: { algorithm: 'leibniz', digits: 5, result: 3.14159, durationMs: 12, iterations: 200000 }
+```
 
 ## Incremental Changes Plan
 
