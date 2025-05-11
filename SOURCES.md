@@ -13,6 +13,11 @@ Client library documentation for quickchart-js, detailing programmatic chart gen
 Official Chart.js documentation covering chart types (bar, line, pie, etc.), dataset and scale configuration, animation options, and plugin architecture. Important for understanding core chart options and customizing appearance when building QuickChart configurations programmatically. Last updated 2024; maintained by the Chart.js Core Team.
 ## MIT License
 
+# Chart.js Node Canvas Integration
+## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
+Provides a Node.js integration for server-side rendering of Chart.js charts using node-canvas. Covers setup of ChartJSNodeCanvas, configuration of chart dimensions, registration of fonts, and usage of renderToBuffer and renderToStream methods to produce PNG outputs. Crucial for implementing the --chart CLI option and the /pi/chart HTTP endpoint with actionable examples for rendering line charts of π convergence. Last updated 2024; maintained under MIT License on GitHub.
+## MIT License
+
 # Express.js and Middleware
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
