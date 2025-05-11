@@ -1,5 +1,7 @@
 # Batch Calculation
 
+_See the project mission in [MISSION.md](../MISSION.md) to understand the scope and context of this feature._
+
 Provide the ability to perform multiple π calculation tasks in a single invocation by reading a JSON file containing an array of task definitions. This feature enables batch processing of different algorithms, parameters, and diagnostics settings in one go, returning consolidated JSON output.
 
 # CLI Options

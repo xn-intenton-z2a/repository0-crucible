@@ -1,5 +1,7 @@
 # Convergence Chart and Data Export
 
+_See the project mission in [MISSION.md](../MISSION.md) to understand the scope and context of this feature._
+
 Provide both graphical and raw data export of π approximation convergence for supported algorithms.
 
 ## CLI Options

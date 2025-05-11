@@ -1,5 +1,7 @@
 # Pi HTTP API Server
 
+_See the project mission in [MISSION.md](../MISSION.md) to understand the scope and context of this feature._
+
 Provide an integrated HTTP interface so clients can request π calculations, convergence data, and chart images without invoking the CLI directly.
 
 # CLI Options

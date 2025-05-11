@@ -1,5 +1,7 @@
 # Performance Benchmark
 
+_See the project mission in [MISSION.md](../MISSION.md) to understand the scope and context of this feature._
+
 Enable users to measure and compare execution performance of supported π calculation algorithms for given parameters and output results in table or JSON format.
 
 # CLI Options

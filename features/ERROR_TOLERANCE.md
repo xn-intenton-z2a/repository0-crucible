@@ -1,5 +1,7 @@
 # Error Tolerance Calculation
 
+_See the project mission in [MISSION.md](../MISSION.md) to understand the scope and context of this feature._
+
 Provide the ability to calculate π to meet a user-specified absolute error threshold rather than a fixed digit or sample count. This feature adapts computation automatically until |approximation – Math.PI| ≤ threshold or a configurable maximum limit is reached.
 
 # CLI Options

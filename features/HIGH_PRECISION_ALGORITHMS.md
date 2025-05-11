@@ -1,5 +1,7 @@
 # High Precision π Algorithms
 
+_See the project mission in [MISSION.md](../MISSION.md) to understand the scope and context of this feature._
+
 Provide true arbitrary precision π computation using the Chudnovsky and Ramanujan-Sato series with decimal.js and BigInt support.
 
 # Dependencies
