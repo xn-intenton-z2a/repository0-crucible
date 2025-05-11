@@ -15,6 +15,7 @@ This tool calculates π using different algorithms.
 - `--samples <number>`    Number of samples for `montecarlo` (default: 100000)
 - `--diagnostics`         Outputs a JSON object with execution diagnostics (algorithm, parameters, durationMs, iterations/samplesUsed, and result)
 - `--benchmark`           Runs all supported algorithms and outputs a consolidated JSON benchmark report
+- `--validate-features`   Validates that all feature specification files reference `MISSION.md`; exits with code 0 on success or 1 with missing file list
 
 ## Examples
 
@@ -67,4 +68,11 @@ node src/lib/main.js --benchmark
     "error": 0.00000
   }
 ]
+```
+
+### Validate feature specs
+
+```bash
+node src/lib/main.js --validate-features
+# Outputs: All features reference MISSION.md
 ```

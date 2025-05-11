@@ -1,6 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](nhttps://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
 
 To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
 
@@ -27,6 +27,7 @@ npm install repository0-crucible
   - `--digits <number>`: Number of decimal places (default: 5).
   - `--algorithm <string>`: Calculation method (default: "leibniz").
   - `--diagnostics`: Outputs a JSON object with execution diagnostics (algorithm, parameters, durationMs, iterations/samplesUsed, and result).
+* Feature specification validation: Check that feature specification files under `features/` reference the project mission (`MISSION.md`) using the `--validate-features` option.
 
 ## Usage
 

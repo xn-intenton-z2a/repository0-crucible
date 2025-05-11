@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import {
   main,
@@ -6,6 +6,7 @@ import {
   calculatePiMonteCarlo,
   calculatePiChudnovsky,
 } from "@src/lib/main.js";
+import fs from "fs";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -131,5 +132,53 @@ describe("CLI Benchmark", () => {
       );
     });
     spy.mockRestore();
+  });
+});
+
+// New validate-features tests
+describe("CLI Validate Features", () => {
+  let logSpy;
+  let exitSpy;
+  beforeEach(() => {
+    logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    exitSpy = vi.spyOn(process, "exit").mockImplementation((code) => {
+      throw new Error(`exit${code}`);
+    });
+  });
+
+  afterEach(() => {
+    logSpy.mockRestore();
+    exitSpy.mockRestore();
+    vi.restoreAllMocks();
+  });
+
+  test("success when all files reference mission", () => {
+    vi.spyOn(fs, "readdirSync").mockReturnValue(["feat1.md", "feat2.md"]);
+    vi
+      .spyOn(fs, "readFileSync")
+      .mockReturnValue("Contains MISSION.md reference");
+    expect(() => {
+      main(["--validate-features"]);
+    }).toThrow("exit0");
+    expect(logSpy).toHaveBeenCalledWith("All features reference MISSION.md");
+    expect(exitSpy).toHaveBeenCalledWith(0);
+  });
+
+  test("failure when files missing references", () => {
+    vi.spyOn(fs, "readdirSync").mockReturnValue(["feat1.md", "feat2.md"]);
+    vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
+      if (filePath.endsWith("feat1.md")) {
+        return "Contains MISSION.md";
+      }
+      return "No reference here";
+    });
+    expect(() => {
+      main(["--validate-features"]);
+    }).toThrow("exit1");
+    expect(logSpy).toHaveBeenCalledWith(
+      "The following feature spec files are missing mission references:"
+    );
+    expect(logSpy).toHaveBeenCalledWith("- features/feat2.md");
+    expect(exitSpy).toHaveBeenCalledWith(1);
   });
 });
