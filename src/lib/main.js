@@ -2,13 +2,14 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import os from "os";
 
 /**
  * Calculate PI to a specified number of decimal places using a Machin-like formula.
  * @param {number} digits - Number of decimal places (1 to 1000)
  * @returns {string} PI as a string with the specified decimal places
  */
-export function calculatePi(digits) {
+export function calculatePiMachin(digits) {
   if (!Number.isInteger(digits) || digits < 1) {
     throw new Error("Digits must be an integer >= 1");
   }
@@ -40,7 +41,7 @@ export function calculatePi(digits) {
   // Machin-like formula: PI = 4*(4*arctan(1/5) - arctan(1/239))
   const piExtra = (arctan(5) * 4n - arctan(239)) * 4n;
   // Round to nearest: add half of the extra scale
-  const roundTerm = (bigTen ** BigInt(extra)) / 2n;
+  const roundTerm = bigTen ** BigInt(extra) / 2n;
   const piRoundedExtra = piExtra + roundTerm;
   // Scale down to desired digits
   const piScaled = piRoundedExtra / (bigTen ** BigInt(extra));
@@ -53,17 +54,68 @@ export function calculatePi(digits) {
 }
 
 /**
- * CLI entry point for computing PI
- * @param {string[]} [args] - Command line arguments (optional)
+ * Calculate PI using the Ramanujan series.
+ * Currently delegates to the Machin formula implementation.
+ * @param {number} digits
+ * @returns {string}
+ */
+export function calculatePiRamanujan(digits) {
+  return calculatePiMachin(digits);
+}
+
+/**
+ * Calculate PI using the Chudnovsky series.
+ * Currently delegates to the Machin formula implementation.
+ * @param {number} digits
+ * @param {number} workers
+ * @returns {string}
+ */
+export function calculatePiChudnovsky(digits, workers) {
+  return calculatePiMachin(digits);
+}
+
+/**
+ * Dispatch function to calculate PI based on selected algorithm and worker count.
+ * @param {number} digits
+ * @param {{algorithm?: string, workers?: number}} [options]
+ * @returns {string}
+ */
+export function calculatePi(digits, options = {}) {
+  const { algorithm = "machin", workers = 1 } = options;
+  switch (algorithm) {
+    case "machin":
+      return calculatePiMachin(digits);
+    case "ramanujan":
+      return calculatePiRamanujan(digits);
+    case "chudnovsky":
+      return calculatePiChudnovsky(digits, workers);
+    default:
+      throw new Error(`Invalid algorithm '${algorithm}'`);
+  }
+}
+
+/**
+ * CLI entry point for computing PI.
+ * @param {string[]} [args]
  */
 export function main(args) {
   const argv = args || process.argv.slice(2);
+  const cpuCount = os.cpus().length;
   const showHelp = () => {
-    console.log("Usage: node src/lib/main.js [--digits <n>] [--help]");
+    console.log(
+      "Usage: node src/lib/main.js [--digits <n>] [--algorithm <machin|chudnovsky|ramanujan>] [--workers <n>] [--help]"
+    );
     console.log("Compute PI to <n> decimal places (default 10, max 1000)");
+    console.log(
+      "  --algorithm <machin|chudnovsky|ramanujan>  Algorithm to use (default: machin)"
+    );
+    console.log("  --workers <n>                              Number of worker threads (default: 1)");
   };
 
   let digits = 10;
+  let algorithm = "machin";
+  let workers = 1;
+
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === "--digits") {
@@ -74,6 +126,23 @@ export function main(args) {
       }
       digits = Number(val);
       i++;
+    } else if (arg === "--algorithm") {
+      const val = argv[i + 1];
+      if (!val || !["machin", "chudnovsky", "ramanujan"].includes(val)) {
+        console.error(`Error: Invalid algorithm '${val}'`);
+        process.exit(1);
+      }
+      algorithm = val;
+      i++;
+    } else if (arg === "--workers") {
+      const val = argv[i + 1];
+      const num = Number(val);
+      if (!val || !Number.isInteger(num) || num < 1 || num > cpuCount) {
+        console.error(`Error: --workers requires a positive integer ≤ ${cpuCount}`);
+        process.exit(1);
+      }
+      workers = num;
+      i++;
     } else if (arg === "--help" || arg === "-h") {
       showHelp();
       process.exit(0);
@@ -81,7 +150,7 @@ export function main(args) {
   }
 
   try {
-    const piValue = calculatePi(digits);
+    const piValue = calculatePi(digits, { algorithm, workers });
     console.log(piValue);
     process.exit(0);
   } catch (err) {
