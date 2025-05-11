@@ -1,84 +1,97 @@
-features/PERFORMANCE_BENCHMARK.md
-# features/PERFORMANCE_BENCHMARK.md
-# Performance Benchmark with Visualization
+features/PI_VISUALIZER.md
+# features/PI_VISUALIZER.md
+# PI_VISUALIZER
 
-## Summary
-Extend the existing benchmark capability of the π Calculator CLI to support exporting results in both text and PNG chart formats. Users can generate a bar chart image of algorithm execution times alongside or instead of the text table.
+# Description
+Adds a command line option to produce a PNG visualization of the digit frequency histogram of the computed π value. This feature uses node-canvas and chart.js to render a bar chart and save it as an image file.
 
-## Behavior
+# CLI Usage
+node src/lib/main.js --pi <digits> --visualize-histogram <outputPath> [--benchmark]
 
-- Introduce a new option `--format <type>` (alias `-f`) with allowed values `text` and `png`. Default: `text`.
-- Introduce a new option `--output <path>` (alias `-o`) to specify the file path for chart output when `--format png` is used. Default: `benchmark.png` in the current working directory.
-- When `--format text` is selected (default), behavior remains as before: measure and print timing data in a table.
-- When `--format png` is selected:
-  - Perform benchmarking for the selected algorithms.
-  - Generate a bar chart of algorithm names versus elapsed time in milliseconds.
-  - Save the chart as a PNG image to the specified output path.
-  - Suppress the text table output unless `--format text` is also provided.
-- Maintain support for `--algorithms <list>` to filter which algorithms to benchmark.
+--pi                  Number of decimal places to compute π
+--visualize-histogram  Path to output the PNG histogram image (e.g., histogram.png)
+--benchmark           Optional flag; when provided, report the time taken to compute π
 
-## Source File Changes
+# Implementation
+- Add dependencies "canvas" and "chart.js" to package.json
+- Extend argument parser in main.js to detect:
+  - --visualize-histogram <outputPath>
+- After computing π and optional digit frequency counts:
+  - Generate a bar chart with labels 0–9 and data from digit frequencies
+  - Initialize a Canvas of size 800×600
+  - Use Chart.js to draw the bar chart onto the Canvas
+  - Export the Canvas to a PNG Buffer
+  - Write the Buffer to the specified output file path
+- Preserve existing behavior for --benchmark and --digit-frequency flags
 
-- In `src/lib/main.js`:
-  - Extend yargs configuration to add `--format` (`-f`) and `--output` (`-o`) options.
-  - Add dependency import for chart rendering: import { ChartJSNodeCanvas } from 'chartjs-node-canvas'.
-  - After measuring execution times, branch on the selected format:
-    - For text, print the timing table as before.
-    - For png, create a new ChartJSNodeCanvas instance, configure a bar chart dataset with algorithm names and times, render to buffer, and write to file using fs.writeFileSync.
-  - Validate that when `--format png` is used without write permission or invalid path, an error is reported.
+# Testing
+- Mock the Canvas and verify that a PNG Buffer is produced and written to disk
+- Test invoking with --visualize-histogram creates a file at the given path with non-zero size
+- Verify that chart data in the output matches expected digit frequency for known π segments
+- Confirm appropriate error is thrown when outputPath is missing or invalidfeatures/PI_SERVER.md
+# features/PI_SERVER.md
+# PI_SERVER
 
-## Test Coverage
+# Description
+Adds a CLI option to start an HTTP server that exposes a REST API for computing π values using the supported algorithms. The server listens on a configurable port and responds to GET /pi requests with JSON containing the computed π value, optional digit frequency histogram, and computation time.
 
-- In `tests/unit/main.test.js`:
-  - Add tests to verify that using `--format text` reproduces the original table output.
-  - Add tests for `--format png --output test-chart.png`:
-    - Confirm that the file `test-chart.png` is created.
-    - Confirm that the file has PNG signature bytes.
-  - Test invalid format values cause a usage error.
-  - Test missing or unwritable output path emits an error.
+# CLI Usage
+node src/lib/main.js --serve [--port <port>] --pi <digits> [--algorithm <algorithmName>] [--samples <count>] [--seed <number>] [--benchmark] [--digit-frequency]
 
-## README Updates
+# API Endpoints
+GET /pi?digits=<number>&algorithm=<name>&samples=<count>&seed=<number>&benchmark=<boolean>&digitFrequency=<boolean>
 
-- Update Usage section to include new options:
+# Implementation
+- Extend main.js argument parser to detect --serve and --port.
+- When --serve is provided, use the built-in http module to create an HTTP server bound to the specified port (default 3000).
+- Parse and validate query parameters using zod for digits, algorithm, samples, seed, benchmark, and digitFrequency.
+- Reuse existing π computation functions for Gauss-Legendre, Chudnovsky, and Monte Carlo algorithms.
+- Compute π and gather optional benchmark time and digit frequency.
+- Respond with a JSON object { pi: string, digits: number, algorithm: string, benchmarkMs?: number, digitFrequency?: Record<string, number> }.
+- Set Content-Type to application/json and handle invalid requests with a 400 status code and error message.
 
-  node src/lib/main.js --benchmark --format text
-  node src/lib/main.js --benchmark --format png --output elapsed.png
-
-- Provide example CLI invocation and sample table and chart file reference.
-
-## Dependency Updates
-
-- Add `chartjs-node-canvas` to dependencies in `package.json` for server-side chart rendering.
-- No other new dependencies; continue using built-in `perf_hooks` and `fs` for timing and file I/O.features/PI_CALCULATOR.md
+# Testing
+- Mock http.createServer in unit tests to simulate GET requests and capture responses.
+- Verify GET /pi returns correct JSON structure and values for known digit inputs.
+- Test error responses for missing or invalid query parameters.
+- Ensure the server cleans up and shuts down properly after tests complete.features/PI_CALCULATOR.md
 # features/PI_CALCULATOR.md
-# π Calculator CLI
+# PI_CALCULATOR
 
-## Summary
-Extend the existing CLI tool to compute π to a specified number of decimal places using selectable algorithms. Users can request a calculation via command-line flags and receive the result in text format.
+# Description
+Supports computing π to a specified number of decimal places using a choice of algorithms. Enables selection between Gauss-Legendre, Chudnovsky, and Monte Carlo approaches. Retains optional benchmarking and digit frequency histogram generation. Provides flexible controls for Monte Carlo simulation parameters.
 
-## Behavior
-- Accept a new flag `--digits <n>` (default 10) to control how many decimal places of π to compute.
-- Accept a new flag `--algorithm <name>` (defaults to `leibniz`) to choose between available algorithms: `leibniz`, `nilakantha`, and `machin`.
-- Print the computed value of π to standard output with the requested precision.
+# CLI Usage
+node src/lib/main.js --pi <digits> --algorithm <algorithmName> [--samples <count>] [--seed <number>] [--benchmark] [--digit-frequency]
 
-## Source File Changes
-- In `src/lib/main.js`, import a small helper module or define functions to calculate π using the three series.
-- Use `process.argv` to parse `--digits` and `--algorithm`.
-- Validate inputs and fall back to defaults if flags are missing or invalid.
-- Format the computed value by rounding to the requested number of decimal places.
+--pi                  Number of decimal places to compute π (required)
+--algorithm           Algorithm to use: gauss-legendre, chudnovsky, monte-carlo (default: gauss-legendre)
+--samples             Number of random samples for monte-carlo algorithm (only for monte-carlo, default: 1e6)
+--seed                Seed value for Monte Carlo random number generator (only for monte-carlo, optional)
+--benchmark           Optional flag; when provided, report computation time in milliseconds
+--digit-frequency     Optional flag; when provided, compute and print a digit frequency histogram of the computed value
 
-## Test Coverage
-- Add unit tests in `tests/unit/main.test.js` to:
-  - Verify each algorithm returns π within acceptable tolerance for small digit counts (e.g., 5 or 10 digits).
-  - Ensure default behavior (no flags) produces 10 digits using the `leibniz` series without throwing errors.
-  - Test invalid flag values gracefully revert to defaults.
+# Implementation
+- Add or update dependencies: ensure decimal.js is available for high-precision algorithms
+- Extend argument parser in main.js to detect:
+  - --pi <digits>
+  - --algorithm <algorithmName>
+  - --samples <count>
+  - --seed <number>
+  - --benchmark
+  - --digit-frequency
+- Implement algorithm dispatch:
+  - Gauss-Legendre: use Decimal and Gauss-Legendre as before
+  - Chudnovsky: implement Chudnovsky series with Decimal for high-performance arbitrary precision
+  - Monte Carlo: use built-in Math.random or seeded PRNG when --seed is provided; sample points in unit square to estimate π
+- After computation:
+  - Print π string to stdout
+  - If digit-frequency enabled: count and print each digit 0–9 excluding decimal point
+  - If benchmark enabled: print Computation Time: <elapsed> ms
 
-## README Updates
-- Document the new flags in the Usage section:
-  - `node src/lib/main.js --digits 15`
-  - `node src/lib/main.js --algorithm machin --digits 20`
-- Provide example outputs.
-
-## Dependency Updates
-- Add a lightweight flag parsing library (for example `yargs`).
-- Update `package.json` to include the new dependency and update the `test` script if needed to run the new tests.
+# Testing
+- Verify Gauss-Legendre known outputs for small digit counts
+- Verify Chudnovsky outputs match Gauss-Legendre for overlapping digits
+- Test Monte Carlo with small sample sizes and fixed seed produces consistent approximate value
+- Confirm errors thrown for missing or invalid inputs (negative digits, unsupported algorithm names)
+- Ensure combined flags produce the correct sequence of π output, histogram lines, and timing lines

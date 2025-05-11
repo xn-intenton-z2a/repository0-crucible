@@ -26,13 +26,6 @@ Comprehensive reference for Express 4.x API, covering application setup, routing
 Comprehensive documentation for Vitest, a Vite-native test framework covering configuration, mocking, snapshot testing, performance metrics, and CLI runner usage. Paired with SuperTest’s HTTP assertion and integration testing guides for Express applications, describing request chaining, expectations, and hooks for test runners. Critical for unit, E2E, and GraphQL tests of both CLI and HTTP/GraphQL server behavior.
 ## MIT License
 
-# CLI Libraries (Commander, Progress & Completion)
-## https://github.com/tj/commander.js
-## https://github.com/streamich/cli-progress#readme
-## https://github.com/mklabs/tabtab#readme
-Unified reference for key CLI tooling in the project. Commander.js provides declarative command and option definitions, argument parsing, validation, and auto-generated help. cli-progress offers SingleBar and MultiBar APIs for terminal progress bars used by the --progress flag. tabtab enables automatic shell completion script generation for bash, zsh, and fish, streamlining the --generate-completion feature. Together, these libraries form the backbone of the tool’s interactive and automated CLI interface.
-## MIT License
-
 # Node.js Core and Streams APIs
 ## https://nodejs.org/api/
 Central reference for Node.js built-in modules, including fs/promises, path, url, worker_threads, perf_hooks, and the streams API (Readable, Writable, Duplex, Transform). Essential for file I/O, parallel computation, performance measurement, HTTP chunked transfer for streaming, real-time WebSocket integration, and module URL resolution. Covers Node.js v20+ features and best practices.
@@ -82,9 +75,10 @@ Detailed documentation for prom-client and Pino libraries to instrument Node.js 
 Official OpenAI API reference covering endpoints for completions, chat, embeddings, and fine-tuning. Includes detailed parameter specifications, request/response schemas, rate limit guidance, and code examples in multiple languages. Critical for integrating AI-driven features and ensuring correct usage of the OpenAI service in CLI commands and server endpoints. Last updated 2024; authoritative.
 ## Proprietary
 
-# Yargs Documentation
-## https://yargs.js.org/docs/
-Official yargs documentation detailing command-line argument parsing, option definitions, validation, commands, middleware, and help generation. Essential for parsing flags such as --digits, --algorithm, --benchmark, and configuring CLI behavior consistently. Provides examples for custom commands, nested options, and configuration file support. Last updated 2024.
+# Decimal.js
+## https://mikemcl.github.io/decimal.js/
+## https://github.com/MikeMcl/decimal.js
+Comprehensive documentation for decimal.js library, detailing arbitrary-precision decimal arithmetic capabilities. Covers API methods for construction, arithmetic operations, configuration of precision and rounding modes, and performance considerations. Essential for implementing the Gauss-Legendre algorithm for π calculation with Decimal objects. Last release v10.4.3; maintained on GitHub.
 ## MIT License
 
 # Node.js Performance Hooks API
