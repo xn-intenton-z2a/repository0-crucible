@@ -41,23 +41,44 @@ export function calculatePiMonteCarlo(samples) {
  */
 export function main(args = process.argv.slice(2)) {
   const options = minimist(args, {
+    boolean: ["diagnostics"],
     string: ["algorithm"],
-    default: { digits: 5, algorithm: "leibniz", samples: 100000 },
+    default: { digits: 5, algorithm: "leibniz", samples: 100000, diagnostics: false },
   });
   const digits = Number(options.digits);
   const algorithm = options.algorithm.toLowerCase();
+  const diagnostics = options.diagnostics === true;
 
+  const startTime = Date.now();
   let piValue;
+  let iterations;
+  let samplesUsed;
+
   if (algorithm === "leibniz") {
+    iterations = Math.min(Math.pow(10, digits) * 20, 1e7);
     piValue = calculatePiLeibniz(digits);
   } else if (algorithm === "montecarlo") {
-    const samples = Number(options.samples);
-    piValue = calculatePiMonteCarlo(samples);
+    samplesUsed = Number(options.samples);
+    piValue = calculatePiMonteCarlo(samplesUsed);
   } else {
     console.error(`Unsupported algorithm: ${options.algorithm}`);
     process.exit(1);
   }
-  console.log(piValue);
+  const endTime = Date.now();
+  const durationMs = endTime - startTime;
+
+  if (diagnostics) {
+    const diagnosticsOutput = {
+      algorithm,
+      ...(algorithm === "leibniz" ? { digits } : { samples: samplesUsed }),
+      result: piValue,
+      durationMs,
+      ...(algorithm === "leibniz" ? { iterations } : { samplesUsed }),
+    };
+    console.log(diagnosticsOutput);
+  } else {
+    console.log(piValue);
+  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
