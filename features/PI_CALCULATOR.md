@@ -1,32 +1,39 @@
 # PI_CALCULATOR
 
 # Description
-Adds a command line option to compute π to a specified number of decimal places using the Gauss-Legendre algorithm with arbitrary precision support via decimal.js. Provides optional benchmarking mode and optional digit frequency histogram output to display the distribution of digits in the computed value.
+Supports computing π to a specified number of decimal places using a choice of algorithms. Enables selection between Gauss-Legendre, Chudnovsky, and Monte Carlo approaches. Retains optional benchmarking and digit frequency histogram generation. Provides flexible controls for Monte Carlo simulation parameters.
 
 # CLI Usage
-node src/lib/main.js --pi <digits> [--benchmark] [--digit-frequency]
+node src/lib/main.js --pi <digits> --algorithm <algorithmName> [--samples <count>] [--seed <number>] [--benchmark] [--digit-frequency]
 
---pi        Number of decimal places to compute π
---benchmark Optional flag; when provided, report the time taken to compute π in milliseconds
---digit-frequency Optional flag; when provided, compute and print a digit frequency histogram of the computed value
+--pi                  Number of decimal places to compute π (required)
+--algorithm           Algorithm to use: gauss-legendre, chudnovsky, monte-carlo (default: gauss-legendre)
+--samples             Number of random samples for monte-carlo algorithm (only for monte-carlo, default: 1e6)
+--seed                Seed value for Monte Carlo random number generator (only for monte-carlo, optional)
+--benchmark           Optional flag; when provided, report computation time in milliseconds
+--digit-frequency     Optional flag; when provided, compute and print a digit frequency histogram of the computed value
 
 # Implementation
-- Ensure decimal.js is a dependency
-- Extend argument parser in main to detect:
+- Add or update dependencies: ensure decimal.js is available for high-precision algorithms
+- Extend argument parser in main.js to detect:
   - --pi <digits>
+  - --algorithm <algorithmName>
+  - --samples <count>
+  - --seed <number>
   - --benchmark
   - --digit-frequency
-- Compute π using Gauss-Legendre algorithm with Decimal objects
-- If benchmark mode is enabled: record high-resolution timing
+- Implement algorithm dispatch:
+  - Gauss-Legendre: use Decimal and Gauss-Legendre as before
+  - Chudnovsky: implement Chudnovsky series with Decimal for high-performance arbitrary precision
+  - Monte Carlo: use built-in Math.random or seeded PRNG when --seed is provided; sample points in unit square to estimate π
 - After computation:
-  - Print the π string to stdout
-  - If digit frequency mode is enabled:
-    - Count occurrences of each digit in the π string (excluding decimal point)
-    - Print lines in the form "<digit>: <count>" for digits 0–9
-  - If benchmark mode is enabled: print "Computation Time: <elapsed> ms"
+  - Print π string to stdout
+  - If digit-frequency enabled: count and print each digit 0–9 excluding decimal point
+  - If benchmark enabled: print Computation Time: <elapsed> ms
 
 # Testing
-- Verify known π values for digits 0,1,3,5 remain correct
-- Confirm that invoking with --digit-frequency prints ten lines, one for each digit from 0 to 9, with correct counts
-- Confirm combined flags produce π output, histogram lines, and timing lines in the expected order
-- Test error handling for missing or invalid --pi inputs
+- Verify Gauss-Legendre known outputs for small digit counts
+- Verify Chudnovsky outputs match Gauss-Legendre for overlapping digits
+- Test Monte Carlo with small sample sizes and fixed seed produces consistent approximate value
+- Confirm errors thrown for missing or invalid inputs (negative digits, unsupported algorithm names)
+- Ensure combined flags produce the correct sequence of π output, histogram lines, and timing lines
