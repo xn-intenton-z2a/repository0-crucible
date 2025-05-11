@@ -7,7 +7,7 @@ This feature adds a `--digits <n>` flag to the CLI tool in `src/lib/main.js`, al
 ```bash
 # Default (10 decimal places)
 node src/lib/main.js
-# -> 3.1415926535
+# -> 3.1415926536
 
 # Specify digits
 node src/lib/main.js --digits 5
@@ -19,7 +19,7 @@ node src/lib/main.js --digits 3
 
 # Help output
 node src/lib/main.js --help
-```
+``` 
 
 ## Options
 

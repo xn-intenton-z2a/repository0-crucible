@@ -47,10 +47,12 @@ describe("CLI Integration", () => {
     console.error = origErr;
   });
 
-  test("default digits outputs ~3.1415926535 and exits 0", () => {
+  test("default digits outputs ~3.1415926536 and exits 0", () => {
     process.argv = ["node", "src/lib/main.js"];
     main();
-    expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/^3\.1415926535/));
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringMatching(/^3\.1415926536/)
+    );
     expect(process.exit).toHaveBeenCalledWith(0);
   });
 

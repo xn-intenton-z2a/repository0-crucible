@@ -17,7 +17,7 @@ export function calculatePi(digits) {
     throw new Error(`Maximum digits is ${MAX_DIGITS}`);
   }
 
-  const extra = 10; // extra digits for rounding
+  const extra = 10; // extra digits for rounding precision
   const bigTen = BigInt(10);
   const scale = bigTen ** BigInt(digits + extra);
 
@@ -39,8 +39,8 @@ export function calculatePi(digits) {
 
   // Machin-like formula: PI = 4*(4*arctan(1/5) - arctan(1/239))
   const piExtra = (arctan(5) * 4n - arctan(239)) * 4n;
-  // Round: add half of the extra scale
-  const roundTerm = bigTen ** BigInt(extra - 1);
+  // Round to nearest: add half of the extra scale
+  const roundTerm = (bigTen ** BigInt(extra)) / 2n;
   const piRoundedExtra = piExtra + roundTerm;
   // Scale down to desired digits
   const piScaled = piRoundedExtra / (bigTen ** BigInt(extra));
