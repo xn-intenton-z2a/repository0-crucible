@@ -8,11 +8,6 @@ Comprehensive API reference and usage guide for Decimal.js, the arbitrary-precis
 Official JavaScript client library for QuickChart.io, providing a fluent API to build chart configurations, fetch rendered image buffers or URLs, and manage SSL, custom fonts, and advanced rendering options. Demonstrates integration patterns for line and bar charts, multi-dataset support, theming, axes customization, and sizing. Critical for programmatic chart generation in convergence, distribution, benchmark, and comparison features. Last updated 2024.
 ## MIT License
 
-# QuickChart API Documentation
-## https://quickchart.io/documentation/
-Comprehensive reference for QuickChart’s REST API, detailing chart configuration schema, HTTP endpoints, request payload structures, response formats, and advanced features such as time-series charts, server-side rendering, and custom fonts. Crucial for understanding the JSON-based chart spec and troubleshooting direct API calls when bypassing the client library. Last updated 2024; authoritative official documentation.
-## Public Domain
-
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
 Authoritative guide to Express 4.x, covering routing, middleware design, error handling, request parsing, response streaming, and static file serving. Foundational for building HTTP API endpoints, SSE streaming, JSON services, CORS integration, and diagnostic middleware in the π service. Official docs under MIT License.
@@ -25,7 +20,7 @@ Centralized documentation for Node.js core modules (fs/promises, path, url), wit
 
 # zod
 ## https://github.com/colinhacks/zod
-Declarative TypeScript-first schema validation library. Covers object schemas, refinements, asynchronous parsing, and detailed error formatting. Critical for defining and validating CLI flag schemas, configuration inputs (cosmiconfig), HTTP request parameters, and ensuring robust input handling. Maintained under MIT License.
+Declarative TypeScript-first schema validation library. Covers object schemas, refinements, asynchronous parsing, and detailed error formatting. Critical for defining and validating CLI flag schemas, configuration inputs (cosmiconfig), HTTP request parameters, and ensuring robust input handling. Maintained under MIT License. Last updated 2024.
 ## MIT License
 
 # cosmiconfig
@@ -40,22 +35,17 @@ Official documentation for YAML parsing and dumping in JavaScript, covering safe
 
 # proper-lockfile
 ## https://www.npmjs.com/package/proper-lockfile
-Official npm package documentation for reliable file locking and atomic write operations in Node.js. Covers acquiring and releasing locks, retry strategies, stale lock handling, and ensuring data integrity under concurrent access—crucial for the persistent π cache feature. Last published 2024.
-## MIT License
-
-# cli-progress
-## https://github.com/cli-progress/cli-progress
-Versatile progress bar library for Node.js supporting single and multi-bar displays, custom formatting tokens, and real-time console updates. Important for live progress indicators in long-running π computations, benchmarks, and chart renderings when `--progress` is enabled. Last updated 2024.
+Official npm package documentation for reliable file locking and atomic write operations in Node.js. Covers acquiring and releasing locks, retry strategies, stale lock handling, and ensuring data integrity under concurrent access—crucial for the persistent π cache feature. Last published 2024; MIT License.
 ## MIT License
 
 # EJS
 ## https://ejs.co/#docs
-Embedded JavaScript templating engine docs covering template syntax, partials, includes, and custom filters. Fundamental for HTML report generation to template dashboards, embed Base64 images, and render code blocks in static reports. Last updated 2024.
+Embedded JavaScript templating engine docs covering template syntax, partials, includes, and custom filters. Fundamental for HTML report generation to template dashboards, embed Base64 images, and render code blocks in static reports. Last updated 2024; MIT License.
 ## MIT License
 
 # Swagger UI Express Middleware
 ## https://github.com/scottie1984/swagger-ui-express
-Middleware for integrating Swagger UI into Express applications. Provides `serve` and `setup` functions to host interactive API docs from an OpenAPI spec. Demonstrates mounting raw JSON spec at `/docs.json` and UI at `/docs`, CSS/JS customization, and middleware ordering considerations. Essential for the Swagger UI feature. Last updated 2024.
+Middleware for integrating Swagger UI into Express applications. Provides `serve` and `setup` functions to host interactive API docs from an OpenAPI spec. Demonstrates mounting raw JSON spec at `/docs.json` and UI at `/docs`, CSS/JS customization, and middleware ordering considerations. Essential for the Swagger UI feature in the π service. Last updated 2024; MIT License.
 ## MIT License
 
 # MDN Web API: Server-Sent Events
@@ -70,10 +60,20 @@ Official documentation for the `cors` middleware package for Express. Explains c
 
 # express-rate-limit
 ## https://github.com/express-rate-limit/express-rate-limit
-Express middleware for request rate limiting to protect APIs against abuse. Documents configuration options such as `windowMs`, `max`, key generation, and custom handlers. Essential for implementing the HTTP rate-limiting feature via `--rate-limit` flags. Last updated 2024.
+Express middleware for request rate limiting to protect APIs against abuse. Documents configuration options such as `windowMs`, `max`, key generation, and custom handlers. Essential for implementing the HTTP rate-limiting feature via `--rate-limit` flags. Last updated 2024; MIT License.
 ## MIT License
 
 # prom-client
 ## https://github.com/siimon/prom-client
-Official GitHub repository and documentation for prom-client, a Prometheus client for Node.js, providing registry configuration, metric types (Counter, Gauge, Histogram, Summary), default metrics collection, and best practices for labeling and metric exposition. Crucial for implementing the `/metrics` endpoint in the HTTP API, recording request counters and duration histograms, and exposing metrics in Prometheus format. Last updated 2024.
+Official GitHub repository and documentation for prom-client, a Prometheus client for Node.js, providing registry configuration, metric types (Counter, Gauge, Histogram, Summary), default metrics collection, and best practices for labeling and metric exposition. Crucial for implementing the `/metrics` endpoint in the HTTP API, recording request counters and duration histograms, and exposing metrics in Prometheus format. Last updated 2024; MIT License.
 ## MIT License
+
+# dotenv
+## https://github.com/motdotla/dotenv
+Comprehensive guide to loading environment variables from `.env` files in Node.js applications. Covers variable parsing, default values, variable expansion, and security considerations. Useful for managing API keys, configuration toggles, and secret management in different environments. Last updated 2024; MIT License.
+## MIT License
+
+# OpenAPI Specification (OAS)
+## https://spec.openapis.org/oas/v3.1.0
+Official OpenAPI 3.1 specification defining the structure of OpenAPI documents, including paths, components, schemas, parameters, and security schemes. Essential for constructing accurate API schemas for documentation generation, input validation, and Swagger UI integration. Last updated 2023; authoritative specification under CC0 1.0 Universal (Public Domain).
+## CC0 1.0 Universal
