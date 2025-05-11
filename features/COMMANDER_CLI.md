@@ -1,43 +1,45 @@
 # Overview
 
-Integrate Commander.js into the existing CLI entry point to replace manual argument parsing. This provides declarative flag definitions, built-in validation, default values, help generation, and easier extension for future features.
+Integrate Commander.js into the CLI entry point to replace manual argument parsing and provide a robust, declarative interface for all existing and future flags. This will simplify parsing, improve validation, auto-generate help, and make it easier to add new options.
 
 # Implementation Details
 
-• Add commander as a dependency in package.json (commander@latest).  
-• In src/lib/main.js, import { Command } from 'commander' and create a new Command instance configured with name, version (from package.json), and description.  
-• Use .option() calls to declare all CLI flags:
-  - --digits <n> (integer, default 10, max 1000)  
-  - --format <text|json> (choices text or json, default text)  
-  - --output <file> (string, optional)  
-  - --help, -h (built-in help)  
-• Parse argv with program.parse(argv) and extract opts via program.opts().  
-• Validate options using commander’s built-in choices and custom argument parser functions where needed (e.g., coerce number, enforce range).  
-• After parsing, implement behavior branching based on opts:
-  - If opts.format is json, wrap the calculatePi result into { digits, pi } object and serialize with JSON.stringify.  
-  - If opts.output is provided, write output to file via fs/promises.writeFile; otherwise print to stdout.  
-  - On validation or write errors, display error message and exit with code 1.  
-• Remove manual argv loops and console.log/console.error based parsing; rely on commander for help and errors.  
-• Ensure backward compatibility for users invoking legacy flags: program should accept --digits and --help with identical behavior.
-
+• Add "commander" as a dependency in package.json.
+• In src/lib/main.js:
+  • Import { Command, Option, Argument } from "commander" and read version and description from package.json.
+  • Create a Command instance named "pi-calculator" with .name(), .version(), and .description().
+  • Declare options using .option() or new Option():
+    --digits <n>            number of decimal places (integer, default 10, min 1, max 1000)
+    --format <text|json>    output format, choices text or json (default text)
+    --output <file>         file path to write output (optional)
+    --help, -h              show help information (built-in)
+  • Use custom arg parsers to coerce and validate numeric values and enforce ranges; rely on .choices() for format.
+  • After program.parse(argv), read opts via program.opts().
+  • Branch behavior:
+    - If format is json: build object { digits, pi } and JSON.stringify with 2-space indent.
+    - Otherwise print the PI string.
+  • If opts.output is set, import fs/promises and write the formatted string to that file, handling errors by program.error() and exit code 1.
+  • Remove manual argv loops, console.log/console.error argument parsing, and process.exit calls are replaced by commander’s exitOverride or program.error.
+  
 # Testing
 
-• Update tests/unit/main.test.js to add or adapt tests for commander-based parsing:
-  - Test invoking main(['node','src/lib/main.js','--digits','3']) logs Pi string and exits 0.  
-  - Test --format json prints valid JSON and exits 0.  
-  - Mock fs/promises.writeFile and test that --output triggers file write.  
-  - Test invalid values for --digits and --format cause commander to print error and exit with code 1.  
-• Create a new test file tests/unit/cli-commander.test.js if needed to isolate commander integration tests.  
-• Ensure all existing calculatePi tests remain passing.
+• Update tests/unit/main.test.js or create tests/unit/cli-commander.test.js:
+  - Mock fs/promises.writeFile to verify file writes when --output is provided.
+  - Test parsing and behavior for:
+    * Defaults: running with no flags prints a PI string and exits 0.
+    * --digits 3 prints correct formatted output.
+    * --format json prints valid JSON with digits and pi fields.
+    * --output writes to file and does not print to stdout.
+    * Invalid values for digits or format cause commander to display an error and exit code 1.
+  • Ensure existing calculatePi unit tests remain passing.
 
 # Documentation
 
-• Update README.md under Features and Usage:
-  - Describe new usage examples:
-      node src/lib/main.js --digits 5
+• Update README.md:
+  - Add a "CLI Usage" section showing examples:
+      node src/lib/main.js                   # 10 digits, text
+      node src/lib/main.js --digits 5        # 5 digits, text
       node src/lib/main.js --digits 5 --format json
-      node src/lib/main.js --digits 5 --format json --output pi.json
-  
-• Show auto-generated help output snippet from commander.  
-• Document default values and allowable choices for flags.  
-• Note that integration with commander simplifies future CLI enhancements.
+      node src/lib/main.js --digits 8 --format json --output pi.json
+  - Include a snippet of auto-generated help output showing all available options and defaults.
+  - Note that commander handles validation, help, and suggestions, simplifying future extensions.
