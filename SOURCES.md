@@ -13,14 +13,11 @@ Official Chart.js documentation covering chart types (bar, line, pie, etc.), dat
 Client library documentation for quickchart-js, detailing programmatic chart generation in Node.js. Covers instantiation of QuickChart objects, chart option schemas, methods such as toBinary() and toURL(), and usage examples for automating image export in CLI and HTTP handlers. Updated frequently on GitHub; provides async/await patterns, error handling, and CLI integration guidance.
 ## MIT License
 
-# Express.js Documentation
+# Express.js and Middleware
 ## https://expressjs.com/en/4x/api.html
-Comprehensive reference for Express 4.x API, covering application setup, routing, middleware patterns, request parsing (json, urlencoded), response streaming, error handling, and integration points. Essential for implementing REST endpoints, applying CORS, configuring chunked transfer for streaming, integrating Swagger UI or GraphQL interfaces, and mounting metrics. Also references popular middleware such as express-rate-limit (https://github.com/nfriedly/express-rate-limit) for rate limiting. Updated regularly by the Express.js Core Team.
-## MIT License
-
-# CORS Middleware Documentation
 ## https://github.com/expressjs/cors
-Official repository and documentation for CORS middleware in Express.js, covering configuration options for origin, methods, headers, credentials, and preflight behavior. Essential for enabling cross-origin HTTP requests in browser-based clients and APIs. Last updated 2024; maintained by the Express.js team and community.
+## https://github.com/nfriedly/express-rate-limit
+Comprehensive reference for Express 4.x API, covering application setup, routing, middleware patterns, request parsing (json, urlencoded), response streaming, error handling, and integration points. Includes detailed guides on configuring CORS for cross-origin requests and implementing rate limiting with express-rate-limit (windowMs, max requests, standard headers). Essential for REST endpoint implementation, streaming /pi/stream endpoints, and integrating Swagger UI or GraphQL middlewares. Last updated regularly by the Express.js Core Team and community.
 ## MIT License
 
 # Testing Tools: Vitest & SuperTest
@@ -36,7 +33,7 @@ Minimalist command-line interface library documentation, detailing declarative c
 
 # Node.js Core and Streams APIs
 ## https://nodejs.org/api/
-Central reference for Node.js built-in modules, including fs/promises, path, url, worker_threads, perf_hooks, and the streams API (Readable, Writable, Duplex, Transform). Essential for file I/O, parallel computation, performance measurement, HTTP chunked transfer, real-time streaming of π digits, and module URL resolution. Covers Node.js v20+ features and best practices.
+Central reference for Node.js built-in modules, including fs/promises, path, url, worker_threads, perf_hooks, and the streams API (Readable, Writable, Duplex, Transform). Essential for file I/O, parallel computation, performance measurement, HTTP chunked transfer for streaming, real-time streaming of π digits, and module URL resolution. Covers Node.js v20+ features and best practices.
 ## Node.js License
 
 # Zod
@@ -81,4 +78,9 @@ Official GraphQL learn guide and express-graphql middleware docs. Covers SDL sch
 # Prometheus Client Library Documentation
 ## https://github.com/siimon/prom-client#readme
 Detailed documentation for prom-client, the de facto Prometheus metrics library for Node.js. Covers default metrics collection, custom Counter, Gauge, Histogram, and Summary metrics, registry configuration, and integration with Express middleware. Essential for exposing operational and performance metrics (/metrics endpoint) and instrumenting HTTP requests and π calculation durations.
+## MIT License
+
+# Pino Logging Library
+## https://github.com/pinojs/pino
+High-performance Node.js logging library focusing on low-overhead, structured JSON logging. Documentation covers configuration of log levels, serializers, transports (pino-pretty), and integration with Express via middleware. Provides best practices for logging in CLI and HTTP server modes, including child loggers, hooks, and log redaction. Last updated 2024; maintained by the Pino Core Team.
 ## MIT License
