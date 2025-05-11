@@ -1,57 +1,43 @@
 # Overview
 
-Integrate Commander.js for robust and declarative CLI argument parsing, validation, and help generation, replacing ad-hoc argument handling in main.js.
-
-# CLI Interface
-
-Leverage Commander to define options and commands consistently:
-
-• --digits <n>          Integer number of decimal places (default 10, max 1000)
-• --cache <on|off>       Enable or disable result caching (default on)
-• --cache-file <file>    Path to persistent cache JSON (default .pi_cache.json)
-• --clear-cache          Clear cache before computing
-• --benchmark            Run performance benchmarks
-• --format <text|json>   Output format for pi calculation (default text)
-• --output <file>        File path for CLI output (default stdout)
-• --algorithm <name>     Choose computation algorithm (machin or chudnovsky)
-• --workers <n>          Number of worker threads for parallel computation
-• --progress             Display a progress bar during computation
-• --diagnostics          Output runtime diagnostics as JSON
-• --serve <port>         Launch HTTP API server on given port
-• --cors                 Enable CORS in server mode
-• -h, --help             Show help and exit
+Integrate Commander.js into the existing CLI entry point to replace manual argument parsing. This provides declarative flag definitions, built-in validation, default values, help generation, and easier extension for future features.
 
 # Implementation Details
 
-In src/lib/main.js:
-• Install commander as a dependency and import { Command } from 'commander'.
-• Instantiate a Command, set name, version, and description from package.json.
-• Use .option() calls to declare each CLI flag with its type, default, and description.
-• Replace manual argv parsing: call program.parse(argv) and read program.opts().
-• Branch logic based on opts: compute pi, run cache logic, benchmarks, diagnostics, HTTP server, or show help.
-• Ensure validation rules (e.g. integer ranges, allowed choices) are enforced through commander’s built-in mechanisms or custom option processing.
-• Retain existing functionality for caching, benchmarking, progress, algorithm selection, diagnostics, and HTTP API under new structured parsing.
-• Remove manual process.argv loops and help printing logic.
+• Add commander as a dependency in package.json (commander@latest).  
+• In src/lib/main.js, import { Command } from 'commander' and create a new Command instance configured with name, version (from package.json), and description.  
+• Use .option() calls to declare all CLI flags:
+  - --digits <n> (integer, default 10, max 1000)  
+  - --format <text|json> (choices text or json, default text)  
+  - --output <file> (string, optional)  
+  - --help, -h (built-in help)  
+• Parse argv with program.parse(argv) and extract opts via program.opts().  
+• Validate options using commander’s built-in choices and custom argument parser functions where needed (e.g., coerce number, enforce range).  
+• After parsing, implement behavior branching based on opts:
+  - If opts.format is json, wrap the calculatePi result into { digits, pi } object and serialize with JSON.stringify.  
+  - If opts.output is provided, write output to file via fs/promises.writeFile; otherwise print to stdout.  
+  - On validation or write errors, display error message and exit with code 1.  
+• Remove manual argv loops and console.log/console.error based parsing; rely on commander for help and errors.  
+• Ensure backward compatibility for users invoking legacy flags: program should accept --digits and --help with identical behavior.
 
 # Testing
 
-Update tests/unit/main.test.js and add new tests in tests/unit/cli-commander.test.js:
-• Mock commander’s parse to simulate various arg combinations and verify opts on program.
-• Validate error handling: supplying invalid values triggers commander error and process.exit override.
-• Ensure existing calculatePi and main behavior remains correct when invoked via commander-managed opts.
-
-Update tests/e2e/cli.test.js:
-• Run CLI commands prefixed with node src/lib/main.js using new commander-based interface.
-• Assert output and exit codes are consistent with prior tests under all flags.
+• Update tests/unit/main.test.js to add or adapt tests for commander-based parsing:
+  - Test invoking main(['node','src/lib/main.js','--digits','3']) logs Pi string and exits 0.  
+  - Test --format json prints valid JSON and exits 0.  
+  - Mock fs/promises.writeFile and test that --output triggers file write.  
+  - Test invalid values for --digits and --format cause commander to print error and exit with code 1.  
+• Create a new test file tests/unit/cli-commander.test.js if needed to isolate commander integration tests.  
+• Ensure all existing calculatePi tests remain passing.
 
 # Documentation
 
-In README.md:
-• Replace manual flags section with Commander-driven usage examples and auto-generated help output.
-• Document each CLI option with descriptions, defaults, and examples.
-• Show sample commands for pi calculation, caching, benchmarking, diagnostics, and server mode.
-
-In package.json:
-• Add commander@latest to dependencies.
-
-Ensure backward compatibility: users invoking legacy flags still see the same behavior but under the new parser.
+• Update README.md under Features and Usage:
+  - Describe new usage examples:
+      node src/lib/main.js --digits 5
+      node src/lib/main.js --digits 5 --format json
+      node src/lib/main.js --digits 5 --format json --output pi.json
+  
+• Show auto-generated help output snippet from commander.  
+• Document default values and allowable choices for flags.  
+• Note that integration with commander simplifies future CLI enhancements.
