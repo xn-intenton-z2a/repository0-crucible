@@ -54,28 +54,25 @@ Documentation for dotenv and js-yaml libraries to load environment variables and
 Embedded JavaScript templating engine documentation, describing template syntax, partials, includes, and custom helper functions. Used for generating interactive HTML reports and dashboards (/ui), embedding π values, analysis tables, and chart images via base64 URIs. Last updated 2024.
 ## MIT License
 
-# OpenAPI & Swagger UI
+# API Specifications and Protocols
 ## https://spec.openapis.org/oas/v3.1.0
 ## https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/
-Official OpenAPI 3.1 specification defining the structure for API schemas, paths, components, and security. Swagger UI guide covers installation, Express middleware integration, theming, and serving OpenAPI specs—vital for live documentation of REST endpoints and the /docs interface.
-## CC0 1.0 Universal / Apache-2.0
+## https://graphql.org/learn/
+## https://github.com/graphql/express-graphql
+## https://github.com/websockets/ws#readme
+Consolidated reference for API schema definitions, documentation, and protocol implementations across REST, GraphQL, and WebSocket interfaces. Includes the OpenAPI 3.1 specification for defining HTTP endpoints and components, Swagger UI integration for interactive API exploration, the official GraphQL Learn guide and express-graphql middleware for GraphQL server setup, and the ws library for real-time WebSocket communications. Essential for designing and documenting /pi, /benchmark, /graphql, /ws/pi, and other protocol-based endpoints. Last updated 2024; licenses vary by tool.
+## CC0 1.0 Universal / Apache-2.0 / MIT License
 
 # BigInt and Pi Algorithms Reference
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
 ## https://en.wikipedia.org/wiki/Ramanujan%E2%80%93Sato_series
-Comprehensive guide to JavaScript BigInt primitive—creation, arithmetic operations, type coercion, and performance considerations—from MDN, paired with in-depth descriptions of the Chudnovsky and Ramanujan series from Wikipedia. Includes mathematical formulas, convergence properties, and strategies for parallel term computation—vital for implementing algorithm selection and high-precision π calculation.
+Comprehensive guide to JavaScript BigInt primitive—creation, arithmetic operations, type coercion, and performance considerations—from MDN, paired with in-depth descriptions of the Chudnovsky and Ramanujan series from Wikipedia. Includes mathematical formulas, convergence properties, and strategies for parallel term computation—vital for implementing algorithm selection and high-precision π calculation. Last updated 2024; authoritative and widely cited.
 ## CC BY-SA 4.0
-
-# GraphQL API Documentation
-## https://graphql.org/learn/
-## https://github.com/graphql/express-graphql
-Official GraphQL learn guide and express-graphql middleware docs. Covers SDL schema definitions, queries, mutations, resolvers, introspection, error handling, and mounting GraphQL endpoints in Express with GraphiQL integration and performance tuning. Fundamental for exposing π computation, analysis, and benchmarking via the /graphql endpoint.
-## CC0 1.0 Universal / MIT License
 
 # Prometheus Client Library Documentation
 ## https://github.com/siimon/prom-client#readme
-Detailed documentation for prom-client, the de facto Prometheus metrics library for Node.js. Covers default metrics collection, custom Counter, Gauge, Histogram, and Summary metrics, registry configuration, and integration with Express middleware. Essential for exposing operational and performance metrics (/metrics endpoint) and instrumenting HTTP requests and π calculation durations.
+Detailed documentation for prom-client, the de facto Prometheus metrics library for Node.js. Covers default metrics collection, custom Counter, Gauge, Histogram, and Summary metrics, registry configuration, and integration with Express middleware. Essential for exposing operational and performance metrics (/metrics endpoint) and instrumenting HTTP requests and π calculation durations. Last updated 2024.
 ## MIT License
 
 # Pino Logging Library
@@ -83,7 +80,12 @@ Detailed documentation for prom-client, the de facto Prometheus metrics library 
 High-performance Node.js logging library focusing on low-overhead, structured JSON logging. Documentation covers configuration of log levels, serializers, transports (pino-pretty), and integration with Express via middleware. Provides best practices for logging in CLI and HTTP server modes, including child loggers, hooks, and log redaction. Last updated 2024.
 ## MIT License
 
-# WebSocket API Documentation (ws)
-## https://github.com/websockets/ws#readme
-Comprehensive documentation for the "ws" WebSocket library in Node.js. Covers server and client APIs, handling upgrade requests, sending/receiving messages, events (connection, message, close, error), and configuring server options. Essential for implementing real-time π streaming and WebSocket-based endpoints under /ws/pi.
-## MIT License
+# Server-Sent Events (SSE) Documentation
+## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+Comprehensive overview of the Server-Sent Events (SSE) protocol for unidirectional streaming of text-based event data over HTTP. Covers EventSource client usage, server-side event-stream formatting, reconnection behavior, and content-type requirements (text/event-stream). Critical for implementing the /pi/sse endpoint, handling client connections, and ensuring cross-browser compatibility. Last updated 2024; maintained by MDN contributors.
+## CC0 1.0 Universal
+
+# AbortController and AbortSignal Documentation
+## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+Authoritative guide to the AbortController and AbortSignal APIs for cancelable operations in JavaScript and Node.js. Details creating and using AbortController, listening for abort events, propagating signals to fetch, streams, and custom functions, as well as best practices for graceful cancellation and cleanup. Vital for implementing graceful shutdown, client-request abort handling in HTTP and WebSocket streams, and cancellation of long-running π computations. Last updated 2024; maintained by MDN contributors.
+## CC0 1.0 Universal
