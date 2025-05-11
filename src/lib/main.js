@@ -3,6 +3,8 @@
 
 import { fileURLToPath } from "url";
 import minimist from "minimist";
+import fs from "fs";
+import path from "path";
 
 /**
  * Calculate π using the Leibniz series to the specified number of decimal places.
@@ -46,12 +48,42 @@ export function calculatePiChudnovsky(digits) {
 }
 
 /**
+ * Validate that all feature spec files reference the project mission.
+ */
+function validateFeatures() {
+  const featuresDir = path.resolve(process.cwd(), "features");
+  let files;
+  try {
+    files = fs.readdirSync(featuresDir).filter((f) => f.endsWith(".md"));
+  } catch (err) {
+    console.error(`Error reading features directory: ${err.message}`);
+    process.exit(1);
+  }
+  const missing = [];
+  files.forEach((file) => {
+    const filePath = path.join(featuresDir, file);
+    const content = fs.readFileSync(filePath, "utf-8");
+    if (!content.includes("MISSION.md")) {
+      missing.push(path.join("features", file));
+    }
+  });
+  if (missing.length > 0) {
+    console.log("The following feature spec files are missing mission references:");
+    missing.forEach((f) => console.log(`- ${f}`));
+    process.exit(1);
+  } else {
+    console.log("All features reference MISSION.md");
+    process.exit(0);
+  }
+}
+
+/**
  * Main CLI entrypoint.
  * @param {string[]} args - Command-line arguments.
  */
 export function main(args = process.argv.slice(2)) {
   const options = minimist(args, {
-    boolean: ["diagnostics", "benchmark"],
+    boolean: ["diagnostics", "benchmark", "validate-features"],
     string: ["algorithm"],
     default: {
       digits: 5,
@@ -59,12 +91,19 @@ export function main(args = process.argv.slice(2)) {
       samples: 100000,
       diagnostics: false,
       benchmark: false,
+      "validate-features": false,
     },
   });
   const digits = Number(options.digits);
   const algorithm = options.algorithm.toLowerCase();
   const diagnostics = options.diagnostics === true;
   const benchmark = options.benchmark === true;
+  const validateOpt = options["validate-features"] === true;
+
+  if (validateOpt) {
+    validateFeatures();
+    return;
+  }
 
   if (benchmark) {
     const algorithmsToBenchmark = [
