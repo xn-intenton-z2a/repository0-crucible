@@ -85,7 +85,7 @@ High-performance Node.js logging library focusing on low-overhead, structured JS
 Comprehensive overview of the Server-Sent Events (SSE) protocol for unidirectional streaming of text-based event data over HTTP. Covers EventSource client usage, server-side event-stream formatting, reconnection behavior, and content-type requirements (text/event-stream). Critical for implementing the /pi/sse endpoint, handling client connections, and ensuring cross-browser compatibility. Last updated 2024; maintained by MDN contributors.
 ## CC0 1.0 Universal
 
-# AbortController and AbortSignal Documentation
-## https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-Authoritative guide to the AbortController and AbortSignal APIs for cancelable operations in JavaScript and Node.js. Details creating and using AbortController, listening for abort events, propagating signals to fetch, streams, and custom functions, as well as best practices for graceful cancellation and cleanup. Vital for implementing graceful shutdown, client-request abort handling in HTTP and WebSocket streams, and cancellation of long-running π computations. Last updated 2024; maintained by MDN contributors.
+# WebSocket API (MDN)
+## https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+Authoritative reference for the WebSocket API in browsers, including connection establishment, event handlers (onopen, onmessage, onerror, onclose), message framing, binary and text data handling, and best practices for managing lifecycle and errors. Crucial for understanding client-side interactions with the ws-based /ws/pi endpoint and ensuring robust real-time integrations. Last updated 2024; maintained by MDN contributors.
 ## CC0 1.0 Universal
