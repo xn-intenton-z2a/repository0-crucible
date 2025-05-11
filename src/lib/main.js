@@ -5,6 +5,8 @@ import { fileURLToPath } from "url";
 import minimist from "minimist";
 import fs from "fs";
 import path from "path";
+import { Chart, registerables } from "chart.js";
+import { createCanvas } from "canvas";
 
 /**
  * Calculate π using the Leibniz series to the specified number of decimal places.
@@ -84,7 +86,7 @@ function validateFeatures() {
 export function main(args = process.argv.slice(2)) {
   const options = minimist(args, {
     boolean: ["diagnostics", "benchmark", "validate-features"],
-    string: ["algorithm"],
+    string: ["algorithm", "chart", "convergence-data"],
     default: {
       digits: 5,
       algorithm: "leibniz",
@@ -92,6 +94,8 @@ export function main(args = process.argv.slice(2)) {
       diagnostics: false,
       benchmark: false,
       "validate-features": false,
+      chart: null,
+      "convergence-data": null,
     },
   });
   const digits = Number(options.digits);
@@ -99,6 +103,8 @@ export function main(args = process.argv.slice(2)) {
   const diagnostics = options.diagnostics === true;
   const benchmark = options.benchmark === true;
   const validateOpt = options["validate-features"] === true;
+  const convDataPath = options["convergence-data"];
+  const chartPath = options.chart;
 
   if (validateOpt) {
     validateFeatures();
@@ -106,11 +112,7 @@ export function main(args = process.argv.slice(2)) {
   }
 
   if (benchmark) {
-    const algorithmsToBenchmark = [
-      "leibniz",
-      "montecarlo",
-      "chudnovsky",
-    ];
+    const algorithmsToBenchmark = ["leibniz", "montecarlo", "chudnovsky"];
     const results = algorithmsToBenchmark.map((algo) => {
       const params = {};
       let resultValue;
@@ -146,21 +148,112 @@ export function main(args = process.argv.slice(2)) {
     return;
   }
 
+  // Main calculation path
   const startTime = Date.now();
   let piValue;
   let iterations;
   let samplesUsed;
+  let dataPoints = [];
 
-  if (algorithm === "leibniz") {
-    iterations = Math.min(Math.pow(10, digits) * 20, 1e7);
-    piValue = calculatePiLeibniz(digits);
-  } else if (algorithm === "montecarlo") {
-    samplesUsed = Number(options.samples);
-    piValue = calculatePiMonteCarlo(samplesUsed);
+  if (convDataPath || chartPath) {
+    // Register Chart.js components
+    Chart.register(...registerables);
+
+    if (algorithm === "leibniz" || algorithm === "chudnovsky") {
+      // Use Leibniz series for both algorithms for data
+      iterations = Math.min(Math.pow(10, digits) * 20, 1e7);
+      let sum = 0;
+      const maxPoints = 1000;
+      const step = Math.max(1, Math.ceil(iterations / maxPoints));
+      for (let k = 0; k < iterations; k++) {
+        sum += (k % 2 === 0 ? 1 : -1) / (2 * k + 1);
+        const idx = k + 1;
+        if (k % step === 0 || k === iterations - 1) {
+          const approx = Number((4 * sum).toFixed(digits));
+          const actual = Number(Math.PI.toFixed(digits));
+          const error = Math.abs(approx - actual);
+          dataPoints.push({ index: idx, approximation: approx, error });
+        }
+      }
+      piValue = Number((4 * sum).toFixed(digits));
+    } else if (algorithm === "montecarlo") {
+      samplesUsed = Number(options.samples);
+      let inside = 0;
+      const batchSize = 1000;
+      let count = 0;
+      while (count < samplesUsed) {
+        const batch = Math.min(batchSize, samplesUsed - count);
+        for (let i = 0; i < batch; i++) {
+          const x = Math.random();
+          const y = Math.random();
+          if (x * x + y * y <= 1) {
+            inside++;
+          }
+          count++;
+        }
+        const approx = (inside / count) * 4;
+        const error = Math.abs(approx - Math.PI);
+        dataPoints.push({ index: count, approximation: approx, error });
+      }
+      piValue = (inside / samplesUsed) * 4;
+    } else {
+      console.error(`Unsupported algorithm: ${options.algorithm}`);
+      process.exit(1);
+    }
+
+    // Write convergence data if requested
+    if (convDataPath) {
+      fs.writeFileSync(convDataPath, JSON.stringify(dataPoints, null, 2));
+    }
+
+    // Write chart if requested
+    if (chartPath) {
+      const width = 800;
+      const height = 600;
+      const canvas = createCanvas(width, height);
+      const ctx = canvas.getContext("2d");
+      const labels = dataPoints.map((p) => p.index);
+      const data = dataPoints.map((p) => p.error);
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Error",
+              data,
+              borderColor: "blue",
+              backgroundColor: "lightblue",
+            },
+          ],
+        },
+        options: {
+          scales: {
+            x: { type: "linear", title: { display: true, text: "Index" } },
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "Error" },
+            },
+          },
+        },
+      });
+      const buffer = canvas.toBuffer("image/png");
+      fs.writeFileSync(chartPath, buffer);
+    }
   } else {
-    console.error(`Unsupported algorithm: ${options.algorithm}`);
-    process.exit(1);
+    // Existing single-run logic
+    if (algorithm === "leibniz") {
+      iterations = Math.min(Math.pow(10, digits) * 20, 1e7);
+      piValue = calculatePiLeibniz(digits);
+    } else if (algorithm === "montecarlo") {
+      samplesUsed = Number(options.samples);
+      piValue = calculatePiMonteCarlo(samplesUsed);
+    } else {
+      console.error(`Unsupported algorithm: ${options.algorithm}`);
+      process.exit(1);
+    }
   }
+
   const endTime = Date.now();
   const durationMs = endTime - startTime;
 
@@ -181,3 +274,6 @@ export function main(args = process.argv.slice(2)) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }
+
+// Export for testing and external use
+export { Chart, registerables, createCanvas };
