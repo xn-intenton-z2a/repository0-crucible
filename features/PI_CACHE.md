@@ -1,5 +1,5 @@
 # Overview
-This feature introduces a caching layer for π calculation results to avoid redundant computation and improve performance for repeated requests.
+This feature introduces a caching layer for π calculation results in both CLI and HTTP server modes to avoid redundant computation and improve performance for repeated requests.
 
 # CLI Interface
 Extend main(args) to accept the following flags:
@@ -7,22 +7,35 @@ Extend main(args) to accept the following flags:
 --cache-file <file>      Path to a JSON file used for persistent cache storage (default: .pi_cache.json)
 --clear-cache            Clear the in-memory and persistent cache before proceeding
 
-When caching is enabled and a request for a digit length has been computed before, the tool returns the cached value instead of recomputing.
+# HTTP API Integration
+In HTTP server mode, cache is applied to the GET /pi route:
+• Before computing π for a query parameter digits, check the in-memory cache for a stored result matching digits and any algorithm or worker options.
+• If a cached value is found, return it immediately in the JSON response without invoking calculatePi.
+• On a cache miss, compute π, store the result in both the in-memory cache and persistent cache file, then respond normally.
+• Respect --cache and --clear-cache flags for controlling cache behavior in server mode.
 
 # Implementation Details
-• Maintain an in-memory Map keyed by digit length with computed π strings as values
-• On startup, if caching is enabled, attempt to read the cache file (JSON) and populate the in-memory cache
-• On cache miss, compute π using existing calculatePi or algorithm dispatch, then store the result in memory and update the cache file on disk
-• When --clear-cache is provided, empty the in-memory Map and delete or truncate the cache file before any calculations
-• Ensure file I/O is non-blocking and errors reading or writing the cache file do not prevent π calculation
+• Maintain an in-memory Map keyed by a string of serialized options (digits, algorithm, workers) with computed π strings as values.
+• On startup, if caching is enabled, read the cache file using fs/promises and populate the in-memory Map.
+• In CLI mode, follow existing behavior: on cache miss compute then save, on clear-cache delete file and empty Map.
+• In HTTP server setup (src/lib/main.js), wrap the GET /pi handler:
+  • Compute a cache key from request query parameters.
+  • If cache enabled and key exists, return JSON { digits, pi: cachedValue }.
+  • Else call calculatePi, store result in Map and write updated cache file asynchronously, then return JSON.
+• Ensure file I/O errors for cache file read or write do not prevent π calculation or server startup.
 
 # Testing
-• Unit tests in tests/unit/main.test.js to mock fs and verify that cache file is loaded and saved correctly
-• Tests for calculatePi calls: simulate two calls with the same digit count and assert that the second call returns cached result without invoking the underlying computation
-• E2E tests in tests/e2e/cli.test.js to run the CLI with identical digit arguments twice, measure elapsed time for the second invocation, and confirm identical output values
+• Unit tests in tests/unit/main.test.js should mock fs and the cache file to verify CLI load and save behavior.
+• Add unit tests for HTTP cache logic using supertest:
+  – Start server with --serve 0 --cache on.
+  – Perform GET /pi?digits=10 twice; verify calculatePi is called only on the first request and second returns from cache.
+  – Test that --cache off disables caching and calculatePi is invoked on each request.
+  – Test that --clear-cache resets cache so subsequent requests recompute.
 
 # Documentation
-• Update README.md to document the new cache flags, default cache behavior, and example usage:
-  node src/lib/main.js --digits 100 --cache on
-  node src/lib/main.js --digits 100 --cache off
-  node src/lib/main.js --clear-cache
+• Update README.md under Features and HTTP Server sections:
+  – Document the --cache, --cache-file, and --clear-cache flags and defaults.
+  – Describe caching behavior in HTTP mode with examples:
+      node src/lib/main.js --serve 3000 --cache on
+      curl http://localhost:3000/pi?digits=50  # computes and caches
+      curl http://localhost:3000/pi?digits=50  # returns cached result
