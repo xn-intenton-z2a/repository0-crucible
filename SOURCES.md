@@ -3,11 +3,6 @@
 Comprehensive API reference and usage guide for Decimal.js, the arbitrary-precision arithmetic library used for high-digit π computations. Covers precision configuration, rounding modes, and advanced series algorithms (Machin, Gauss–Legendre, Chudnovsky) with practical code examples—essential for managing precision and optimizing calculation speed. Last updated 2024; official documentation.
 ## MIT License
 
-# QuickChart.js Client Library
-## https://github.com/typpo/quickchart-js
-Official JavaScript client library for QuickChart.io, providing a fluent API to build chart configurations and fetch rendered images. Demonstrates integration patterns for line/bar charts, theming, axes customization, and multi-dataset support—critical for generating benchmark and convergence visualizations. Last updated 2024.
-## MIT License
-
 # QuickChart API Documentation
 ## https://quickchart.io/documentation
 Detailed guide to the QuickChart.io REST API, including chart configuration JSON schema, URL parameters, and HTTP endpoints for synchronous and asynchronous rendering. Provides examples for customizing chart styles, fonts, and export options—vital for on-demand PNG generation in benchmarking features. Continuously updated; CC0 1.0 Universal.
@@ -71,4 +66,14 @@ Thorough overview of the Chudnovsky algorithm for high-speed π computation, inc
 # Benchmark.js
 ## https://benchmarkjs.com/
 Benchmark.js documentation for micro and macro benchmarking in JavaScript. Covers suite creation, test cycles, statistical analysis, and asynchronous benchmarks. Provides best practices for measuring π computation performance beyond simple timers. Continuously maintained; MIT License.
+## MIT License
+
+# Pi Delivery API Documentation
+## https://apidocs.pi.delivery/
+Official API documentation for Pi Delivery, a public REST service offering on-demand π digit generation. Details endpoints for /v1/pidigits with query parameters (start, number), response formats, rate limits, and usage examples—informative for designing and validating the CLI and HTTP /pi endpoint against an existing service. Last updated 2023; MIT License.
+## MIT License
+
+# CORS Middleware
+## https://github.com/expressjs/cors
+Express middleware to enable CORS with various options (origins, methods, headers). Explains configuration patterns, preflight request handling, and security considerations—essential for cross-origin access to the /pi and /benchmark HTTP endpoints. Last updated 2023; MIT License.
 ## MIT License
