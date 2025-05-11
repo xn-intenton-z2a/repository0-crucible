@@ -1,53 +1,47 @@
 # Overview
 
-Enhance the existing algorithm selection feature by adding a third high-convergence option, the Ramanujan series algorithm, alongside Machin and Chudnovsky. This provides users with a faster alternative for medium-to-large digit counts and maintains parallel support for the Chudnovsky series.
+Unify and enhance π computation algorithm selection by providing real implementations for Ramanujan and Chudnovsky series algorithms, and support an automatic mode that chooses the optimal algorithm based on the requested digit count. Allow users to configure selection thresholds via environment variables or configuration file, improving performance and ease of use.
 
 # CLI Interface
 
-Extend the existing flags:
+Extend the existing flags in src/lib/main.js:
 
---algorithm <machin|chudnovsky|ramanujan>   Choose π computation algorithm (default: machin)
---workers <n>                                Number of worker threads for parallel computation (default: 1)
-
-Behavior:
-• machin        : legacy Machin-like arctan formula (serial only)
-• chudnovsky    : Chudnovsky series, supports parallel when workers > 1
-• ramanujan     : Ramanujan rapidly convergent series (serial only; workers flag ignored)
+--algorithm <auto|machin|ramanujan|chudnovsky>   Specify the algorithm to compute π. auto (default) selects the fastest method based on digit count.
+--workers <n>                                    Number of worker threads for parallel Chudnovsky computation (default 1)
+--auto-threshold-machin <n>                      Maximum digits to use the Machin formula in auto mode (default 50)
+--auto-threshold-ramanujan <n>                   Maximum digits to use the Ramanujan series in auto mode (default 500)
 
 # Implementation Details
 
-• Refactor calculatePi to accept an options object with properties algorithm and workers.
-• Implement calculatePiRamanujan(digits) using the Ramanujan series:
-  – Compute terms of the Ramanujan formula: sum_{k=0..} (factorial(4k)*(1103+26390k))/(factorial(k)^4*396^(4k))
-  – Multiply by constant 2*sqrt(2)/9801 and scale to required digits with rounding.
-  – Stop when additional terms no longer affect the target precision.
-• In the CLI entrypoint (src/lib/main.js):
-  – Parse --algorithm and --workers flags into opts.algorithm and opts.workers.
-  – Validate algorithm choice; on invalid value, print error and exit 1.
-  – Validate workers is a positive integer up to CPU core count; if invalid, error and exit.
-  – Dispatch computation:
-    * machin      : calculatePiMachin(digits)
-    * chudnovsky : if workers > 1, spawn worker threads for partial Chudnovsky terms; otherwise serial
-    * ramanujan  : call calculatePiRamanujan(digits) regardless of workers
+In src/lib/main.js:
+
+1. Implement calculatePiRamanujan(digits) using the Ramanujan rapidly convergent series: sum terms until additional terms no longer affect the target precision and format result to the requested decimal places.
+2. Implement calculatePiChudnovsky(digits, workers) using the Chudnovsky series: compute terms in parallel when workers > 1 via worker_threads, or serially when workers equals 1.
+3. Extend calculatePi(digits, options) to support algorithm auto: read thresholds from opts.autoThresholdMachin and opts.autoThresholdRamanujan or from environment variables AUTO_THRESHOLD_MACHIN and AUTO_THRESHOLD_RAMANUJAN; choose:
+   • if digits ≤ autoThresholdMachin then machin
+   • else if digits ≤ autoThresholdRamanujan then ramanujan
+   • else chudnovsky
+4. Parse new CLI flags --auto-threshold-machin and --auto-threshold-ramanujan, merge them after defaults, configuration file values, and environment variables.
+5. Validate that threshold values are positive integers; on invalid values, fall back to code defaults without error.
+6. Ensure backward compatibility: if algorithm flag is set to machin, ramanujan, or chudnovsky explicitly, auto thresholds are ignored.
 
 # Testing
 
-• Unit tests in tests/unit/main.test.js or tests/unit/algorithm.test.js:
-  – Mock small-digit outputs: verify calculatePi with algorithm ramanujan produces expected prefixes (e.g., first 5 digits).
-  – Test option parsing: passing --algorithm ramanujan and --workers >1 computes serially without spawning threads.
-  – Test invalid algorithm string and invalid workers values trigger clear error messages and exit(1).
+Add unit tests in tests/unit/main.test.js and a new tests/unit/algorithm-implementation.test.js:
 
-• E2E tests in tests/e2e/cli.test.js:
-  – Run CLI with --digits 50 --algorithm ramanujan and assert correct π string.
-  – Run CLI with --digits 100 --algorithm chudnovsky --workers 2 to compare performance and accuracy.
-  – Run CLI with unsupported algorithm (--algorithm foo) exits with error.
+• Spy on calculatePiRamanujan and calculatePiChudnovsky and verify correct dispatch for auto mode thresholds and explicit algorithm flags.
+• Test that auto thresholds correctly separate digit counts: at boundary values for machin, ramanujan, and chudnovsky.
+• Validate fallback to default thresholds if environment variables or flags provide invalid threshold values.
+• Verify calculatePiRamanujan produces expected prefixes for small digit counts (for example first five digits) and that calculatePiChudnovsky matches existing Machin output for small inputs.
+• Simulate parallel execution by setting workers to 2 or more and verify consistency of results and that worker_threads module is invoked.
 
 # Documentation
 
-• Update README.md under Features:
-  – Document the updated --algorithm choices including ramanujan and default values.
-  – Note that --workers only affects chudnovsky.
-  – Provide examples:
-      node src/lib/main.js --digits 200 --algorithm ramanujan
-      node src/lib/main.js --digits 500 --algorithm chudnovsky --workers 4
-  – Describe trade-offs: Ramanujan converges fastest per term but serial only; Chudnovsky parallelizable for multi-core speed gains.
+Update README.md under the CLI Usage section:
+
+• Document the new algorithm options including auto and how the tool selects algorithms.
+• Describe --auto-threshold-machin and --auto-threshold-ramanujan flags and their defaults.
+• Show examples:
+  node src/lib/main.js --digits 100 --algorithm auto
+  node src/lib/main.js --digits 30 --algorithm auto --auto-threshold-machin 20
+  node src/lib/main.js --digits 1000 --algorithm chudnovsky --workers 4
