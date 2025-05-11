@@ -2209,7 +2209,7 @@ View the changelog at CHANGELOG.md\n\ncolinhacks
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -2243,7 +2243,7 @@ View the changelog at CHANGELOG.md\n\ncolinhacks
     
         
           
-          37.6k
+          37.7k
           stars
         
           
@@ -2311,7 +2311,7 @@ View the changelog at CHANGELOG.md\n\ncolinhacks
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -4791,7 +4791,7 @@ View the changelog at CHANGELOG.md
   Stars
   
     
-      37.6k
+      37.7k
       stars  
 
   Watchers
@@ -4879,7 +4879,7 @@ Sponsor this project
               
                 
   
-    Used by 2.2m  
+    Used by 2.3m  
 
   
     
@@ -4909,7 +4909,7 @@ Sponsor this project
           
     
       
-        + 2,150,124
+        + 2,308,879
       
   
 
@@ -7247,7 +7247,7 @@ View the changelog at CHANGELOG.md\n\ncolinhacks
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -7281,7 +7281,7 @@ View the changelog at CHANGELOG.md\n\ncolinhacks
     
         
           
-          37.6k
+          37.7k
           stars
         
           
@@ -7349,7 +7349,7 @@ View the changelog at CHANGELOG.md\n\ncolinhacks
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -9829,7 +9829,7 @@ View the changelog at CHANGELOG.md
   Stars
   
     
-      37.6k
+      37.7k
       stars  
 
   Watchers
@@ -9917,7 +9917,7 @@ Sponsor this project
               
                 
   
-    Used by 2.2m  
+    Used by 2.3m  
 
   
     
@@ -9947,7 +9947,7 @@ Sponsor this project
           
     
       
-        + 2,150,124
+        + 2,308,879
       
   
 
@@ -13387,7 +13387,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about 3M's customer story
+    Read more about Etsy's customer story
     
       
         
@@ -13398,8 +13398,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     3M
-    3M transforms its software toolchain to bring cutting-edge science to customers, faster.
+     Etsy
+    Etsy migrated to the cloud to focus their craft on customers, not infrastructure.
     
       Read story 
 
@@ -13409,7 +13409,95 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Ahold Delhaize's customer story
+    Read more about EY's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     EY
+    EY combines GitHub and Microsoft Azure DevOps to keep developers on the cutting edge.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Plaid's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Plaid
+    Plaid’s Developer Efficiency team speeds up workflows with developer happiness—and GitHub—at the heart of their operation.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Elentra at Queen's University's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Elentra at Queen's University
+    Elentra at Queen’s University created a Consortium built on GitHub to transform medical education.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about DLR Institute of Robotics's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     DLR Institute of Robotics
+    Learn why the DLR Robotics Institute chose to roll out GitHub Enterprise when it saw an organic rise in Git usage across the organization.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Spotify's customer story
     
       
         
@@ -13425,96 +13513,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
           
         
     
-     Ahold Delhaize
-    Ahold Delhaize keeps engineers focused on code through automation with GitHub Enterprise and Actions.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Bolt's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Bolt
-    Bolt leans on automation to stay ahead of the competition and better serve their customers.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Caregility's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Caregility
-    GitHub Advanced Security helps Caregility safeguard its platform for patients and clinicians.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Decathlon's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Decathlon
-    The world’s largest sporting goods retail brand embraces open source to stay modern.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Ford's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Ford
-    Ford is building the modern car with innovative technologies and GitHub Enterprise.
+     Spotify
+    Spotify developers meet 217 million monthly listeners where they are with seamless collaboration, continuous integration, and GitHub Enterprise.
     
       Read story 
 
@@ -14191,7 +14191,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about Trustpilot's customer story
+    Read more about Buffer's customer story
     
       
         
@@ -14202,8 +14202,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Trustpilot
-    Global review platform Trustpilot uses GitHub Team to build a better product, faster, with 300 releases per week.
+     Buffer
+    Buffer goes from siloed to synced for better production releases.
     
       Read story 
 
@@ -14213,7 +14213,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Tray.io's customer story
+    Read more about Cesium's customer story
     
       
         
@@ -14224,8 +14224,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Tray.io
-    GitHub Team helps the general automation platform build, package, and deploy code faster than ever.
+     Cesium
+    Cesium leverages an open source community to support the development of 3D geospatial applications.
     
       Read story 
 
@@ -14235,7 +14235,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Sketch's customer story
+    Read more about Front's customer story
     
       
         
@@ -14246,8 +14246,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Sketch
-    Sketch streamlines their workflows to provide teams with a comprehensive digital design editor.
+     Front
+    Front takes the work out of their workflows with GitHub Team.
     
       Read story 
 
@@ -14257,7 +14257,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Peak Money's customer story
+    Read more about Knock's customer story
     
       
         
@@ -14268,30 +14268,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Peak Money
-    Peak Money collaborates across tools, teams, and time zones with GitHub Team.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Netdata's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Netdata
-    Netdata accelerates their developer workflow with built-in security and open source.
+     Knock
+    Knock pivots to new products, with the help of GitHub’s fast, flexible developer workflows.
     
       Read story 
 
@@ -14314,6 +14292,28 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
     
      Modsy
     Modsy leverages GitHub Team to make interior design easy and accessible for all.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Netdata's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Netdata
+    Netdata accelerates their developer workflow with built-in security and open source.
     
       Read story 
 
@@ -15761,9 +15761,9 @@ The ReadME Project
     
         
       
-        Ratchet
+        iOS
       
-      Ratchet is a set of libraries to handle WebSockets asynchronously in PHP.
+      iOS is the operating system for Apple's mobile products.
     
   
 
@@ -15777,9 +15777,9 @@ The ReadME Project
     
         
       
-        Chrome extension
+        React
       
-      Chrome extensions enable users to customize the Chrome browsing experience.
+      React is an open source JavaScript library used for designing user interfaces.
     
   
 
@@ -15793,9 +15793,9 @@ The ReadME Project
     
         
       
-        PICO-8
+        Ansible
       
-      PICO-8 is a fantasy console for making, sharing and playing tiny games and other computer programs in Lua.
+      Ansible is a simple and powerful automation engine.
     
   
 
@@ -16382,12 +16382,12 @@ The ReadME Project
           
           
             
-  nodejs
+  javascript
 
           
           
             
-  javascript
+  css
 
           
           
@@ -16402,17 +16402,17 @@ The ReadME Project
           
           
             
-  machine-learning
-
-          
-          
-            
   typescript
 
           
           
             
-  cpp
+  ai
+
+          
+          
+            
+  js
 
           
           
@@ -16447,9 +16447,9 @@ The ReadME Project
 
 
       
-        28,384
+        28,821
       
-        4,173
+        4,211
       
         Built by
 
@@ -16461,7 +16461,7 @@ The ReadME Project
 
       
         
-        434 stars today
+        427 stars today
   
 
   
@@ -16502,9 +16502,9 @@ The ReadME Project
 
 
       
-        1,377
+        1,479
       
-        94
+        101
       
         Built by
 
@@ -16516,7 +16516,7 @@ The ReadME Project
 
       
         
-        251 stars today
+        172 stars today
   
 
   
@@ -16546,9 +16546,9 @@ The ReadME Project
 
 
       
-        15,965
+        16,427
       
-        926
+        951
       
         Built by
 
@@ -16560,7 +16560,7 @@ The ReadME Project
 
       
         
-        1,879 stars today
+        1,196 stars today
   
 
   
@@ -16593,9 +16593,9 @@ The ReadME Project
 
 
       
-        58,928
+        59,040
       
-        4,122
+        4,140
       
         Built by
 
@@ -16607,7 +16607,7 @@ The ReadME Project
 
       
         
-        345 stars today
+        259 stars today
   
 
   
@@ -16640,7 +16640,7 @@ The ReadME Project
 
 
       
-        2,101
+        2,147
       
         177
       
@@ -16654,7 +16654,7 @@ The ReadME Project
 
       
         
-        23 stars today
+        21 stars today
   
 
   
@@ -16687,9 +16687,9 @@ The ReadME Project
 
 
       
-        392
+        463
       
-        18
+        20
       
         Built by
 
@@ -16700,7 +16700,7 @@ The ReadME Project
 
       
         
-        41 stars today
+        45 stars today
   
 
   
@@ -16741,7 +16741,7 @@ The ReadME Project
 
 
       
-        11,460
+        11,528
       
         786
       
@@ -16755,7 +16755,7 @@ The ReadME Project
 
       
         
-        35 stars today
+        15 stars today
   
 
   
@@ -16788,9 +16788,9 @@ The ReadME Project
 
 
       
-        4,404
+        4,625
       
-        362
+        375
       
         Built by
 
@@ -16802,7 +16802,7 @@ The ReadME Project
 
       
         
-        179 stars today
+        262 stars today
   
 
   
@@ -16830,9 +16830,9 @@ The ReadME Project
   
 
       
-        47,364
+        47,516
       
-        3,494
+        3,504
       
         Built by
 
@@ -16844,7 +16844,7 @@ The ReadME Project
 
       
         
-        193 stars today
+        196 stars today
   
 
   
@@ -16877,9 +16877,9 @@ The ReadME Project
 
 
       
-        1,947
+        2,112
       
-        95
+        102
       
         Built by
 
@@ -16891,7 +16891,7 @@ The ReadME Project
 
       
         
-        174 stars today
+        507 stars today
   
 
   
@@ -16924,9 +16924,9 @@ The ReadME Project
 
 
       
-        1,432
+        1,542
       
-        437
+        441
       
         Built by
 
@@ -16938,7 +16938,7 @@ The ReadME Project
 
       
         
-        13 stars today\n\nExplore
+        21 stars today\n\nExplore
 
       Topics
 
@@ -19030,9 +19030,9 @@ The ReadME Project
 
 
       
-        28,384
+        28,821
       
-        4,173
+        4,211
       
         Built by
 
@@ -19044,7 +19044,7 @@ The ReadME Project
 
       
         
-        434 stars today
+        427 stars today
   
 
 
@@ -19087,9 +19087,9 @@ The ReadME Project
 
 
       
-        1,377
+        1,479
       
-        94
+        101
       
         Built by
 
@@ -19101,7 +19101,7 @@ The ReadME Project
 
       
         
-        251 stars today
+        172 stars today
   
 
 
@@ -19133,9 +19133,9 @@ The ReadME Project
 
 
       
-        15,965
+        16,427
       
-        926
+        951
       
         Built by
 
@@ -19147,7 +19147,7 @@ The ReadME Project
 
       
         
-        1,879 stars today
+        1,196 stars today
   
 
 
@@ -19182,9 +19182,9 @@ The ReadME Project
 
 
       
-        58,928
+        59,040
       
-        4,122
+        4,140
       
         Built by
 
@@ -19196,7 +19196,7 @@ The ReadME Project
 
       
         
-        345 stars today
+        259 stars today
   
 
 
@@ -19231,7 +19231,7 @@ The ReadME Project
 
 
       
-        2,101
+        2,147
       
         177
       
@@ -19245,7 +19245,7 @@ The ReadME Project
 
       
         
-        23 stars today
+        21 stars today
   
 
 
@@ -19280,9 +19280,9 @@ The ReadME Project
 
 
       
-        392
+        463
       
-        18
+        20
       
         Built by
 
@@ -19293,7 +19293,7 @@ The ReadME Project
 
       
         
-        41 stars today
+        45 stars today
   
 
 
@@ -19336,7 +19336,7 @@ The ReadME Project
 
 
       
-        11,460
+        11,528
       
         786
       
@@ -19350,7 +19350,7 @@ The ReadME Project
 
       
         
-        35 stars today
+        15 stars today
   
 
 
@@ -19385,9 +19385,9 @@ The ReadME Project
 
 
       
-        4,404
+        4,625
       
-        362
+        375
       
         Built by
 
@@ -19399,7 +19399,7 @@ The ReadME Project
 
       
         
-        179 stars today
+        262 stars today
   
 
 
@@ -19429,9 +19429,9 @@ The ReadME Project
   
 
       
-        47,364
+        47,516
       
-        3,494
+        3,504
       
         Built by
 
@@ -19443,7 +19443,7 @@ The ReadME Project
 
       
         
-        193 stars today
+        196 stars today
   
 
 
@@ -19478,9 +19478,9 @@ The ReadME Project
 
 
       
-        1,947
+        2,112
       
-        95
+        102
       
         Built by
 
@@ -19492,7 +19492,7 @@ The ReadME Project
 
       
         
-        174 stars today
+        507 stars today
   
 
 
@@ -19527,9 +19527,9 @@ The ReadME Project
 
 
       
-        1,432
+        1,542
       
-        437
+        441
       
         Built by
 
@@ -19541,7 +19541,7 @@ The ReadME Project
 
       
         
-        13 stars today\n\n\n\n#
+        21 stars today\n\n\n\n#
     
 
     
@@ -19744,8 +19744,8 @@ The ReadME Project
         
   
       
-    Made in Brazil
-    Open source projects built in or receiving significant contributions from Brazil :brazil:
+    Learn to Code
+    Resources to help people learn to code
   
 
 
@@ -19760,8 +19760,8 @@ The ReadME Project
         
   
       
-    Learn to Code
-    Resources to help people learn to code
+    Pixel Art Tools
+    Creating pixel art for fun or animated sprites for a game? The digital artist in you will love these apps and tools!
   
 
 
@@ -31172,7 +31172,7 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
   
     
     Stars
-    384
+    385
 
     
       
@@ -31513,7 +31513,7 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
   
     
     Stars
-    384
+    385
 
     
       
@@ -31614,7 +31614,7 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
           
             
-            37.6k
+            37.7k
           
           
             
@@ -31795,7 +31795,7 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -31836,7 +31836,7 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -32048,7 +32048,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -32089,7 +32089,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -32308,6 +32308,343 @@ Additional navigation options
 
 
       
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    asalvi0
+        
+        
+ Joined on May 8, 2011
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    parham-mosadeq
+        
+        
+
+  Works for dotin
+  
+  
+    dotin
+  
+
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    rafaelcruzazevedo
+        
+        
+
+  Works for @untile 
+  
+  
+    @untile 
+  
+
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    LogProphet
+        
+        
+ Joined on Sep 10, 2020
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    wayne930242
+        
+        
+
+  Works for @Rams-Technology 
+  
+  
+    @Rams-Technology 
+  
+
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    faustoxvx
+        
+        
+
+  
+  Is from Lisbon
+  
+    Lisbon
+  
+  
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    abowen-restpost
+        
+        
+ Joined on May 12, 2023
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    yusaySafadi
+        
+        
+ Joined on Mar 16, 2017
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    sander96
+        
+        
+ Joined on Oct 2, 2016
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    henri470
+        
+        
+ Joined on Jul 2, 2017
+
+        
+          
+
+        
+      
+    
+  
+
+          
+  
+    
+      
+        
+      
+
+      
+        
+          
+    liyao1520
+        
+        
+ Joined on Dec 24, 2020
+
+        
+          
+  
+    
+      Follow
+    
+  
+
+
+        
+      
+    
+  
+
           
   
     
@@ -32727,367 +33064,6 @@ Additional navigation options
     
   
 
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    tassosgeo
-        
-        
- Joined on Feb 18, 2020
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    BjornMelin
-        
-        
-
-  Works for 3M Corporate Research Analytical Laboratory
-  
-  
-    3M Corporate Research Analytical Laboratory
-  
-
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    hwibaski
-        
-        
-
-  Works for dver corp.
-  
-  
-    dver corp.
-  
-
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    dxmz
-        
-        
-
-  Works for 大公司
-  
-  
-    大公司
-  
-
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    chenqianhe
-        
-        
-
-  Works for @LearnieAI 
-  
-  
-    @LearnieAI 
-  
-
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    andreseirafi
-        
-        
-
-  Works for Fluxguide GmbH
-  
-  
-    Fluxguide GmbH
-  
-
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    noritaka1166
-        
-        
-
-  
-  Is from Tokyo, Japan
-  
-    Tokyo, Japan
-  
-  
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    Gtixlb
-        
-        
- Joined on Aug 21, 2018
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    edcaron
-        
-        
- Joined on May 9, 2015
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    Phenisys-adm
-        
-        
-
-  Works for Phenisys
-  
-  
-    Phenisys
-  
-
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
-          
-  
-    
-      
-        
-      
-
-      
-        
-          
-    Hammer-888
-        
-        
- Joined on Apr 21, 2021
-
-        
-          
-  
-    
-      Follow
-    
-  
-
-
-        
-      
-    
-  
-
       
       
         PreviousNext\n\n\n\ncolinhacks
@@ -33128,7 +33104,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -33169,7 +33145,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -34580,7 +34556,7 @@ Insights: colinhacks/zod
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -34621,7 +34597,7 @@ Insights: colinhacks/zod
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -34874,7 +34850,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -34915,7 +34891,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -35789,7 +35765,7 @@ Toggle v3.23.5's commit message
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -35830,7 +35806,7 @@ Toggle v3.23.5's commit message
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -36042,7 +36018,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -36083,7 +36059,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -38071,7 +38047,7 @@ Additional navigation options
   
   
   ProTip!
-  Mix and match filters to narrow down what you’re looking for.\n\n\n\ncolinhacks
+  What’s not been updated in a month: updated:<2025-04-10.\n\n\n\ncolinhacks
     
     /
     
@@ -38109,7 +38085,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -38150,7 +38126,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -38416,7 +38392,7 @@ Additional navigation options
 
     
       
-      105 Open
+      106 Open
     
 
     
@@ -38436,7 +38412,7 @@ Additional navigation options
 
     
       
-      105 Open
+      106 Open
     
 
     
@@ -38719,6 +38695,73 @@ Additional navigation options
       Pull requests list
       
         
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      docs: add zod-playground to the list of ecosystem utilities
+
+
+      
+        
+          #4348
+            opened May 11, 2025 by
+            marilari88
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
               
 
   
@@ -40341,73 +40384,6 @@ Additional navigation options
   
 
 
-              
-
-  
-
-
-    
-      
-        
-      
-    
-
-    
-    
-
-      feat(locale): add russian language
-
-
-      
-        
-          #4197
-            opened Apr 16, 2025 by
-            VladSez
-            
-        
-
-        
-          
-  
-    
-
-  
-    Loading…
-
-
-
-
-        
-
-        
-
-      
-    
-
-    
-
-      
-      
-
-      
-        
-          
-          
-        
-      
-
-      
-          
-            
-            13
-          
-      
-    
-
-      
-  
-
-
         
       
   
@@ -40423,7 +40399,7 @@ Additional navigation options
   
   
   ProTip!
-  Add no:assignee to see everything that’s not assigned.\n\n\n\ncolinhacks
+  Mix and match filters to narrow down what you’re looking for.\n\n\n\ncolinhacks
     
     /
     
@@ -40461,7 +40437,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -40502,7 +40478,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -42986,7 +42962,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -43027,7 +43003,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -43546,7 +43522,7 @@ Additional navigation options
 
   
     
-      994 workflow runs
+      995 workflow runs
     
   
 
@@ -43554,7 +43530,7 @@ Additional navigation options
   
     
         
-          994 workflow runs
+          995 workflow runs
         
     
     
@@ -43894,6 +43870,98 @@ Additional navigation options
 
 
     
+  
+    
+      
+          
+
+    
+
+
+          
+            docs: add zod-playground to the list of ecosystem utilities
+          
+        
+
+      
+        test
+        #2573:
+
+        
+            Pull request #4348
+
+            opened
+            by
+              marilari88
+              
+        
+      
+
+      
+        
+  
+  May 11, 2025 00:31
+
+
+            
+      
+      
+        1m 0s
+      
+    
+
+          marilari88:v4
+      
+    
+
+    
+        marilari88:v4
+    
+
+    
+      
+        
+          
+  
+  May 11, 2025 00:31
+
+
+              
+      
+      
+        1m 0s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+                  
+                    
+                      View #4348
+                    
+                  
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
   
     
       
@@ -46047,98 +46115,6 @@ Additional navigation options
   
 
 
-  
-    
-      
-          
-
-    
-
-
-          
-            Add composable-functions as a library powered by Zod supporting v4
-          
-        
-
-      
-        test
-        #2557:
-
-        
-            Pull request #4261
-
-            synchronize
-            by
-              colinhacks
-              
-        
-      
-
-      
-        
-  
-  May 3, 2025 02:17
-
-
-            
-      
-      
-        1m 9s
-      
-    
-
-          gustavoguichard:composable-functions-v4-support
-      
-    
-
-    
-        gustavoguichard:composable-functions-v4-support
-    
-
-    
-      
-        
-          
-  
-  May 3, 2025 02:17
-
-
-              
-      
-      
-        1m 9s
-      
-    
-
-        
-
-        
-            
-                    
-
-              
-
-                  
-                    
-                      View #4261
-                    
-                  
-
-                  
-                    
-                      View workflow file
-                    
-                  
-
-
-              
-            
-        
-      
-    
-  
-
-
 
 
 
@@ -46184,7 +46160,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -46225,7 +46201,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -46526,7 +46502,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -46567,7 +46543,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -46838,7 +46814,7 @@ Security: colinhacks/zod
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -46879,7 +46855,7 @@ Security: colinhacks/zod
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -47148,7 +47124,7 @@ Insights: colinhacks/zod
                 
           
           
-            11
+            12
             Active pull requests
           
         
@@ -47159,7 +47135,7 @@ Insights: colinhacks/zod
                 
           
           
-            34
+            32
             Active issues
           
         
@@ -47180,7 +47156,7 @@ Insights: colinhacks/zod
               
                 
                   
-                  6
+                  7
                 
                 Open pull requests
               
@@ -47189,7 +47165,7 @@ Insights: colinhacks/zod
               
                 
                   
-                  14
+                  12
                 
                 Closed issues
               
@@ -47319,8 +47295,8 @@ Insights: colinhacks/zod
     
       
         
-        6
-        Pull requests opened by 6 people
+        7
+        Pull requests opened by 7 people
       
     
     
@@ -47378,6 +47354,15 @@ Insights: colinhacks/zod
           
         
       
+      
+        
+        
+          docs: add zod-playground to the list of ecosystem utilities
+          
+            #4348 opened May 11, 2025
+          
+        
+      
     
 
 
@@ -47386,8 +47371,8 @@ Insights: colinhacks/zod
     
       
         
-        14 Issues
-        closed by 5 people
+        12 Issues
+        closed by 4 people
       
     
     
@@ -47496,24 +47481,6 @@ Insights: colinhacks/zod
           v4: `qin` prop discrepancy in `ZodOptional`
           
             #4152 closed May 4, 2025
-          
-        
-      
-      
-        
-        
-          v4: Refinements no longer accepts a type predicate
-          
-            #4304 closed May 3, 2025
-          
-        
-      
-      
-        
-        
-          Object.freeze(["a","b"]) is not a valid z.enum parameter
-          
-            #4307 closed May 3, 2025
           
         
       
@@ -47716,7 +47683,7 @@ Insights: colinhacks/zod
   
     
       
-      23
+      22
       Unresolved conversations
     
   
@@ -47787,6 +47754,15 @@ Insights: colinhacks/zod
         Languages: Add Portuguese language
         
           #4171 commented on May 5, 2025 • 0 new comments
+        
+      
+    
+    
+      
+      
+        "Type instantiation is excessively deep and possibly infinite" when using Zod with React Hook Form and @hookform/resolvers
+        
+          #3987 commented on May 10, 2025 • 0 new comments
         
       
     
@@ -47912,25 +47888,7 @@ Insights: colinhacks/zod
       
         v4: `.meta()` global registry conflicts
         
-          #4145 commented on May 5, 2025 • 0 new comments
-        
-      
-    
-    
-      
-      
-        Module '"zod"' has no exported member 'z'.ts
-        
-          #3739 commented on May 3, 2025 • 0 new comments
-        
-      
-    
-    
-      
-      
-        How to use Zod schema with existing TypeScript interface?
-        
-          #2807 commented on May 3, 2025 • 0 new comments\n\n\n\ncolinhacks
+          #4145 commented on May 5, 2025 • 0 new comments\n\n\n\ncolinhacks
     
     /
     
@@ -47968,7 +47926,7 @@ Insights: colinhacks/zod
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -48009,7 +47967,7 @@ Insights: colinhacks/zod
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -48262,7 +48220,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -48303,7 +48261,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -48515,7 +48473,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -48556,7 +48514,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -48768,7 +48726,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -48809,7 +48767,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -49021,7 +48979,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -49062,7 +49020,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -49274,7 +49232,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -49315,7 +49273,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -49527,7 +49485,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -49568,7 +49526,7 @@ Additional navigation options
     
               
         Pull requests
-          105
+          106
 
 
     
@@ -49780,7 +49738,7 @@ Additional navigation options
         
             
           Star
-          37.6k
+          37.7k
 
   
 
@@ -49821,1525 +49779,7 @@ Additional navigation options
     
               
         Pull requests
-          105
-
-
-    
-
-      
-  
-    
-              
-        Discussions
-          
-
-
-    
-
-      
-  
-    
-              
-        Actions
-          
-
-
-    
-
-      
-  
-    
-              
-        Projects
-          0
-
-
-    
-
-      
-  
-    
-              
-        Security
-          
-
-    
-
-      
-  
-    
-              
-        Insights
-          
-
-
-    
-
-
-          
-  
-      
-Additional navigation options
-
-
-
-  
-    
-                
-  
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Code
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Issues
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pull requests
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Discussions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Actions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Projects
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Security
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Insights\n\n\n\ncolinhacks
-    
-    /
-    
-      zod
-    
-
-    Public
-  
-
-
-        
-
-        
-            
-    
-        
-          
-        
-
-      
-
-  
-                Notifications
-    You must be signed in to change notification settings
-
-  
-
-  
-              Fork
-    1.4k
-
-  
-
-  
-        
-            
-          Star
-          37.6k
-
-  
-
-
-
-        
-      
-
-        
-
-
-
-          
-
-  
-      
-  
-    
-              
-        Code
-          
-
-
-    
-
-      
-  
-    
-              
-        Issues
-          600
-
-
-    
-
-      
-  
-    
-              
-        Pull requests
-          105
-
-
-    
-
-      
-  
-    
-              
-        Discussions
-          
-
-
-    
-
-      
-  
-    
-              
-        Actions
-          
-
-
-    
-
-      
-  
-    
-              
-        Projects
-          0
-
-
-    
-
-      
-  
-    
-              
-        Security
-          
-
-    
-
-      
-  
-    
-              
-        Insights
-          
-
-
-    
-
-
-          
-  
-      
-Additional navigation options
-
-
-
-  
-    
-                
-  
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Code
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Issues
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pull requests
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Discussions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Actions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Projects
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Security
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Insights\n\n\n\ncolinhacks
-    
-    /
-    
-      zod
-    
-
-    Public
-  
-
-
-        
-
-        
-            
-    
-        
-          
-        
-
-      
-
-  
-                Notifications
-    You must be signed in to change notification settings
-
-  
-
-  
-              Fork
-    1.4k
-
-  
-
-  
-        
-            
-          Star
-          37.6k
-
-  
-
-
-
-        
-      
-
-        
-
-
-
-          
-
-  
-      
-  
-    
-              
-        Code
-          
-
-
-    
-
-      
-  
-    
-              
-        Issues
-          600
-
-
-    
-
-      
-  
-    
-              
-        Pull requests
-          105
-
-
-    
-
-      
-  
-    
-              
-        Discussions
-          
-
-
-    
-
-      
-  
-    
-              
-        Actions
-          
-
-
-    
-
-      
-  
-    
-              
-        Projects
-          0
-
-
-    
-
-      
-  
-    
-              
-        Security
-          
-
-    
-
-      
-  
-    
-              
-        Insights
-          
-
-
-    
-
-
-          
-  
-      
-Additional navigation options
-
-
-
-  
-    
-                
-  
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Code
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Issues
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pull requests
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Discussions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Actions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Projects
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Security
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Insights\n\n\n\ncolinhacks
-    
-    /
-    
-      zod
-    
-
-    Public
-  
-
-
-        
-
-        
-            
-    
-        
-          
-        
-
-      
-
-  
-                Notifications
-    You must be signed in to change notification settings
-
-  
-
-  
-              Fork
-    1.4k
-
-  
-
-  
-        
-            
-          Star
-          37.6k
-
-  
-
-
-
-        
-      
-
-        
-
-
-
-          
-
-  
-      
-  
-    
-              
-        Code
-          
-
-
-    
-
-      
-  
-    
-              
-        Issues
-          600
-
-
-    
-
-      
-  
-    
-              
-        Pull requests
-          105
-
-
-    
-
-      
-  
-    
-              
-        Discussions
-          
-
-
-    
-
-      
-  
-    
-              
-        Actions
-          
-
-
-    
-
-      
-  
-    
-              
-        Projects
-          0
-
-
-    
-
-      
-  
-    
-              
-        Security
-          
-
-    
-
-      
-  
-    
-              
-        Insights
-          
-
-
-    
-
-
-          
-  
-      
-Additional navigation options
-
-
-
-  
-    
-                
-  
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Code
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Issues
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pull requests
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Discussions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Actions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Projects
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Security
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Insights\n\n\n\ncolinhacks
-    
-    /
-    
-      zod
-    
-
-    Public
-  
-
-
-        
-
-        
-            
-    
-        
-          
-        
-
-      
-
-  
-                Notifications
-    You must be signed in to change notification settings
-
-  
-
-  
-              Fork
-    1.4k
-
-  
-
-  
-        
-            
-          Star
-          37.6k
-
-  
-
-
-
-        
-      
-
-        
-
-
-
-          
-
-  
-      
-  
-    
-              
-        Code
-          
-
-
-    
-
-      
-  
-    
-              
-        Issues
-          600
-
-
-    
-
-      
-  
-    
-              
-        Pull requests
-          105
-
-
-    
-
-      
-  
-    
-              
-        Discussions
-          
-
-
-    
-
-      
-  
-    
-              
-        Actions
-          
-
-
-    
-
-      
-  
-    
-              
-        Projects
-          0
-
-
-    
-
-      
-  
-    
-              
-        Security
-          
-
-    
-
-      
-  
-    
-              
-        Insights
-          
-
-
-    
-
-
-          
-  
-      
-Additional navigation options
-
-
-
-  
-    
-                
-  
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Code
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Issues
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pull requests
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Discussions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Actions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Projects
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Security
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Insights\n\n\n\ncolinhacks
-    
-    /
-    
-      zod
-    
-
-    Public
-  
-
-
-        
-
-        
-            
-    
-        
-          
-        
-
-      
-
-  
-                Notifications
-    You must be signed in to change notification settings
-
-  
-
-  
-              Fork
-    1.4k
-
-  
-
-  
-        
-            
-          Star
-          37.6k
-
-  
-
-
-
-        
-      
-
-        
-
-
-
-          
-
-  
-      
-  
-    
-              
-        Code
-          
-
-
-    
-
-      
-  
-    
-              
-        Issues
-          600
-
-
-    
-
-      
-  
-    
-              
-        Pull requests
-          105
-
-
-    
-
-      
-  
-    
-              
-        Discussions
-          
-
-
-    
-
-      
-  
-    
-              
-        Actions
-          
-
-
-    
-
-      
-  
-    
-              
-        Projects
-          0
-
-
-    
-
-      
-  
-    
-              
-        Security
-          
-
-    
-
-      
-  
-    
-              
-        Insights
-          
-
-
-    
-
-
-          
-  
-      
-Additional navigation options
-
-
-
-  
-    
-                
-  
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Code
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Issues
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pull requests
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Discussions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Actions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Projects
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Security
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Insights\n\n\n\ncolinhacks
-    
-    /
-    
-      zod
-    
-
-    Public
-  
-
-
-        
-
-        
-            
-    
-        
-          
-        
-
-      
-
-  
-                Notifications
-    You must be signed in to change notification settings
-
-  
-
-  
-              Fork
-    1.4k
-
-  
-
-  
-        
-            
-          Star
-          37.6k
-
-  
-
-
-
-        
-      
-
-        
-
-
-
-          
-
-  
-      
-  
-    
-              
-        Code
-          
-
-
-    
-
-      
-  
-    
-              
-        Issues
-          600
-
-
-    
-
-      
-  
-    
-              
-        Pull requests
-          105
+          106
 
 
     
