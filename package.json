@@ -33,6 +33,7 @@
     "ejs": "^3.1.10",
     "js-yaml": "^4.1.0",
     "minimatch": "^9.0.5",
+    "minimist": "^1.2.8",
     "zod": "^3.24.3"
   },
   "devDependencies": {
