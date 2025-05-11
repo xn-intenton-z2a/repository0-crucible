@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-// src/lib/main.js
-
 import { fileURLToPath } from "url";
 import os from "os";
+import express from "express";
 
 /**
  * Calculate PI to a specified number of decimal places using a Machin-like formula.
@@ -95,31 +94,149 @@ export function calculatePi(digits, options = {}) {
 }
 
 /**
- * CLI entry point for computing PI.
- * @param {string[]} [args]
+ * Async generator that yields chunks of PI digits.
+ * @param {number} digits - Number of decimal places (1 to 1000)
+ * @param {number} chunkSize - Maximum number of characters per chunk
+ * @param {{signal?: AbortSignal}} [opts]
+ * @returns {AsyncGenerator<string>}
  */
-export function main(args) {
+export async function* getPiStream(digits, chunkSize, { signal } = {}) {
+  if (!Number.isInteger(digits) || digits < 1 || digits > 1000) {
+    throw new Error("Digits must be an integer between 1 and 1000");
+  }
+  if (!Number.isInteger(chunkSize) || chunkSize < 1) {
+    throw new Error("Chunk size must be a positive integer");
+  }
+  const piStr = calculatePi(digits);
+  for (let pos = 0; pos < piStr.length; pos += chunkSize) {
+    if (signal?.aborted) {
+      throw new Error("Stream aborted");
+    }
+    yield piStr.slice(pos, pos + chunkSize);
+  }
+}
+
+/**
+ * CLI entry point and server setup.
+ * @param {string[]} [args]
+ * @returns {import('express').Express|void}
+ */
+export async function main(args) {
   const argv = args || process.argv.slice(2);
+  let serve = false;
+  let servePort = 0;
+  let sse = false;
+  let ssePath = "/pi/sse";
+  let sseChunkSize = 100;
+  const cliArgs = [];
+
   const cpuCount = os.cpus().length;
+
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === "--serve") {
+      const val = argv[i + 1];
+      if (!val || isNaN(Number(val))) {
+        console.error("Error: --serve requires a port number");
+        process.exit(1);
+      }
+      serve = true;
+      servePort = Number(val);
+      i++;
+    } else if (arg === "--sse") {
+      sse = true;
+    } else if (arg === "--sse-path") {
+      const val = argv[i + 1];
+      if (!val) {
+        console.error("Error: --sse-path requires a path");
+        process.exit(1);
+      }
+      ssePath = val;
+      i++;
+    } else if (arg === "--sse-chunk-size") {
+      const val = argv[i + 1];
+      const num = Number(val);
+      if (!val || !Number.isInteger(num) || num < 1) {
+        console.error("Error: --sse-chunk-size requires a positive integer");
+        process.exit(1);
+      }
+      sseChunkSize = num;
+      i++;
+    } else {
+      cliArgs.push(arg);
+    }
+  }
+
+  if (serve) {
+    const app = express();
+    if (sse) {
+      app.get(ssePath, async (req, res) => {
+        const digitParam = req.query.digits;
+        const chunkParam = req.query.chunkSize;
+        let digits = Number(digitParam);
+        let chunkSize = sseChunkSize;
+        if (!digitParam || isNaN(digits) || !Number.isInteger(digits) || digits < 1 || digits > 1000) {
+          res.status(400).json({ error: "Invalid 'digits' parameter" });
+          return;
+        }
+        if (chunkParam !== undefined) {
+          const num = Number(chunkParam);
+          if (isNaN(num) || !Number.isInteger(num) || num < 1) {
+            res.status(400).json({ error: "Invalid 'chunkSize' parameter" });
+            return;
+          }
+          chunkSize = num;
+        }
+        res.setHeader("Content-Type", "text/event-stream");
+        res.setHeader("Cache-Control", "no-cache");
+        res.setHeader("Connection", "keep-alive");
+        const controller = new AbortController();
+        req.on("close", () => controller.abort());
+        try {
+          for await (const chunk of getPiStream(digits, chunkSize, { signal: controller.signal })) {
+            res.write(`data: ${chunk}\n\n`);
+          }
+          res.write("event: done\ndata: done\n\n");
+        } catch (err) {
+          if (!controller.signal.aborted) {
+            res.write(`event: error\ndata: ${err.message}\n\n`);
+          }
+        } finally {
+          res.end();
+        }
+      });
+    }
+    // Start listening if invoked directly
+    if (process.argv[1] === fileURLToPath(import.meta.url)) {
+      app.listen(servePort, () => {
+        console.error(`SSE server listening on port ${servePort}`);
+      });
+    }
+    return app;
+  }
+
+  // CLI computation path
+  // Delegate to existing CLI logic (digits, algorithm, workers, help)
+  let digits = 10;
+  let algorithm = "machin";
+  let workers = 1;
+
   const showHelp = () => {
     console.log(
-      "Usage: node src/lib/main.js [--digits <n>] [--algorithm <machin|chudnovsky|ramanujan>] [--workers <n>] [--help]"
+      "Usage: node src/lib/main.js [--digits <n>] [--algorithm <machin|chudnovsky|ramanujan>] [--workers <n>] [--serve <port> --sse] [--help]"
     );
     console.log("Compute PI to <n> decimal places (default 10, max 1000)");
     console.log(
       "  --algorithm <machin|chudnovsky|ramanujan>  Algorithm to use (default: machin)"
     );
     console.log("  --workers <n>                              Number of worker threads (default: 1)");
+    console.log("  --serve <port> --sse                       Start SSE server");
   };
 
-  let digits = 10;
-  let algorithm = "machin";
-  let workers = 1;
-
-  for (let i = 0; i < argv.length; i++) {
-    const arg = argv[i];
+  for (let i = 0; i < cliArgs.length; i++) {
+    const arg = cliArgs[i];
     if (arg === "--digits") {
-      const val = argv[i + 1];
+      const val = cliArgs[i + 1];
       if (!val || isNaN(Number(val))) {
         console.error("Error: --digits requires a number");
         process.exit(1);
@@ -127,7 +244,7 @@ export function main(args) {
       digits = Number(val);
       i++;
     } else if (arg === "--algorithm") {
-      const val = argv[i + 1];
+      const val = cliArgs[i + 1];
       if (!val || !["machin", "chudnovsky", "ramanujan"].includes(val)) {
         console.error(`Error: Invalid algorithm '${val}'`);
         process.exit(1);
@@ -135,7 +252,7 @@ export function main(args) {
       algorithm = val;
       i++;
     } else if (arg === "--workers") {
-      const val = argv[i + 1];
+      const val = cliArgs[i + 1];
       const num = Number(val);
       if (!val || !Number.isInteger(num) || num < 1 || num > cpuCount) {
         console.error(`Error: --workers requires a positive integer ≤ ${cpuCount}`);
