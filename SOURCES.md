@@ -17,7 +17,7 @@ Official Chart.js documentation covering chart types (bar, line, pie, etc.), dat
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
-Comprehensive reference for Express 4.x API, covering application setup, routing, middleware patterns, request parsing, response streaming, error handling, and integration points. Includes detailed guides on configuring CORS for cross-origin requests and implementing rate limiting with express-rate-limit (windowMs, max requests, standard headers). Essential for REST, analysis, streaming, and WebSocket upgrade endpoints. Last updated regularly by the Express.js core team.
+Comprehensive reference for Express 4.x API, covering application setup, routing, middleware patterns, request parsing, response streaming, error handling, and integration points. Includes detailed guides on configuring CORS for cross-origin requests and implementing rate limiting with express-rate-limit (windowMs, max requests, standard headers). Essential for REST, analysis, streaming, and WebSocket upgrade endpoints.
 ## MIT License
 
 # Testing Tools: Vitest & SuperTest
@@ -60,7 +60,8 @@ Embedded JavaScript templating engine documentation, describing template syntax,
 ## https://graphql.org/learn/
 ## https://github.com/graphql/express-graphql
 ## https://github.com/websockets/ws#readme
-Consolidated reference for API schema definitions, documentation, and protocol implementations across REST, GraphQL, and WebSocket interfaces. Includes the OpenAPI 3.1 specification for defining HTTP endpoints and components, Swagger UI integration for interactive API exploration, the official GraphQL Learn guide and express-graphql middleware for GraphQL server setup, and the ws library for real-time WebSocket communications. Essential for designing and documenting /pi, /benchmark, /graphql, /ws/pi, and other protocol-based endpoints. Last updated 2024; licenses vary by tool.
+## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+Consolidated reference for API schema definitions, documentation, and protocol implementations across REST, GraphQL, and real-time streaming interfaces. Includes the OpenAPI 3.1 specification for defining HTTP endpoints and components, Swagger UI integration for interactive API exploration, the official GraphQL Learn guide and express-graphql middleware for GraphQL server setup, the ws library for WebSocket communications, and MDN’s Server-Sent Events guide for unidirectional event streaming. Essential for designing and documenting /pi, /benchmark, /graphql, /ws/pi, /pi/sse, and other protocol-based endpoints. Last updated 2024; licenses vary by tool.
 ## CC0 1.0 Universal / Apache-2.0 / MIT License
 
 # BigInt and Pi Algorithms Reference
@@ -80,12 +81,12 @@ Detailed documentation for prom-client, the de facto Prometheus metrics library 
 High-performance Node.js logging library focusing on low-overhead, structured JSON logging. Documentation covers configuration of log levels, serializers, transports (pino-pretty), and integration with Express via middleware. Provides best practices for logging in CLI and HTTP server modes, including child loggers, hooks, and log redaction. Last updated 2024.
 ## MIT License
 
-# Server-Sent Events (SSE) Documentation
-## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-Comprehensive overview of the Server-Sent Events (SSE) protocol for unidirectional streaming of text-based event data over HTTP. Covers EventSource client usage, server-side event-stream formatting, reconnection behavior, and content-type requirements (text/event-stream). Critical for implementing the /pi/sse endpoint, handling client connections, and ensuring cross-browser compatibility. Last updated 2024; maintained by MDN contributors.
-## CC0 1.0 Universal
+# OpenAI API Reference
+## https://platform.openai.com/docs/api-reference
+Official OpenAI API reference covering endpoints for completions, chat, embeddings, and fine-tuning. Includes detailed parameter specifications, request/response schemas, rate limit guidance, and code examples in multiple languages. Critical for integrating AI-driven features and ensuring correct usage of the OpenAI service in CLI commands and server endpoints. Last updated 2024; authoritative.
+## Proprietary
 
-# WebSocket API (MDN)
-## https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
-Authoritative reference for the WebSocket API in browsers, including connection establishment, event handlers (onopen, onmessage, onerror, onclose), message framing, binary and text data handling, and best practices for managing lifecycle and errors. Crucial for understanding client-side interactions with the ws-based /ws/pi endpoint and ensuring robust real-time integrations. Last updated 2024; maintained by MDN contributors.
-## CC0 1.0 Universal
+# OpenAI Node.js Library
+## https://github.com/openai/openai-node
+GitHub repository for the official OpenAI Node.js SDK. Documents installation, client configuration, authentication patterns, and usage examples for calling the OpenAI API, including streaming responses. Provides TypeScript definitions and best practices for error handling, request batching, and performance tuning. Essential for embedding AI-driven computations directly into the π calculation workflow. Updated frequently.
+## MIT License
