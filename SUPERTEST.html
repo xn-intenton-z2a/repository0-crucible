@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="supertest" href="#supertest"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SUPERTEST</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">request(input, opts?) binds to ephemeral port if not listening. opts.http2 boolean default false. <code class="md-github">.agent(input, opts?)</code> for cookie persistence. Chainable methods: .get(path:string), .post(path:string), .put, .patch, .delete; .set(header:string, value:string); .auth(user:string, pass:string); .send(body:any); .field(name:string, value:any, options?:{contentType:string}); .attach(field:string, filePath:string). Assertions: .expect(status[, fn(err,res)]), .expect(status, body[, fn]), .expect(body[, fn]), .expect(header, value[, fn]), .expect(customFn). Order of .expect calls matters. Finalize with .end(fn(err,res)) or return promise or await. Promises via then(response). Async/Await supported. Use .expect(200, done) to combine status and callback. Custom assertion mutates res before assertions. Multipart support via superagent under the hood. HTTP errors (non-2XX) are passed as err if no status expectation. Compatible with any test framework.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 Initialization
+3 HTTP2 Support
+4 HTTP Methods
+5 Headers and Authentication
+6 Request Body
+7 Multipart Uploads
+8 Cookie Persistence
+9 Expectations and Assertions
+10 Promises and Async/Await
+11 Error Handling
+12 Agent vs. Standalone</p>
+<p class="md-github">1 Installation
+Install as dev dependency: npm install supertest --save-dev</p>
+<p class="md-github">2 Initialization
+request(appOrUrl[, options]) binds to ephemeral port if app not listening
+request.agent(appOrUrl[, options]) reuses cookies across requests
+options.http2 boolean default false</p>
+<p class="md-github">3 HTTP2 Support
+Pass { http2: true } to enable HTTP/2 protocol on request or agent</p>
+<p class="md-github">4 HTTP Methods
+get(path:string): Test
+post(path:string): Test
+put(path:string): Test
+patch(path:string): Test
+delete(path:string): Test</p>
+<p class="md-github">5 Headers and Authentication
+set(header:string, value:string): Test
+auth(username:string, password:string): Test  sends HTTP Basic auth header</p>
+<p class="md-github">6 Request Body
+send(body:any): Test  supports JSON and urlencoded</p>
+<p class="md-github">7 Multipart Uploads
+field(name:string, value:any[, options:{ contentType:string }] ): Test
+attach(field:string, filePath:string): Test</p>
+<p class="md-github">8 Cookie Persistence
+agent = request.agent(appOrUrl)
+agent.get(path).expect('set-cookie', cookieString)
+agent.get(otherPath).expect(cookieValue)</p>
+<p class="md-github">9 Expectations and Assertions
+expect(status[, fn]): Test
+expect(status, body[, fn]): Test
+expect(body[, fn]): Test
+expect(field, value[, fn]): Test
+expect(fn(res)): Test  throw error in fn to fail
+order of expect calls defines execution sequence</p>
+<p class="md-github">10 Promises and Async/Await
+return request(...).get(...).expect(...).then(response =&gt; {...})
+const response = await request(...).get(...); expect on response</p>
+<p class="md-github">11 Error Handling
+Without status expect, non-2XX -&gt; err in .end callback
+.end((err, res) =&gt; { if (err) return done(err); done(); })
+combine status and callback: .expect(200, done)</p>
+<p class="md-github">12 Agent vs. Standalone
+request() creates new Test each call
+agent() maintains session cookies and can be reused without passing app/url every time</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<ul class="md-github">
+<li class="md-github">Ephemeral port binding: request() auto-binds if app not listening</li>
+<li class="md-github">Default timeout: inherited from superagent (no built-in timeout set)</li>
+<li class="md-github">Content-Length header auto-calculated from body</li>
+<li class="md-github">JSON bodies: Content-Type: application/json header set automatically</li>
+<li class="md-github">URL-encoded: send accepts object sets Content-Type: application/x-www-form-urlencoded</li>
+<li class="md-github">HTTP2 option enables TLS ALPN protocol negotiation automatically when supported</li>
+<li class="md-github">Cookie header array accepted: .set('Cookie', ['a=1;b=2'])</li>
+<li class="md-github">Custom assertion function receives full response object</li>
+<li class="md-github">Underlying superagent session used for low-level methods: .write(), .pipe()</li>
+<li class="md-github">Reassign request variable to a base URL: request = request('http://host:port')</li>
+<li class="md-github">Chaining: each call returns a new Test instance or the same agent</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Signatures</p>
+<p class="md-github">function request(appOrUrl:string|http.Server|Function, options?:{ http2:boolean }): Test
+function request.agent(appOrUrl:string|http.Server|Function, options?:{ http2:boolean }): Agent</p>
+<p class="md-github">interface Test extends SuperAgentRequest {
+get(path:string): Test
+post(path:string): Test
+put(path:string): Test
+patch(path:string): Test
+delete(path:string): Test
+set(field:string, value:string): Test
+auth(username:string, password:string, options?:{ type:'basic'|'auto' }): Test
+send(body:any): Test
+field(name:string, value:string, options?:{ contentType:string }): Test
+attach(field:string, filePath:string): Test
+expect(status:number, fn?: (err:Error, res:Response)=&gt;void): Test
+expect(status:number, body:any, fn?:(err:Error, res:Response)=&gt;void): Test
+expect(body:string|RegExp|object, fn?:(err:Error, res:Response)=&gt;void): Test
+expect(field:string, value:string|RegExp, fn?:(err:Error, res:Response)=&gt;void): Test
+expect(fn:(res:Response)=&gt;void): Test
+end(fn:(err:Error, res:Response)=&gt;void): void
+}</p>
+<p class="md-github">Usage Patterns
+1 Standalone callback
+describe(...)
+request(app).get('/path')
+.set('Accept','application/json')
+.expect('Content-Type',/json/)
+.expect(200)
+.end((err,res)=&gt;{ if(err) throw err; })</p>
+<p class="md-github">2 Combined status and callback
+request(app).get('/path').expect(200, done)</p>
+<p class="md-github">3 Promises
+return request(app).get('/path')
+.expect('Content-Type',/json/)
+.expect(200)
+.then(res=&gt;{ expect(res.body.id).toBe(value); })</p>
+<p class="md-github">4 Async/Await
+const res = await request(app).get('/path').set('Accept','application/json')
+expect(res.status).toBe(200)</p>
+<p class="md-github">5 Multipart upload
+request(app).post('/')
+.field('name','avatar')
+.attach('avatar','test/fixtures/avatar.jpg')
+.expect(200, done)</p>
+<p class="md-github">6 Cookie persistence
+const agent = request.agent(app)
+agent.get('/').expect('set-cookie','cookie=hey; Path=/', done)
+agent.get('/return').expect('hey', done)</p>
+<p class="md-github">Configuration Options</p>
+<ul class="md-github">
+<li class="md-github">http2 boolean default false: enable HTTP/2 via superagent</li>
+<li class="md-github">contentType on field: default multipart/form-data; override with application/json</li>
+</ul>
+<p class="md-github">Best Practices</p>
+<ul class="md-github">
+<li class="md-github">Always include .expect(status) to catch non-2XX errors</li>
+<li class="md-github">Use .expect(status, done) to simplify callbacks</li>
+<li class="md-github">Chain .expect in definition order to inject custom assertions</li>
+<li class="md-github">For shared host tests reassign request base URL</li>
+</ul>
+<p class="md-github">Troubleshooting
+Command: npm test -- grep &quot;SuperTest&quot;
+Expected: no assertion errors; non-2XX without expect shows err in callback
+Issue: tests hang -&gt; missing end() or return promise
+Solution: add .end(done) or return the request promise</p>
+<p class="md-github">Detailed Steps to Reproduce Cookie Failure
+1 Remove .expect('set-cookie',...) from first agent call
+2 agent.get('/return').expect('hey', done) returns 400
+3 Add missing cookie header in agent or use same agent instance</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">request(appOrUrl[, {http2:boolean=false}])→Test; request.agent(...)→Agent; Methods: get(path), post(path), put(path), patch(path), delete(path), set(header,value), auth(user,pass), send(body), field(name,value[,options:{contentType}]), attach(field,filePath), expect(status[,fn]), expect(status,body[,fn]), expect(body[,fn]), expect(header,value[,fn]), expect(fn(res)), end(fn(err,res)); Order of expect defines execution; use .expect(200,done) or .end; supports callbacks, Promises, async/await; HTTP2 via opts.http2; auto-binds ephemeral port; JSON bodies auto content-type; urlencoded via send(object); multipart via field/attach; persistent cookies via agent; reassign baseURL: request='url'; troubleshooting: missing end() or return hangs; always include status expect to catch errors</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 Initialization
+3 HTTP2 Support
+4 HTTP Methods
+5 Headers and Authentication
+6 Request Body
+7 Multipart Uploads
+8 Cookie Persistence
+9 Expectations and Assertions
+10 Promises and Async/Await
+11 Error Handling
+12 Agent vs. Standalone</p>
+<p class="md-github">1 Installation
+Install as dev dependency: npm install supertest --save-dev</p>
+<p class="md-github">2 Initialization
+request(appOrUrl[, options]) binds to ephemeral port if app not listening
+request.agent(appOrUrl[, options]) reuses cookies across requests
+options.http2 boolean default false</p>
+<p class="md-github">3 HTTP2 Support
+Pass { http2: true } to enable HTTP/2 protocol on request or agent</p>
+<p class="md-github">4 HTTP Methods
+get(path:string): Test
+post(path:string): Test
+put(path:string): Test
+patch(path:string): Test
+delete(path:string): Test</p>
+<p class="md-github">5 Headers and Authentication
+set(header:string, value:string): Test
+auth(username:string, password:string): Test  sends HTTP Basic auth header</p>
+<p class="md-github">6 Request Body
+send(body:any): Test  supports JSON and urlencoded</p>
+<p class="md-github">7 Multipart Uploads
+field(name:string, value:any[, options:{ contentType:string }] ): Test
+attach(field:string, filePath:string): Test</p>
+<p class="md-github">8 Cookie Persistence
+agent = request.agent(appOrUrl)
+agent.get(path).expect('set-cookie', cookieString)
+agent.get(otherPath).expect(cookieValue)</p>
+<p class="md-github">9 Expectations and Assertions
+expect(status[, fn]): Test
+expect(status, body[, fn]): Test
+expect(body[, fn]): Test
+expect(field, value[, fn]): Test
+expect(fn(res)): Test  throw error in fn to fail
+order of expect calls defines execution sequence</p>
+<p class="md-github">10 Promises and Async/Await
+return request(...).get(...).expect(...).then(response =&gt; {...})
+const response = await request(...).get(...); expect on response</p>
+<p class="md-github">11 Error Handling
+Without status expect, non-2XX -&gt; err in .end callback
+.end((err, res) =&gt; { if (err) return done(err); done(); })
+combine status and callback: .expect(200, done)</p>
+<p class="md-github">12 Agent vs. Standalone
+request() creates new Test each call
+agent() maintains session cookies and can be reused without passing app/url every time</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Testing Tools: Vitest &amp; SuperTest
+https://github.com/visionmedia/supertest</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-supertest" href="#digest-of-supertest"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SUPERTEST</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="supertest-detailed-digest" href="#supertest-detailed-digest"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SuperTest Detailed Digest</h1>
+<p class="md-github">Date Retrieved: 2024-06-20
+Data Size: 581946 bytes
+Links Found: 4709
+Error: None</p>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<pre class="md-github"><code class="md-github language-bash">npm install supertest --save-dev
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="basic-usage" href="#basic-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic Usage</h1>
+<pre class="md-github"><code class="md-github language-js">const request = require('supertest');
+const express = require('express');
+const app = express();
+app.get('/user', (req, res) =&gt; res.status(200).json({ name: 'john' }));
+request(app)
+  .get('/user')
+  .expect('Content-Type', /json/)
+  .expect('Content-Length', '15')
+  .expect(200)
+  .end((err, res) =&gt; { if (err) throw err; });
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="http2-support" href="#http2-support"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HTTP2 Support</h1>
+<p class="md-github">Append <code class="md-github">{ http2: true }</code> to <code class="md-github">request()</code> or <code class="md-github">request.agent()</code>:</p>
+<pre class="md-github"><code class="md-github language-js">request(app, { http2: true }).get('/user')...  
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="test-framework-integration" href="#test-framework-integration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Test Framework Integration</h1>
+<ul class="md-github">
+<li class="md-github">Callback style: pass <code class="md-github">done</code> to <code class="md-github">.expect()</code></li>
+<li class="md-github">Promises: return <code class="md-github">request(app).get(...).expect(...).then(response =&gt; {...})</code></li>
+<li class="md-github">Async/Await: <code class="md-github">const response = await request(app).get(...);</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="authentication" href="#authentication"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Authentication</h1>
+<p class="md-github"><code class="md-github">.auth(username, password)</code> sends HTTP basic auth header.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="error-handling" href="#error-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error Handling</h1>
+<ul class="md-github">
+<li class="md-github">Without <code class="md-github">.expect(status)</code> any non-2XX triggers error in callback.</li>
+<li class="md-github"><code class="md-github">.end((err, res) =&gt; { if (err) return done(err); done(); })</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="assertions-and-order" href="#assertions-and-order"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Assertions and Order</h1>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">.expect(status[, fn])</code></li>
+<li class="md-github"><code class="md-github">.expect(status, body[, fn])</code></li>
+<li class="md-github"><code class="md-github">.expect(body[, fn])</code></li>
+<li class="md-github"><code class="md-github">.expect(field, value[, fn])</code></li>
+<li class="md-github"><code class="md-github">.expect(fn(res))</code> (custom assertion)</li>
+<li class="md-github">Assertions run sequentially in definition order.</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="multipart-and-file-uploads" href="#multipart-and-file-uploads"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Multipart and File Uploads</h1>
+<p class="md-github"><code class="md-github">.field(name, value[, options])</code> and <code class="md-github">.attach(field, path)</code> for multipart.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="agent-and-cookie-persistence" href="#agent-and-cookie-persistence"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Agent and Cookie Persistence</h1>
+<pre class="md-github"><code class="md-github language-js">const agent = request.agent(app);
+agent.get('/').expect('set-cookie','cookie=hey; Path=/', done);
+agent.get('/return').expect('hey', done);
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="api-reference-summary" href="#api-reference-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Reference Summary</h1>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">request(appOrUrl[, options])</code> returns <code class="md-github">Test</code></li>
+<li class="md-github"><code class="md-github">request.agent(appOrUrl[, options])</code> returns <code class="md-github">Agent</code></li>
+<li class="md-github">Methods on <code class="md-github">Test</code>: <code class="md-github">.get(path)</code>, <code class="md-github">.post(path)</code>, <code class="md-github">.set(field, value)</code>, <code class="md-github">.send(body)</code>, <code class="md-github">.auth(user, pass)</code>, <code class="md-github">.field()</code>, <code class="md-github">.attach()</code>, <code class="md-github">.expect()</code>, <code class="md-github">.end()</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h1>
+<p class="md-github">MIT</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Testing Tools: Vitest &amp; SuperTest</li>
+<li class="md-github">URL: https://github.com/visionmedia/supertest</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-11T10:33:51.286Z</li>
+<li class="md-github">Data Size: 581946 bytes</li>
+<li class="md-github">Links Found: 4709</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-11</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-11T10:37:42.427Z</p>
+  </footer>
+</body>
+</html>

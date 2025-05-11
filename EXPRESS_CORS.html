@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="express_cors" href="#express_cors"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EXPRESS_CORS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">cors middleware installation via npm install cors; cors(options?) returns Express middleware function(req,res,next); global: app.use(cors()); per-route: app.get(path, cors(options), handler); options object with properties: origin Boolean|String|RegExp|Array|Function default '*'; methods String|Array default 'GET,HEAD,PUT,PATCH,POST,DELETE'; allowedHeaders String|Array default reflect request; exposedHeaders String|Array default none; credentials Boolean default false; maxAge Number default undefined; preflightContinue Boolean default false; optionsSuccessStatus Number default 204; dynamic origin via function(origin,callback); async config via function(req,callback) returning options; pre-flight via app.options; default config shown</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 Initialization
+3 Global Middleware
+4 Per-Route Middleware
+5 Configuration Options
+5.1 origin
+5.2 methods
+5.3 allowedHeaders
+5.4 exposedHeaders
+5.5 credentials
+5.6 maxAge
+5.7 preflightContinue
+5.8 optionsSuccessStatus
+6 Dynamic Origin
+7 Async Configuration
+8 Pre-Flight Handling</p>
+<p class="md-github">1 Installation
+npm install cors</p>
+<p class="md-github">2 Initialization
+var express = require('express')
+var cors = require('cors')
+var app = express()</p>
+<p class="md-github">3 Global Middleware
+app.use(cors())</p>
+<p class="md-github">4 Per-Route Middleware
+app.get('/products/:id', cors(), handler)</p>
+<p class="md-github">5 Configuration Options
+5.1 origin
+Boolean true reflects request origin or false disables; String exact origin; RegExp pattern test; Array of String or RegExp; Function(origin,callback(err,allowedOrigin))
+5.2 methods
+Comma-delimited string or Array of methods
+5.3 allowedHeaders
+Comma-delimited string or Array; defaults to Access-Control-Request-Headers
+5.4 exposedHeaders
+Comma-delimited string or Array; no default
+5.5 credentials
+Boolean; if true sets Access-Control-Allow-Credentials
+5.6 maxAge
+Integer; sets Access-Control-Max-Age
+5.7 preflightContinue
+Boolean; if true passes preflight to next handler
+5.8 optionsSuccessStatus
+Integer; status for successful OPTIONS responses</p>
+<p class="md-github">6 Dynamic Origin
+origin option can be function(origin,callback) to load allowed origins from database</p>
+<p class="md-github">7 Async Configuration
+cors accepts function(req,callback(err,options)) to compute options per request</p>
+<p class="md-github">8 Pre-Flight Handling
+app.options('/path', cors()) for specific routes
+app.options('*', cors()) globally</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default configuration object
+{
+origin: '*',
+methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+preflightContinue: false,
+optionsSuccessStatus: 204
+}</p>
+<p class="md-github">Implementation steps
+1 Install cors package
+2 Require cors in application
+3 Use app.use(cors()) before other middlewares
+4 For specific routes, call cors(options) inline
+5 Configure dynamic origin by supplying origin function
+6 Handle preflight using app.options</p>
+<p class="md-github">Key parameter effects
+origin true reflects origin header; false disables CORS; String limits to that domain; RegExp matches origins; Array accepts multiple; Function custom logic
+optionsSuccessStatus 200 needed for IE11 and SmartTVs</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Function Signature
+cors(options?: Object|Function) =&gt; function(req: IncomingMessage, res: ServerResponse, next: Function)</p>
+<p class="md-github">Parameters
+options.origin Boolean|String|RegExp|Array|Function default '*'
+options.methods String|Array default ['GET','HEAD','PUT','PATCH','POST','DELETE']
+options.allowedHeaders String|Array default request Access-Control-Request-Headers
+options.exposedHeaders String|Array default []
+options.credentials Boolean default false
+options.maxAge Number default undefined
+options.preflightContinue Boolean default false
+options.optionsSuccessStatus Number default 204</p>
+<p class="md-github">Usage Examples
+// Global
+app.use(cors())</p>
+<p class="md-github">// Single route
+app.get('/data', cors({ origin: 'http://example.com', optionsSuccessStatus: 200 }), handler)</p>
+<p class="md-github">// Dynamic origin
+var corsOptions = { origin: function(origin, callback) { db.getAllowed(function(err,origins){ callback(err, origins) }) }}
+app.get('/data', cors(corsOptions), handler)</p>
+<p class="md-github">// Async delegate
+function corsDelegate(req, callback) { var allowed = allowlist.includes(req.header('Origin')); callback(null, { origin: allowed }) }
+app.get('/data', cors(corsDelegate), handler)</p>
+<p class="md-github">// Preflight
+app.options('/data', cors())</p>
+<p class="md-github">Best Practices
+Place app.use(cors()) before static, body-parser and routes
+Use optionsSuccessStatus 200 for legacy browsers
+Limit origins to reduce security risk
+Use dynamic origin loading from secure source</p>
+<p class="md-github">Troubleshooting
+Issue: Missing CORS header on DELETE requests
+Check that app.options('/path', cors()) is registered before app.del</p>
+<p class="md-github">Issue: IE11 preflight returns 204 leading to network error
+Set optionsSuccessStatus to 200</p>
+<p class="md-github">Commands
+curl -i -X OPTIONS -H 'Origin: http://example.com' http://localhost/data
+Expect HTTP/1.1 200 OK
+Access-Control-Allow-Origin: http://example.com</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">npm install cors; require('cors'); app.use(cors()); app.get(path, cors(options), handler); options: origin[Boolean|String|RegExp|Array|Function]='*', methods[String|Array]='GET,HEAD,PUT,PATCH,POST,DELETE', allowedHeaders[String|Array]=reflect request, exposedHeaders[String|Array]=none, credentials[Boolean]=false, maxAge[Number]=undefined, preflightContinue[Boolean]=false, optionsSuccessStatus[Number]=204; dynamic origin via function(origin,callback); async via function(req,callback); preflight via app.options(path,cors()); signature returns middleware(req,res,next).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 Initialization
+3 Global Middleware
+4 Per-Route Middleware
+5 Configuration Options
+5.1 origin
+5.2 methods
+5.3 allowedHeaders
+5.4 exposedHeaders
+5.5 credentials
+5.6 maxAge
+5.7 preflightContinue
+5.8 optionsSuccessStatus
+6 Dynamic Origin
+7 Async Configuration
+8 Pre-Flight Handling</p>
+<p class="md-github">1 Installation
+npm install cors</p>
+<p class="md-github">2 Initialization
+var express = require('express')
+var cors = require('cors')
+var app = express()</p>
+<p class="md-github">3 Global Middleware
+app.use(cors())</p>
+<p class="md-github">4 Per-Route Middleware
+app.get('/products/:id', cors(), handler)</p>
+<p class="md-github">5 Configuration Options
+5.1 origin
+Boolean true reflects request origin or false disables; String exact origin; RegExp pattern test; Array of String or RegExp; Function(origin,callback(err,allowedOrigin))
+5.2 methods
+Comma-delimited string or Array of methods
+5.3 allowedHeaders
+Comma-delimited string or Array; defaults to Access-Control-Request-Headers
+5.4 exposedHeaders
+Comma-delimited string or Array; no default
+5.5 credentials
+Boolean; if true sets Access-Control-Allow-Credentials
+5.6 maxAge
+Integer; sets Access-Control-Max-Age
+5.7 preflightContinue
+Boolean; if true passes preflight to next handler
+5.8 optionsSuccessStatus
+Integer; status for successful OPTIONS responses</p>
+<p class="md-github">6 Dynamic Origin
+origin option can be function(origin,callback) to load allowed origins from database</p>
+<p class="md-github">7 Async Configuration
+cors accepts function(req,callback(err,options)) to compute options per request</p>
+<p class="md-github">8 Pre-Flight Handling
+app.options('/path', cors()) for specific routes
+app.options('*', cors()) globally</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">CORS Middleware for Express
+https://github.com/expressjs/cors</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-express_cors" href="#digest-of-express_cors"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of EXPRESS_CORS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<p class="md-github">Install CORS middleware via npm:</p>
+<pre class="md-github"><code class="md-github language-bash">npm install cors
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h1>
+<p class="md-github">Require and apply middleware globally:</p>
+<pre class="md-github"><code class="md-github language-javascript">var express = require('express')
+var cors = require('cors')
+var app = express()
+
+app.use(cors())
+
+app.get('/products/:id', function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for all origins!'})
+})
+
+app.listen(80, function () {
+  console.log('CORS-enabled web server listening on port 80')
+})
+</code></pre>
+<p class="md-github">Enable CORS on a single route:</p>
+<pre class="md-github"><code class="md-github language-javascript">app.get('/products/:id', cors(), function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for a Single Route'})
+})
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="configuration-options" href="#configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Options</h1>
+<p class="md-github">All options are properties of an options object passed to cors(options).</p>
+<ul class="md-github">
+<li class="md-github">origin  Default '*'  Type: Boolean|String|RegExp|Array|Function</li>
+<li class="md-github">methods  Default 'GET,HEAD,PUT,PATCH,POST,DELETE'  Type: String|Array</li>
+<li class="md-github">allowedHeaders  Default reflect request's Access-Control-Request-Headers  Type: String|Array</li>
+<li class="md-github">exposedHeaders  Default none  Type: String|Array</li>
+<li class="md-github">credentials  Default false  Type: Boolean</li>
+<li class="md-github">maxAge  Default undefined  Type: Number</li>
+<li class="md-github">preflightContinue  Default false  Type: Boolean</li>
+<li class="md-github">optionsSuccessStatus  Default 204  Type: Number</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="dynamic-origin" href="#dynamic-origin"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dynamic Origin</h1>
+<p class="md-github">Provide origin as a function(origin, callback) to load allowed origins at runtime.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="async-configuration" href="#async-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Async Configuration</h1>
+<p class="md-github">Use a delegate function corsOptionsDelegate(req, callback) that returns error and options.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="pre-flight-handling" href="#pre-flight-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pre-Flight Handling</h1>
+<p class="md-github">Enable pre-flight for specific routes:</p>
+<pre class="md-github"><code class="md-github language-javascript">app.options('/products/:id', cors())
+app.del('/products/:id', cors(), handler)
+</code></pre>
+<p class="md-github">Or enable globally before routes:</p>
+<pre class="md-github"><code class="md-github language-javascript">app.options('*', cors())
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: CORS Middleware for Express</li>
+<li class="md-github">URL: https://github.com/expressjs/cors</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-11T03:40:35.328Z</li>
+<li class="md-github">Data Size: 917679 bytes</li>
+<li class="md-github">Links Found: 5739</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-11</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-11T10:37:41.965Z</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="express_middleware" href="#express_middleware"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EXPRESS_MIDDLEWARE</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">express.json: parse JSON bodies; options inflate(Boolean,true), limit(number|string,100kb), reviver(Function,null), strict(Boolean,true), type(Mixed,application/json), verify(Function)
+express.raw: parse Buffer bodies; options inflate, limit, type(application/octet-stream), verify
+express.text: parse text bodies; options defaultCharset(utf-8), inflate, limit, type(text/plain), verify
+express.urlencoded: parse urlencoded; options extended(true), inflate, limit, parameterLimit(1000), type(application/x-www-form-urlencoded), verify
+express.Router: create router; options caseSensitive(false), mergeParams(false), strict(false)
+express.static: serve files; options dotfiles(undefined), etag(true), extensions(false), fallthrough(true), immutable(false), index(index.html), lastModified(true), maxAge(0), redirect(true), setHeaders(Function)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1 express.json
+2 express.raw
+3 express.text
+4 express.urlencoded
+5 express.Router
+6 express.static</p>
+<p class="md-github">1 express.json
+Function signature: express.json(options?) → RequestHandler
+Options:
+inflate: Boolean = true
+limit: number|string = &quot;100kb&quot;
+reviver: Function = null
+strict: Boolean = true
+type: string|string[]|function = &quot;application/json&quot;
+verify: function(req,res,buf,encoding) = undefined
+Behavior: parses JSON, populates req.body with object or {} on no body/no match/error</p>
+<p class="md-github">2 express.raw
+Function signature: express.raw(options?) → RequestHandler
+Options:
+inflate: Boolean = true
+limit: number|string = &quot;100kb&quot;
+type: string|string[]|function = &quot;application/octet-stream&quot;
+verify: function(req,res,buf,encoding) = undefined
+Behavior: parses body into Buffer, populates req.body with Buffer or {}</p>
+<p class="md-github">3 express.text
+Function signature: express.text(options?) → RequestHandler
+Options:
+defaultCharset: string = &quot;utf-8&quot;
+inflate: Boolean = true
+limit: number|string = &quot;100kb&quot;
+type: string|string[]|function = &quot;text/plain&quot;
+verify: function(req,res,buf,encoding) = undefined
+Behavior: parses body into string, populates req.body with string or {}</p>
+<p class="md-github">4 express.urlencoded
+Function signature: express.urlencoded(options?) → RequestHandler
+Options:
+extended: Boolean = true
+inflate: Boolean = true
+limit: number|string = &quot;100kb&quot;
+parameterLimit: number = 1000
+type: string|string[]|function = &quot;application/x-www-form-urlencoded&quot;
+verify: function(req,res,buf,encoding) = undefined
+Behavior: parses URL-encoded data into object or {}</p>
+<p class="md-github">5 express.Router
+Function signature: express.Router(options?) → Router
+Options:
+caseSensitive: Boolean = false
+mergeParams: Boolean = false
+strict: Boolean = false
+Behavior: creates modular route handlers</p>
+<p class="md-github">6 express.static
+Function signature: express.static(root,options?) → RequestHandler
+Options:
+dotfiles: &quot;allow&quot;|&quot;deny&quot;|&quot;ignore&quot;|undefined = undefined
+etag: Boolean = true
+extensions: string[]|false = false
+fallthrough: Boolean = true
+immutable: Boolean = false
+index: string|false = &quot;index.html&quot;
+lastModified: Boolean = true
+maxAge: number|string = 0
+redirect: Boolean = true
+setHeaders: function(res,path,stat) = undefined
+Behavior: serves static assets with caching and fallback</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Node.js version &gt;= 0.10 required
+Installation: npm install express
+Import and app creation:
+var express = require('express')
+var app = express()
+Mount middleware before routes:
+app.use(express.json({limit:'1mb'}))
+app.use(express.urlencoded({extended:false, parameterLimit:500}))
+app.use(express.text())
+app.use(express.raw({type:'application/custom'}))
+Create router and mount:
+var router = express.Router({mergeParams:true, strict:true})
+router.get('/path', handler)
+app.use('/api', router)
+Serve static files with custom headers:
+app.use(express.static('public',{maxAge:'1d', immutable:true, setHeaders:function(res,path,stat){res.set('X-Timestamp',Date.now())}}))</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Function Signatures:
+express.json(options?:{
+inflate?:boolean;
+limit?:number|string;
+reviver?:(key:any,value:any)=&gt;any;
+strict?:boolean;
+type?:string|string[]|(req:Request)=&gt;boolean;
+verify?:(req:Request,res:Response,buf:Buffer,encoding:string)=&gt;void;
+}):RequestHandler
+express.raw(options?:{
+inflate?:boolean;
+limit?:number|string;
+type?:string|string[]|(req:Request)=&gt;boolean;
+verify?:(req:Request,res:Response,buf:Buffer,encoding:string)=&gt;void;
+}):RequestHandler
+express.text(options?:{
+defaultCharset?:string;
+inflate?:boolean;
+limit?:number|string;
+type?:string|string[]|(req:Request)=&gt;boolean;
+verify?:(req:Request,res:Response,buf:Buffer,encoding:string)=&gt;void;
+}):RequestHandler
+express.urlencoded(options?:{
+extended?:boolean;
+inflate?:boolean;
+limit?:number|string;
+parameterLimit?:number;
+type?:string|string[]|(req:Request)=&gt;boolean;
+verify?:(req:Request,res:Response,buf:Buffer,encoding:string)=&gt;void;
+}):RequestHandler
+express.Router(options?:{
+caseSensitive?:boolean;
+mergeParams?:boolean;
+strict?:boolean;
+}):Router
+express.static(root:string,options?:{
+dotfiles?:'allow'|'deny'|'ignore';
+etag?:boolean;
+extensions?:string[]|false;
+fallthrough?:boolean;
+immutable?:boolean;
+index?:string|false;
+lastModified?:boolean;
+maxAge?:number|string;
+redirect?:boolean;
+setHeaders?:(res:Response,path:string,stat:fs.Stats)=&gt;void;
+}):RequestHandler</p>
+<p class="md-github">Code Examples:
+var express = require('express')
+var app = express()
+app.use(express.json({limit:'2mb', strict:false}))
+app.use(express.urlencoded({extended:true, parameterLimit:2000}))
+var apiRouter = express.Router({caseSensitive:true})
+apiRouter.post('/item', function(req,res){
+if(typeof req.body.id!=='string') return res.status(400).send('Invalid');
+res.json({created:true, id:req.body.id})
+})
+app.use('/api', apiRouter)
+app.use(express.static('public',{maxAge:'1h', immutable:true}))
+app.listen(3000)</p>
+<p class="md-github">Best Practices:
+Validate req.body properties before use
+Test body type: if(!Buffer.isBuffer(req.body)) throw Error
+Use reverse proxy cache for static assets</p>
+<p class="md-github">Troubleshooting:
+Command: curl -X POST http://localhost:3000/api/item -H &quot;Content-Type: application/json&quot; -d '{&quot;id&quot;:&quot;123&quot;}'
+Expected: JSON {&quot;created&quot;:true,&quot;id&quot;:&quot;123&quot;}
+If req.body is empty: check Content-Type header; verify limit not exceeded
+If parsing error: enable verify option to throw on malformed body:
+app.use(express.json({verify:function(req,res,buf){try{JSON.parse(buf)}catch(e){throw e}}}))</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">express.json:inflate:true|limit:100kb|reviver:null|strict:true|type:application/json|verify:fn → RequestHandler; express.raw:inflate:true|limit:100kb|type:application/octet-stream|verify:fn → RequestHandler; express.text:defaultCharset:utf-8|inflate:true|limit:100kb|type:text/plain|verify:fn → RequestHandler; express.urlencoded:extended:true|inflate:true|limit:100kb|parameterLimit:1000|type:application/x-www-form-urlencoded|verify:fn → RequestHandler; express.Router:caseSensitive:false|mergeParams:false|strict:false → Router; express.static:maxAge:0|etag:true|extensions:false|dotfiles:undefined|fallthrough:true|immutable:false|index:index.html|lastModified:true|redirect:true|setHeaders:fn → RequestHandler</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1 express.json
+2 express.raw
+3 express.text
+4 express.urlencoded
+5 express.Router
+6 express.static</p>
+<p class="md-github">1 express.json
+Function signature: express.json(options?)  RequestHandler
+Options:
+inflate: Boolean = true
+limit: number|string = '100kb'
+reviver: Function = null
+strict: Boolean = true
+type: string|string[]|function = 'application/json'
+verify: function(req,res,buf,encoding) = undefined
+Behavior: parses JSON, populates req.body with object or {} on no body'/no match'/error</p>
+<p class="md-github">2 express.raw
+Function signature: express.raw(options?)  RequestHandler
+Options:
+inflate: Boolean = true
+limit: number|string = '100kb'
+type: string|string[]|function = 'application/octet-stream'
+verify: function(req,res,buf,encoding) = undefined
+Behavior: parses body into Buffer, populates req.body with Buffer or {}</p>
+<p class="md-github">3 express.text
+Function signature: express.text(options?)  RequestHandler
+Options:
+defaultCharset: string = 'utf-8'
+inflate: Boolean = true
+limit: number|string = '100kb'
+type: string|string[]|function = 'text/plain'
+verify: function(req,res,buf,encoding) = undefined
+Behavior: parses body into string, populates req.body with string or {}</p>
+<p class="md-github">4 express.urlencoded
+Function signature: express.urlencoded(options?)  RequestHandler
+Options:
+extended: Boolean = true
+inflate: Boolean = true
+limit: number|string = '100kb'
+parameterLimit: number = 1000
+type: string|string[]|function = 'application/x-www-form-urlencoded'
+verify: function(req,res,buf,encoding) = undefined
+Behavior: parses URL-encoded data into object or {}</p>
+<p class="md-github">5 express.Router
+Function signature: express.Router(options?)  Router
+Options:
+caseSensitive: Boolean = false
+mergeParams: Boolean = false
+strict: Boolean = false
+Behavior: creates modular route handlers</p>
+<p class="md-github">6 express.static
+Function signature: express.static(root,options?)  RequestHandler
+Options:
+dotfiles: 'allow'|'deny'|'ignore'|undefined = undefined
+etag: Boolean = true
+extensions: string[]|false = false
+fallthrough: Boolean = true
+immutable: Boolean = false
+index: string|false = 'index.html'
+lastModified: Boolean = true
+maxAge: number|string = 0
+redirect: Boolean = true
+setHeaders: function(res,path,stat) = undefined
+Behavior: serves static assets with caching and fallback</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Express.js API Reference
+https://expressjs.com/en/4x/api.html</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-express_middleware" href="#digest-of-express_middleware"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of EXPRESS_MIDDLEWARE</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="expressjs-4x-api-reference-built-in-middleware-functions" href="#expressjs-4x-api-reference-built-in-middleware-functions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Express.js 4.x API Reference (Built-in Middleware Functions)</h1>
+<p class="md-github">Content retrieved: 2024-06-30
+Data Size: 26740539 bytes</p>
+<h1 class="md-github"><a class="md-github__anchor" name="expressjsonoptions" href="#expressjsonoptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>express.json([options])</h1>
+<p class="md-github">Parses incoming requests with JSON payloads. Based on body-parser.</p>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Option</th>
+<th class="md-github">Type</th>
+<th class="md-github">Default</th>
+<th class="md-github">Description</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">inflate</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Enable handling of gzip/deflate compressed bodies</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">limit</td>
+<td class="md-github">number or string</td>
+<td class="md-github">&quot;100kb&quot;</td>
+<td class="md-github">Max request body size; number in bytes or string parsed by bytes library</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">reviver</td>
+<td class="md-github">function(key, value)</td>
+<td class="md-github">null</td>
+<td class="md-github">Passed as second argument to JSON.parse</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">strict</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Accept only arrays and objects; false accepts any JSON.parse input</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">type</td>
+<td class="md-github">string, string[], or function(req) → boolean</td>
+<td class="md-github">&quot;application/json&quot;</td>
+<td class="md-github">Media type to parse; passed to type-is or custom function</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">verify</td>
+<td class="md-github">function(req, res, buf, encoding)</td>
+<td class="md-github">undefined</td>
+<td class="md-github">Called before parsing; throw error to abort parsing</td>
+</tr>
+</tbody>
+</table>
+<h1 class="md-github"><a class="md-github__anchor" name="expressrawoptions" href="#expressrawoptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>express.raw([options])</h1>
+<p class="md-github">Parses all bodies as Buffer. Based on body-parser.</p>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Option</th>
+<th class="md-github">Type</th>
+<th class="md-github">Default</th>
+<th class="md-github">Description</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">inflate</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Enable handling of gzip/deflate compressed bodies</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">limit</td>
+<td class="md-github">number or string</td>
+<td class="md-github">&quot;100kb&quot;</td>
+<td class="md-github">Max request body size</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">type</td>
+<td class="md-github">string, string[], or function(req) → boolean</td>
+<td class="md-github">&quot;application/octet-stream&quot;</td>
+<td class="md-github">Media type to parse</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">verify</td>
+<td class="md-github">function(req, res, buf, encoding)</td>
+<td class="md-github">undefined</td>
+<td class="md-github">Called before parsing; throw error to abort parsing</td>
+</tr>
+</tbody>
+</table>
+<h1 class="md-github"><a class="md-github__anchor" name="expresstextoptions" href="#expresstextoptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>express.text([options])</h1>
+<p class="md-github">Parses bodies into string. Based on body-parser.</p>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Option</th>
+<th class="md-github">Type</th>
+<th class="md-github">Default</th>
+<th class="md-github">Description</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">defaultCharset</td>
+<td class="md-github">string</td>
+<td class="md-github">&quot;utf-8&quot;</td>
+<td class="md-github">Default charset when not specified in Content-Type</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">inflate</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Enable handling of gzip/deflate compressed bodies</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">limit</td>
+<td class="md-github">number or string</td>
+<td class="md-github">&quot;100kb&quot;</td>
+<td class="md-github">Max request body size</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">type</td>
+<td class="md-github">string, string[], or function(req) → boolean</td>
+<td class="md-github">&quot;text/plain&quot;</td>
+<td class="md-github">Media type to parse</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">verify</td>
+<td class="md-github">function(req, res, buf, encoding)</td>
+<td class="md-github">undefined</td>
+<td class="md-github">Called before parsing; throw error to abort parsing</td>
+</tr>
+</tbody>
+</table>
+<h1 class="md-github"><a class="md-github__anchor" name="expressurlencodedoptions" href="#expressurlencodedoptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>express.urlencoded([options])</h1>
+<p class="md-github">Parses URL-encoded bodies. Based on body-parser.</p>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Option</th>
+<th class="md-github">Type</th>
+<th class="md-github">Default</th>
+<th class="md-github">Description</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">extended</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">false uses querystring, true uses qs library</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">inflate</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Enable handling of gzip/deflate compressed bodies</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">limit</td>
+<td class="md-github">number or string</td>
+<td class="md-github">&quot;100kb&quot;</td>
+<td class="md-github">Max request body size</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">parameterLimit</td>
+<td class="md-github">number</td>
+<td class="md-github">1000</td>
+<td class="md-github">Max number of URL-encoded parameters</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">type</td>
+<td class="md-github">string, string[], or function(req) → boolean</td>
+<td class="md-github">&quot;application/x-www-form-urlencoded&quot;</td>
+<td class="md-github">Media type to parse</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">verify</td>
+<td class="md-github">function(req, res, buf, encoding)</td>
+<td class="md-github">undefined</td>
+<td class="md-github">Called before parsing; throw error to abort parsing</td>
+</tr>
+</tbody>
+</table>
+<h1 class="md-github"><a class="md-github__anchor" name="expressrouteroptions" href="#expressrouteroptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>express.Router([options])</h1>
+<p class="md-github">Creates router. Options:</p>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Option</th>
+<th class="md-github">Type</th>
+<th class="md-github">Default</th>
+<th class="md-github">Description</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">caseSensitive</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Enable case sensitivity on route paths</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">mergeParams</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Preserve parent req.params values</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">strict</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Enable strict routing: &quot;/foo&quot; != &quot;/foo/&quot;</td>
+</tr>
+</tbody>
+</table>
+<h1 class="md-github"><a class="md-github__anchor" name="expressstaticroot-options" href="#expressstaticroot-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>express.static(root, [options])</h1>
+<p class="md-github">Serves static files from root.</p>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Option</th>
+<th class="md-github">Type</th>
+<th class="md-github">Default</th>
+<th class="md-github">Description</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">dotfiles</td>
+<td class="md-github">&quot;allow&quot;,&quot;deny&quot;,&quot;ignore&quot; or undefined</td>
+<td class="md-github">undefined</td>
+<td class="md-github">How to treat files starting with dot</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">etag</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Enable weak ETag generation</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">extensions</td>
+<td class="md-github">string[] or false</td>
+<td class="md-github">false</td>
+<td class="md-github">File extension fallbacks: serve first existing extension</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">fallthrough</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">if true call next() on client errors; if false invoke next(err)</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">immutable</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Enable immutable Cache-Control directive (</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">index</td>
+<td class="md-github">string or false</td>
+<td class="md-github">&quot;index.html&quot;</td>
+<td class="md-github">Specify directory index file or disable</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">lastModified</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Set Last-Modified header</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">maxAge</td>
+<td class="md-github">number or string</td>
+<td class="md-github">0</td>
+<td class="md-github">Set Cache-Control max-age in ms or ms format</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">redirect</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Redirect to trailing slash for directories</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">setHeaders</td>
+<td class="md-github">function(res, path, stat)</td>
+<td class="md-github">undefined</td>
+<td class="md-github">Custom header setter; called synchronously</td>
+</tr>
+</tbody>
+</table>
+<p class="md-github">Attribution: source=https://expressjs.com/en/4x/api.html</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Express.js API Reference</li>
+<li class="md-github">URL: https://expressjs.com/en/4x/api.html</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-11T04:57:58.184Z</li>
+<li class="md-github">Data Size: 26740539 bytes</li>
+<li class="md-github">Links Found: 21583</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-11</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-11T10:37:41.515Z</p>
+  </footer>
+</body>
+</html>

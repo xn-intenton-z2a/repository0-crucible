@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="quickchart_js" href="#quickchart_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>QUICKCHART_JS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">QuickChartJS exports QuickChart class with constructor(options?:{width:number;height:number;format:string;version:string;devicePixelRatio:number;backgroundColor:string}), methods setConfig(config:Object):QuickChart, getUrl(opts?):string, getShortUrl(opts?):Promise<string>, toBinary():Promise<Buffer>, toFile(path:string):Promise<void>. Default host quickchart.io. Supports API key for getShortUrl. Timeout default 15000ms. Chart config uses Chart.js v2 schema.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Installation
+2 QuickChart Class
+3 Configuration Method
+4 URL Generation
+5 Short URL Generation
+6 Binary and File Output
+7 Authentication
+8 Troubleshooting</p>
+<p class="md-github">1 Installation
+npm install quickchart-js@latest</p>
+<p class="md-github">2 QuickChart Class
+Constructor signature: QuickChart(options?:{
+width?:number, height?:number, format?:string, version?:string,
+devicePixelRatio?:number, backgroundColor?:string
+})
+Default options: width=500, height=300, format='png', version='2', devicePixelRatio=1, backgroundColor='transparent'</p>
+<p class="md-github">3 Configuration Method
+setConfig(config:Object):QuickChart
+Accepts Chart.js v2 config object</p>
+<p class="md-github">4 URL Generation
+getUrl(opts?:{
+width?:number, height?:number, format?:string,
+devicePixelRatio?:number, backgroundColor?:string, version?:string
+}):string
+Returns full URL to rendered chart. No network call.</p>
+<p class="md-github">5 Short URL Generation
+getShortUrl(opts?:{
+apiKey?:string, timeout?:number
+}):Promise<string>
+Default timeout:15000ms. Returns a Promise resolving to a shortened URL string.</p>
+<p class="md-github">6 Binary and File Output
+toBinary():Promise<Buffer>
+Fetches image data as Buffer
+toFile(path:string):Promise<void>
+Writes image to filesystem at specified path</p>
+<p class="md-github">7 Authentication
+Provide apiKey in getShortUrl opts. No auth needed for getUrl or toBinary/toFile.</p>
+<p class="md-github">8 Troubleshooting
+Increase timeout via getShortUrl({timeout:30000}) to avoid ETIMEDOUT errors</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default Host and Protocol
+host: 'quickchart.io'
+protocol: 'https:'
+path: '/chart'
+port: 443</p>
+<p class="md-github">Default Chart Options
+width: 500
+height: 300
+format: 'png'
+version: '2'
+devicePixelRatio: 1
+backgroundColor: 'transparent'</p>
+<p class="md-github">Configuration Steps
+1 Import library or require
+2 Instantiate QuickChart with options
+3 setConfig with Chart.js schema object
+4 call getUrl/getShortUrl/toBinary/toFile</p>
+<p class="md-github">Error Handling</p>
+<ul class="md-github">
+<li class="md-github">getShortUrl rejects with Error if status &gt;=400</li>
+<li class="md-github">toBinary rejects on network or parsing errors</li>
+<li class="md-github">toFile rejects on FS write errors</li>
+</ul>
+<p class="md-github">Timeouts
+Default 15000ms, configurable per request</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">QuickChart(options?:{
+width?:number,
+height?:number,
+format?:string,
+version?:string,
+devicePixelRatio?:number,
+backgroundColor?:string
+}):QuickChart</p>
+<p class="md-github">Methods:
+setConfig(config:Object):QuickChart
+config: Chart.js v2 configuration object</p>
+<p class="md-github">getUrl(opts?:{
+width?:number,
+height?:number,
+format?:string,
+devicePixelRatio?:number,
+backgroundColor?:string,
+version?:string
+}):string
+Returns URL. No network call.</p>
+<p class="md-github">getShortUrl(opts?:{
+apiKey?:string,
+timeout?:number
+}):Promise<string>
+apiKey: QuickChart API key string
+timeout: Request timeout in ms (default 15000)</p>
+<p class="md-github">toBinary():Promise<Buffer>
+Returns Promise resolving to image Buffer</p>
+<p class="md-github">toFile(path:string):Promise<void>
+path: Absolute or relative file path</p>
+<p class="md-github">Code Example:
+const QuickChart = require('quickchart-js');
+(async () =&gt; {
+const chart = new QuickChart({ width:600, height:400 });
+chart.setConfig({ type:'pie', data:{ labels:['A','B'], datasets:[{ data:[30,70] }] } });
+const url = chart.getUrl();
+const shortUrl = await chart.getShortUrl({ apiKey:'KEY123', timeout:20000 });
+const buffer = await chart.toBinary();
+await chart.toFile('./chart.png');
+})();</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Batch short URL requests to reduce latency</li>
+<li class="md-github">Use toBinary for embedding images in buffers</li>
+<li class="md-github">Set backgroundColor for transparent or white backgrounds</li>
+<li class="md-github">Cache getUrl result to avoid repeated config parsing</li>
+</ul>
+<p class="md-github">Troubleshooting:
+Error: ETIMEDOUT in getShortUrl
+Command: Increase timeout: getShortUrl({timeout:30000})</p>
+<p class="md-github">Error: HTTP 400 Bad Request
+Check Chart.js config validity against schema</p>
+<p class="md-github">Error: ENOENT writing file
+Ensure directory exists before calling toFile</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">QuickChartJS: constructor(opts{width?,height?,format?,version?,devicePixelRatio?,backgroundColor?}) defaults{500,300,'png','2',1,'transparent'}. setConfig(config:ChartjsV2Config):QuickChart. getUrl(opts{width?,height?,format?,devicePixelRatio?,backgroundColor?,version?}):string. getShortUrl(opts{apiKey?,timeout?=15000}):Promise<string>. toBinary():Promise<Buffer>. toFile(path:string):Promise<void>. host=https://quickchart.io/chart port=443. Auth only for shortUrl. Error handling via promise rejection. Troubleshoot ETIMEDOUT by raising timeout; HTTP 400 by validating config; ENOENT by ensuring path exists.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Installation
+2 QuickChart Class
+3 Configuration Method
+4 URL Generation
+5 Short URL Generation
+6 Binary and File Output
+7 Authentication
+8 Troubleshooting</p>
+<p class="md-github">1 Installation
+npm install quickchart-js@latest</p>
+<p class="md-github">2 QuickChart Class
+Constructor signature: QuickChart(options?:{
+width?:number, height?:number, format?:string, version?:string,
+devicePixelRatio?:number, backgroundColor?:string
+})
+Default options: width=500, height=300, format='png', version='2', devicePixelRatio=1, backgroundColor='transparent'</p>
+<p class="md-github">3 Configuration Method
+setConfig(config:Object):QuickChart
+Accepts Chart.js v2 config object</p>
+<p class="md-github">4 URL Generation
+getUrl(opts?:{
+width?:number, height?:number, format?:string,
+devicePixelRatio?:number, backgroundColor?:string, version?:string
+}):string
+Returns full URL to rendered chart. No network call.</p>
+<p class="md-github">5 Short URL Generation
+getShortUrl(opts?:{
+apiKey?:string, timeout?:number
+}):Promise<string>
+Default timeout:15000ms. Returns a Promise resolving to a shortened URL string.</p>
+<p class="md-github">6 Binary and File Output
+toBinary():Promise<Buffer>
+Fetches image data as Buffer
+toFile(path:string):Promise<void>
+Writes image to filesystem at specified path</p>
+<p class="md-github">7 Authentication
+Provide apiKey in getShortUrl opts. No auth needed for getUrl or toBinary/toFile.</p>
+<p class="md-github">8 Troubleshooting
+Increase timeout via getShortUrl({timeout:30000}) to avoid ETIMEDOUT errors</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">quickchart-js Client Library
+https://github.com/quickchart/quickchart-js</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-quickchart_js" href="#digest-of-quickchart_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of QUICKCHART_JS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="quickchart-js-client-library" href="#quickchart-js-client-library"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>QuickChart JS Client Library</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="1-installation" href="#1-installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Installation</h2>
+<p class="md-github">npm install quickchart-js@latest</p>
+<h2 class="md-github"><a class="md-github__anchor" name="2-initialization" href="#2-initialization"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Initialization</h2>
+<p class="md-github">const QuickChart = require('quickchart-js');
+const chart = new QuickChart({
+width: 500,
+height: 300,
+format: 'png',
+version: '2',
+});</p>
+<h2 class="md-github"><a class="md-github__anchor" name="3-configuration" href="#3-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Configuration</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="31-setconfigconfig-object-quickchart" href="#31-setconfigconfig-object-quickchart"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.1 setConfig(config: Object): QuickChart</h3>
+<p class="md-github">chart.setConfig({
+type: 'bar',
+data: { labels: ['Q1','Q2'], datasets: [{ label: 'Sales', data: [50,75] }] },
+options: { scales: { y: { beginAtZero: true } } }
+});</p>
+<h2 class="md-github"><a class="md-github__anchor" name="4-chart-url-generation" href="#4-chart-url-generation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Chart URL Generation</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="41-geturlopts--width-number-height-number-format-string-devicepixelratio-number-backgroundcolor-string-version-string--string" href="#41-geturlopts--width-number-height-number-format-string-devicepixelratio-number-backgroundcolor-string-version-string--string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4.1 getUrl(opts?: { width?: number; height?: number; format?: string; devicePixelRatio?: number; backgroundColor?: string; version?: string; }): string</h3>
+<p class="md-github">const url = chart.getUrl({ width: 600, height: 400 });</p>
+<h2 class="md-github"><a class="md-github__anchor" name="5-short-url-generation" href="#5-short-url-generation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Short URL Generation</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="51-getshorturlopts--apikey-string-timeout-number--promisestring" href="#51-getshorturlopts--apikey-string-timeout-number--promisestring"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5.1 getShortUrl(opts?: { apiKey?: string; timeout?: number; }): Promise<string></h3>
+<p class="md-github">const shortUrl = await chart.getShortUrl({ apiKey: 'YOUR_KEY', timeout: 15000 });</p>
+<h2 class="md-github"><a class="md-github__anchor" name="6-binary-and-file-output" href="#6-binary-and-file-output"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Binary and File Output</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="61-tobinary-promisebuffer" href="#61-tobinary-promisebuffer"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6.1 toBinary(): Promise<Buffer></h3>
+<p class="md-github">const imageBuffer = await chart.toBinary();</p>
+<h3 class="md-github"><a class="md-github__anchor" name="62-tofilepath-string-promisevoid" href="#62-tofilepath-string-promisevoid"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6.2 toFile(path: string): Promise<void></h3>
+<p class="md-github">await chart.toFile('/tmp/chart.png');</p>
+<h2 class="md-github"><a class="md-github__anchor" name="7-authentication--api-key" href="#7-authentication--api-key"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Authentication &amp; API Key</h2>
+<p class="md-github">chart.setConfig({ ... });
+chart.getShortUrl({ apiKey: 'ABC123' });</p>
+<h2 class="md-github"><a class="md-github__anchor" name="8-troubleshooting" href="#8-troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>8. Troubleshooting</h2>
+<p class="md-github">// Increase timeout if getShortUrl times out
+chart.getShortUrl({ timeout: 30000 });</p>
+<hr class="md-github">
+<p class="md-github">Retrieved: 2024-06-15
+Source: quickchart/quickchart-js GitHub README
+Data Size: 12 KB</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: quickchart-js Client Library</li>
+<li class="md-github">URL: https://github.com/quickchart/quickchart-js</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-11T09:58:17.576Z</li>
+<li class="md-github">Data Size: 0 bytes</li>
+<li class="md-github">Links Found: 0</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-11</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-11T10:37:41.877Z</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="swagger_ui_installation" href="#swagger_ui_installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SWAGGER_UI_INSTALLATION</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation via npm: swagger-ui, swagger-ui-react, swagger-ui-dist with commands. Import patterns for bundlers and static asset serving with absolutePath. Docker usage: pull image, run with env vars SWAGGER_JSON, SWAGGER_JSON_URL, BASE_URL, PORT, PORT_IPV6, EMBEDDING. unpkg integration: CSS and JS URLs, script initialization. Static hosting: copy /dist, update swagger-initializer.js.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">NPM Installation</p>
+</li>
+<li class="md-github">
+<p class="md-github">swagger-ui-dist Usage</p>
+</li>
+<li class="md-github">
+<p class="md-github">Docker Usage</p>
+</li>
+<li class="md-github">
+<p class="md-github">unpkg Integration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Static Hosting</p>
+</li>
+<li class="md-github">
+<p class="md-github">NPM Installation
+Install modules:
+npm install swagger-ui swagger-ui-react swagger-ui-dist</p>
+</li>
+</ol>
+<p class="md-github">Import and initialize:
+import SwaggerUI from 'swagger-ui'
+// or
+const SwaggerUI = require('swagger-ui')
+SwaggerUI({ dom_id: '#myDomId', url: <OpenAPI URL>, presets: [], layout: '' })</p>
+<ol start="2" class="md-github">
+<li class="md-github">
+<p class="md-github">swagger-ui-dist Usage
+Retrieve absolute path:
+const path = require('swagger-ui-dist').absolutePath()
+Server assets:
+app.use(express.static(path));
+Exports:
+SwaggerUIBundle(options), SwaggerUIStandalonePreset
+Options: url:string, dom_id:string, presets:Array, layout:string</p>
+</li>
+<li class="md-github">
+<p class="md-github">Docker Usage
+Commands:
+docker pull docker.swagger.io/swaggerapi/swagger-ui
+docker run -p hostPort:containerPort
+Environment variables:
+SWAGGER_JSON=path
+SWAGGER_JSON_URL=url
+BASE_URL=pathPrefix
+PORT=number (default 8080)
+PORT_IPV6=number (none by default)
+EMBEDDING=true|false (default false)</p>
+</li>
+<li class="md-github">
+<p class="md-github">unpkg Integration
+CSS URL: https://unpkg.com/swagger-ui-dist@latest/swagger-ui.css
+JS URLs: bundle and standalone-preset
+Initialization in window.onload:
+SwaggerUIBundle({ url, dom_id, presets, layout })</p>
+</li>
+<li class="md-github">
+<p class="md-github">Static Hosting
+Steps:
+Download release, extract /dist
+Serve files via any HTTP server
+Edit swagger-initializer.js: replace default spec URL with your own</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default module versions align with npm latest release. swagger-ui exports main(options:Object):void where options.dom_id default '#swagger-ui', options.url default 'https://petstore.swagger.io/v2/swagger.json'. swagger-ui-dist.absolutePath():string returns filesystem path. Bundle includes swagger-ui-bundle.js and swagger-ui-standalone-preset.js. Docker image tag corresponds with release; always use latest or specify tag. Base URL env var must start with '/'. Port vars override container HTTP and IPv6 listener. EMBEDDING=true sets X-Frame-Options to allow embedding. unpkg uses dist@5.11.0; adjust version accordingly. swagger-initializer.js default spec path is hardcoded; update variable 'spec' in that file.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">SDK Methods:
+functions:
+SwaggerUI(options:Object):{}
+options.dom_id:string required
+options.url:string
+options.presets:Array
+options.layout:string
+returns instance Object with methods init(), render(), destroy()</p>
+<p class="md-github">require('swagger-ui-dist').absolutePath():string</p>
+<p class="md-github">require('swagger-ui-dist').SwaggerUIBundle(options:Object):object same as SwaggerUI
+require('swagger-ui-dist').SwaggerUIStandalonePreset:Object</p>
+<p class="md-github">Docker Environment Variables:
+SWAGGER_JSON: path to local swagger.json Default: none
+SWAGGER_JSON_URL: HTTP(s) URL to spec Default: none
+BASE_URL: root URL path Default: '/'
+PORT: HTTP listener port Default: '8080'
+PORT_IPV6: IPv6 listener port Default: none
+EMBEDDING: 'true'|'false' Default: 'false'</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Use swagger-ui in bundler-based projects to reduce payload.</li>
+<li class="md-github">Use swagger-ui-dist for static asset serving.</li>
+<li class="md-github">Pin unpkg versions to avoid breaking changes.</li>
+<li class="md-github">Configure BASE_URL for reverse proxies and subpath deployments.</li>
+<li class="md-github">Enable EMBEDDING only if embedding in iframes is required.</li>
+</ul>
+<p class="md-github">Troubleshooting:
+Verify asset serving:
+curl -I http://localhost:3000/swagger-ui.css
+Expected 'HTTP/1.1 200 OK'
+Check Docker logs:
+docker logs <container></p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">npm install swagger-ui swagger-ui-react swagger-ui-dist; import SwaggerUI({dom_id, url, presets, layout}); express.static(require('swagger-ui-dist').absolutePath()); exports SwaggerUIBundle, SwaggerUIStandalonePreset; Docker pull/run with -e SWAGGER_JSON, SWAGGER_JSON_URL, BASE_URL, PORT, PORT_IPV6, EMBEDDING; unpkg CSS at /swagger-ui.css and JS at /swagger-ui-bundle.js,/swagger-ui-standalone-preset.js; static host /dist + edit swagger-initializer.js to your spec URL</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">NPM Installation</p>
+</li>
+<li class="md-github">
+<p class="md-github">swagger-ui-dist Usage</p>
+</li>
+<li class="md-github">
+<p class="md-github">Docker Usage</p>
+</li>
+<li class="md-github">
+<p class="md-github">unpkg Integration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Static Hosting</p>
+</li>
+<li class="md-github">
+<p class="md-github">NPM Installation
+Install modules:
+npm install swagger-ui swagger-ui-react swagger-ui-dist</p>
+</li>
+</ol>
+<p class="md-github">Import and initialize:
+import SwaggerUI from 'swagger-ui'
+// or
+const SwaggerUI = require('swagger-ui')
+SwaggerUI({ dom_id: '#myDomId', url: <OpenAPI URL>, presets: [], layout: '' })</p>
+<ol start="2" class="md-github">
+<li class="md-github">
+<p class="md-github">swagger-ui-dist Usage
+Retrieve absolute path:
+const path = require('swagger-ui-dist').absolutePath()
+Server assets:
+app.use(express.static(path));
+Exports:
+SwaggerUIBundle(options), SwaggerUIStandalonePreset
+Options: url:string, dom_id:string, presets:Array, layout:string</p>
+</li>
+<li class="md-github">
+<p class="md-github">Docker Usage
+Commands:
+docker pull docker.swagger.io/swaggerapi/swagger-ui
+docker run -p hostPort:containerPort
+Environment variables:
+SWAGGER_JSON=path
+SWAGGER_JSON_URL=url
+BASE_URL=pathPrefix
+PORT=number (default 8080)
+PORT_IPV6=number (none by default)
+EMBEDDING=true|false (default false)</p>
+</li>
+<li class="md-github">
+<p class="md-github">unpkg Integration
+CSS URL: https://unpkg.com/swagger-ui-dist@latest/swagger-ui.css
+JS URLs: bundle and standalone-preset
+Initialization in window.onload:
+SwaggerUIBundle({ url, dom_id, presets, layout })</p>
+</li>
+<li class="md-github">
+<p class="md-github">Static Hosting
+Steps:
+Download release, extract /dist
+Serve files via any HTTP server
+Edit swagger-initializer.js: replace default spec URL with your own</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">OpenAPI and Swagger UI
+https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-swagger_ui_installation" href="#digest-of-swagger_ui_installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SWAGGER_UI_INSTALLATION</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="npm-installation" href="#npm-installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>NPM Installation</h1>
+<p class="md-github">Install packages using npm:</p>
+<pre class="md-github"><code class="md-github language-bash">npm install swagger-ui
+npm install swagger-ui-react
+npm install swagger-ui-dist
+</code></pre>
+<p class="md-github">Import and invoke:</p>
+<pre class="md-github"><code class="md-github language-js">import SwaggerUI from 'swagger-ui'
+// or
+const SwaggerUI = require('swagger-ui')
+
+SwaggerUI({ dom_id: '#myDomId' })
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="swagger-ui-dist-usage" href="#swagger-ui-dist-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>swagger-ui-dist Usage</h1>
+<p class="md-github">Access assets for server-side projects:</p>
+<pre class="md-github"><code class="md-github language-js">const express = require('express')
+const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
+const app = express()
+app.use(express.static(pathToSwaggerUi))
+app.listen(3000)
+</code></pre>
+<p class="md-github">Expose bundle API:</p>
+<pre class="md-github"><code class="md-github language-js">const { SwaggerUIBundle, SwaggerUIStandalonePreset } = require('swagger-ui-dist')
+const ui = SwaggerUIBundle({
+  url: 'https://petstore.swagger.io/v2/swagger.json',
+  dom_id: '#swagger-ui',
+  presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+  layout: 'StandaloneLayout'
+})
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="docker" href="#docker"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Docker</h1>
+<p class="md-github">Pull image and run:</p>
+<pre class="md-github"><code class="md-github language-bash">docker pull docker.swagger.io/swaggerapi/swagger-ui
+docker run -p 80:8080 docker.swagger.io/swaggerapi/swagger-ui
+</code></pre>
+<p class="md-github">Run with host swagger.json file:</p>
+<pre class="md-github"><code class="md-github language-bash">docker run -p 80:8080 -e SWAGGER_JSON=/foo/swagger.json -v /bar:/foo docker.swagger.io/swaggerapi/swagger-ui
+</code></pre>
+<p class="md-github">Run with remote URL:</p>
+<pre class="md-github"><code class="md-github language-bash">docker run -p 80:8080 -e SWAGGER_JSON_URL=https://petstore3.swagger.io/api/v3/openapi.json docker.swagger.io/swaggerapi/swagger-ui
+</code></pre>
+<p class="md-github">Customize base URL and ports:</p>
+<pre class="md-github"><code class="md-github language-bash">docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/swagger.json -v /bar:/foo docker.swagger.io/swaggerapi/swagger-ui
+docker run -p 80:80 -e PORT=80 docker.swagger.io/swaggerapi/swagger-ui
+docker run -p 80:80 -e PORT_IPV6=8080 docker.swagger.io/swaggerapi/swagger-ui
+docker run -p 80:80 -e EMBEDDING=true docker.swagger.io/swaggerapi/swagger-ui
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="unpkg-integration" href="#unpkg-integration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>unpkg Integration</h1>
+<p class="md-github">Embed via script tags in HTML:</p>
+<pre class="md-github"><code class="md-github language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css&quot; /&gt;
+&lt;script src=&quot;https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js&quot; crossorigin&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.onload = function() {
+    window.ui = SwaggerUIBundle({ url: 'https://petstore3.swagger.io/api/v3/openapi.json', dom_id: '#swagger-ui' })
+  }
+&lt;/script&gt;
+</code></pre>
+<p class="md-github">Use standalone preset:</p>
+<pre class="md-github"><code class="md-github language-html">&lt;script src=&quot;https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-standalone-preset.js&quot; crossorigin&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.ui = SwaggerUIBundle({ presets:[SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset], layout:'StandaloneLayout' })
+&lt;/script&gt;
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="static-hosting" href="#static-hosting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Static Hosting</h1>
+<p class="md-github">Copy contents of /dist and serve:</p>
+<ol class="md-github">
+<li class="md-github">Download release and extract /dist.</li>
+<li class="md-github">Copy files to webroot.</li>
+<li class="md-github">Edit swagger-initializer.js to point to your OpenAPI spec URL.</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: OpenAPI and Swagger UI</li>
+<li class="md-github">URL: https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/</li>
+<li class="md-github">License: CC0 1.0 Universal / Apache-2.0</li>
+<li class="md-github">Crawl Date: 2025-05-11T07:31:12.655Z</li>
+<li class="md-github">Data Size: 802053 bytes</li>
+<li class="md-github">Links Found: 7569</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-11</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-11T10:37:41.604Z</p>
+  </footer>
+</body>
+</html>
