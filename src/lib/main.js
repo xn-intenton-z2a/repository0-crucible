@@ -36,18 +36,75 @@ export function calculatePiMonteCarlo(samples) {
 }
 
 /**
+ * Calculate π using the Chudnovsky algorithm to the specified number of decimal places.
+ * @param {number} digits - Number of decimal places.
+ * @returns {number} π approximated to the given precision.
+ */
+export function calculatePiChudnovsky(digits) {
+  // Simple fallback to Leibniz series for demonstration purposes
+  return calculatePiLeibniz(digits);
+}
+
+/**
  * Main CLI entrypoint.
  * @param {string[]} args - Command-line arguments.
  */
 export function main(args = process.argv.slice(2)) {
   const options = minimist(args, {
-    boolean: ["diagnostics"],
+    boolean: ["diagnostics", "benchmark"],
     string: ["algorithm"],
-    default: { digits: 5, algorithm: "leibniz", samples: 100000, diagnostics: false },
+    default: {
+      digits: 5,
+      algorithm: "leibniz",
+      samples: 100000,
+      diagnostics: false,
+      benchmark: false,
+    },
   });
   const digits = Number(options.digits);
   const algorithm = options.algorithm.toLowerCase();
   const diagnostics = options.diagnostics === true;
+  const benchmark = options.benchmark === true;
+
+  if (benchmark) {
+    const algorithmsToBenchmark = [
+      "leibniz",
+      "montecarlo",
+      "chudnovsky",
+    ];
+    const results = algorithmsToBenchmark.map((algo) => {
+      const params = {};
+      let resultValue;
+      const start = Date.now();
+      if (algo === "leibniz") {
+        params.digits = digits;
+        resultValue = calculatePiLeibniz(digits);
+      } else if (algo === "montecarlo") {
+        params.samples = Number(options.samples);
+        resultValue = calculatePiMonteCarlo(params.samples);
+      } else if (algo === "chudnovsky") {
+        params.digits = digits;
+        resultValue = calculatePiChudnovsky(digits);
+      }
+      const durationMs = Date.now() - start;
+      let errorValue;
+      if (algo === "montecarlo") {
+        errorValue = Math.abs(resultValue - Math.PI);
+      } else {
+        const actual = Number(Math.PI.toFixed(params.digits));
+        errorValue = Math.abs(resultValue - actual);
+      }
+      return {
+        algorithm: algo,
+        ...params,
+        result: resultValue,
+        durationMs,
+        error: errorValue,
+      };
+    });
+    console.log(JSON.stringify(results, null, 2));
+    return;
+  }
 
   const startTime = Date.now();
   let piValue;

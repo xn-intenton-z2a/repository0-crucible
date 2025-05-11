@@ -1,6 +1,11 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, calculatePiLeibniz, calculatePiMonteCarlo } from "@src/lib/main.js";
+import {
+  main,
+  calculatePiLeibniz,
+  calculatePiMonteCarlo,
+  calculatePiChudnovsky,
+} from "@src/lib/main.js";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -77,7 +82,13 @@ describe("CLI Diagnostics", () => {
 
   test("Monte Carlo diagnostics", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--diagnostics", "--algorithm", "montecarlo", "--samples", "1000"]);
+    main([
+      "--diagnostics",
+      "--algorithm",
+      "montecarlo",
+      "--samples",
+      "1000",
+    ]);
     expect(spy).toHaveBeenCalledTimes(1);
     const output = spy.mock.calls[0][0];
     expect(output).toEqual(
@@ -89,6 +100,36 @@ describe("CLI Diagnostics", () => {
         samplesUsed: 1000,
       })
     );
+    spy.mockRestore();
+  });
+});
+
+// New benchmark tests
+describe("CLI Benchmark", () => {
+  test("outputs benchmark results for all algorithms", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const fakePi = 3.14;
+    vi.spyOn(mainModule, "calculatePiLeibniz").mockReturnValue(fakePi);
+    vi.spyOn(mainModule, "calculatePiMonteCarlo").mockReturnValue(fakePi);
+    vi.spyOn(mainModule, "calculatePiChudnovsky").mockReturnValue(fakePi);
+    main(["--benchmark", "--digits", "2", "--samples", "1000"]);
+    expect(spy).toHaveBeenCalledTimes(1);
+    const logged = spy.mock.calls[0][0];
+    const results = JSON.parse(logged);
+    expect(results).toHaveLength(3);
+    expect(results.map((r) => r.algorithm)).toEqual(
+      expect.arrayContaining(["leibniz", "montecarlo", "chudnovsky"])
+    );
+    results.forEach((r) => {
+      expect(r).toEqual(
+        expect.objectContaining({
+          algorithm: expect.any(String),
+          result: fakePi,
+          durationMs: expect.any(Number),
+          error: expect.any(Number),
+        })
+      );
+    });
     spy.mockRestore();
   });
 });
