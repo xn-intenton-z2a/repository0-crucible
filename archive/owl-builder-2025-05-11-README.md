@@ -1,53 +1,54 @@
 # repository0-crucible
 
-A CLI tool and JavaScript library for calculating π (pi) to a specified number of decimal places.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+
+To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
+
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+
+## Repository Template
+
+The repository is intended as a template that includes:
+* A Template Base: A starting point for new projects.
+* A Running Experiment: An example implementation that demonstrates one way to use the template.
+* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
 
 ## Installation
 
 Install via npm:
 
 ```bash
-npm install @xn-intenton-z2a/repository0-crucible
-```
-
-## CLI Usage
-
-Use the `main` script to calculate π:
-
-```bash
-node src/lib/main.js [options]
-```
-
-Options:
-
-- `--digits <n>`: Number of decimal places to calculate (integer, default: 10, max: 1000)
-- `--help`, `-h`: Show help information
-
-Examples:
-
-```bash
-# Default: 10 decimal places
-node src/lib/main.js
-# -> 3.1415926536
-
-# Specify digits
-node src/lib/main.js --digits 5
-# -> 3.14159
-
-# Rounding behavior
-node src/lib/main.js --digits 3
-# -> 3.142
+npm install repository0-crucible
 ```
 
 ## Features
 
-- Calculate π to up to 1000 decimal places using a Machin-like formula with BigInt precision and correct rounding.
-- Validates input and provides errors for invalid or out-of-range values.
+TODO: Add features here.
+
+## Usage
+
+To run the CLI tool and see help instructions:
+
+```bash
+node src/lib/main.js --help
+```
+
+### Example Commands
+
+- **Default Demo Output:**
+  ```bash
+  npm run start
+  ```
+
+
+## Incremental Changes Plan
+
+TODO: Add forthcoming changes here.
 
 ## Contributing
 
-Contributions are welcome! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
 
 ## License
 
-Released under the Apache-2.0 License. See [LICENSE](./LICENSE) for details.
+Released under the MIT License (see [LICENSE](./LICENSE)).
