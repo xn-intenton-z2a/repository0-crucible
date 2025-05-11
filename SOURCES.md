@@ -8,9 +8,19 @@ Comprehensive API reference and usage guide for Decimal.js, the arbitrary-precis
 Detailed guide to the QuickChart.io REST API for generating charts as images. Includes the full JSON schema for chart definitions, URL parameter conventions, and HTTP endpoints for synchronous and asynchronous rendering. Provides practical usage examples for customizing chart types, colors, labels, and export options—vital for on-demand PNG chart generation in benchmarking features. Continuously updated; CC0 1.0 Universal.
 ## CC0 1.0 Universal
 
+# Chart.js Documentation
+## https://www.chartjs.org/docs/latest/
+Official Chart.js documentation covering chart types (bar, line, pie, etc.), dataset and scale configuration, animation options, and plugin architecture. Critical for crafting QuickChart chart configurations, understanding data structures, and leveraging advanced features like custom scripts and interactivity. Last updated 2024; maintained by the Chart.js Core Team.
+## MIT License
+
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
-Authoritative reference for Express 4.x, covering routing, middleware integration (including CORS), error handling, request parsing, and response streaming. Foundation for defining HTTP endpoints (/pi, /benchmark, /metrics), configuring CORS support, and building a robust server in serve mode. Official docs with MIT License.
+Authoritative reference for Express 4.x, covering routing, middleware integration (including CORS), error handling, request parsing, and response streaming. Foundation for defining HTTP endpoints (/pi, /benchmark, /metrics), configuring CORS support, and building a robust server in --serve mode. Official docs with MIT License.
+## MIT License
+
+# CORS Middleware for Express
+## https://github.com/expressjs/cors
+Documentation for the Express CORS middleware, detailing configuration options for origins, methods, headers, credentials, and preflight caching. Essential for enabling cross-origin requests on /pi and /benchmark endpoints when integrating with web applications. Last updated 2024; MIT License.
 ## MIT License
 
 # SuperTest
@@ -48,20 +58,10 @@ Embedded JavaScript templating engine documentation, describing template syntax,
 Prometheus client library documentation for Node.js, covering Counter, Gauge, Histogram, and Summary metric types, registry configuration, and exposition formats. Crucial for instrumenting HTTP endpoints and exposing /metrics for monitoring π service performance. Last updated 2024.
 ## MIT License
 
-# Server-Sent Events (SSE)
-## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-MDN's guide to Server-Sent Events, detailing the EventSource interface, event formatting, reconnection strategies, and server implementation patterns. Vital for streaming π digits in real-time via the /pi/stream endpoint. Continuously updated; CC BY-SA 2.5.
-## CC BY-SA 2.5
-
 # OpenAPI Specification (OAS)
 ## https://spec.openapis.org/oas/v3.1.0
 Official OpenAPI 3.1 specification, defining the structure for API schemas, paths, components, and security. Essential for generating accurate API documentation (Swagger UI) and driving input validation workflows. Last updated 2023; CC0 1.0 Universal.
 ## CC0 1.0 Universal
-
-# Benchmark.js
-## https://benchmarkjs.com/
-Benchmark.js documentation for JavaScript micro- and macro-benchmarking. Covers suite creation, test cycles, statistical analysis, and asynchronous benchmarks. Provides best practices for measuring π computation performance beyond simple timers. Continuously maintained; MIT License.
-## MIT License
 
 # Pi Delivery API Documentation
 ## https://apidocs.pi.delivery/
