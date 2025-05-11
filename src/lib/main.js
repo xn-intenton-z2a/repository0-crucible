@@ -2,85 +2,12 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
-import yargs from "yargs";
-import { hideBin } from "yargs/helpers";
 
-/**
- * Compute π using the Leibniz series (placeholder implementation).
- * @returns {number}
- */
-function computeLeibniz() {
-  return Math.PI;
+export function main(args) {
+  console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
-/**
- * Compute π using the Nilakantha series (placeholder implementation).
- * @returns {number}
- */
-function computeNilakantha() {
-  return Math.PI;
-}
-
-/**
- * Compute π using Machin's formula (placeholder implementation).
- * @returns {number}
- */
-function computeMachin() {
-  return Math.PI;
-}
-
-/**
- * Main entry point for CLI invocation.
- */
-export function main() {
-  const argv = yargs(hideBin(process.argv))
-    .option("digits", {
-      alias: "d",
-      type: "number",
-      describe: "Number of decimal places",
-      default: 10
-    })
-    .option("algorithm", {
-      alias: "a",
-      type: "string",
-      describe: "Algorithm to use (leibniz, nilakantha, machin)",
-      default: "leibniz"
-    })
-    .help(false)
-    .parserConfiguration({ "unknown-options-as-args": true })
-    .parseSync();
-
-  let { digits, algorithm } = argv;
-  let resolvedDigits = digits;
-  if (!Number.isInteger(digits) || digits < 1) {
-    console.error(`Invalid digits "${digits}", defaulting to 10`);
-    resolvedDigits = 10;
-  }
-
-  const algorithms = ["leibniz", "nilakantha", "machin"];
-  let resolvedAlgorithm = algorithm;
-  if (!algorithms.includes(algorithm)) {
-    console.error(`Invalid algorithm "${algorithm}", defaulting to leibniz`);
-    resolvedAlgorithm = "leibniz";
-  }
-
-  let result;
-  switch (resolvedAlgorithm) {
-    case "nilakantha":
-      result = computeNilakantha();
-      break;
-    case "machin":
-      result = computeMachin();
-      break;
-    default:
-      result = computeLeibniz();
-      break;
-  }
-
-  console.log(result.toFixed(resolvedDigits));
-}
-
-// Execute when invoked directly
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main();
+  const args = process.argv.slice(2);
+  main(args);
 }

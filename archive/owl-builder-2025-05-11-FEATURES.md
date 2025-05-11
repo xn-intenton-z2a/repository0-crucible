@@ -1,120 +1,84 @@
-features/PI_SSE_SERVER.md
-# features/PI_SSE_SERVER.md
-# π SSE Streaming Server
+features/PERFORMANCE_BENCHMARK.md
+# features/PERFORMANCE_BENCHMARK.md
+# Performance Benchmark with Visualization
 
-# Usage
+## Summary
+Extend the existing benchmark capability of the π Calculator CLI to support exporting results in both text and PNG chart formats. Users can generate a bar chart image of algorithm execution times alongside or instead of the text table.
 
-Add a new CLI flag --stream-pi-sse or -s followed by a port number to start an HTTP server streaming the digits of π to connected clients using Server-Sent Events (SSE).
+## Behavior
 
-Example:
+- Introduce a new option `--format <type>` (alias `-f`) with allowed values `text` and `png`. Default: `text`.
+- Introduce a new option `--output <path>` (alias `-o`) to specify the file path for chart output when `--format png` is used. Default: `benchmark.png` in the current working directory.
+- When `--format text` is selected (default), behavior remains as before: measure and print timing data in a table.
+- When `--format png` is selected:
+  - Perform benchmarking for the selected algorithms.
+  - Generate a bar chart of algorithm names versus elapsed time in milliseconds.
+  - Save the chart as a PNG image to the specified output path.
+  - Suppress the text table output unless `--format text` is also provided.
+- Maintain support for `--algorithms <list>` to filter which algorithms to benchmark.
 
-  node src/lib/main.js --stream-pi-sse 3000
+## Source File Changes
 
-Client Subscription:
+- In `src/lib/main.js`:
+  - Extend yargs configuration to add `--format` (`-f`) and `--output` (`-o`) options.
+  - Add dependency import for chart rendering: import { ChartJSNodeCanvas } from 'chartjs-node-canvas'.
+  - After measuring execution times, branch on the selected format:
+    - For text, print the timing table as before.
+    - For png, create a new ChartJSNodeCanvas instance, configure a bar chart dataset with algorithm names and times, render to buffer, and write to file using fs.writeFileSync.
+  - Validate that when `--format png` is used without write permission or invalid path, an error is reported.
 
-  const es = new EventSource('http://localhost:3000/events');
-  es.onmessage = e => console.log(e.data);
+## Test Coverage
 
-# Implementation Details
+- In `tests/unit/main.test.js`:
+  - Add tests to verify that using `--format text` reproduces the original table output.
+  - Add tests for `--format png --output test-chart.png`:
+    - Confirm that the file `test-chart.png` is created.
+    - Confirm that the file has PNG signature bytes.
+  - Test invalid format values cause a usage error.
+  - Test missing or unwritable output path emits an error.
 
-1. Extend argument parsing in main to detect --stream-pi-sse or -s and validate the following argument as an integer port between 1024 and 65535. On invalid input, display an error message and exit with status 1.
-2. Use Node's built-in http module to create a server listening on the specified port.
-3. When a client issues a GET request to the /events endpoint:
-    - Respond with status 200 and headers:
-        Content-Type: text/event-stream
-        Cache-Control: no-cache
-        Connection: keep-alive
-    - Send an initial SSE comment to establish the connection.
-    - Stream the digits of π in small batches (for example, 10 digits per event) by writing frames of the form:
-        id:<incremental id>\n
-event:digits\n
-data:<batch of π digits>\n\n
-    - Send a keep-alive comment (":keep-alive\n\n") every 30 seconds for idle connections.
-4. Use the existing π calculation implementation (or integrate the π algorithm module) to generate digits on demand.
-5. Cleanly handle client disconnects by closing the response.
+## README Updates
 
-# Testing
+- Update Usage section to include new options:
 
-Add tests in tests/unit/main.test.js to cover:
+  node src/lib/main.js --benchmark --format text
+  node src/lib/main.js --benchmark --format png --output elapsed.png
 
-- Invocation without arguments and with invalid port to exit with an error status.
-- Invocation with a valid port returns an HTTP server instance.
-- Perform an HTTP GET request to /events and verify the response headers include text/event-stream and that at least one SSE frame is received.features/PI_CALCULATOR.md
+- Provide example CLI invocation and sample table and chart file reference.
+
+## Dependency Updates
+
+- Add `chartjs-node-canvas` to dependencies in `package.json` for server-side chart rendering.
+- No other new dependencies; continue using built-in `perf_hooks` and `fs` for timing and file I/O.features/PI_CALCULATOR.md
 # features/PI_CALCULATOR.md
-# π Calculation Command
+# π Calculator CLI
 
-Add a new CLI flag to compute π to a specified number of decimal places using an efficient algorithm and output the result as plain text.
+## Summary
+Extend the existing CLI tool to compute π to a specified number of decimal places using selectable algorithms. Users can request a calculation via command-line flags and receive the result in text format.
 
-# Usage
+## Behavior
+- Accept a new flag `--digits <n>` (default 10) to control how many decimal places of π to compute.
+- Accept a new flag `--algorithm <name>` (defaults to `leibniz`) to choose between available algorithms: `leibniz`, `nilakantha`, and `machin`.
+- Print the computed value of π to standard output with the requested precision.
 
-When invoked with the --calculate-pi or -c flag followed by a positive integer, the tool calculates π to that many decimal places and prints it to stdout.
+## Source File Changes
+- In `src/lib/main.js`, import a small helper module or define functions to calculate π using the three series.
+- Use `process.argv` to parse `--digits` and `--algorithm`.
+- Validate inputs and fall back to defaults if flags are missing or invalid.
+- Format the computed value by rounding to the requested number of decimal places.
 
-Example:
+## Test Coverage
+- Add unit tests in `tests/unit/main.test.js` to:
+  - Verify each algorithm returns π within acceptable tolerance for small digit counts (e.g., 5 or 10 digits).
+  - Ensure default behavior (no flags) produces 10 digits using the `leibniz` series without throwing errors.
+  - Test invalid flag values gracefully revert to defaults.
 
-  node src/lib/main.js --calculate-pi 50
+## README Updates
+- Document the new flags in the Usage section:
+  - `node src/lib/main.js --digits 15`
+  - `node src/lib/main.js --algorithm machin --digits 20`
+- Provide example outputs.
 
-Expected output:
-
-  3.14159265358979323846264338327950288419716939937510
-
-# Implementation Details
-
-1. Parse CLI arguments in main to detect --calculate-pi or -c and a following integer argument representing the number of digits (n).
-2. Validate that n is an integer between 1 and 10000. On invalid input, display an error message and exit with nonzero status.
-3. Use a reliable high-precision algorithm (e.g. Gauss–Legendre or Machin-like formula) with a big-number library (add dependency on big.js) to compute π to n decimal places.
-4. Format the result with exactly n digits after the decimal point and print to stdout.
-5. Add automated tests in tests/unit/main.test.js to:
-   - Verify that --calculate-pi 1 prints 3.1
-   - Verify that --calculate-pi 5 prints 3.14159
-   - Confirm invalid inputs (non-integer, negative, or too large) cause the process to exit with an error.
-
-# Documentation
-
-- Update README.md to document the new flag, its purpose, and usage examples.
-- Mention big.js dependency in package.json under dependencies.
-
-# Dependencies
-
-Add "big.js" to package.json dependencies to support arbitrary-precision arithmetic.
-features/PI_HISTOGRAM.md
-# features/PI_HISTOGRAM.md
-# π Digit Histogram
-
-Generate and visualize the distribution of the first N decimal digits of π as a PNG bar chart.
-
-# Usage
-
-Invoke the CLI with the --pi-histogram flag followed by the number of digits and the output file path.
-
-Example:
-
-  node src/lib/main.js --pi-histogram 10000 histogram.png
-
-# Implementation Details
-
-1. Extend argument parsing in main to detect --pi-histogram (or -g) and capture two arguments: the digit count N and the output file path.
-2. Validate that N is a positive integer between 1 and 100000. On invalid input, display an error message and exit with nonzero status.
-3. Use the existing π calculation implementation to compute the first N decimal digits of π.
-4. Tally the frequency of each digit 0 through 9 into an array of counts.
-5. Use node-canvas to create a Canvas instance, set a fixed width and height, draw axes and bars where each bar’s height is proportional to the digit count frequency.
-6. Convert the canvas to a PNG buffer and write the buffer to the specified output file path. Handle file system errors gracefully.
-7. Ensure resources are released after writing the file.
-
-# Testing
-
-Add tests in tests/unit/main.test.js:
-
-- Unit test for a helper function generateHistogramBuffer(N) that returns a PNG Buffer of non-zero length when N is valid.
-- Verify invalid N values cause the process to exit with an error status.
-- Mock the file system to test that CLI invocation with valid parameters writes a file to the given path without throwing.
-
-# Documentation
-
-Update README.md to include:
-
-- Description of the --pi-histogram flag, its purpose, and usage example.
-- Note on output file creation and dependencies.
-
-# Dependencies
-
-Add "canvas" to package.json dependencies to support drawing the bar chart.
+## Dependency Updates
+- Add a lightweight flag parsing library (for example `yargs`).
+- Update `package.json` to include the new dependency and update the `test` script if needed to run the new tests.

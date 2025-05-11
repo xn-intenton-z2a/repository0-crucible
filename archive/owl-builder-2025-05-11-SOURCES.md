@@ -71,14 +71,10 @@ Consolidated reference for API schema definitions, documentation, and protocol i
 Comprehensive guide to JavaScript BigInt primitive—creation, arithmetic operations, type coercion, and performance considerations—from MDN, paired with in-depth descriptions of the Chudnovsky and Ramanujan series from Wikipedia. Includes mathematical formulas, convergence properties, and strategies for parallel term computation—vital for implementing algorithm selection and high-precision π calculation. Last updated 2024; authoritative and widely cited.
 ## CC BY-SA 4.0
 
-# Prometheus Client Library Documentation
+# Observability: Logging & Metrics
 ## https://github.com/siimon/prom-client#readme
-Detailed documentation for prom-client, the de facto Prometheus metrics library for Node.js. Covers default metrics collection, custom Counter, Gauge, Histogram, and Summary metrics, registry configuration, and integration with Express middleware. Essential for exposing operational and performance metrics (/metrics endpoint) and instrumenting HTTP requests and π calculation durations. Last updated 2024.
-## MIT License
-
-# Pino Logging Library
 ## https://github.com/pinojs/pino
-High-performance Node.js logging library focusing on low-overhead, structured JSON logging. Documentation covers configuration of log levels, serializers, transports (pino-pretty), and integration with Express via middleware. Provides best practices for logging in CLI and HTTP server modes, including child loggers, hooks, and log redaction. Last updated 2024.
+Detailed documentation for prom-client and Pino libraries to instrument Node.js applications. prom-client covers default metrics, custom Counter, Gauge, Histogram, and Summary metrics, registry management, and Express middleware integration to expose Prometheus endpoints. Pino provides high-performance structured JSON logging, covering configuration, serializers, transports, and best practices for log management and redaction. Essential for exposing /metrics and capturing operational and performance data across CLI and HTTP modes. Last updated 2024.
 ## MIT License
 
 # OpenAI API Reference
@@ -86,7 +82,12 @@ High-performance Node.js logging library focusing on low-overhead, structured JS
 Official OpenAI API reference covering endpoints for completions, chat, embeddings, and fine-tuning. Includes detailed parameter specifications, request/response schemas, rate limit guidance, and code examples in multiple languages. Critical for integrating AI-driven features and ensuring correct usage of the OpenAI service in CLI commands and server endpoints. Last updated 2024; authoritative.
 ## Proprietary
 
-# OpenAI Node.js Library
-## https://github.com/openai/openai-node
-GitHub repository for the official OpenAI Node.js SDK. Documents installation, client configuration, authentication patterns, and usage examples for calling the OpenAI API, including streaming responses. Provides TypeScript definitions and best practices for error handling, request batching, and performance tuning. Essential for embedding AI-driven computations directly into the π calculation workflow. Updated frequently.
+# Yargs Documentation
+## https://yargs.js.org/docs/
+Official yargs documentation detailing command-line argument parsing, option definitions, validation, commands, middleware, and help generation. Essential for parsing flags such as --digits, --algorithm, --benchmark, and configuring CLI behavior consistently. Provides examples for custom commands, nested options, and configuration file support. Last updated 2024.
 ## MIT License
+
+# Node.js Performance Hooks API
+## https://nodejs.org/api/perf_hooks.html
+Documentation for Node.js Performance Hooks, including high-resolution timers (performance.now()), PerformanceObserver, mark and measure functions, and performance entry types. Provides best practices for measuring execution duration with minimal overhead—critical for implementing accurate benchmarking of π calculation algorithms. Last updated 2024.
+## Node.js License
