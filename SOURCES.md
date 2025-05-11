@@ -10,7 +10,7 @@ Detailed guide to the QuickChart.io REST API, including chart configuration JSON
 
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
-Authoritative guide to Express 4.x, covering routing, middleware, error handling, request parsing, and response streaming. Foundation for HTTP endpoints (/pi, /benchmark), CORS integration, and robust server design in the CLI’s serve mode. Official docs under MIT License.
+Authoritative guide to Express 4.x, covering routing, middleware (including CORS integration), error handling, request parsing, and response streaming. Foundation for HTTP endpoints (/pi, /benchmark), CORS configuration patterns, and robust server design in the CLI’s serve mode. Official docs under MIT License.
 ## MIT License
 
 # SuperTest
@@ -25,7 +25,7 @@ Vitest documentation for unit and integration testing in Vite/Node.js environmen
 
 # Commander.js
 ## https://github.com/tj/commander.js
-Lightweight command-line interface library for Node.js, offering declarative flag and command definitions, argument validation, and help generation. Ideal for parsing --digits, --benchmark, --serve, and --diagnostics flags with consistent user feedback. Last updated 2024.
+Lightweight command-line interface library for Node.js, offering declarative flag and command definitions, argument validation, and help generation. Ideal for parsing --digits, --benchmark, --serve, --diagnostics flags with consistent user feedback. Last updated 2024.
 ## MIT License
 
 # Node.js Core and Advanced APIs
@@ -73,7 +73,7 @@ Benchmark.js documentation for micro and macro benchmarking in JavaScript. Cover
 Official API documentation for Pi Delivery, a public REST service offering on-demand π digit generation. Details endpoints for /v1/pidigits with query parameters (start, number), response formats, rate limits, and usage examples—informative for designing and validating the CLI and HTTP /pi endpoint against an existing service. Last updated 2023; MIT License.
 ## MIT License
 
-# CORS Middleware
-## https://github.com/expressjs/cors
-Express middleware to enable CORS with various options (origins, methods, headers). Explains configuration patterns, preflight request handling, and security considerations—essential for cross-origin access to the /pi and /benchmark HTTP endpoints. Last updated 2023; MIT License.
-## MIT License
+# Swagger UI
+## https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/
+Comprehensive guide to installing and integrating Swagger UI for interactive API documentation. Covers static HTML hosting, Express middleware integration, customizing themes, and serving OpenAPI specs—essential for providing live API exploration of /pi and /benchmark endpoints. Latest release 2024; Apache-2.0.
+## Apache-2.0
