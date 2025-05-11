@@ -1,155 +1,192 @@
 # CLI_PROGRESS
 
 ## Crawl Summary
-SingleBar and MultiBar classes with constructor options and presets; key methods: start(total, initial?, payload?, override?), update(value, payload?), increment(step?), stop(). Options interface fields with defaults: format string, barCompleteChar '=', barIncompleteChar ' ', hideCursor true, fps 30, stopOnComplete true; MultiBar adds clearOnComplete false. Presets: shades_classic, rect, shades_grey, legacy. Usage patterns and troubleshooting tips.
+CLI-PROGRESS v3.9.1 exports SingleBar and MultiBar classes with Presets. SingleBar constructed via new SingleBar(options, preset) accepts SingleBarOptions (format, barCompleteChar, barIncompleteChar, hideCursor, stopOnComplete, fps, barsize, stream). Methods: start(total, startValue, payload), update(value, payload), increment(step, payload), stop(), lastDraw(), render(). MultiBar via new MultiBar(options, preset) plus create(total, startValue, payload, options), stop(), stopAll(). Default options: format '{bar} {percentage}%', completeChar '=', incompleteChar '-', hideCursor true, stopOnComplete true, fps 10, barsize 40, stream stderr. Templates in Presets.shades_classic and shades_grey.
 
 ## Normalised Extract
 Table of Contents
 1 Installation
-2 SingleBar Class
-3 MultiBar Class
-4 Options Interface
-5 Presets
+2 Import and Presets
+3 SingleBar Class
+4 MultiBar Class
+5 Configuration Options
+6 Methods
+7 Examples
 
 1 Installation
-npm install cli-progress
+npm install cli-progress@3.9.1
 
-2 SingleBar Class
-Constructor: SingleBar(options:Options, preset?:Preset)
-Methods:
- start(total:number, initialValue?:number, payload?:object, optionsOverride?:Options):void
- increment(step?:number):void
- update(value:number, payload?:object):void
- stop():void
+2 Import and Presets
+const { SingleBar, MultiBar, Presets } = require('cli-progress');
+Presets.shades_classic, Presets.shades_grey
 
-3 MultiBar Class
-Constructor: MultiBar(options:MultiBarOptions, preset?:Preset)
-Methods:
- create(total:number, initialValue?:number, payload?:object, optionsOverride?:Options):SingleBar
- remove(bar:SingleBar):void
- stop():void
+3 SingleBar Class
+Constructor: new SingleBar(options?: SingleBarOptions, preset?: Preset)
 
-4 Options Interface
-format:string default '{bar} | {percentage}% | ETA: {eta_formatted} | {value}/{total}'
-barCompleteChar:string default '='
-barIncompleteChar:string default ' '
-hideCursor:boolean default true
-fps:number default 30
-stopOnComplete:boolean default true
-MultiBar clearOnComplete:boolean default false
+4 MultiBar Class
+Constructor: new MultiBar(options?: SingleBarOptions, preset?: Preset)
 
-5 Presets
-Presets.shades_classic, Presets.rect, Presets.shades_grey, Presets.legacy
+5 Configuration Options (SingleBarOptions)
+format: string                // e.g. 'progress | {bar} | {percentage}% | ETA: {eta}s'
+barCompleteChar: string        // default '='
+barIncompleteChar: string      // default '-'
+hideCursor: boolean            // default true
+stopOnComplete: boolean        // default true
+fps: number                    // default 10
+barsize: number                // default 40
+stream: NodeJS.WritableStream  // default process.stderr
+clearOnComplete: boolean       // MultiBar default false
+
+6 Methods
+SingleBar:start(total: number, startValue?: number, payload?: Object): void
+SingleBar:update(value: number, payload?: Object): void
+SingleBar:increment(step?: number, payload?: Object): void
+SingleBar:stop(): void
+SingleBar:lastDraw(): Record<string, any>
+SingleBar:render(): void
+MultiBar:create(total: number, startValue?: number, payload?: Object, options?: SingleBarOptions): SingleBar
+MultiBar:stop(): void
+MultiBar:stopAll(): void
+
+7 Examples
+SingleBar usage: instantiate with options and preset, call start, update/increment in loop, stop when done.
+MultiBar usage: instantiate Multibar, create individual bars with create, control each bar independently, stop all at end.
 
 ## Supplementary Details
-Default option values:
- format='{bar} | {percentage}% | ETA: {eta_formatted} | {value}/{total}'
- barCompleteChar='='
- barIncompleteChar=' '
- hideCursor=true
- fps=30
- stopOnComplete=true
- clearOnComplete=false (MultiBar only)
+Default Option Values
+format: '{bar} {percentage}%'
+barCompleteChar: '='
+barIncompleteChar: '-'
+hideCursor: true
+stopOnComplete: true
+fps: 10
+barsize: 40
+stream: process.stderr
+clearOnComplete (MultiBar): false
 
-Implementation Steps:
-1 Import SingleBar or MultiBar from 'cli-progress'
-2 Instantiate with desired options and preset
-3 Call start(total, initialValue)
-4 Use update(value, payload) or increment(step)
-5 Call stop() after completion
+Implementation Steps
+1 Install module
+2 Import SingleBar, MultiBar, Presets
+3 Instantiate bar(s) with desired options and preset
+4 Call start(total, startValue)
+5 In work loop call update(value) or increment(step)
+6 On completion call stop() or multibar.stopAll()
 
-Payload object fields can be referenced in format string; example payload={speed:'5MB/s'} with format '{bar} | {speed}'
+Core Functionality
+- Payload parameter merges into format tokens
+- lastDraw() returns object {value, total, eta, ...}
+- render() forces immediate draw
+
+Error Handling
+- Ensure hideCursor false if bar not stopped to restore cursor
+- Use clearOnComplete false to preserve final bar on screen
 
 ## Reference Details
-API Specifications
+Module Exports:
+- function new SingleBar(options?: SingleBarOptions, preset?: Preset): SingleBar
+- function new MultiBar(options?: SingleBarOptions, preset?: Preset): MultiBar
+- object Presets { shades_classic, shades_grey }
 
-SingleBar(options:Options, preset?:Preset)
- Options interface:
-  format: string
-  barCompleteChar?: string
-  barIncompleteChar?: string
-  hideCursor?: boolean
-  fps?: number
-  stopOnComplete?: boolean
+SingleBarOptions Interface:
+interface SingleBarOptions {
+  format?: string;
+  barCompleteChar?: string;
+  barIncompleteChar?: string;
+  hideCursor?: boolean;
+  stopOnComplete?: boolean;
+  fps?: number;
+  barsize?: number;
+  stream?: NodeJS.WritableStream;
+  clearOnComplete?: boolean;
+}
 
-Methods:
- start(total: number, initialValue?: number, payload?: object, optionsOverride?: Options): void
- update(value: number, payload?: object): void
- increment(step?: number): void
- stop(): void
+SingleBar Methods:
+start(total: number, startValue?: number, payload?: Record<string, any>): void
+update(value: number, payload?: Record<string, any>): void
+increment(step?: number, payload?: Record<string, any>): void
+stop(): void
+lastDraw(): { value: number; total: number; eta: number; percentage: number; [key: string]: any }
+render(): void
 
-MultiBar(options:MultiBarOptions, preset?:Preset)
- MultiBarOptions extends Options:
-  clearOnComplete?: boolean
-
-Methods:
- create(total: number, initialValue?: number, payload?: object, optionsOverride?: Options): SingleBar
- remove(bar: SingleBar): void
- stop(): void
-
-Example:
-const { SingleBar, Presets } = require('cli-progress')
-const bar = new SingleBar({ format:'{bar} {percentage}%' }, Presets.shades_classic)
-bar.start(100,0)
-setInterval(()=>{ bar.increment(); if(bar.value>=100) bar.stop() },100)
+MultiBar Methods:
+create(total: number, startValue?: number, payload?: Record<string, any>, options?: SingleBarOptions): SingleBar
+stop(): void
+stopAll(): void
 
 Best Practices:
- Use stopOnComplete:false to attach custom completion handlers before clearing
- Use clearOnComplete:true to free console space when finished
- Batch updates to reduce FPS overhead
+- Use stopOnComplete: false to chain animations
+- Set hideCursor: false during debug to avoid lost cursor position
+- Use process.stderr for logging parallel to stdout output
+- Encapsulate bar logic in try/finally to ensure stop()
 
 Troubleshooting:
- Problem: Progress bar flickers
- Solution: Set fps to 15-20
- Command: new SingleBar({ fps:20 },Presets.shades_classic)
+Issue: bar hangs in CI
+  Command: export CI=true && node script.js
+  Solution: set clearOnComplete: true or disable hideCursor
 
- Problem: Cursor remains after process
- Solution: Ensure hideCursor:true and stop() is called
- Command: new SingleBar({ hideCursor:true },Presets.shades_classic)
+Issue: malformed format
+  Symptom: format tokens not replaced
+  Fix: ensure payload keys match tokens
 
-Expected Console Output:
- Progressive single-line updates of bar with percentage and ETA
+Issue: performance drop
+  Check fps and barsize, reduce fps or barsize to optimize
+
+Commands:
+node --version
+npm list cli-progress
+
 
 ## Information Dense Extract
-SingleBar(options:Options,preset?:Preset):start(total,initial?,payload?,override?)|update(value,payload?)|increment(step?)|stop();Options=format:string('{bar}|{percentage}%|ETA:{eta_formatted}|{value}/{total}'),barCompleteChar:string='=',barIncompleteChar:string=' ',hideCursor:boolean=true,fps:number=30,stopOnComplete:boolean=true;MultiBar(options:MultiBarOptions,preset?:Preset):create(total,initial?,payload?,override?):SingleBar|remove(bar)|stop();MultiBarOptions.clearOnComplete:boolean=false;Presets:shades_classic,rect,shades_grey,legacy;Usage:npm install cli-progress;import {SingleBar,Presets} require('cli-progress');const b=new SingleBar(opts,Presets.shades_classic);b.start(100);b.increment();b.stop();Troubleshoot:adjust fps for flickering, ensure hideCursor and stop() for cursor cleanup.
+SingleBar(options, preset) options:format:string,barCompleteChar:string='=',barIncompleteChar:string='-',hideCursor:boolean=true,stopOnComplete:boolean=true,fps:number=10,barsize:number=40,stream:WritableStream=stderr,clearOnComplete:boolean=false. Methods:start(total:number,startValue?:number,payload?:object):void;update(value:number,payload?:object):void;increment(step?:number,payload?:object):void;stop():void;lastDraw():{value, total, eta, percentage, ...};render():void. MultiBar(options,preset).create(total, startValue?, payload?, options?):SingleBar;stop():void;stopAll():void. Presets:shades_classic,shades_grey. Example: const bar=new SingleBar({format:'{bar} {percentage}%',hideCursor:false},Presets.shades_classic);bar.start(100,0);bar.increment();bar.stop().
 
 ## Sanitised Extract
 Table of Contents
 1 Installation
-2 SingleBar Class
-3 MultiBar Class
-4 Options Interface
-5 Presets
+2 Import and Presets
+3 SingleBar Class
+4 MultiBar Class
+5 Configuration Options
+6 Methods
+7 Examples
 
 1 Installation
-npm install cli-progress
+npm install cli-progress@3.9.1
 
-2 SingleBar Class
-Constructor: SingleBar(options:Options, preset?:Preset)
-Methods:
- start(total:number, initialValue?:number, payload?:object, optionsOverride?:Options):void
- increment(step?:number):void
- update(value:number, payload?:object):void
- stop():void
+2 Import and Presets
+const { SingleBar, MultiBar, Presets } = require('cli-progress');
+Presets.shades_classic, Presets.shades_grey
 
-3 MultiBar Class
-Constructor: MultiBar(options:MultiBarOptions, preset?:Preset)
-Methods:
- create(total:number, initialValue?:number, payload?:object, optionsOverride?:Options):SingleBar
- remove(bar:SingleBar):void
- stop():void
+3 SingleBar Class
+Constructor: new SingleBar(options?: SingleBarOptions, preset?: Preset)
 
-4 Options Interface
-format:string default '{bar} | {percentage}% | ETA: {eta_formatted} | {value}/{total}'
-barCompleteChar:string default '='
-barIncompleteChar:string default ' '
-hideCursor:boolean default true
-fps:number default 30
-stopOnComplete:boolean default true
-MultiBar clearOnComplete:boolean default false
+4 MultiBar Class
+Constructor: new MultiBar(options?: SingleBarOptions, preset?: Preset)
 
-5 Presets
-Presets.shades_classic, Presets.rect, Presets.shades_grey, Presets.legacy
+5 Configuration Options (SingleBarOptions)
+format: string                // e.g. 'progress | {bar} | {percentage}% | ETA: {eta}s'
+barCompleteChar: string        // default '='
+barIncompleteChar: string      // default '-'
+hideCursor: boolean            // default true
+stopOnComplete: boolean        // default true
+fps: number                    // default 10
+barsize: number                // default 40
+stream: NodeJS.WritableStream  // default process.stderr
+clearOnComplete: boolean       // MultiBar default false
+
+6 Methods
+SingleBar:start(total: number, startValue?: number, payload?: Object): void
+SingleBar:update(value: number, payload?: Object): void
+SingleBar:increment(step?: number, payload?: Object): void
+SingleBar:stop(): void
+SingleBar:lastDraw(): Record<string, any>
+SingleBar:render(): void
+MultiBar:create(total: number, startValue?: number, payload?: Object, options?: SingleBarOptions): SingleBar
+MultiBar:stop(): void
+MultiBar:stopAll(): void
+
+7 Examples
+SingleBar usage: instantiate with options and preset, call start, update/increment in loop, stop when done.
+MultiBar usage: instantiate Multibar, create individual bars with create, control each bar independently, stop all at end.
 
 ## Original Source
 cli-progress
@@ -157,111 +194,101 @@ https://github.com/streamich/cli-progress#readme
 
 ## Digest of CLI_PROGRESS
 
+# CLI-PROGRESS README (Retrieved: 2024-06-05)
+
 # Installation
 
-Install via npm:
+npm install cli-progress@3.9.1
 
-    npm install cli-progress
+# Import and Presets
 
-# Usage
+```js
+const { SingleBar, MultiBar, Presets } = require('cli-progress');
+``` 
+- Presets.shades_classic
+- Presets.shades_grey
 
-Import and initialize:
+# SingleBar Class
 
-    const { SingleBar, Presets, MultiBar } = require('cli-progress');
+## Constructor
 
-Single progress bar:
+```ts
+new SingleBar(options?: SingleBarOptions, preset?: Preset);
+```
 
-    const bar = new SingleBar({
-      format: '{bar} | {percentage}% | ETA: {eta_formatted} | {value}/{total}',
-      barCompleteChar: '=',
-      barIncompleteChar: ' ',
-      hideCursor: true,
-      fps: 30,
-      stopOnComplete: true
-    }, Presets.shades_classic);
-    bar.start(100, 0);
-    bar.increment();
-    bar.update(50);
+### SingleBarOptions
+
+- format: string                          // e.g. 'progress | {bar} | {percentage}% | ETA: {eta}s'
+- barCompleteChar: string                // default '='
+- barIncompleteChar: string              // default '-'
+- hideCursor: boolean                    // default true
+- stopOnComplete: boolean                // default true
+- fps: number                            // default 10
+- barsize: number                        // default 40
+- stream: NodeJS.WritableStream          // default process.stderr
+
+## Methods
+
+```ts
+start(total: number, startValue?: number, payload?: Object): void
+update(value: number, payload?: Object): void
+increment(step?: number, payload?: Object): void
+stop(): void
+lastDraw(): Record<string, any>
+render(): void
+``` 
+
+# MultiBar Class
+
+## Constructor
+
+```ts
+new MultiBar(options?: SingleBarOptions, preset?: Preset);
+``` 
+
+## Methods
+
+```ts
+create(total: number, startValue?: number, payload?: Object, options?: SingleBarOptions): SingleBar
+stop(): void
+stopAll(): void
+``` 
+
+# Examples
+
+### Single Progress
+```js
+const bar = new SingleBar({ format: ' {bar} {percentage}% | ETA: {eta}s', hideCursor: false }, Presets.shades_classic);
+bar.start(200, 0);
+let value = 0;
+const timer = setInterval(() => {
+  value++;
+  bar.update(value);
+  if (value >= 200) {
+    clearInterval(timer);
     bar.stop();
+  }
+}, 20);
+```
 
-Multiple bars:
+### Multi Progress
+```js
+const multibar = new MultiBar({ clearOnComplete: false, hideCursor: true }, Presets.shades_grey);
+const task1 = multibar.create(100, 0, { task: 'Download' });
+const task2 = multibar.create(200, 0, { task: 'Upload' });
 
-    const multibar = new MultiBar({
-      clearOnComplete: false,
-      hideCursor: true,
-      fps: 20
-    }, Presets.shades_grey);
-    const task1 = multibar.create(200, 0);
-    const task2 = multibar.create(50, 0);
-    task1.increment(5);
-    task2.update(10);
-    multibar.stop();
+task1.start(100, 0);
+task2.start(200, 0);
 
-# API Reference
-
-## SingleBar Class
-
-Constructor signature:
-
-    new SingleBar(options: Options, preset?: Preset)
-
-Methods:
-
-    start(total: number, initialValue?: number, payload?: object, optionsOverride?: Options): void
-    increment(step?: number): void
-    update(value: number, payload?: object): void
-    stop(): void
-
-## MultiBar Class
-
-Constructor signature:
-
-    new MultiBar(options: MultiBarOptions, preset?: Preset)
-
-Methods:
-
-    create(total: number, initialValue?: number, payload?: object, optionsOverride?: Options): SingleBar
-    remove(bar: SingleBar): void
-    stop(): void
-
-# Configuration Options
-
-Interface Options and default values:
-
-    format: string                                    '{bar} | {percentage}% | ETA: {eta_formatted} | {value}/{total}'
-    barCompleteChar: string                           '='
-    barIncompleteChar: string                         ' '
-    hideCursor: boolean                               true
-    fps: number                                       30
-    stopOnComplete: boolean                           true
-
-MultiBar additional options:
-
-    clearOnComplete: boolean                          false
-
-# Presets
-
-Available presets and effects:
-
-    Presets.shades_classic    legacy ASCII blocks
-    Presets.rect             solid rectangle blocks
-    Presets.shades_grey      grayscale blocks
-    Presets.legacy           original fallback style
-
-# Troubleshooting
-
-If bars flicker: reduce fps below 30. Example: fps: 20
-If cursor remains visible after completion: ensure hideCursor: true and call stop().
-If bar exceeds total: guard calls to update and increment to not exceed total.
-
-_Retrieved from GitHub CLI-Progress README on 2024-06-05_
-
+// increment tasks independently
+multibar.on('stop', () => multibar.stop());
+```
 
 ## Attribution
 - Source: cli-progress
 - URL: https://github.com/streamich/cli-progress#readme
 - License: MIT License
-- Crawl Date: 2025-05-11T06:28:49.290Z
+- Crawl Date: 2025-05-11T08:35:14.819Z
 - Data Size: 0 bytes
 - Links Found: 0
 
