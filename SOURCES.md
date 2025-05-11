@@ -8,14 +8,9 @@ Detailed guide to the QuickChart.io REST API for generating charts as images. In
 Official Chart.js documentation covering chart types (bar, line, pie, etc.), dataset and scale configuration, animation options, and plugin architecture. Critical for crafting QuickChart chart configurations, understanding data structures, and leveraging advanced features like custom scripts, interactivity, and theme customization. Last updated 2024; maintained by the Chart.js Core Team.
 ## MIT License
 
-# Express.js API Reference
+# Express.js Documentation
 ## https://expressjs.com/en/4x/api.html
-Authoritative reference for Express 4.x, covering routing, middleware integration (including CORS), error handling, request parsing, and response streaming. Foundation for defining HTTP endpoints (/pi, /benchmark, /metrics), configuring server behavior, and ensuring robust request lifecycle management. Official docs with precise API signatures.
-## MIT License
-
-# CORS Middleware for Express
-## https://github.com/expressjs/cors
-Documentation for the Express CORS middleware, detailing configuration options for origins, methods, headers, credentials, and preflight caching. Essential for enabling secure cross-origin requests on HTTP API endpoints when integrating with web front-ends. Last updated 2024.
+Detailed reference for Express 4.x, covering routing, middleware integration (including configuration of cross-origin requests via the `cors` package), error handling, request parsing, and response streaming. Foundation for HTTP API server endpoints (/pi, /benchmark, /metrics) with secure CORS support. Updated 2024; maintained by Express.js Core Team.
 ## MIT License
 
 # SuperTest
@@ -35,7 +30,7 @@ Minimalist command-line interface library documentation, detailing declarative c
 
 # Node.js Core and Advanced APIs
 ## https://nodejs.org/api/
-Central reference for Node.js built-in modules (fs/promises, path, url) and advanced APIs (worker_threads, perf_hooks, AbortController, zlib). Essential for file I/O, parallel computation, high-resolution performance measurement, HTTP server features, and streaming. Covers Node.js v20+ features and best practices.
+Central reference for Node.js built-in modules (fs/promises, path, url) and advanced APIs (worker_threads, perf_hooks, AbortController, zlib). Essential for file I/O, parallel computation, high-resolution performance measurement, HTTP server features, and streaming. Covers Node.js v20+ features and best practices. 
 ## Node.js License
 
 # Zod
@@ -70,10 +65,15 @@ Documentation for cli-progress, a versatile terminal progress bar library for No
 
 # MDN BigInt Documentation
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
-Comprehensive guide to the JavaScript BigInt primitive—covering creation via literal syntax and constructor, arithmetic operations, type coercion rules, and performance considerations. Essential for understanding high-precision integer arithmetic used in π computation algorithms and avoiding pitfalls with numeric overflow and rounding.
+Comprehensive guide to the JavaScript BigInt primitive—covering creation via literal syntax and constructor, arithmetic operations, type coercion rules, and performance considerations. Essential for understanding high-precision integer arithmetic used in π computation algorithms and avoiding pitfalls with numeric overflow and rounding. 
 ## CC BY-SA 2.5
 
 # Wikipedia: Chudnovsky algorithm
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
 Detailed description of the Chudnovsky series for π, including the mathematical formula, convergence rate, and term calculation. Highlights opportunities for parallel computation by splitting series terms—vital for implementing and validating the chudnovsky option with worker threads. Maintained by the Wikipedia community; updated continuously.
 ## CC BY-SA 3.0
+
+# Node.js Streams Documentation
+## https://nodejs.org/api/stream.html
+Official Node.js documentation on stream modules (Readable, Writable, Duplex, Transform) and the `stream.pipeline` API, covering backpressure, piping, and custom stream implementations. Essential for implementing real-time streaming of π digits in CLI (`--stream`) and HTTP (`/pi/stream`) modes, ensuring efficient data flow and chunked transfer. Last updated 2024; authoritative.
+## Node.js License
