@@ -15,12 +15,12 @@ Client library documentation for quickchart-js, detailing programmatic chart gen
 
 # Express.js Documentation
 ## https://expressjs.com/en/4x/api.html
-Comprehensive reference for Express 4.x API, covering application setup, routing, middleware patterns, request parsing (json, urlencoded), response streaming, error handling, and integration points. Essential for implementing REST endpoints, applying CORS, configuring chunked transfer for streaming, integrating rate limiting middleware, and mounting GraphQL or Swagger UI interfaces. Updated regularly by the Express.js Core Team.
+Comprehensive reference for Express 4.x API, covering application setup, routing, middleware patterns, request parsing (json, urlencoded), response streaming, error handling, and integration points. Essential for implementing REST endpoints, applying CORS, configuring chunked transfer for streaming, integrating Swagger UI or GraphQL interfaces, and mounting metrics. Also references popular middleware such as express-rate-limit (https://github.com/nfriedly/express-rate-limit) for rate limiting. Updated regularly by the Express.js Core Team.
 ## MIT License
 
-# express-rate-limit
-## https://github.com/nfriedly/express-rate-limit#readme
-Library documentation for express-rate-limit middleware. Describes usage patterns, configuration options for windowMs and max, header settings, and error handling. Essential for implementing API rate limiting to protect CPU-intensive π endpoints using configurable options. Last updated 2024; maintained by the community.
+# CORS Middleware Documentation
+## https://github.com/expressjs/cors
+Official repository and documentation for CORS middleware in Express.js, covering configuration options for origin, methods, headers, credentials, and preflight behavior. Essential for enabling cross-origin HTTP requests in browser-based clients and APIs. Last updated 2024; maintained by the Express.js team and community.
 ## MIT License
 
 # Testing Tools: Vitest & SuperTest
@@ -36,7 +36,7 @@ Minimalist command-line interface library documentation, detailing declarative c
 
 # Node.js Core and Streams APIs
 ## https://nodejs.org/api/
-Central reference for Node.js built-in modules, including fs/promises, path, url, worker_threads, perf_hooks, and the streams API (Readable, Writable, Duplex, Transform). Essential for file I/O, parallel computation, performance measurement, HTTP chunked transfer, and real-time streaming of π digits in CLI and server modes. Covers Node.js v20+ features and best practices.
+Central reference for Node.js built-in modules, including fs/promises, path, url, worker_threads, perf_hooks, and the streams API (Readable, Writable, Duplex, Transform). Essential for file I/O, parallel computation, performance measurement, HTTP chunked transfer, real-time streaming of π digits, and module URL resolution. Covers Node.js v20+ features and best practices.
 ## Node.js License
 
 # Zod
