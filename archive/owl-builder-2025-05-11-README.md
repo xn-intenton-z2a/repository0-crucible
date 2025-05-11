@@ -1,83 +1,53 @@
 # repository0-crucible
 
-`repository0-crucible` is a JavaScript library and CLI tool for exploring and computing π (pi) to arbitrary precision. It supports multiple algorithms, worker threads, benchmarking, caching, progress bars, and an HTTP API for seamless integration.
+A CLI tool and JavaScript library for calculating π (pi) to a specified number of decimal places.
 
 ## Installation
 
-Install the CLI and library from npm:
+Install via npm:
 
 ```bash
-npm install --save @xn-intenton-z2a/repository0-crucible
+npm install @xn-intenton-z2a/repository0-crucible
+```
+
+## CLI Usage
+
+Use the `main` script to calculate π:
+
+```bash
+node src/lib/main.js [options]
+```
+
+Options:
+
+- `--digits <n>`: Number of decimal places to calculate (integer, default: 10, max: 1000)
+- `--help`, `-h`: Show help information
+
+Examples:
+
+```bash
+# Default: 10 decimal places
+node src/lib/main.js
+# -> 3.1415926536
+
+# Specify digits
+node src/lib/main.js --digits 5
+# -> 3.14159
+
+# Rounding behavior
+node src/lib/main.js --digits 3
+# -> 3.142
 ```
 
 ## Features
 
-- **π Calculation**: compute π to arbitrary precision with `calculatePi(digits, algorithm)`.
-- **Worker Threads**: parallel π computation using `calculatePiParallel(digits, algorithm, threads)`.
-- **HTTP API**: start a RESTful server to compute π over HTTP.
-- **Benchmarking**, **Caching**, **Visualizations**, **Progress Bars**, and more.
+- Calculate π to up to 1000 decimal places using a Machin-like formula with BigInt precision and correct rounding.
+- Validates input and provides errors for invalid or out-of-range values.
 
-## CLI Usage
+## Contributing
 
-Usage: `node src/lib/main.js [options]`
+Contributions are welcome! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
-Options:
-- `--digits <n>`           Number of decimal places (1 to 1e6). Default: 100.
-- `--algorithm <a>`        Algorithm: `machin`, `gauss-legendre`, or `chudnovsky`. Default: `machin`.
-- `--threads <n>`          Number of worker threads (≥1, ≤ CPU cores). Default: 1.
-- `--serve`                Start the HTTP API server. Default: `false`.
-- `--port <n>`             Port for HTTP server (`0` for ephemeral). Default: 3000.
-- `--help`                 Show help and exit.
+## License
 
-## CLI Examples
-
-```bash
-# Compute 10 digits using Gauss-Legendre
-node src/lib/main.js --digits 10 --algorithm gauss-legendre
-
-# Multithreaded calculation (4 threads)
-node src/lib/main.js --digits 1000 --algorithm chudnovsky --threads 4
-
-# Start HTTP API on port 8080
-node src/lib/main.js --serve --port 8080
-```
-
-## HTTP API
-
-Start the server:
-
-```bash
-node src/lib/main.js --serve --port 3000
-```
-
-### GET /pi
-
-Compute π and return as JSON.
-
-**Query Parameters:**
-- `digits` (integer ≥1 and ≤1e6; default: 1 integer digit + `.` + 100 fractional digits = 101 total characters)
-- `algorithm` (string: `machin`, `gauss-legendre`, or `chudnovsky`; default: `machin`)
-
-**Responses:**
-- `200 OK`  
-  ```json
-  { "pi": "<string>" }
-  ```
-- `400 Bad Request`  
-  ```json
-  { "error": "Invalid digits" }
-  ```  
-or  
-  ```json
-  { "error": "Invalid algorithm" }
-  ```
-
-### HTTP API Examples
-
-```bash
-curl 'http://localhost:3000/pi?digits=5&algorithm=chudnovsky'
-# { "pi":"3.14159" }
-
-curl 'http://localhost:3000/pi?digits=0'
-# 400 Bad Request with { "error": "Invalid digits" }
-```
+Released under the Apache-2.0 License. See [LICENSE](./LICENSE) for details.

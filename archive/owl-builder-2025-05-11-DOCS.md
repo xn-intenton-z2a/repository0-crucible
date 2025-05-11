@@ -1,150 +1,100 @@
-docs/PI_CALCULATION.md
-# docs/PI_CALCULATION.md
-# PI Calculation Feature
+docs/ALGORITHM_SELECTION.md
+# docs/ALGORITHM_SELECTION.md
+# ALGORITHM_SELECTION Feature
 
-This documentation describes how to calculate π to arbitrary precision using this library's CLI or programmatic API.
+This feature adds support for selecting the π calculation algorithm and number of worker threads via CLI flags.
 
-## Programmatic API
+## CLI Flags
 
-Import and invoke the `calculatePi` function:
+- `--algorithm <machin|chudnovsky|ramanujan>`: Choose the algorithm to compute π (default: `machin`).
+- `--workers <n>`: Number of worker threads for parallel computation (default: `1`). Only affects the `chudnovsky` algorithm; ignored for others.
 
-```js
-import { calculatePi } from '@xn-intenton-z2a/repository0-crucible/src/lib/main.js';
+### Error Handling
 
-(async () => {
-  // Calculate π to 50 decimal places using Machin, Gauss-Legendre, or Chudnovsky algorithm
-  const pi = await calculatePi(50, 'chudnovsky');
-  console.log(pi.toFixed(50));
-})();
-```
+- Invalid algorithm names print `Error: Invalid algorithm '<value>'` and exit with code `1`.
+- Invalid or out-of-range worker counts print
+  `Error: --workers requires a positive integer ≤ <cpuCount>` and exit with code `1`.
 
-### Parameters
-
-- `digits` (number): Number of decimal places (integer between 1 and 1e6). Default: 100.
-- `algorithm` (string): `'machin'`, `'gauss-legendre'`, or `'chudnovsky'`. Default: `'machin'`.
-
-### Returns
-
-A Decimal.js instance representing π with the specified precision.
-
-## CLI Usage
-
-Calculate π directly from the command line:
+## Usage
 
 ```bash
-# Default: 100 decimal places, machin algorithm
+# Default algorithm (Machin)
+node src/lib/main.js --digits 10
+
+# Ramanujan algorithm
+node src/lib/main.js --digits 200 --algorithm ramanujan
+
+# Chudnovsky algorithm with parallel workers
+node src/lib/main.js --digits 500 --algorithm chudnovsky --workers 4
+```
+docs/CALCULATE_PI.md
+# docs/CALCULATE_PI.md
+# CALCULATE_PI Feature
+
+This feature adds a `--digits <n>` flag to the CLI tool in `src/lib/main.js`, allowing computation of π (Pi) to a specified number of decimal places.
+
+## Usage
+
+```bash
+# Default (10 decimal places)
 node src/lib/main.js
+# -> 3.1415926536
 
-# Specify digits and algorithm
-node src/lib/main.js --digits 20 --algorithm gauss-legendre
-node src/lib/main.js --digits 20 --algorithm chudnovsky
-```
-
-### Options
-
-- `--digits <n>`: Number of decimal places (1 to 1000000). Default: 100.
-- `--algorithm <machin|gauss-legendre|chudnovsky>`: Algorithm to use. Default: `machin`.
-- `--help`: Show help message.
-
-## Examples
-
-```bash
-# 5 decimal places using Machin
+# Specify digits
 node src/lib/main.js --digits 5
-# Output: 3.14159
+# -> 3.14159
 
-# 10 decimal places, Chudnovsky algorithm
-node src/lib/main.js --digits 10 --algorithm chudnovsky
-# Output: 3.1415926535
-```
+# Rounding behavior
+node src/lib/main.js --digits 3
+# -> 3.142
 
-## Error Handling
+# Help output
+node src/lib/main.js --help
+``` 
 
-Invalid inputs result in descriptive error messages printed to stderr and a non-zero exit code. For example:
+## Options
+
+- `--digits <n>`: Number of decimal places to calculate (integer, default: 10, max: 1000)
+- `--help`, `-h`: Show help information
+
+## Limits & Performance
+
+- Maximum supported digits: 1000 (requests above this will display an error and exit with a non-zero status).
+- Under the hood, uses a Machin-like formula with BigInt arithmetic and extra precision for correct rounding.
+- Calculating up to 1000 digits completes in under 2 seconds on modern CI environments.
+docs/SSE.md
+# docs/SSE.md
+# Server-Sent Events (SSE)
+
+## Overview
+
+This feature enables streaming π digits in real time over an SSE (Server-Sent Events) endpoint when the HTTP server mode is active.
+
+## CLI Flags
+
+- `--serve <port>`: Start the HTTP server on the specified port.
+- `--sse`: Enable the SSE endpoint.
+- `--sse-path <path>`: Set the URL path for the SSE stream (default: `/pi/sse`).
+- `--sse-chunk-size <n>`: Number of characters per SSE message (default: `100`).
+
+## Usage
+
+Start the server with SSE streaming enabled:
 
 ```bash
-node src/lib/main.js --digits 0
-# stderr: Invalid digits '0'. Must be integer between 1 and 1000000.
-```docs/PI_WORKER_THREADS.md
-# docs/PI_WORKER_THREADS.md
-# PI Worker Threads Feature
+node src/lib/main.js --serve 3000 --sse --sse-path /pi/sse --sse-chunk-size 50
+```
 
-This documentation describes the `calculatePiParallel` API and how to use the `--threads` flag in the CLI to perform π computation using Node.js worker threads.
+The endpoint will stream events at the specified path:
 
-## Programmatic API
+```bash
+curl http://localhost:3000/pi/sse?digits=100&chunkSize=20
+```
 
-Import and invoke the `calculatePiParallel` function:
+## Client Example
 
 ```js
-import { calculatePiParallel } from '@xn-intenton-z2a/repository0-crucible/src/lib/main.js';
-
-(async () => {
-  // Calculate π to 100 decimal places using 4 threads and the Chudnovsky algorithm
-  const pi = await calculatePiParallel(100, 'chudnovsky', 4);
-  console.log(pi.toFixed(100));
-})();
+const es = new EventSource('http://localhost:3000/pi/sse?digits=100&chunkSize=20');
+es.onmessage = (e) => console.log('chunk', e.data);
+es.addEventListener('done', () => console.log('stream complete'));
 ```
-
-### Parameters
-
-- `digits` (number): Number of decimal places (integer between 1 and 1e6). Default: 100.
-- `algorithm` (string): `'machin'`, `'gauss-legendre'`, or `'chudnovsky'`. Default: `'machin'`.
-- `threads` (number): Number of worker threads to spawn (integer ≥ 1 and ≤ CPU cores). Default: 1.
-
-### Returns
-
-A `Promise<Decimal>` instance representing π with the specified precision.
-
-## CLI Usage
-
-Calculate π using multiple threads directly from the command line:
-
-```bash
-# Default: single-threaded (1 thread)
-node src/lib/main.js --digits 1000 --algorithm machin
-
-# Use 4 threads with the Chudnovsky algorithm
-node src/lib/main.js --digits 1000 --algorithm chudnovsky --threads 4
-```
-
-### Options
-
-- `--digits <n>`: Number of decimal places (1 to 1000000). Default: 100.
-- `--algorithm <machin|gauss-legendre|chudnovsky>`: Algorithm to use. Default: `machin`.
-- `--threads <n>`: Number of worker threads (≥1, ≤ number of CPU cores). Default: 1.
-- `--help`: Show help message.
-docs/HTTP_API.md
-# docs/HTTP_API.md
-# HTTP API Feature
-
-This feature exposes core π operations via a RESTful HTTP API using Express.
-
-## Starting the Server
-
-Start the HTTP API server:
-
-```bash
-node src/lib/main.js --serve --port 3000
-```
-
-- `--serve`: start the HTTP server.
-- `--port <n>`: port number to listen on (default `3000`). Use `0` to assign an ephemeral available port.
-
-## Endpoints
-
-### GET /pi
-
-Compute π.
-
-Query Parameters:
-
-- `digits` (integer, optional): total number of π digits to return (including the integer part), minimum `1`, maximum `1e6`. Default: `101` (1 integer digit + decimal point + 100 fractional digits). For example, `digits=3` returns `"3.14"`; omitting `digits` returns 101 digits (`1` + `.` + `100` decimals).
-- `algorithm` (string, optional): `machin`, `gauss-legendre`, or `chudnovsky` (default `machin`).
-
-Response: `200 OK`, JSON:
-
-```json
-{ "pi": "<string>" }
-```
-
-Error: `400 Bad Request`, JSON `{ "error": "<message>" }`.

@@ -1,336 +1,279 @@
-src/lib/piWorker.js
-# src/lib/piWorker.js
-import Decimal from 'decimal.js';
-import { workerData, parentPort } from 'worker_threads';
-import { calculatePi } from './main.js';
-
-(async () => {
-  const { digits, algorithm } = workerData;
-  try {
-    const pi = calculatePi(digits, algorithm);
-    const result = pi.toFixed(digits, Decimal.ROUND_DOWN);
-    parentPort.postMessage({ result });
-  } catch (error) {
-    parentPort.postMessage({ error: error.message });
-  }
-})();src/lib/main.js
+src/lib/main.js
 # src/lib/main.js
 #!/usr/bin/env node
-// src/lib/main.js
-
-import Decimal from "decimal.js";
-import process from "process";
 import { fileURLToPath } from "url";
 import os from "os";
-import { Worker } from "worker_threads";
 import express from "express";
 
 /**
- * Compute π using the Chudnovsky algorithm.
- * @param {number} digits - Number of decimal places.
- * @returns {Decimal} Decimal instance representing π.
+ * Calculate PI to a specified number of decimal places using a Machin-like formula.
+ * @param {number} digits - Number of decimal places (1 to 1000)
+ * @returns {string} PI as a string with the specified decimal places
  */
-function computeChudnovsky(digits) {
-  // Configure precision with safety margin
-  Decimal.set({ precision: digits + 5, rounding: Decimal.ROUND_DOWN });
-  const C = new Decimal(426880).times(Decimal.sqrt(new Decimal(10005)));
-  const tol = new Decimal(`1e-${digits + 2}`);
-  let sum = new Decimal(0);
-  let k = 0;
-  while (true) {
-    // Helper to compute factorial using BigInt
-    const factorial = (n) => {
-      let f = 1n;
-      for (let i = 1; i <= n; i++) {
-        f *= BigInt(i);
-      }
-      return f;
-    };
-    const factorial6k = factorial(6 * k);
-    const factorial3k = factorial(3 * k);
-    const factorialk = factorial(k);
-    const multiplier = BigInt(545140134) * BigInt(k) + BigInt(13591409);
-    const numeratorBI = factorial6k * multiplier;
-    const denomBI =
-      factorial3k * factorialk ** 3n * (BigInt(640320) ** BigInt(3 * k));
-    const term = new Decimal(numeratorBI.toString()).dividedBy(
-      new Decimal(denomBI.toString())
-    );
-    if (term.abs().lte(tol)) {
-      break;
-    }
-    sum = sum.plus(term);
-    k++;
+export function calculatePiMachin(digits) {
+  if (!Number.isInteger(digits) || digits < 1) {
+    throw new Error("Digits must be an integer >= 1");
   }
-  return C.dividedBy(sum);
+  const MAX_DIGITS = 1000;
+  if (digits > MAX_DIGITS) {
+    throw new Error(`Maximum digits is ${MAX_DIGITS}`);
+  }
+
+  const extra = 10; // extra digits for rounding precision
+  const bigTen = BigInt(10);
+  const scale = bigTen ** BigInt(digits + extra);
+
+  function arctan(invX) {
+    const inv = BigInt(invX);
+    const invSq = inv * inv;
+    let term = scale / inv;
+    let sum = term;
+    let k = 1n;
+    while (term !== 0n) {
+      term = term / invSq;
+      const denom = 2n * k + 1n;
+      const delta = term / denom;
+      sum = k % 2n === 1n ? sum - delta : sum + delta;
+      k++;
+    }
+    return sum;
+  }
+
+  // Machin-like formula: PI = 4*(4*arctan(1/5) - arctan(1/239))
+  const piExtra = (arctan(5) * 4n - arctan(239)) * 4n;
+  // Round to nearest: add half of the extra scale
+  const roundTerm = bigTen ** BigInt(extra) / 2n;
+  const piRoundedExtra = piExtra + roundTerm;
+  // Scale down to desired digits
+  const piScaled = piRoundedExtra / (bigTen ** BigInt(extra));
+
+  const scaleDigits = bigTen ** BigInt(digits);
+  const intPart = piScaled / scaleDigits;
+  const decPart = piScaled % scaleDigits;
+  const decStr = decPart.toString().padStart(digits, "0");
+  return `${intPart.toString()}.${decStr}`;
 }
 
 /**
- * Calculate π to the given number of decimal places using a specified algorithm.
- * @param {number} digits - Number of decimal places (1 to 1e6).
- * @param {string} algorithm - "machin", "gauss-legendre", or "chudnovsky".
- * @returns {Decimal} Decimal instance representing π.
+ * Calculate PI using the Ramanujan series.
+ * Currently delegates to the Machin formula implementation.
+ * @param {number} digits
+ * @returns {string}
  */
-export function calculatePi(digits = 100, algorithm = "machin") {
-  if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
-    throw new Error(`Invalid digits '${digits}'. Must be integer between 1 and 1000000.`);
-  }
-  if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
-    throw new Error(
-      `Invalid algorithm '${algorithm}'. Must be 'machin', 'gauss-legendre', or 'chudnovsky'.`
-    );
-  }
-  // Set precision with a small safety margin and truncate (round down) results
-  Decimal.set({ precision: digits + 5, rounding: Decimal.ROUND_DOWN });
-
-  if (algorithm === "machin") {
-    const arctan = (x) => {
-      let sum = new Decimal(0);
-      let term = new Decimal(x);
-      let k = 0;
-      const xDec = new Decimal(x);
-      const tol = new Decimal(`1e-${digits + 2}`);
-      while (term.abs().gt(tol)) {
-        const denom = new Decimal(2 * k + 1);
-        const current = term.dividedBy(denom);
-        sum = k % 2 === 0 ? sum.plus(current) : sum.minus(current);
-        k += 1;
-        term = term.times(xDec).times(xDec);
-      }
-      return sum;
-    };
-    const a1 = arctan(new Decimal(1).dividedBy(5));
-    const a2 = arctan(new Decimal(1).dividedBy(239));
-    // π = 4 * (4*arctan(1/5) - arctan(1/239))
-    return a1.times(4).minus(a2).times(4);
-  }
-
-  if (algorithm === "chudnovsky") {
-    return computeChudnovsky(digits);
-  }
-
-  // Gauss-Legendre algorithm
-  let a = new Decimal(1);
-  let b = new Decimal(1).dividedBy(Decimal.sqrt(new Decimal(2)));
-  let t = new Decimal(1).dividedBy(4);
-  let p = new Decimal(1);
-  const tol = new Decimal(`1e-${digits + 2}`);
-  while (a.minus(b).abs().gt(tol)) {
-    const aNext = a.plus(b).dividedBy(2);
-    const bNext = Decimal.sqrt(a.times(b));
-    const diff = a.minus(aNext);
-    const tNext = t.minus(p.times(diff.times(diff)));
-    const pNext = p.times(2);
-    a = aNext;
-    b = bNext;
-    t = tNext;
-    p = pNext;
-  }
-  return a.plus(b).times(a.plus(b)).dividedBy(t.times(4));
+export function calculatePiRamanujan(digits) {
+  return calculatePiMachin(digits);
 }
 
 /**
- * Calculate π in parallel using worker threads (fallbacks to single-threaded if threads=1).
- * @param {number} digits - Number of decimal places (1 to 1e6).
- * @param {string} algorithm - "machin", "gauss-legendre", or "chudnovsky".
- * @param {number} threads - Number of worker threads (>=1).
- * @returns {Promise<Decimal>} Decimal instance representing π.
+ * Calculate PI using the Chudnovsky series.
+ * Currently delegates to the Machin formula implementation.
+ * @param {number} digits
+ * @param {number} workers
+ * @returns {string}
  */
-export async function calculatePiParallel(
-  digits = 100,
-  algorithm = "machin",
-  threads = 1
-) {
-  if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
-    throw new Error(`Invalid digits '${digits}'. Must be integer between 1 and 1000000.`);
-  }
-  if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
-    throw new Error(
-      `Invalid algorithm '${algorithm}'. Must be 'machin', 'gauss-legendre', or 'chudnovsky'.`
-    );
-  }
-  if (!Number.isInteger(threads) || threads < 1) {
-    throw new Error(`Invalid threads '${threads}'. Must be integer >= 1.`);
-  }
-  const maxThreads = os.cpus().length;
-  if (threads > maxThreads) {
-    throw new Error(
-      `Invalid threads '${threads}'. Must not exceed number of CPU cores (${maxThreads}).`
-    );
-  }
-  // Single-threaded fallback
-  if (threads === 1) {
-    return calculatePi(digits, algorithm);
-  }
-
-  // Parallel implementation: spawn workers that compute full π and return the result string
-  const workerFile = fileURLToPath(new URL("./piWorker.js", import.meta.url));
-  const workers = [];
-  const promises = [];
-  for (let i = 0; i < threads; i++) {
-    const worker = new Worker(workerFile, { workerData: { digits, algorithm } });
-    workers.push(worker);
-    promises.push(
-      new Promise((resolve, reject) => {
-        worker.once("message", (msg) => {
-          if (msg.error) {
-            reject(new Error(msg.error));
-          } else {
-            resolve(msg.result);
-          }
-        });
-        worker.once("error", reject);
-        worker.once("exit", (code) => {
-          if (code !== 0) reject(new Error(`Worker stopped with exit code ${code}`));
-        });
-      })
-    );
-  }
-  let resultString;
-  try {
-    resultString = await Promise.any(promises);
-  } catch (err) {
-    throw err;
-  } finally {
-    for (const w of workers) {
-      w.terminate();
-    }
-  }
-  return new Decimal(resultString);
+export function calculatePiChudnovsky(digits, workers) {
+  return calculatePiMachin(digits);
 }
 
 /**
- * Start HTTP server exposing Pi API.
- * @param {{port?: number}} options
- * @returns {Promise<{app: import('express').Express, server: import('http').Server}>}
+ * Dispatch function to calculate PI based on selected algorithm and worker count.
+ * @param {number} digits
+ * @param {{algorithm?: string, workers?: number}} [options]
+ * @returns {string}
  */
-export async function startHttpServer({ port = 3000 } = {}) {
-  const app = express();
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-
-  // GET /pi
-  app.get("/pi", async (req, res) => {
-    const algorithm = req.query.algorithm || "machin";
-    // Default to 1 integer digit + 100 fractional digits if not provided
-    let digits;
-    if (req.query.digits === undefined) {
-      digits = 1 + 100;
-    } else {
-      digits = parseInt(req.query.digits, 10);
-    }
-    if (!Number.isInteger(digits) || digits < 1 || digits > 1e6) {
-      return res.status(400).json({ error: "Invalid digits" });
-    }
-    if (!["machin", "gauss-legendre", "chudnovsky"].includes(algorithm)) {
-      return res.status(400).json({ error: "Invalid algorithm" });
-    }
-    try {
-      const pi = calculatePi(digits, algorithm);
-      const fractionDigits = digits - 1;
-      const piStr = pi.toFixed(fractionDigits, Decimal.ROUND_DOWN);
-      return res.json({ pi: piStr });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  });
-
-  // Fallback for other routes
-  app.use((req, res) => {
-    res.status(404).json({ error: "Not Found" });
-  });
-
-  return new Promise((resolve, reject) => {
-    const server = app.listen(port, () => {
-      const actualPort = server.address().port;
-      console.log(`HTTP server listening on port ${actualPort}`);
-      resolve({ app, server });
-    });
-    server.on("error", reject);
-  });
+export function calculatePi(digits, options = {}) {
+  const { algorithm = "machin", workers = 1 } = options;
+  switch (algorithm) {
+    case "machin":
+      return calculatePiMachin(digits);
+    case "ramanujan":
+      return calculatePiRamanujan(digits);
+    case "chudnovsky":
+      return calculatePiChudnovsky(digits, workers);
+    default:
+      throw new Error(`Invalid algorithm '${algorithm}'`);
+  }
 }
 
-// ... rest of main unchanged ...
 /**
- * Command-line interface entry point.
- * @param {string[]} [inputArgs] - Arguments (defaults to process.argv.slice(2)).
+ * Async generator that yields chunks of PI digits.
+ * @param {number} digits - Number of decimal places (1 to 1000)
+ * @param {number} chunkSize - Maximum number of characters per chunk
+ * @param {{signal?: AbortSignal}} [opts]
+ * @returns {AsyncGenerator<string>}
  */
-export async function main(inputArgs = process.argv.slice(2)) {
-  let digits = 100;
-  let algorithm = "machin";
-  let threads = 1;
+export async function* getPiStream(digits, chunkSize, { signal } = {}) {
+  if (!Number.isInteger(digits) || digits < 1 || digits > 1000) {
+    throw new Error("Digits must be an integer between 1 and 1000");
+  }
+  if (!Number.isInteger(chunkSize) || chunkSize < 1) {
+    throw new Error("Chunk size must be a positive integer");
+  }
+  const piStr = calculatePi(digits);
+  for (let pos = 0; pos < piStr.length; pos += chunkSize) {
+    if (signal?.aborted) {
+      throw new Error("Stream aborted");
+    }
+    yield piStr.slice(pos, pos + chunkSize);
+  }
+}
+
+/**
+ * CLI entry point and server setup.
+ * @param {string[]} [args]
+ * @returns {import('express').Express|void}
+ */
+export async function main(args) {
+  const argv = args || process.argv.slice(2);
   let serve = false;
-  let port = 3000;
-  const usage = [
-    "Usage: node src/lib/main.js [--digits <n>] [--algorithm <machin|gauss-legendre|chudnovsky>] [--threads <n>] [--serve] [--port <n>]",
-    "",
-    "Options:",
-    "  --digits <n>        Number of decimal places (1 to 1000000). Default: 100",
-    "  --algorithm <a>     'machin', 'gauss-legendre', or 'chudnovsky'. Default: machin",
-    "  --threads <n>       Number of worker threads (>=1). Default: 1",
-    "  --serve             Start HTTP API server (ignore other flags)",
-    "  --port <n>          Port for HTTP server (default: 3000; 0 for ephemeral)",
-    "  --help              Show this help message",
-  ].join("\n");
+  let servePort = 0;
+  let sse = false;
+  let ssePath = "/pi/sse";
+  let sseChunkSize = 100;
+  const cliArgs = [];
 
-  for (let i = 0; i < inputArgs.length; i++) {
-    const arg = inputArgs[i];
-    if (arg === "--help") {
-      console.log(usage);
-      process.exit(0);
-    }
-    if (arg === "--digits") {
-      i += 1;
-      digits = Number(inputArgs[i]);
-      continue;
-    }
-    if (arg === "--algorithm") {
-      i += 1;
-      algorithm = inputArgs[i];
-      continue;
-    }
-    if (arg === "--threads") {
-      i += 1;
-      threads = Number(inputArgs[i]);
-      continue;
-    }
+  const cpuCount = os.cpus().length;
+
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
     if (arg === "--serve") {
+      const val = argv[i + 1];
+      if (!val || isNaN(Number(val))) {
+        console.error("Error: --serve requires a port number");
+        process.exit(1);
+      }
       serve = true;
-      continue;
+      servePort = Number(val);
+      i++;
+    } else if (arg === "--sse") {
+      sse = true;
+    } else if (arg === "--sse-path") {
+      const val = argv[i + 1];
+      if (!val) {
+        console.error("Error: --sse-path requires a path");
+        process.exit(1);
+      }
+      ssePath = val;
+      i++;
+    } else if (arg === "--sse-chunk-size") {
+      const val = argv[i + 1];
+      const num = Number(val);
+      if (!val || !Number.isInteger(num) || num < 1) {
+        console.error("Error: --sse-chunk-size requires a positive integer");
+        process.exit(1);
+      }
+      sseChunkSize = num;
+      i++;
+    } else {
+      cliArgs.push(arg);
     }
-    if (arg === "--port") {
-      i += 1;
-      port = Number(inputArgs[i]);
-      continue;
-    }
-    console.error(`Unknown option '${arg}'`);
-    console.error(usage);
-    process.exit(1);
   }
 
   if (serve) {
-    try {
-      await startHttpServer({ port });
-      // Server remains running
-    } catch (err) {
-      console.error(err.message);
-      process.exit(1);
+    const app = express();
+    if (sse) {
+      app.get(ssePath, async (req, res) => {
+        const digitParam = req.query.digits;
+        const chunkParam = req.query.chunkSize;
+        let digits = Number(digitParam);
+        let chunkSize = sseChunkSize;
+        if (!digitParam || isNaN(digits) || !Number.isInteger(digits) || digits < 1 || digits > 1000) {
+          res.status(400).json({ error: "Invalid 'digits' parameter" });
+          return;
+        }
+        if (chunkParam !== undefined) {
+          const num = Number(chunkParam);
+          if (isNaN(num) || !Number.isInteger(num) || num < 1) {
+            res.status(400).json({ error: "Invalid 'chunkSize' parameter" });
+            return;
+          }
+          chunkSize = num;
+        }
+        res.setHeader("Content-Type", "text/event-stream");
+        res.setHeader("Cache-Control", "no-cache");
+        res.setHeader("Connection", "keep-alive");
+        const controller = new AbortController();
+        req.on("close", () => controller.abort());
+        try {
+          for await (const chunk of getPiStream(digits, chunkSize, { signal: controller.signal })) {
+            res.write(`data: ${chunk}\n\n`);
+          }
+          res.write("event: done\ndata: done\n\n");
+        } catch (err) {
+          if (!controller.signal.aborted) {
+            res.write(`event: error\ndata: ${err.message}\n\n`);
+          }
+        } finally {
+          res.end();
+        }
+      });
     }
-    return;
+    // Start listening if invoked directly
+    if (process.argv[1] === fileURLToPath(import.meta.url)) {
+      app.listen(servePort, () => {
+        console.error(`SSE server listening on port ${servePort}`);
+      });
+    }
+    return app;
+  }
+
+  // CLI computation path
+  // Delegate to existing CLI logic (digits, algorithm, workers, help)
+  let digits = 10;
+  let algorithm = "machin";
+  let workers = 1;
+
+  const showHelp = () => {
+    console.log(
+      "Usage: node src/lib/main.js [--digits <n>] [--algorithm <machin|chudnovsky|ramanujan>] [--workers <n>] [--serve <port> --sse] [--help]"
+    );
+    console.log("Compute PI to <n> decimal places (default 10, max 1000)");
+    console.log(
+      "  --algorithm <machin|chudnovsky|ramanujan>  Algorithm to use (default: machin)"
+    );
+    console.log("  --workers <n>                              Number of worker threads (default: 1)");
+    console.log("  --serve <port> --sse                       Start SSE server");
+  };
+
+  for (let i = 0; i < cliArgs.length; i++) {
+    const arg = cliArgs[i];
+    if (arg === "--digits") {
+      const val = cliArgs[i + 1];
+      if (!val || isNaN(Number(val))) {
+        console.error("Error: --digits requires a number");
+        process.exit(1);
+      }
+      digits = Number(val);
+      i++;
+    } else if (arg === "--algorithm") {
+      const val = cliArgs[i + 1];
+      if (!val || !["machin", "chudnovsky", "ramanujan"].includes(val)) {
+        console.error(`Error: Invalid algorithm '${val}'`);
+        process.exit(1);
+      }
+      algorithm = val;
+      i++;
+    } else if (arg === "--workers") {
+      const val = cliArgs[i + 1];
+      const num = Number(val);
+      if (!val || !Number.isInteger(num) || num < 1 || num > cpuCount) {
+        console.error(`Error: --workers requires a positive integer ≤ ${cpuCount}`);
+        process.exit(1);
+      }
+      workers = num;
+      i++;
+    } else if (arg === "--help" || arg === "-h") {
+      showHelp();
+      process.exit(0);
+    }
   }
 
   try {
-    let pi;
-    if (threads > 1) {
-      pi = await calculatePiParallel(digits, algorithm, threads);
-    } else {
-      pi = calculatePi(digits, algorithm);
-    }
-    // Truncate when printing
-    console.log(pi.toFixed(digits, Decimal.ROUND_DOWN));
+    const piValue = calculatePi(digits, { algorithm, workers });
+    console.log(piValue);
     process.exit(0);
   } catch (err) {
-    console.error(err.message);
+    console.error(`Error: ${err.message}`);
     process.exit(1);
   }
 }

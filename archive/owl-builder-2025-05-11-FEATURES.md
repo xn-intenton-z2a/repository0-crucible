@@ -1,1585 +1,1116 @@
-features/OPERATION_TIMEOUT.md
-# features/OPERATION_TIMEOUT.md
-# Operation Timeout Feature
+features/CONFIG_FILE.md
+# features/CONFIG_FILE.md
+# Overview
 
-## Overview
+Add support for loading configuration values from a file or environment variables so users can define default CLI and server options without repeating flags on each invocation.
 
-Enable users to guard against runaway operations by specifying a maximum execution duration for any CLI command or HTTP-bound task. When the specified timeout elapses, the operation is aborted gracefully with a clear error message.
+# Implementation Details
 
-## Functional Requirements
+• At startup in src/lib/main.js, load environment variables from a .env file using dotenv.
+• Search for a configuration file in the working directory named .pi-config.json, .pi-config.yaml or pi-config.yaml.
+• Parse JSON files with JSON.parse and YAML files with js-yaml.load.
+• Define supported configuration keys matching CLI flags and ENV variables: digits, format, output, algorithm, workers, cache, cacheFile, clearCache, analyze, outputPath, stream, chunkSize, serve, cors, progress, diagnostics, openapi.
+• Merge values: defaults from code, then config file values, then environment variables PI_<KEY> (uppercase underscore), then CLI arguments override all.
+• Validate merged options with existing Zod schemas or commander choices as appropriate.
+• Ensure backward compatibility: if no config file or variables are present, behavior remains unchanged.
 
-- Update the CLI parser in `src/lib/main.js` to accept a new flag `--timeout <ms>` parsed as an integer ≥ 1. Reject invalid values with a descriptive error and exit code 1.
-- Before dispatching any operation, if `timeout` is provided:
-  - Create an AbortController instance and start a timer using `setTimeout` that calls `controller.abort()` after the specified milliseconds.
-  - Pass `controller.signal` into all core functions and workflows:
-    - `calculatePi` and `calculatePiParallel`
-    - `benchmarkPi`
-    - `visualizePiDigits` and `visualizePiDigitsText`
-    - `visualizePiConvergence` and `visualizePiConvergenceText`
-    - `exportPi`
-    - `searchPi`
-    - `extractPiHex` and `extractPiDecimal`
-    - `startHttpServer` for HTTP requests
-  - Wrap each function invocation in a `Promise.race` between the normal operation and a promise that rejects when `signal.aborted` with an `OperationTimedOutError`.
-- On abort:
-  - Clear the timeout timer to prevent leaks.
-  - Print an error message “Operation timed out after <timeout> ms” to stderr.
-  - Exit the process with a non-zero status code.
-- On successful completion before timeout, clear the timer and proceed normally.
+# Testing
 
-## CLI Interface
+• Unit tests in tests/unit/main.test.js that mock file system to supply a temporary config file and verify main reads config and applies defaults when CLI args are absent.
+• Tests that environment variables like PI_DIGITS are read and override config file values.
+• Test invalid config file content triggers a clear error and exit code 1.
+• E2E tests in tests/e2e/cli.test.js that create a pi-config.yaml file, run the CLI without flags, and assert behavior matches config settings.
 
-- New flag:
-  --timeout <ms>    Maximum execution time in milliseconds (integer ≥ 1). Unlimited by default.
-- Validation:
-  - Non-integer or less than 1 should produce a descriptive parser error and exit code 1.
-- Example usages:
-  node src/lib/main.js --digits 10000 --timeout 5000
-  node src/lib/main.js --benchmark --min-digits 100 --max-digits 500 --timeout 10000
-  node src/lib/main.js --serve --port 8080 --timeout 15000
+# Documentation
 
-## Dependencies
+• Update README.md to introduce configuration support under a new section Configuration File and Environment Variables.
+• Describe file naming options and supported fields, show sample .pi-config.yaml and sample .env examples.
+• Provide examples:
+  Create .pi-config.yaml in project root
+    digits: 50
+    format: json
+  Then run CLI without flags:
+    node src/lib/main.js
+  Use environment variable to override:
+    PI_DIGITS=100 node src/lib/main.jsfeatures/RATE_LIMITING.md
+# features/RATE_LIMITING.md
+# Overview
 
-- Use the built-in `AbortController`, `setTimeout`, and `clearTimeout` from Node.js. No external dependencies required.
+Add API rate limiting to the HTTP server mode to protect CPU-intensive endpoints from excessive or abusive usage. This prevents denial-of-service scenarios and helps manage resource consumption when multiple clients call the service rapidly.
 
-## Testing
+# CLI Interface
 
-- Unit tests (`tests/unit/main.test.js`):
-  - Stub a long-running operation (e.g., a promise that never resolves) and verify that supplying a small `--timeout` causes the CLI to abort, print the timeout error message, and exit with a non-zero status.
-  - Test that missing or invalid `--timeout` values are rejected by the parser.
-- CLI integration tests (`tests/e2e/cli.test.js`):
-  - Invoke the CLI with a slow command (such as `--benchmark` over a large range) and `--timeout 1`, and assert immediate exit with the timeout message.
-  - Confirm that commands complete normally when `--timeout` is not set or set to a sufficiently large value.features/PI_NGRAM_DISTRIBUTION.md
-# features/PI_NGRAM_DISTRIBUTION.md
-# PI N-gram Distribution Feature
+Extend main(args) to accept the following flags alongside --serve and --cors:
 
-## Overview
+--rate-limit-window-ms <ms>    Time window in milliseconds for request counting (default: 60000)
+--rate-limit-max <n>           Maximum number of requests allowed per window per IP (default: 60)
 
-Compute and output the frequency distribution of all contiguous n-gram substrings of π digits for a specified length. This supports in-depth pattern analysis and exploration of recurring sequences in π digits.
+When the server mode is active, these options configure a rate limiter that applies to all HTTP API routes.
 
-## Functional Requirements
+# Implementation Details
 
-- Add function countPiNgrams(options) in src/lib/main.js
-  - options.digits: positive integer specifying total number of digits to compute (including integer part and fraction; minimum 1, default 1000)
-  - options.algorithm: one of machin, gauss-legendre, or chudnovsky (default machin)
-  - options.ngramLength: positive integer length of substrings to count (minimum 1, default 2)
-- Compute π as a string using calculatePi with sufficient precision
-- Remove the decimal point and build all contiguous substrings of length options.ngramLength
-- Count occurrences of each unique n-gram and assemble a plain object mapping substring to count
-- Return the count object
+In src/lib/main.js:
+• Install and import express-rate-limit from the "express-rate-limit" package.
+• After creating the Express app and applying CORS, construct a rate limiter:
+  const limiter = rateLimit({
+    windowMs: opts.rateLimitWindowMs,
+    max: opts.rateLimitMax,
+    standardHeaders: true,
+    legacyHeaders: false
+  });
+• Apply limiter as middleware on the app before defining routes: app.use(limiter).
+• Parse the new flags in main (argv) and expose them in opts.rateLimitWindowMs and opts.rateLimitMax (default values if flags omitted).
+• Ensure invalid values (non-integer, negative) result in an error message and exit code 1 on startup, preventing the server from starting.
 
-## CLI Interface
+# Testing
 
-- Extend src/lib/main.js to accept new flags:
-  --ngram-length <n>        Length of digit substrings to count (integer ≥ 1; default 2)
-  --distribution-ngram-json   Output n-gram distribution as JSON
-- When --ngram-length is provided:
-  - Parse digits, algorithm, and ngram-length from flags
-  - Invoke countPiNgrams with the parsed options
-  - Print the JSON string of the returned count object to stdout and exit
-  - On invalid values (non-integer or <1), print descriptive error and exit non-zero
-- Update CLI help text to document the new flags and defaults
+Add tests in tests/unit/main.test.js and tests/e2e/cli.test.js:
+• Unit tests with supertest: configure server with a low max (e.g., 2 requests per window) and verify that a third request to /pi?digits=1 within the same window yields status 429 and an appropriate JSON error message.
+• Test flag parsing: invoking CLI with --serve 0 --rate-limit-window-ms 1000 --rate-limit-max 1 starts the server and enforces a single request per second.
+• Test invalid flag values: passing non-numeric or negative values for rate-limit flags triggers console.error and process.exit(1) without server startup.
 
-## Dependencies
+# Documentation
 
-- No new external dependencies; use built-in string handling and object utilities
+Update README.md under HTTP API:
+• Document the new --rate-limit-window-ms and --rate-limit-max flags and their defaults.
+• Provide examples:
+    node src/lib/main.js --serve 3000 --rate-limit-window-ms 60000 --rate-limit-max 100
+    curl http://localhost:3000/pi?digits=10
+    # After 100 requests: HTTP/1.1 429 Too Many Requests
 
-## Testing
+• Note that the limiter uses IP-based counting and sends standard rate-limit headers.features/CLI_COMPLETION.md
+# features/CLI_COMPLETION.md
+# Overview
 
-- Unit Tests in tests/unit/main.test.js:
-  - Mock calculatePi to return a fixed sequence (e.g., "1231234") for a small digit count
-  - Verify countPiNgrams returns correct counts for substrings of specified length
-  - Test invalid ngramLength values produce thrown descriptive errors
-- CLI Tests in tests/e2e/cli.test.js:
-  - Invoke CLI with --digits 7 --algorithm machin --ngram-length 2 --distribution-ngram-json and assert correct JSON output
-  - Test missing or invalid ngram-length flags result in descriptive errors and non-zero exit codesfeatures/PI_ASCII_DISTRIBUTION.md
-# features/PI_ASCII_DISTRIBUTION.md
-# PI ASCII Distribution Feature
+Add support for generating shell completion scripts for common shells directly from the CLI. This enables users to enable tab completion for flags and options without manual script writing, improving discoverability and efficiency when using the tool interactively.
 
-## Overview
-Provide a lightweight, text-based bar chart of digit frequencies in the computed value of π directly in the console. This feature complements the existing PNG distribution chart by offering an immediate, dependency-free visualization in any terminal or CI environment.
+# CLI Interface
 
-## Functional Requirements
+Extend main(args) to accept the following flag:
 
-- Add function visualizePiDigitsText(options) in src/lib/main.js
-  - options.digits: positive integer (minimum 1, default 1000)
-  - options.algorithm: machin, gauss-legendre, or chudnovsky (default machin)
-  - options.width: positive integer specifying maximum bar width in characters (minimum 10, default 50)
-- Compute π using calculatePi with the specified digits and algorithm
-- Remove the decimal point and count occurrences of each digit 0 through 9
-- Determine the maximum frequency among digits to scale bar lengths
-- For each digit from 0 to 9, construct a console line:
-  - `<digit> | <bar> <count>`
-  - Bar is a repeated character (e.g., `#`) proportional to frequency relative to max, scaled to options.width
-- Return a single string consisting of 10 lines separated by newlines
+--generate-completion <bash|zsh|fish>    Output a completion script for the specified shell to stdout and exit.
 
-## CLI Interface
+Behavior:
+• When this flag is provided, bypass normal PI calculation or server startup and print a complete shell script that users can source or install in their shell’s completion directory.
+• The script should register all CLI options including digits, algorithm, workers, format, output, serve, cors, rate-limit, stream, chunk-size, ws-port, ws-path, analyze, cache, diagnostics, progress, swagger-ui, graphql, etc.
 
-- Extend src/lib/main.js to accept flags:
-  --ascii-distribution (boolean) to activate ASCII chart output
-  --ascii-width <n> to set the maximum bar width
-- When --ascii-distribution is provided:
-  - Parse digits, algorithm, ascii-width from flags
-  - Invoke visualizePiDigitsText with parsed options and print the returned string to stdout
-  - Exit after printing
-- Update CLI help output to document the new flags and defaults
+# Implementation Details
 
-## Dependencies
+• Add a new dependency, tabtab, to package.json to manage completion script generation.
+• In src/lib/main.js before parsing other flags, detect --generate-completion. Use tabtab to generate the script:
+  • Import tabtab from 'tabtab'.
+  • Call tabtab.complete('pi-calculator', { name: 'pi-calculator' }, shell) to get script text.
+  • Print the returned script to stdout and exit(0).
+• Ensure version and description passed to tabtab match package.json metadata.
+• Do not invoke any other logic when this flag is present.
 
-- No new external dependencies required; use built-in string operations
+# Testing
 
-## Testing
+• Add unit tests in tests/unit/main.test.js:
+  - Mock tabtab.complete to return a known script string. Invoke main(["--generate-completion","bash"]). Assert console.log is called with the script and process.exit(0).
+  - Test invalid shell names (e.g., "foo") cause console.error with message "Unsupported shell 'foo'" and process.exit(1).
+• E2E tests in tests/e2e/cli.test.js:
+  - Run CLI with `node src/lib/main.js --generate-completion bash` and capture stdout. Assert it contains a line defining a completion function for the tool name.
+  - Repeat for zsh and fish.
 
-- Add unit tests in tests/unit/main.test.js:
-  - Mock calculatePi to return a known digit sequence for a small digit count
-  - Verify visualizePiDigitsText returns correctly formatted lines, bar lengths, and counts
-  - Test scaling behavior with varying width settings
-- Add CLI tests in tests/e2e/cli.test.js:
-  - Invoke the CLI with --digits 20 --algorithm machin --ascii-distribution and assert the output contains 10 lines with expected counts and proportional bars
-  - Test invalid ascii-width values (zero or non-integer) result in descriptive errorsfeatures/PI_EXPORT.md
-# features/PI_EXPORT.md
-# PI Export Feature
+# Documentation
 
-## Overview
-Provide users the ability to save the computed value of π directly to a file, with optional gzip compression support for large outputs. This facilitates further analysis or sharing, and ensures efficient storage when handling very large digit lengths.
-
-## Functional Requirements
-
-- Enhance the existing exportPi(options) function in src/lib/main.js:
-  - options.digits: positive integer specifying the number of fractional decimal places (minimum 1, default 100).
-  - options.algorithm: machin, gauss-legendre, or chudnovsky (default machin).
-  - options.output: string path to the output file (required).
-  - options.compress: boolean indicating whether to gzip-compress the output (default false).
-- Compute piValue by calling calculatePi(options.digits, options.algorithm).
-- Format the output string: a decimal string with exactly options.digits fractional digits (truncate extras).
-- If options.compress is true or the output filename ends with .gz:
-  - Use zlib.promises.gzip to compress the UTF-8 string.
-  - Write the resulting Buffer to the specified file; otherwise write the plain string.
-- Perform atomic file writes using fs/promises:
-  - Write to a temporary file in the same directory.
-  - Rename the temporary file to the target path to avoid partial writes.
-- Validate inputs with descriptive errors: digits ≥ 1, supported algorithm, output path provided, and correct boolean for compress.
-
-## CLI Interface
-
-- Extend the CLI in src/lib/main.js to accept new flags:
-  --export <path>         Path to the output file
-  --gzip                  Enable gzip compression (alias for --compress)
-  --compress              Enable gzip compression
-- Behavior:
-  - When --export is provided, parse digits, algorithm, export path, and compress flags.
-  - Determine compression by the presence of compress flag or a .gz extension on the export path.
-  - Invoke exportPi with the parsed options.
-  - On success, print a confirmation message indicating file path and compression status, then exit with code 0.
-  - On error, print a descriptive error to stderr and exit with a non-zero code.
-- Update CLI help output to document the new flags and defaults.
-
-## Dependencies
-
-- Use built-in zlib module (import { gzip } from 'zlib').
-- Use built-in fs/promises; no new external dependencies required.
-
-## Testing
-
-- Unit Tests in tests/unit/main.test.js:
-  - Mock fs/promises and zlib.promises.gzip:
-    - Verify that invoking exportPi with compress=false writes the plain file content.
-    - Verify that invoking exportPi with compress=true or .gz extension calls gzip and writes compressed data.
-  - Test validation error scenarios: missing output path, invalid digits, unsupported algorithm, invalid compress type.
-- CLI Integration Tests in tests/e2e/cli.test.js:
-  - Invoke CLI with --digits 10 --algorithm machin --export pi.txt --compress and assert:
-    - pi.txt exists with plain content beginning with '3.1415926535...'.
-  - Invoke CLI with --digits 10 --algorithm machin --export pi.txt.gz and assert:
-    - pi.txt.gz exists and its first two bytes are 0x1f and 0x8b (gzip signature).
-  - Test that missing output path or invalid gzip flag usage produces descriptive errors and non-zero exit codes.features/HTTP_CORS_SUPPORT.md
-# features/HTTP_CORS_SUPPORT.md
-# HTTP CORS Support Feature
-
-## Overview
-Enable Cross-Origin Resource Sharing (CORS) for the HTTP API server to permit web clients from other domains to access π endpoints securely.
-
-## Functional Requirements
-- Add "cors" package to dependencies in package.json.
-- In startHttpServer in src/lib/main.js, import cors from 'cors'.
-- Accept a new CLI flag --cors (boolean) to enable CORS middleware.
-- Optionally accept --cors-origin <string> to set Access-Control-Allow-Origin header (default '*').
-- When --cors is provided before starting the server, apply cors({ origin: corsOrigin }) as a global middleware before defining routes.
-- Ensure that CORS headers Access-Control-Allow-Methods and Access-Control-Allow-Headers are set to allow common HTTP methods (GET, POST) and headers (Content-Type).
-- Update CLI help output to document --cors and --cors-origin flags.
-
-## Testing
-- Unit Tests in tests/unit/http.test.js:
-  - Start startHttpServer with CORS enabled and a custom origin, issue a request with an Origin header, and assert response includes Access-Control-Allow-Origin with expected value.
-  - Test default origin when --cors without --cors-origin.
-  - Verify no CORS headers when --cors is not provided.
-- CLI E2E Tests in tests/e2e/http.test.js:
-  - Spawn the server with --serve --cors --cors-origin http://example.com, send HTTP request with Origin header http://example.com, and assert header present.
-  - Ensure preflight OPTIONS requests receive correct CORS response.
-features/PROMETHEUS_METRICS.md
+• Update README.md under a new "Shell Completion" section:
+  - Describe the --generate-completion flag and supported shells.
+  - Provide example:
+        node src/lib/main.js --generate-completion bash > pi-completion.sh
+        source pi-completion.sh
+  - Note that scripts can be installed to /etc/bash_completion.d or ~/.config/fish/completions for permanent use.features/PROMETHEUS_METRICS.md
 # features/PROMETHEUS_METRICS.md
-# HTTP Prometheus Metrics Feature
-
-## Overview
-
-Enable the HTTP API server to expose operational metrics in Prometheus format. This feature provides a `/metrics` endpoint using the prom-client library and records request counters and duration histograms for key routes, allowing users to monitor performance and reliability.
-
-## Functional Requirements
-
-- Add dependency `prom-client` to package.json.
-- In `startHttpServer` in `src/lib/main.js`, import prom-client:
-  - const client = require('prom-client') or import * as client from 'prom-client'.
-- Initialize a default registry: e.g., `const register = new client.Registry()`.
-- Enable default metrics: `client.collectDefaultMetrics({ register })`.
-- Define HTTP metrics:
-  - A counter `http_requests_total` labeled by method and route.
-  - A histogram `http_request_duration_seconds` labeled by method and route, with suitable buckets.
-- Add middleware before routes:
-  - On each request, start a timer: `const end = histogram.startTimer({ method: req.method, route: req.route ? req.route.path : req.path })`.
-  - On response finish, call `end()` and increment `http_requests_total` with same labels.
-- Register GET `/metrics` endpoint:
-  - Respond with content type `register.contentType` (e.g., 'text/plain; version=0.0.4').
-  - Return `await register.metrics()` in the response body.
-- Ensure `/metrics` is mounted before the 404 fallback handler.
-
-## Testing
-
-- **Unit Tests** (`tests/unit/http.test.js`):
-  - Mock an Express app and verify middleware invocation increments counters and records durations.
-  - Start `startHttpServer({ port: 0 })` and perform a GET `/metrics` request:
-    - Assert status `200`, `Content-Type` header matches Prometheus format.
-    - Assert the body contains lines starting with `# HELP http_requests_total` and sample metrics entries.
-- **Integration Tests** (`tests/e2e/http.test.js`):
-  - Launch the HTTP server on an ephemeral port.
-  - Issue a sequence of API requests (e.g., GET `/pi`), then GET `/metrics`:
-    - Verify that `http_requests_total{method="GET",route="/pi"}` and `http_request_duration_seconds` are present and non-zero.
-  - Confirm that metrics update correctly after each request.features/PI_STATISTICAL_TESTS.md
-# features/PI_STATISTICAL_TESTS.md
-# PI Statistical Tests Feature
-
-## Overview
-
-Enable users to perform a suite of statistical randomness tests on the computed digits of π. This feature helps assess the uniformity and independence of digit sequences through established test methods.
-
-## Functional Requirements
-
-- Add function testPiRandomness(options) in src/lib/main.js
-  - options.digits: positive integer specifying total digits (including integer part; minimum 1; default 1000)
-  - options.algorithm: one of machin, gauss-legendre, or chudnovsky (default machin)
-  - options.tests: array of strings indicating which tests to run (supported values chi-squared, runs, serial-correlation; default all)
-  - options.pValueThreshold: number between 0 and 1 (default 0.05)
-- Compute π as a continuous digit string by calling calculatePi
-- For each requested test:
-  - Chi-squared frequency test: count occurrences of digits 0–9, compute chi-squared statistic against uniform expected frequency, compute p-value using chi-square distribution
-  - Runs test: map digits to above or below the median digit value, count runs, compute test statistic and p-value using normal approximation
-  - Serial correlation test: compute correlation coefficient between each digit and its successor, compute test statistic and p-value
-- Assemble results into an object mapping each test name to an object containing statistic, pValue, and pass (boolean indicating pValue >= pValueThreshold)
-- Return the assembled results object
-
-## CLI Interface
-
-- Update src/lib/main.js to accept flags:
-  --randomness-tests <list>   Comma separated list of tests (chi-squared,runs,serial-correlation)
-  --randomness-output <format>  Output format text or json (default text)
-  --randomness-pvalue <n>     P-value threshold for pass criteria (0 < n < 1; default 0.05)
-- When --randomness-tests is provided:
-  - Parse digits, algorithm, randomness-tests, randomness-output, and randomness-pvalue
-  - Invoke testPiRandomness with parsed options
-  - If randomness-output is json, print JSON string of results to stdout
-  - Otherwise, print each test name, statistic, pValue, and pass status in human-readable lines
-  - Exit with status code 0 on success, non-zero on invalid inputs
-- Update CLI help to document new randomness flags
-
-## Dependencies
-
-- No new external dependencies; use built-in Math functions and an approximate implementation for p-value calculations
-
-## Testing
-
-- Unit Tests in tests/unit/main.test.js:
-  - Mock calculatePi to return fixed sequences with known properties and verify each test function computes correct statistic and pValue
-  - Verify invalid test names or p-value thresholds produce descriptive errors
-- CLI Integration Tests in tests/e2e/cli.test.js:
-  - Invoke the CLI with --digits 20 --randomness-tests chi-squared,runs --randomness-output json and assert JSON contains expected keys and value types
-  - Test text output format produces readable lines for each test
-  - Test invalid flags or unsupported test names yield descriptive errors and non-zero exit codefeatures/SCRIPT_MODE.md
-# features/SCRIPT_MODE.md
 # Overview
 
-Provide a scripting mode that loads a JSON or YAML script defining a sequence of commands to execute, allowing batch operations of π calculations, exports, benchmarks, and visualizations in a single invocation.
+Add a Prometheus metrics endpoint to the HTTP server mode to expose operational and performance metrics in text format. This allows service operators to integrate monitoring and alerting using Prometheus or compatible tools.
 
-# Functional Requirements
+# Implementation Details
 
-- In src/lib/main.js, add support for a new `--script <path>` flag. When provided, the CLI enters scripting mode and ignores standalone flags.
-- Read the file at the given path using fs/promises. Detect JSON or YAML based on file extension and parse using `JSON.parse` or `js-yaml`.
-- Define a script schema: an object with a top-level `commands` array. Each entry is an object:
-  - `command`: string, one of `pi`, `export`, `convergence`, `distribution`, `benchmark`, `search`
-  - `options`: object with fields matching existing CLI flags for the command.
-- Validate the script structure and each command entry. Reject unrecognized commands or missing `commands` array with a descriptive error.
-- Iterate through `commands` sequentially. For each entry:
-  - Dispatch to the corresponding library function: 
-    - `pi` → `calculatePi` and print to stdout
-    - `export` → `exportPi` and write to file
-    - `convergence` → `visualizePiConvergence` and write PNG
-    - `distribution` → `visualizePiDigits` and write PNG
-    - `benchmark` → `benchmarkPi` and output CSV or chart
-    - `search` → `searchPi` and print JSON
-  - Pass the `options` object directly as function arguments.
-- On any command error, abort execution, print error message to stderr, and exit with a non-zero code.
-
-# CLI Interface
-
-- `--script <path>`: Path to a JSON or YAML script file defining batch commands.
-- Example usage:
-  node src/lib/main.js --script jobs.yaml
-
-# Dependencies
-
-- Add `js-yaml` to `package.json` if not already present.
-- Import `fs/promises` and `js-yaml` in `src/lib/main.js`.
-- No additional new dependencies.
+• Add prom-client as a dependency in package.json.
+• In src/lib/main.js during server setup when --serve is enabled:
+  • Import { Registry, Counter, Histogram, collectDefaultMetrics } from 'prom-client'.
+  • Instantiate a Registry and call collectDefaultMetrics({ register: registry }).
+  • Create a Counter metric http_requests_total with labels method and route.
+  • Create a Histogram metric pi_calculation_duration_seconds to observe durations of PI computations.
+  • In middleware before each handler, increment http_requests_total with route and method.
+  • Wrap calculatePi and related operations to record execution time via histogram.observe(duration).
+  • Define GET /metrics route that sets content type to 'text/plain; version=0.0.4' and responds with registry.metrics().
 
 # Testing
 
-- Unit tests in `tests/unit/main.test.js`:
-  - Mock `fs/promises` to supply sample JSON and YAML scripts, verify parsing and command dispatch.
-  - Test invalid script file path or invalid schema triggers descriptive errors.
-- CLI tests in `tests/e2e/cli.test.js`:
-  - Create a temporary YAML script file with a mix of `pi`, `distribution`, and `export` commands. Invoke CLI with `--script` and assert expected stdout and files created.
-  - Test unsupported command name leads to exit code non-zero and error message.features/PI_CONVERGENCE.md
-# features/PI_CONVERGENCE.md
-# PI Convergence Visualization Feature
-
-## Overview
-
-This feature generates a line chart in PNG format illustrating how the approximation error of π decreases as computation precision increases. It helps users visualize convergence behavior of different algorithms.
-
-## Functional Requirements
-
-- Add function visualizePiConvergence(options) in src/lib/main.js
-  - options.digits: positive integer for the maximum number of decimal places (minimum 10, default 1000)
-  - options.algorithm: machin, gauss-legendre, or chudnovsky (default machin)
-  - options.iterations: positive integer number of sample points (minimum 2, default 10)
-  - options.output: string path to the PNG output file (required)
-- Compute finalPi by calling calculatePi(options.digits, options.algorithm)
-- For each sample index i from 1 to options.iterations:
-  - Compute sampleDigits = floor(options.digits * i / options.iterations)
-  - Compute approx = calculatePi(sampleDigits, options.algorithm)
-  - Compute error = absolute value of approx minus finalPi converted to a numeric or scientific string
-- Build a QuickChart configuration for a line chart with:
-  - labels: array of sampleDigits values
-  - data: corresponding error values
-  - chart title indicating algorithm and maximum digits
-- Use QuickChart to render the chart and save the PNG file to options.output
-- Validate inputs: digits ≥ 10, iterations ≥ 2, digits ≥ iterations, algorithm must be one of the supported values, output path must be provided
-
-## CLI Interface
-
-- Extend src/lib/main.js to accept flags:
-  --digits <n>
-  --algorithm <machin|gauss-legendre|chudnovsky>
-  --convergence-iterations <n>
-  --convergence-output <file.png>
-- When --convergence-output is provided, invoke visualizePiConvergence with parsed flags and exit after writing the PNG file
-- Update CLI help output to document the convergence flags and defaults
-
-## Dependencies
-
-- Add quickchart-js to package.json dependencies
-- Import QuickChart from quickchart-js in src/lib/main.js
-
-## Testing
-
-- Add unit tests in tests/unit/main.test.js to mock QuickChart:
-  - Verify chart configuration matches sample labels and error data for a small precision range
-  - Confirm file writing behavior writes a PNG to the specified path
-- Add CLI tests in tests/e2e/cli.test.js to invoke the CLI with convergence flags and assert that the PNG file is created and contains expected chart data
-features/PI_CALCULATION.md
-# features/PI_CALCULATION.md
-# PI Calculation Feature
-
-## Overview
-This feature provides arbitrary precision computation of π using Decimal.js with support for three algorithms: Machin, Gauss-Legendre, and Chudnovsky. It delivers accurate results to a specified number of decimal places and allows users to choose the most appropriate algorithm for performance or precision needs.
-
-## Functional Requirements
-
-- Export function `calculatePi(digits, algorithm)` in `src/lib/main.js`:
-  - `digits`: positive integer between 1 and 1e6 (default 100).
-  - `algorithm`: string, one of `machin`, `gauss-legendre`, or `chudnovsky` (default `machin`).
-  - Validate inputs and throw descriptive errors on invalid values.
-  - Configure Decimal with precision = `digits + 5` and rounding mode ROUND_DOWN.
-  - Implement Machin series as existing, using nested arctan series expansion.
-  - Implement Gauss-Legendre algorithm as existing.
-  - Implement Chudnovsky algorithm:
-    - Compute constant C = 426880 × sqrt(10005).
-    - Initialize sum = 0.
-    - For k from 0 until the term drops below 1e-(digits+2):
-      - Calculate numerator = factorial(6k) × (545140134k + 13591409).
-      - Calculate denominator = factorial(3k) × (factorial(k)³) × (640320^(3k)).
-      - Compute term = numerator / denominator and accumulate in sum.
-    - Compute π = C / sum.
-  - Return a Decimal instance representing π.
-
-## CLI Interface
-
-- Extend `main` in `src/lib/main.js` to accept flags:
-  - `--digits <n>`
-  - `--algorithm <machin|gauss-legendre|chudnovsky>`
-  - `--threads <n>` (for parallel fallback)
-  - `--help`
-- Parse and validate flags, then:
-  - If `threads > 1`, call `calculatePiParallel`, else call `calculatePi`.
-  - Print result using `toFixed(digits, Decimal.ROUND_DOWN)`.
-  - Exit with status code 0 on success, non-zero on errors.
-- Update help output to list `chudnovsky` as supported algorithm.
-
-## Dependencies
-
-- Require `decimal.js`; no new dependencies needed.
-
-## Testing
-
-- Unit tests in `tests/unit/main.test.js`:
-  - Verify `calculatePi(5, 'chudnovsky')` returns `3.14159`.
-  - Verify `calculatePi(10, 'chudnovsky')` returns `3.1415926535`.
-  - Confirm that `calculatePi` for all three algorithms matches known prefixes.
-  - Test invalid algorithm values including `chudnovskyx` to throw errors.
-- CLI tests in `tests/e2e/cli.test.js`:
-  - Invoke CLI with `--digits 10 --algorithm chudnovsky` and assert stdout matches expected prefix.
-  - Confirm that `--algorithm unknown` exits with error status and descriptive message.features/PI_DIGIT_DISTRIBUTION.md
-# features/PI_DIGIT_DISTRIBUTION.md
-# PI Digit Distribution Visualization Feature
-
-## Overview
-Provide a function visualizePiDigits in src/lib/main.js that generates a bar chart of digit frequencies in the computed value of π as a PNG image using QuickChart. This visualization helps users understand the distribution of numeric digits in π for any desired precision.
-
-## Functional Requirements
-
-- Implement function visualizePiDigits(options) in src/lib/main.js:
-  - options.digits: positive integer, default 1000
-  - options.algorithm: machin, gauss-legendre, or chudnovsky, default machin
-  - options.output: string path to the PNG output file (required)
-- Compute π using calculatePi with the specified digits and algorithm
-- Remove the decimal point from the π string and count occurrences of each digit from 0 through 9
-- Construct a QuickChart configuration for a bar chart:
-  - labels: strings "0" through "9"
-  - data: corresponding frequency counts
-  - chart title indicating digits and algorithm
-- Use QuickChart from quickchart-js to render the chart and save the PNG file to options.output
-- Validate inputs: digits ≥ 1, algorithm supported, output path provided and writable
-
-## CLI Interface
-
-- Extend src/lib/main.js to accept flags:
-  --digits <n>
-  --algorithm <machin|gauss-legendre|chudnovsky>
-  --chart-output <file.png>
-- When --chart-output is provided:
-  - Parse digits, algorithm, and chart-output path
-  - Invoke visualizePiDigits with parsed options
-  - On success, print a confirmation message and exit
-  - On error, print descriptive error and exit with non-zero code
-- Update CLI help output to document the new chart flags and defaults
-
-## Dependencies
-
-- Ensure quickchart-js is listed in package.json dependencies
-- Import QuickChart from quickchart-js in src/lib/main.js
-
-## Testing
-
-- Unit tests in tests/unit/main.test.js:
-  - Mock QuickChart to verify the configuration matches expected labels and data for a small digit set
-  - Stub fs/promises to confirm file writing to the specified output path
-- CLI tests in tests/e2e/cli.test.js:
-  - Invoke the CLI with --digits 10 --algorithm machin --chart-output dist.png and assert:
-    - Exit status is zero
-    - A file named dist.png exists
-    - The file begins with the PNG signature (bytes 89 50 4E 47 0D 0A 1A 0A)
-  - Invoke the CLI with --digits 20 --algorithm chudnovsky --chart-output sample.png and verify similar PNG file properties
-  - Test invalid chart-output scenarios (missing extension or unwritable directory) produce a descriptive error and non-zero exit codefeatures/SVG_CHART_OUTPUT.md
-# features/SVG_CHART_OUTPUT.md
-# SVG Chart Output Feature
-
-## Overview
-
-Enable the CLI chart commands and programmatic chart functions to emit vector-based SVG files in addition to PNG. SVG outputs provide scalable, high-fidelity graphics suitable for embedding in documents or web pages.
-
-## Functional Requirements
-
-- Update chart-rendering functions in `src/lib/main.js` (visualizePiDigits, visualizePiConvergence, compareAlgorithms, and any benchmark chart output logic):
-  - Accept a new option `format` with allowed values `png` and `svg` (default `png`).
-  - Infer format automatically from output file extension: `.svg` implies `svg`, otherwise default to `png` or overridden by `format` option.
-  - When `format` is `svg`:
-    - Configure QuickChart to render SVG (e.g., use `chart.getSvg()` or `QuickChart.getUrl({format:'svg'})` and fetch the SVG content).
-    - Write the SVG string to the specified output file path without binary encoding.
-  - When `format` is `png`, retain existing PNG behavior.
-
-## CLI Interface
-
-- Introduce a `--format <png|svg>` flag on all chart-related CLI commands:
-  - `--chart-output <file>` (existing) and now optionally `--format svg`.
-  - Example: `node src/lib/main.js --digits 1000 --chart-output dist.svg --format svg`.
-- CLI parsing should validate the `format` flag, default to `png` if omitted, and ensure the output file extension matches the requested format.
-- Print descriptive errors and exit non-zero if format is invalid or mismatched with file extension.
-
-## Dependencies
-
-- No new npm dependencies required. QuickChart-js supports SVG rendering out of the box.
-
-## Testing
-
-- Unit Tests (`tests/unit/main.test.js`):
-  - Mock QuickChart to return a simple SVG string when format is `svg` and verify that `visualizePiDigits` and other chart functions write the expected SVG content to disk.
-  - Test format inference from `.svg` extension without explicit `format` flag.
-  - Confirm invalid `format` values are rejected with descriptive errors.
-
-- CLI E2E Tests (`tests/e2e/cli.test.js`):
-  - Invoke the CLI with `--chart-output sample.svg --format svg` and assert:
-    - Exit code is zero.
-    - `sample.svg` exists and its contents start with `<svg`.
-  - Verify that specifying `--format png` with a `.svg` extension produces an error.
-  - Confirm PNG outputs remain unchanged when `--format png` or default behavior is used.features/PI_JSON_OUTPUT.md
-# features/PI_JSON_OUTPUT.md
-# PI JSON Output Feature
-
-## Overview
-
-Enable machine-readable JSON output for π calculations in the CLI to simplify integration with other tools and scripts.
-
-## Functional Requirements
-
-- Update the CLI parser in src/lib/main.js to accept a new boolean flag --json.
-- When --json is provided and not in HTTP serve or script mode:
-  - After computing π (via calculatePi or calculatePiParallel), construct an object with a single key pi and the computed string value.
-  - Print JSON.stringify({ pi: piString }) to stdout followed by a newline.
-  - Exit with status code 0 on success.
-- When --json is not provided, retain existing behavior of printing the plain π string.
-- If --json is combined with --serve, print a descriptive error to stderr and exit with non-zero code.
-
-## CLI Interface
-
-- New flag:
-  --json           Output π as JSON with key pi instead of plain text
-- Usage examples:
-  node src/lib/main.js --digits 10 --json
-  node src/lib/main.js --digits 5 --algorithm chudnovsky --json
-
-## Implementation Details
-
-- In the main function of src/lib/main.js, extend the flag parsing loop to detect --json and set a boolean.
-- After computing or awaiting the π value, check the json flag:
-  - If true, serialize the result as JSON and print to stdout.
-  - Otherwise, print using console.log(piString).
-- Ensure process.exit codes: 0 on success, non-zero on validation or incompatible flag usage.
-
-## Testing
-
-### Unit Tests (tests/unit/main.test.js)
-
-- Add tests to simulate calling the main logic with --digits 4 --json and verify stdout is exactly {"pi":"3.1415"}\n and exit code 0.
-- Verify normal output remains unchanged when --json is absent.
-- Test that combining --json with --serve produces an error and exit code non-zero.
-
-### CLI Integration Tests (tests/e2e/cli.test.js)
-
-- Spawn the CLI with --digits 3 --json and assert stdout matches JSON with key pi and correct value, and exit code 0.
-- Confirm that node src/lib/main.js --serve --json exits with an error and descriptive message.features/HTTP_DIGIT_SEARCH.md
-# features/HTTP_DIGIT_SEARCH.md
-# HTTP Digit Search Feature
-
-## Overview
-
-Add a REST endpoint to search for numeric substrings within π digits via the HTTP API. This enables clients to locate patterns in π without downloading or processing the entire digit sequence.
-
-## Endpoint: GET /search
-
-- Query parameters:
-  - pattern (string, required): one or more numeric characters to find in π digits.
-  - digits (integer, optional): total number of digits to compute (including integer part; minimum 1; default 1001 to represent 1 integer digit + 1000 fractional digits).
-  - algorithm (string, optional): one of machin, gauss-legendre, or chudnovsky (default machin).
-  - all (boolean, optional): if true, return all match positions; if false or omitted, return only the first occurrence.
-- Validation:
-  - pattern must consist solely of digits and length ≤ digits.
-  - digits must be an integer ≥ 1 and ≤ 1e6.
-  - algorithm must be one of the supported values.
-  - all, if provided, must parse to a boolean.
-- Behavior:
-  - On valid request, call existing searchPi(pattern, {digits, algorithm, all}).
-  - If all=false, respond 200 with JSON { position: <number or null> }.
-  - If all=true, respond 200 with JSON { positions: [<number>] }.
-  - On invalid input, respond 400 with JSON { error: <message> }.
-- Response headers:
-  - Content-Type: application/json
-
-## Implementation in src/lib/main.js
-
-- Register a new route:
-  app.get("/search", async (req, res) => { ... })
-- Extract and parse req.query parameters.
-- Perform validation and return 400 on failure.
-- Invoke searchPi and send its result via res.json.
-
-## Testing
-
-- Unit tests in tests/unit/http.test.js:
-  - Mock searchPi to return known values; test valid and invalid patterns and parameters.
-  - Confirm 400 responses on invalid pattern, digits, or algorithm.
-- CLI E2E tests in tests/e2e/http.test.js:
-  - Start server on ephemeral port.
-  - Issue GET /search?pattern=314&digits=10; expect { position: 1 } and status 200.
-  - Issue GET /search?pattern=14&digits=10&all=true; expect { positions: [2, ...] }.
-  - Test missing or invalid params yield 400 and descriptive error.features/PI_STREAMING.md
-# features/PI_STREAMING.md
-# PI Streaming Feature
-
-## Overview
-Add a Server-Sent Events (SSE) endpoint to stream π digits in real time, enabling clients to receive an ongoing sequence of digits as they are computed. Supports algorithm choice, digit limit, and graceful termination.
-
-## HTTP Streaming Endpoint
-- Extend startHttpServer to register GET /pi/stream
-- Accept query parameters:
-  - digits (integer, default 1000)
-  - algorithm (machin, gauss-legendre, chudnovsky, default machin)
-- Set response headers:
-  - Content-Type: text/event-stream
-  - Cache-Control: no-cache
-  - Connection: keep-alive
-- Initiate SSE by sending an initial comment or event
-- Compute π iteratively in chunks (e.g. blocks of 100 digits) using calculatePi or a streaming variant
-- After computing each chunk, send an SSE message containing the next block of digits
-- On completion or client disconnect, send event: end and close connection
-- On error, send event: error with descriptive message and close
-
-## CLI Interface
-- Introduce --stream flag in src/lib/main.js
-- Flags:
-  - --digits <n>
-  - --algorithm <name>
-  - --stream (boolean)
-  - --port <n> for HTTP server
-- When --stream is provided, start HTTP server and enable /pi/stream endpoint. Do not exit immediately
-
-## Dependencies
-- Use built-in express import; no new dependencies required
-- Leverage AbortController to handle client disconnects and cancel computation if supported
-
-## Testing
-- Add integration tests in tests/unit/main.test.js or tests/e2e/http.test.js
-  - Start server on ephemeral port
-  - Issue HTTP GET to /pi/stream?digits=100&algorithm=machin
-  - Read SSE events and accumulate data until end event
-  - Assert sequence of SSE lines matches expected digit chunks
-  - Test error handling for invalid parameters and abrupt client disconnectfeatures/PI_CACHE.md
+• Unit tests in tests/unit/main.test.js using supertest:
+  - Start server with main(["--serve","0"]).
+  - Perform sample requests such as GET /pi?digits=5 and then GET /metrics.
+  - Assert /metrics responds status 200, content type includes text/plain, and body contains http_requests_total and pi_calculation_duration_seconds.
+  - Test that multiple /pi requests increment the counter values (using regex on metrics output).
+  - Test error routes increment http_requests_total with correct labels.
+
+# Documentation
+
+• Update README.md under HTTP API section to add a Metrics subsection:
+  - Describe the metrics endpoint URL: /metrics.
+  - Note default content type and Prometheus text format version.
+  - Provide example:
+      curl http://localhost:3000/metrics
+  - List key metrics exposed: process metrics, http_requests_total, pi_calculation_duration_seconds.
+features/GRACEFUL_SHUTDOWN.md
+# features/GRACEFUL_SHUTDOWN.md
+# Overview
+
+Add support for graceful shutdown and cancellation in both CLI and HTTP server modes so that long-running π calculations, streaming, or benchmark operations can be aborted cleanly on user interrupt or system signals.
+
+# CLI Behavior
+
+• Listen for SIGINT and SIGTERM before dispatching any compute, stream, or benchmark operation.
+• Create an AbortController and pass its signal to calculatePi, getPiStream, and benchmarkPi.
+• On receiving a signal, invoke controller.abort(), print "Operation cancelled by user", and exit with code 130.
+• Ensure that any partial output is cleaned up or flushed before exit.
+
+# HTTP Server Behavior
+
+• In --serve mode, listen for SIGINT and SIGTERM signals.
+• On signal, stop accepting new connections via server.close(), close any WebSocketServer instances, and allow in-flight requests to complete or abort after a configurable timeout (default 5 seconds).
+• After draining or on timeout, exit process with code 0.
+
+# Implementation Details
+
+• In src/lib/main.js, before parsing args, instantiate AbortController and attach listeners for process signals.
+• Refactor calculatePi, getPiStream, and benchmarkPi functions to accept an optional AbortSignal and check signal.aborted in long loops or generator iterations, throwing an AbortError on cancellation.
+• In CLI entrypoint, wrap compute or stream loops in a try/catch to handle AbortError: log the cancellation message and exit with code 130.
+• In HTTP setup, capture the server instance returned by app.listen and on signal call server.close(), plus wsServer.close() if WebSocket is enabled, then set a timer to force exit after timeout.
+
+# Testing
+
+• Unit tests in tests/unit/main.test.js:
+  - Mock an AbortSignal with aborted=true to verify calculatePi and getPiStream immediately throw AbortError.
+  - Simulate signal handlers by invoking the registered callback and assert that main prints the cancellation message and calls process.exit(130).
+• HTTP tests using supertest:
+  - Start the server with --serve 0, send a request that triggers a delayed computation (e.g., large digits), programmatically emit SIGINT, and verify the server closes and the test exits without hanging.
+
+# Documentation
+
+• Update README.md with a new Graceful Shutdown section:
+  - Describe how Ctrl+C or SIGTERM is handled in CLI and server modes.
+  - Provide examples:
+      # In CLI long run
+      node src/lib/main.js --digits 100000 --stream
+      # Press Ctrl+C to cancel
+      Operation cancelled by user
+
+      # In HTTP mode
+      node src/lib/main.js --serve 3000
+      # Press Ctrl+C, server shuts down gracefully
+features/WEBSOCKET_API.md
+# features/WEBSOCKET_API.md
+# Overview
+
+Introduce a WebSocket-based streaming API mode in addition to the existing HTTP endpoints. Clients can establish a WebSocket connection to request π digit generation and receive streamed chunks or the full result over a WebSocket, enabling real-time integration in browsers or services without HTTP polling.
+
+# CLI Interface
+
+Extend main(args) to accept the following flags alongside --serve:
+
+--ws-port <port>         Port to serve WebSocket connections (defaults to same as HTTP server when serve is enabled)
+--ws-path <path>         WebSocket URL path (default: /ws/pi)
+
+Behavior:
+• When --serve is enabled and --ws-port or --ws-path are provided (or defaults apply), the server will mount a WebSocket server on the given port and path.
+• Clients open a WebSocket connection and send a JSON message { "digits": <n>, "chunkSize": <m> }, then receive streamed text messages of π digits in chunks of up to chunkSize. On completion, the connection closes.
+
+# Implementation Details
+
+• Add "ws" dependency in package.json.
+• In src/lib/main.js, after starting the Express server when serve mode is active:
+  – Import { WebSocketServer } from "ws".
+  – Instantiate a WebSocketServer listening on the same HTTP server, filtering upgrade requests by opts.wsPath.
+  – On each connection, attach 'message' listener. Parse incoming text as JSON. Validate with zod: digits (integer 1–1000), chunkSize (optional positive integer).
+  – Call the existing getPiStream generator (or implement a simple async generator over calculatePi and slicing) to produce chunks.
+  – For each chunk, call ws.send(chunk).
+  – After streaming all digits, call ws.close().
+  – On invalid request or error, send JSON error message and close with code 1008.
+  – Handle client disconnects by aborting the generator loop.
+
+# Testing
+
+Add tests in tests/unit/main.test.js and a new tests/unit/ws.test.js:
+• Unit: Mock getPiStream to yield known chunks. Create a WebSocketServer instance via main(["--serve","0","--ws-port","0"]). Use the ws client to connect to the wsPath. Send a valid JSON request, assert the sequence of 'message' events with expected chunks and final close event.
+• Invalid request: send non-JSON or missing digits, expect server to send error JSON and close.
+• CLI flag parsing: invoking main with invalid --ws-path or --ws-port values triggers console.error and exit code 1 before server startup.
+
+# Documentation
+
+• Update README.md under HTTP Server section to document the WebSocket API:
+  – Describe --ws-port and --ws-path flags.
+  – Provide example:
+      node src/lib/main.js --serve 3000 --ws-path /ws/pi
+      // In JS client:
+      const ws = new WebSocket('ws://localhost:3000/ws/pi');
+      ws.onopen = () => ws.send(JSON.stringify({ digits: 100, chunkSize: 50 }));
+      ws.onmessage = event => console.log('chunk', event.data);
+  – Note error handling and closure behavior.features/HTTP_ANALYSIS.md
+# features/HTTP_ANALYSIS.md
+# Overview
+
+Add HTTP endpoints to expose π digit frequency analysis and chart generation over HTTP, complementing existing CLI analysis mode. Clients can request statistical summaries or visual charts of π digits directly via the HTTP API.
+
+# HTTP Endpoints
+
+Define new routes on the existing Express server:
+
+GET /pi/analysis
+  Query parameters:
+    digits: integer number of decimal places (default 10)
+    type: string one of frequency or chart (default frequency)
+  Behavior:
+    If type is frequency, respond with JSON containing counts and percentages of each digit 0 through 9 for the first requested digits.
+    If type is chart, generate a PNG bar chart of digit frequency and respond with image data and content type image/png.
+
+# Implementation Details
+
+• In main.js server setup, extend the Express app under serving mode to handle /pi/analysis.  
+• Use zod schemas to validate and coerce query parameters digits and type.  
+• For frequency mode, call analyzePi(digits) logic from CLI code to compute counts and percentages. Respond with JSON { digits, counts, percentages }.  
+• For chart mode, add quickchart-js to dependencies. Create a QuickChart instance configured as a bar chart with labels 0 through 9 and data equal to percentages. Call chart.toBinary() to obtain image buffer, set response type image/png, and send the buffer.  
+• Handle validation errors by responding status 400 with JSON error message.  
+• Ensure the server continues normal /pi and /benchmark routes alongside analysis.
+
+# Testing
+
+Add unit tests in tests/unit/main.test.js using supertest and vitest:
+  • Start server with main(["--serve","0"]) and capture instance.  
+  • Test GET /pi/analysis?digits=5&type=frequency returns status 200 and JSON body with counts summing to digits and correct percentages.  
+  • Test GET /pi/analysis?digits=5&type=chart returns status 200, content type image/png, and non empty body.  
+  • Test invalid query values produce status 400 and error JSON.  
+
+Add e2e tests in tests/e2e/cli.test.js:
+  • Use curl or supertest to GET analysis endpoints against a running server and assert correct behavior for both modes.
+
+# Documentation
+
+Update README.md:
+  • Document the new /pi/analysis endpoint under HTTP API section.  
+  • Provide examples:
+    curl http://localhost:3000/pi/analysis?digits=50&type=frequency
+    curl http://localhost:3000/pi/analysis?digits=50&type=chart > freq.png
+  
+Update package.json dependencies to include quickchart-js for chart mode.features/PI_CACHE.md
 # features/PI_CACHE.md
-# PI Cache Feature
-
-## Overview
-
-Introduce persistent caching of π computation results to dramatically speed up repeated calculations for identical digit and algorithm combinations. Cache entries are stored in a local JSON file with safe, atomic writes and file locking to prevent corruption under concurrent access.
-
-## Functional Requirements
-
-- Extend `calculatePi` in `src/lib/main.js` to accept two optional parameters:
-  - `useCache` (boolean, default false)
-  - `cacheFile` (string, default ".pi_cache.json")
-- When `useCache` is true:
-  - Acquire a shared lock on `cacheFile` using `proper-lockfile`.
-  - Read and parse the JSON cache file, or initialize an empty object if missing.
-  - Generate a key of the form `<algorithm>|<digits>`.
-  - If the key exists, return a `Decimal` instance from the cached string without recomputing.
-  - If the key is absent:
-    - Release the shared lock.
-    - Compute π normally.
-    - Acquire an exclusive lock on `cacheFile`.
-    - Reload the cache file to merge concurrent updates.
-    - Insert the new entry keyed by `<algorithm>|<digits>` with the string value of π.
-    - Atomically write the updated JSON to a temporary file and rename to `cacheFile`.
-    - Release the lock and return the computed `Decimal`.
-  - Ensure locks are always released even on errors.
-
-## CLI Interface
-
-- In `src/lib/main.js`, extend the CLI parser to accept flags:
-  - `--use-cache` (boolean) to enable caching
-  - `--cache-file <path>` to specify a custom cache file
-- When `--use-cache` is provided, pass `useCache=true` and `cacheFile` to `calculatePi` or `calculatePiParallel`.
-- Display a log message when a cached result is served or when a new entry is cached.
-- Update the help output to document the new flags and defaults.
-
-## Dependencies
-
-- Add `proper-lockfile` to `package.json` dependencies.
-- Import `lockfile` from `proper-lockfile` and `fs/promises` in `src/lib/main.js`.
-
-## Testing
-
-- **Unit Tests** in `tests/unit/main.test.js`:
-  - Mock file system and `proper-lockfile` to simulate cache hits and misses.
-  - Verify that `calculatePi` returns cached values when present and avoids computation.
-  - Confirm that on cache miss, the new result is written to the cache file atomically.
-  - Test error scenarios: corrupted cache file, lock acquisition failure.
-- **CLI Tests** in `tests/e2e/cli.test.js`:
-  - Invoke the CLI with `--digits 10 --algorithm machin --use-cache` and assert that a cache file is created.
-  - Re-run with the same flags and assert that the output is served from cache (e.g., by observing a log message).features/PI_DIGIT_EXTRACTION.md
-# features/PI_DIGIT_EXTRACTION.md
-# PI Digit Extraction Feature
-
-## Overview
-Add the ability to extract a specific block of hexadecimal digits of π at an arbitrary position using the Bailey–Borwein–Plouffe BBP algorithm without computing all preceding digits. This enables random access to π digits for analysis or verification tasks.
-
-## Functional Requirements
-- Function extractPiHex(position, count) in src/lib/main.js
-  - position: non-negative integer specifying the zero-based index of the first hexadecimal digit to extract (minimum 0)
-  - count: positive integer number of hex digits to return (default 1)
-  - Compute digits using the BBP series formula in base 16
-  - Return a lowercase hexadecimal string without prefix
-- Validate inputs: position ≥ 0, count ≥ 1
-
-## CLI Interface
-- Extend src/lib/main.js to accept flags
-  --extract-position <n>
-  --extract-count <n>
-- When --extract-position is provided, invoke extractPiHex with parsed flags and print the hex string to stdout
-- Update CLI help output to document the extraction flags and defaults
-
-## Dependencies
-- No new external dependencies; implement BBP formula using built-in BigInt and numeric operations
-
-## Testing
-- Add unit tests in tests/unit/main.test.js to verify extractPiHex:
-  - extractPiHex(0, 4) returns 243f
-  - extractPiHex(1, 3) returns 43f
-- Test validation rejects negative position and count less than 1
-- Add CLI tests in tests/e2e/cli.test.js to invoke the CLI with extraction flags and assert correct stdout outputfeatures/PERFORMANCE_BENCHMARK.md
-# features/PERFORMANCE_BENCHMARK.md
-# Performance Benchmark Feature
-
-## Overview
-Introduce benchmarking capabilities for Pi calculation across a range of digit lengths. Users can measure execution time of different algorithms and generate CSV reports or PNG visualizations of performance metrics.
-
-## Functional Requirements
-
-- Add a `benchmarkPi(options)` function in `src/lib/main.js`:
-  - `options.minDigits` (integer): starting digit count (minimum 1, default 100).
-  - `options.maxDigits` (integer): ending digit count (required, ≥ minDigits).
-  - `options.step` (integer): increment step between digit counts (default equals minDigits).
-  - `options.algorithm` (string): `machin` or `gauss-legendre` (default `machin`).
-  - Return an array of objects `{ digits, timeMs }` for each run.
-
-- In CLI (`src/lib/main.js`):
-  - Support `--benchmark` flag to activate benchmarking mode.
-  - Accept flags: `--min-digits <n>`, `--max-digits <n>`, `--step <n>`, `--algorithm <machin|gauss-legendre>`.
-  - Output modes:
-    - `--output-csv`: print CSV lines `digits,timeMs` to stdout.
-    - `--output-chart <file.png>`: generate and save a PNG chart of performance using QuickChart.
-  - Validate inputs and exit with error on invalid ranges.
-
-## CLI Interface
-
-- Example: `node src/lib/main.js --benchmark --min-digits 100 --max-digits 1000 --step 100 --algorithm gauss-legendre --output-csv`
-- Example: `node src/lib/main.js --benchmark --max-digits 500 --step 100 --output-chart performance.png`
-
-## Dependencies
-
-- Add `quickchart-js` to `package.json` dependencies.
-- Import `QuickChart` to generate charts when `--output-chart` is provided.
-
-## Testing
-
-- Unit tests in `tests/unit/main.test.js`:
-  - Verify `benchmarkPi` returns correct array length and structure based on inputs.
-  - Test CSV output format for a small range.
-  - Mock `QuickChart` to assert chart URL creation and file writing logic for `--output-chart`.
-features/HTTP_RATE_LIMITING.md
-# features/HTTP_RATE_LIMITING.md
-# HTTP Rate Limiting Feature
-
-## Overview
-Implement request rate limiting for the HTTP API server to protect against abuse and ensure fair usage. This feature applies rate-limiting middleware to all endpoints and provides configurable limits via CLI flags.
-
-## Functional Requirements
-- Add dependency "express-rate-limit" to package.json.
-- In src/lib/main.js, import rateLimit from 'express-rate-limit'.
-- Accept new CLI flags:
-  --rate-limit         Enable rate limiting middleware (boolean; default false).
-  --rate-limit-window <ms>    Time window in milliseconds for rate limiting (integer ≥ 1000; default 60000).
-  --rate-limit-max <n>        Maximum number of requests per window (integer ≥ 1; default 60).
-- When --rate-limit is provided:
-  - Before registering routes in startHttpServer, apply rateLimit({ windowMs, max, message }) as a global middleware.
-  - Default response on limit exceeded: HTTP 429 with JSON { error: 'Too many requests, please try again later.' }.
-- Validate CLI inputs and exit with a descriptive error for invalid values.
-
-## CLI Interface
-- Flags:
-  --rate-limit
-  --rate-limit-window <ms>
-  --rate-limit-max <n>
-- Example:
-  node src/lib/main.js --serve --port 3000 --rate-limit --rate-limit-window 60000 --rate-limit-max 100
-
-## Dependencies
-- Add "express-rate-limit" to dependencies in package.json.
-
-## Testing
-- Unit tests in tests/unit/http.test.js:
-  - Mock express app and verify rateLimit middleware is applied when enabled.
-  - Test invalid flag values produce descriptive errors and exit non-zero.
-- CLI e2e tests in tests/e2e/http.test.js:
-  - Start server with rate limiting enabled and a low max (e.g., max=2) and issue 3 rapid requests to any endpoint, asserting the third responds with 429 and correct JSON error.
-  - Confirm normal behavior when --rate-limit is not provided or when under the limit.features/CLI_SCHEMA_VALIDATION.md
-# features/CLI_SCHEMA_VALIDATION.md
-# CLI Schema Validation Feature
-
-## Overview
-
-Leverage zod to define and enforce a unified schema for all CLI flags, replacing manual argument parsing with structured validation. This ensures robust error messages, consistent default handling, and easier maintenance as the set of flags grows.
-
-## Functional Requirements
-
-- In `src/lib/main.js`:
-  - Import zod: `import { z } from 'zod'`.
-  - Define a Zod schema `CliOptionsSchema` describing all supported flags:
-    - digits: coerce.number().int().min(1).max(1e6).default(100)
-    - algorithm: z.enum(["machin","gauss-legendre","chudnovsky"]).default("machin")
-    - threads: coerce.number().int().min(1).default(1)
-    - serve: z.boolean().optional().default(false)
-    - port: coerce.number().int().min(0).default(3000)
-    - help: z.boolean().optional().default(false)
-    - timeout: coerce.number().int().min(1).optional()
-    - Any additional flags (e.g. script, export, json) included as needed.
-  - Before command dispatch, parse `inputArgs` against `CliOptionsSchema` using `schema.parse()` or `safeParse()`.
-  - On parse success, destructure an `options` object; on failure, catch `ZodError`, print human-readable error messages to stderr, and exit with code 1.
-  - Use the validated `options` to control program flow (compute π, start server, etc.) without further manual checks.
-
-## CLI Interface
-
-- All existing flags (`--digits`, `--algorithm`, `--threads`, `--serve`, `--port`, `--help`, etc.) are defined in the schema with constraints.
-- Invalid values automatically produce descriptive Zod validation errors.
-- Example:
-  node src/lib/main.js --digits abc
-  // Error: digits must be a number, received string 'abc'.
-
-## Implementation Details
-
-- Replace the manual `for` loop that shifts through `inputArgs` with a one-time `schema.parse()` call.
-- Use zod coercion helpers (`z.coerce.number()`) to convert numeric strings to numbers.
-- Leverage default values in the schema so no additional merging logic is required.
-- Maintain backward compatibility by matching existing default values and flag names.
-
-## Testing
-
-- **Unit Tests** (`tests/unit/main.test.js`):
-  - Test that providing valid flags yields the expected `options` object when parsing.
-  - Simulate invalid flags (e.g., `--digits 0`, `--algorithm invalid`) and assert that `schema.parse()` throws with clear Zod errors.
-- **CLI Integration Tests** (`tests/e2e/cli.test.js`):
-  - Run the CLI with valid and invalid flags, check exit codes and error messages.
-  - Confirm that behavior matches current semantics for successful commands.features/PUBLIC_API_EXPORTS.md
-# features/PUBLIC_API_EXPORTS.md
-# Public API Exports
-
-## Overview
-Expose all core library functions directly from the main module, enabling programmatic use of pi operations without CLI or HTTP server boundaries. This change turns the package into a fully featured API library for integration in custom scripts and applications.
-
-## Functional Requirements
-- In `src/lib/main.js`, after existing exports, add named exports for each utility function:
-  - `calculatePi`
-  - `calculatePiParallel`
-  - `startHttpServer`
-  - `countPiNgrams`
-  - `visualizePiDigits`
-  - `visualizePiDigitsText`
-  - `visualizePiConvergence`
-  - `visualizePiConvergenceText`
-  - `exportPi`
-  - `searchPi`
-  - `extractPiHex`
-  - `extractPiDecimal`
-  - `benchmarkPi`
-  - `compareAlgorithms`
-  - `estimatePiMonteCarlo`
-  - `computePiContinuedFraction`
-  - `countPiDigitsJson`
-  - `generateHtmlReport`
-- Ensure each function is imported or defined in the module and then re-exported by name.
-
-## Documentation Updates
-- In `README.md`, under "Features", add a section titled "Programmatic API" listing each exported function with a one-line description.
-- Provide example usage demonstrating named imports and basic calls:
-  import { calculatePi, searchPi, exportPi } from '@xn-intenton-z2a/repository0-crucible';
-
-## Testing
-- Add unit tests in `tests/unit/main.test.js` that import each function:
-  - Call `searchPi` on a known input and verify output structure.
-  - Call `countPiNgrams` with stubbed `calculatePi` to confirm correct mapping.
-  - Import `exportPi` and mock `fs/promises` to verify file writing behavior.
-- Ensure tests cover both success and error scenarios for each exported function.features/ALGORITHM_COMPARISON.md
-# features/ALGORITHM_COMPARISON.md
-# Algorithm Comparison Feature
-
-## Overview
-Enable direct visual comparison of convergence error across multiple π calculation algorithms by generating a combined line chart in PNG format.
-
-## Functional Requirements
-- Add function compareAlgorithms(options) in src/lib/main.js
-  - options.digits: positive integer for maximum decimal places (minimum 10, default 1000)
-  - options.algorithms: list of algorithm names; available values machin, gauss-legendre, chudnovsky; at least two required
-  - options.iterations: positive integer number of sample points (minimum 2, default 10)
-  - options.output: string path to the PNG output file (required)
-- Compute final π for each algorithm using calculatePi(options.digits, algorithm)
-- For each sample index i from 1 to options.iterations:
-  - Calculate sampleDigits = floor(options.digits * i / options.iterations)
-  - For each algorithm, compute approx = calculatePi(sampleDigits, algorithm)
-  - Compute error = absolute value of approx minus the final π for that algorithm
-- Build a QuickChart configuration for a multi-line chart:
-  - labels: array of sampleDigits values
-  - datasets: one series per algorithm with label set to algorithm name and data set to the corresponding error values
-- Use QuickChart to render the chart and save the PNG file to options.output
-- Validate inputs: digits ≥ 10, iterations ≥ 2, iterations ≤ digits, at least two algorithms, algorithms supported, output path provided
-
-## CLI Interface
-- Extend src/lib/main.js to accept flags:
-  --compare-algorithms <alg1,alg2,...> to specify algorithms
-  --compare-iterations <n> to set sample points
-  --compare-output <file.png> to set output path
-  --digits <n> to set maximum digits
-- When --compare-algorithms is provided:
-  - Parse algorithms list, digits, compare-iterations, compare-output from flags
-  - Invoke compareAlgorithms with parsed options and exit after writing the PNG file
-- Update CLI help output to document new compare flags and defaults
-
-## Dependencies
-- Add quickchart-js to package.json if not already present
-- Import QuickChart from quickchart-js in src/lib/main.js
-
-## Testing
-- Unit tests in tests/unit/main.test.js:
-  - Mock QuickChart to verify chart configuration includes correct labels and multiple datasets for each algorithm
-  - Test input validation rejects unsupported algorithm names, insufficient algorithms, or invalid numeric values
-- CLI tests in tests/e2e/cli.test.js:
-  - Invoke CLI with --compare-algorithms machin,gauss-legendre --digits 20 --compare-iterations 5 --compare-output compare.png and assert PNG file is created and contains expected chart datafeatures/REPL_MODE.md
-# features/REPL_MODE.md
 # Overview
-
-Provide an interactive Read–Eval–Print Loop (REPL) mode for the CLI tool, allowing users to enter Pi commands and options at a prompt rather than via one-off flags. This empowers exploratory workflows and quick experimentation without restarting the process for each command.
-
-# Functional Requirements
-
-- In `src/lib/main.js`, add support for a `--repl` flag. When provided:
-  - Ignore standalone flags and enter interactive mode.
-  - Initialize a readline interface with a prompt string, e.g., `π> `.
-  - Support the following commands with arguments separated by spaces:
-    - `help`: Display available commands and usage examples.
-    - `pi [digits] [algorithm]`: Compute π to `digits` places using the specified `algorithm` (defaults: 100, machin).
-    - `export <path> [digits] [algorithm] [format] [base]`: Invoke `exportPi` to write π to a file.
-    - `convergence <output> [digits] [algorithm] [iterations]`: Invoke `visualizePiConvergence`.
-    - `distribution <output> [digits] [algorithm]`: Invoke `visualizePiDigits`.
-    - `benchmark <min> <max> <step> [algorithm] [mode]`: Invoke `benchmarkPi`, where `mode` is `csv` or `chart`.
-    - `search <pattern> [digits] [algorithm] [--all]`: Invoke `searchPi`.
-    - `extractHex <position> <count>`: Invoke `extractPiHex`.
-    - `extractDecimal <position> <count> [algorithm]`: Invoke `extractPiDecimal`.
-    - `exit` or `quit`: Exit the REPL session.
-  - Parse and validate arguments for each command; print descriptive errors on invalid input.
-  - Dispatch each command to the existing library functions and print or save results accordingly.
-  - Continue prompting after each command until `exit` or `quit`.
-  - Handle `SIGINT` (Ctrl+C) by asking for confirmation to exit or clearing the current input line.
+This feature introduces a caching layer for π calculation results in both CLI and HTTP server modes to avoid redundant computation and improve performance for repeated requests.
 
 # CLI Interface
+Extend main(args) to accept the following flags:
+--cache <on|off>         Enable or disable caching of π results (default: on)
+--cache-file <file>      Path to a JSON file used for persistent cache storage (default: .pi_cache.json)
+--clear-cache            Clear the in-memory and persistent cache before proceeding
 
-- Add `--repl` flag to the CLI parser in `src/lib/main.js`.
-- Update the help output to document `--repl` and note that other flags are ignored when in REPL mode.
+# HTTP API Integration
+In HTTP server mode, cache is applied to the GET /pi route:
+• Before computing π for a query parameter digits, check the in-memory cache for a stored result matching digits and any algorithm or worker options.
+• If a cached value is found, return it immediately in the JSON response without invoking calculatePi.
+• On a cache miss, compute π, store the result in both the in-memory cache and persistent cache file, then respond normally.
+• Respect --cache and --clear-cache flags for controlling cache behavior in server mode.
 
-# Dependencies
+# Implementation Details
+• Maintain an in-memory Map keyed by a string of serialized options (digits, algorithm, workers) with computed π strings as values.
+• On startup, if caching is enabled, read the cache file using fs/promises and populate the in-memory Map.
+• In CLI mode, follow existing behavior: on cache miss compute then save, on clear-cache delete file and empty Map.
+• In HTTP server setup (src/lib/main.js), wrap the GET /pi handler:
+  • Compute a cache key from request query parameters.
+  • If cache enabled and key exists, return JSON { digits, pi: cachedValue }.
+  • Else call calculatePi, store result in Map and write updated cache file asynchronously, then return JSON.
+• Ensure file I/O errors for cache file read or write do not prevent π calculation or server startup.
 
-- Use Node's built-in `readline` module; no new external dependencies required.
+# Testing
+• Unit tests in tests/unit/main.test.js should mock fs and the cache file to verify CLI load and save behavior.
+• Add unit tests for HTTP cache logic using supertest:
+  – Start server with --serve 0 --cache on.
+  – Perform GET /pi?digits=10 twice; verify calculatePi is called only on the first request and second returns from cache.
+  – Test that --cache off disables caching and calculatePi is invoked on each request.
+  – Test that --clear-cache resets cache so subsequent requests recompute.
+
+# Documentation
+• Update README.md under Features and HTTP Server sections:
+  – Document the --cache, --cache-file, and --clear-cache flags and defaults.
+  – Describe caching behavior in HTTP mode with examples:
+      node src/lib/main.js --serve 3000 --cache on
+      curl http://localhost:3000/pi?digits=50  # computes and caches
+      curl http://localhost:3000/pi?digits=50  # returns cached result
+features/WEB_UI.md
+# features/WEB_UI.md
+# Overview
+
+Add an interactive web interface to the HTTP server mode, allowing users to use a browser to compute π, view digit frequency analysis, and display charts without using the CLI or raw API.
+
+# HTTP UI Endpoints
+
+- GET /ui
+  Display an HTML form where users can enter the number of digits and select an action: calculate pi, frequency analysis, or chart.
+- POST /ui/calculate
+  Accept form fields: digits (integer) and action (calculate|frequency|chart).
+  - If action is calculate, render a page showing the π value up to the requested digits.
+  - If action is frequency, show a table of digit counts and percentages.
+  - If action is chart, embed a PNG bar chart (base64 data URI) of digit frequency.
+
+# Implementation Details
+
+• In src/lib/main.js, import ejs and express.urlencoded middleware.
+• Define inline EJS templates as strings for the form and result pages.
+• On GET /ui, respond with ejs.render(formTemplate, {}).
+• On POST /ui/calculate, parse form data, validate digits, call calculatePi or analyzePi from existing logic, generate chart buffer via quickchart-js for chart action, convert to base64, and use ejs.render(resultTemplate, { digits, pi, counts, percentages, chartData }).
+• Use express.urlencoded({ extended: true }) to support form submissions.
+• Handle invalid input by rendering an error message in the HTML page with status 400.
 
 # Testing
 
-- Add unit tests in `tests/unit/main.test.js` or a new `tests/unit/repl.test.js`:
-  - Mock the `readline` interface to supply a sequence of commands and verify correct function calls and outputs.
-  - Test error handling for unknown commands and invalid arguments.
-  - Simulate `SIGINT` to confirm graceful handling.
-- Add CLI tests in `tests/e2e/cli.test.js`:
-  - Spawn the CLI with `--repl`, feed commands via stdin, and assert expected stdout lines and file creation when using export or chart commands.
-  - Ensure `exit` or `quit` closes the process with exit code 0.
-features/PI_DECIMAL_EXTRACTION.md
-# features/PI_DECIMAL_EXTRACTION.md
-# PI Decimal Extraction Feature
+• In tests/unit/main.test.js, add supertest cases:
+  - GET /ui returns status 200 and HTML containing a form element and input named digits.
+  - POST /ui/calculate with digits=5 and action=calculate returns HTML containing the correct π string.
+  - POST /ui/calculate with action=frequency returns a table with ten rows and correct counts.
+  - POST /ui/calculate with action=chart returns HTML with an img tag whose src starts with data:image/png.
+  - Invalid digits or missing action render a 400 status and HTML error message.
 
+# Documentation
+
+• Update README.md:
+  - Add a Web UI section under HTTP API describing how to access the web interface.
+  - Provide example:
+      Open http://localhost:3000/ui in a browser to use the interactive form.
+  - Show screenshots or sample markup of the form and results page.
+features/BENCHMARK_PI.md
+# features/BENCHMARK_PI.md
 # Overview
-Add the ability to extract a block of decimal digits of π at an arbitrary position using the existing calculatePi function. This feature supports programmatic and CLI access to retrieve continuous digits without the hexadecimal limitation of the BBP algorithm.
-
-# Functional Requirements
-- Add function extractPiDecimal(position, count, algorithm) in src/lib/main.js
-  - position: non-negative integer specifying the zero-based index into the continuous digit string of π (including the integer part and fractional digits)
-  - count: positive integer number of decimal digits to return
-  - algorithm: machin or gauss-legendre (default machin)
-- Validate inputs: position >= 0, count >= 1, algorithm must be supported
-- Internally compute digitsNeeded = position + count
-- Call calculatePi(digitsNeeded, algorithm) to obtain a Decimal instance of π
-- Convert the result to a plain string with fixed digitsNeeded decimal places, then remove the decimal point
-- Return the substring of length count starting at index position
+This feature adds the ability to benchmark the performance of π calculation across different digit lengths and output the results as JSON or generate a PNG chart.
 
 # CLI Interface
-- Extend src/lib/main.js to accept flags
-  --extract-decimal-position <n>
-  --extract-decimal-count <n>
-  --algorithm <machin|gauss-legendre>
-- When --extract-decimal-position is provided:
-  - Parse and validate position, count, and algorithm
-  - Invoke extractPiDecimal and print the resulting digits string to stdout
-  - Exit with code zero on success or non-zero on invalid inputs
-- Update CLI help output to document the new flags and defaults
+Extend main(args) to accept the following flags:
+--benchmark                Run performance benchmarks of π calculation
+--digits <list>            Comma-separated digit lengths to test (default: 10,100,500,1000)
+--format <json|png>        Output format (default: json)
+--output <file>            Path to save output (stdout if omitted)
 
-# Dependencies
-- No new dependencies required; reuse Decimal.js and the existing calculatePi function
+# Implementation Details
+Add a benchmarkPi(digitsArray) function that:
+  • Iterates over each digit count, invokes calculatePi(digits), and measures execution time in milliseconds
+  • Collects results into an array of objects with fields digits and time
+  • For JSON format, serializes the results and writes to stdout or file
+  • For PNG format, adds a quickchart-js dependency, generates a bar chart of digit vs time, and writes the image file
+Ensure benchmarks run serially, support digits up to 1000, and gracefully handle errors and invalid inputs.
 
 # Testing
-- Add unit tests in tests/unit/main.test.js:
-  - extractPiDecimal(0, 5) returns the first five digits including the integer part and fractional part as continuous string
-  - extractPiDecimal(1, 4) returns the four digits immediately following the first digit
-  - Validation rejects negative position or count less than 1
-- Add CLI tests in tests/e2e/cli.test.js:
-  - Invoke the CLI with --extract-decimal-position 0 --extract-decimal-count 4 and assert stdout matches expected prefix of π
-  - Test invalid combinations exit with non-zero status and descriptive error messagesfeatures/PI_CONFIG.md
-# features/PI_CONFIG.md
-# PI Configuration Feature
+Add unit tests in tests/unit/main.test.js to:
+  • Mock timers (Date.now) and verify benchmarkPi returns expected result structure for sample inputs
+  • Validate error handling for invalid digit values
+Add e2e tests in tests/e2e/cli.test.js to:
+  • Invoke CLI with --benchmark and --format json, parse output, and assert structure
+  • Invoke CLI with --benchmark and --format png, write to a temp file, and assert file existence and non-zero size
 
-## Overview
-Provide users the ability to define default settings for the CLI and programmatic API through a configuration file. This streamlines repeated use by loading preferences for options such as digits, algorithm, caching, threading, and output instead of specifying flags each time.
-
-## Functional Requirements
-
-- Integrate cosmiconfig to search for configuration under the name repository0-crucible with the following file patterns:
-  - .repository0-cruciblerc.json
-  - .repository0-cruciblerc.yaml
-  - .repository0-cruciblerc.js
-  - repository0-crucible.config.js
-- In the main entry point (src/lib/main.js) before parsing CLI flags, load configuration:
-  - If --config-file is provided, load that file directly
-  - Otherwise use cosmiconfig default search paths starting at the current working directory and falling back to the user home directory
-- Merge loaded configuration with CLI arguments:
-  - Configuration values provide defaults for flags: digits, algorithm, useCache, cacheFile, threads, progress, serve, port, chartOutput, benchmark, minDigits, maxDigits, step, outputCsv, outputChart, diagnostics
-  - CLI flags take precedence over configuration values
-- Validate the merged settings using the existing zod schema in the CLI router
-
-## CLI Interface
-
-- New flag --config-file <path> to specify a custom configuration file path
-- Document available configuration keys and default search locations in CLI help output
-
-## Dependencies
-
-- Add cosmiconfig to package.json dependencies
-- Import cosmiconfig in src/lib/main.js to perform configuration file discovery and loading
-
-## Testing
-
-- Unit tests in tests/unit/main.test.js should mock cosmiconfig to simulate:
-  1. Configuration file found and loaded correctly
-  2. Configuration keys mapping to merged settings
-  3. CLI flags overriding configuration values
-- CLI tests in tests/e2e/cli.test.js should:
-  1. Create temporary configuration file with specific defaults
-  2. Invoke node src/lib/main.js without flags and assert defaults are applied from config
-  3. Invoke with flags that override configuration and assert CLI values take effectfeatures/CLI_PROGRESS.md
-# features/CLI_PROGRESS.md
-# CLI Progress Bar Feature
-
+# Documentation
+Update README.md to describe the new --benchmark, --digits, --format, and --output flags, include usage examples for both JSON and PNG outputs, and note performance considerations and charting dependency requirements.features/ALGORITHM_SELECTION.md
+# features/ALGORITHM_SELECTION.md
 # Overview
-Add a live console progress bar to long-running π computations and benchmarking operations to keep users informed of progress and estimated completion.
 
-# Functional Requirements
-
-- Extend `calculatePi` and `benchmarkPi` functions to accept a `progress` boolean option.
-- When `progress` is true:
-  - For `calculatePi`, display a progress bar reflecting the percentage of algorithm iterations completed.
-  - For `benchmarkPi`, display a progress bar showing progress through digit steps and total runs.
-  - Ensure the progress bar starts before heavy computation, updates at regular intervals, and stops cleanly on completion or error.
-- Do not display progress when `progress` is false or unspecified.
+Unify and enhance π computation algorithm selection by providing real implementations for Ramanujan and Chudnovsky series algorithms, and support an automatic mode that chooses the optimal algorithm based on the requested digit count. Allow users to configure selection thresholds via environment variables or configuration file, improving performance and ease of use.
 
 # CLI Interface
 
-- Add a `--progress` flag to the CLI in `src/lib/main.js`.
-- Example: `node src/lib/main.js --digits 1000 --algorithm machin --progress`
-- Example: `node src/lib/main.js --benchmark --min-digits 100 --max-digits 500 --step 100 --progress`
+Extend the existing flags in src/lib/main.js:
 
-# Dependencies
+--algorithm <auto|machin|ramanujan|chudnovsky>   Specify the algorithm to compute π. auto (default) selects the fastest method based on digit count.
+--workers <n>                                    Number of worker threads for parallel Chudnovsky computation (default 1)
+--auto-threshold-machin <n>                      Maximum digits to use the Machin formula in auto mode (default 50)
+--auto-threshold-ramanujan <n>                   Maximum digits to use the Ramanujan series in auto mode (default 500)
 
-- Add `cli-progress` to `package.json` dependencies.
+# Implementation Details
+
+In src/lib/main.js:
+
+1. Implement calculatePiRamanujan(digits) using the Ramanujan rapidly convergent series: sum terms until additional terms no longer affect the target precision and format result to the requested decimal places.
+2. Implement calculatePiChudnovsky(digits, workers) using the Chudnovsky series: compute terms in parallel when workers > 1 via worker_threads, or serially when workers equals 1.
+3. Extend calculatePi(digits, options) to support algorithm auto: read thresholds from opts.autoThresholdMachin and opts.autoThresholdRamanujan or from environment variables AUTO_THRESHOLD_MACHIN and AUTO_THRESHOLD_RAMANUJAN; choose:
+   • if digits ≤ autoThresholdMachin then machin
+   • else if digits ≤ autoThresholdRamanujan then ramanujan
+   • else chudnovsky
+4. Parse new CLI flags --auto-threshold-machin and --auto-threshold-ramanujan, merge them after defaults, configuration file values, and environment variables.
+5. Validate that threshold values are positive integers; on invalid values, fall back to code defaults without error.
+6. Ensure backward compatibility: if algorithm flag is set to machin, ramanujan, or chudnovsky explicitly, auto thresholds are ignored.
 
 # Testing
 
-- Mock the console output in unit tests to verify the progress bar is initialized, updated, and terminated without errors when `progress` is enabled.
-- Ensure `calculatePi` and `benchmarkPi` still produce correct results when `progress` is true or false.
-features/DIAGNOSTICS.md
+Add unit tests in tests/unit/main.test.js and a new tests/unit/algorithm-implementation.test.js:
+
+• Spy on calculatePiRamanujan and calculatePiChudnovsky and verify correct dispatch for auto mode thresholds and explicit algorithm flags.
+• Test that auto thresholds correctly separate digit counts: at boundary values for machin, ramanujan, and chudnovsky.
+• Validate fallback to default thresholds if environment variables or flags provide invalid threshold values.
+• Verify calculatePiRamanujan produces expected prefixes for small digit counts (for example first five digits) and that calculatePiChudnovsky matches existing Machin output for small inputs.
+• Simulate parallel execution by setting workers to 2 or more and verify consistency of results and that worker_threads module is invoked.
+
+# Documentation
+
+Update README.md under the CLI Usage section:
+
+• Document the new algorithm options including auto and how the tool selects algorithms.
+• Describe --auto-threshold-machin and --auto-threshold-ramanujan flags and their defaults.
+• Show examples:
+  node src/lib/main.js --digits 100 --algorithm auto
+  node src/lib/main.js --digits 30 --algorithm auto --auto-threshold-machin 20
+  node src/lib/main.js --digits 1000 --algorithm chudnovsky --workers 4features/OPENAPI_DOCS.md
+# features/OPENAPI_DOCS.md
+# Overview
+This feature adds support for generating an OpenAPI 3.0 specification for the HTTP API endpoints, enabling clients and tools to integrate seamlessly.
+
+# CLI Interface
+Extend main(args) to accept the following flag:
+--openapi <file>       Output the OpenAPI JSON specification to the specified file; if omitted, write to stdout
+
+When --openapi is present, bypass normal operations (calculations, benchmarks, server startup) and output the OpenAPI spec.
+
+# Implementation Details
+• Define an OpenAPI 3.0 compliant JSON object with metadata (info, version, servers) and paths for /pi and /benchmark endpoints, including parameters, request validation, response schemas (PiResponse, BenchmarkResponse, ErrorResponse).
+• In src/lib/main.js, after parsing args, detect --openapi. Construct the spec object in memory, serialize with JSON.stringify(spec, null, 2), and write to stdout or to the given file via fs/promises.writeFile.
+• Reuse existing validation logic or manually define parameter schemas to ensure consistency with HTTP_API behavior.
+• Do not introduce external dependencies for spec generation; leverage built-in modules.
+
+# Testing
+• Unit tests in tests/unit/main.test.js:
+  – Invoke main with ['--openapi'] and verify the returned object has keys openapi, info, paths with entries /pi and /benchmark.
+  – Mock fs/promises.writeFile and verify it is called when a file path is provided.
+• E2E tests in tests/e2e/cli.test.js:
+  – Run the CLI with --openapi, parse stdout as JSON, and assert top-level keys openapi, info, paths.
+  – Run the CLI with --openapi openapi.json and assert that openapi.json exists, contains valid JSON, and includes the correct paths.
+
+# Documentation
+Update README.md to document the --openapi flag, provide usage examples:
+    node src/lib/main.js --openapi
+    node src/lib/main.js --openapi api-spec.json
+Include a note that the generated specification is compliant with OpenAPI 3.0 and can be used with Swagger UI or other tools.features/STRUCTURED_LOGGING.md
+# features/STRUCTURED_LOGGING.md
+# Overview
+
+Introduce structured and levelled logging across the CLI and HTTP server modes using a lightweight logger. This enables consistent log formatting, configurable log levels, and easier integration with monitoring and debugging tools.
+
+# CLI Interface
+
+Extend main(args) to accept the following flag and environment variable:
+
+--log-level <level>    Set logging verbosity: debug, info, warn, error (default: info)
+Environment variable PI_LOG_LEVEL may be used to set the default log level if the flag is not provided.
+
+# Implementation Details
+
+• Add pino as a dependency in package.json.
+• In src/lib/main.js after parsing flags, initialize a pino logger with level opts.logLevel.
+• Replace direct console.log and console.error calls with logger.info, logger.warn, logger.error, or logger.debug as appropriate:
+  – On startup, log the selected digits, algorithm options and any serve port or rate limit configuration at info level.
+  – In error paths, use logger.error with error messages and exit.
+  – In debug mode, log parsed options, cache hits/misses, request payloads, and internal calculation milestones (e.g. when arctan series total is reached).
+• For HTTP mode (when serve flag is present), apply a middleware that logs each incoming request at info level with method, path, and response status code. In debug mode, log request query or body.
+• Ensure that when --log-level=error or --log-level=warn is set, informational logs and debug logs are suppressed.
+
+# Testing
+
+• Add unit tests in tests/unit/main.test.js that:
+  – Mock pino to verify that main() uses the correct log level based on flag and environment variable.
+  – Simulate errors (invalid digits, file write failures) and assert logger.error is called and process.exit is invoked.
+  – Test that logger.info is called on normal startup.
+• Add HTTP tests with supertest to verify that request logs are emitted:
+  – Start server with --serve 0 --log-level debug and send a GET /pi?digits=2; spy on logger.debug to assert internal detail logs.
+  – Start server with --serve 0 --log-level error and send requests; assert no info logs appear but errors still do.
+
+# Documentation
+
+• Update README.md under a new Logging section:
+  – Describe the --log-level flag and PI_LOG_LEVEL environment variable.
+  – List supported levels and defaults.
+  – Provide examples:
+      node src/lib/main.js --digits 50 --log-level debug
+      PI_LOG_LEVEL=warn node src/lib/main.js --serve 3000
+• Note that structured logging enables integration with external log aggregators and simplifies debugging and monitoring.features/PI_ANALYSIS.md
+# features/PI_ANALYSIS.md
+# Overview
+
+Add a new analysis mode to compute statistical properties of the π digits sequence, enabling users to inspect digit frequency distributions and generate visual charts for deeper insights.
+
+# CLI Interface
+
+Extend main(args) to accept the following flags alongside --digits and existing options:
+
+--analyze <frequency|chart>    Type of analysis to perform (default: frequency)
+--output <file>                Path to write analysis output; for frequency JSON or chart PNG (stdout for JSON if omitted)
+
+Behavior
+• When --analyze frequency is specified, compute π to the requested number of digits and output a JSON object mapping each digit (0–9) to its count and percentage of the total.
+• When --analyze chart is specified, compute frequency distribution and generate a PNG bar chart using quickchart-js, writing the image to the given output file (required) or stdout if possible.
+• The tool bypasses normal PI printing when --analyze is present.
+
+# Implementation Details
+
+In src/lib/main.js and helper modules:
+
+• Parse --analyze and --output flags in main.
+• Implement analyzePi(digits) that:
+  - Calls calculatePi(digits) to obtain the PI string.
+  - Strips the decimal point and counts occurrences of characters '0' through '9'.
+  - Computes percentage for each digit as (count / digits) * 100.
+  - Returns an object { counts: Record<string, number>, percentages: Record<string, number> }.
+
+• For frequency output:
+  - Serialize the analysis object to JSON.stringify({ digits, counts, percentages }, null, 2).
+  - If --output is provided, write to file via fs/promises.writeFile, else print to stdout.
+
+• For chart output:
+  - Add quickchart-js to dependencies.
+  - Construct a QuickChart instance with type 'bar', labels ['0','1',...,'9'], and dataset percentages.
+  - Call chart.toBinary() to get image buffer.
+  - Write buffer to the output file via fs/promises.writeFile. Fail if no --output path is given.
+
+• Validate that --output is provided when analyze=chart, else error and exit(1).
+• Handle errors reading/writing files with clear messages and exit code 1.
+
+# Testing
+
+Unit tests in tests/unit/main.test.js:
+• Mock calculatePi to return a known sequence (e.g., '3.14159') and verify analyzePi computes correct counts and percentages.
+• Test main with args ['--digits','5','--analyze','frequency'] prints JSON with expected structure and exit(0).
+• Test main with args ['--digits','5','--analyze','chart','--output','out.png'] calls quickchart and fs.writeFile appropriately.
+• Test missing --output for chart mode triggers error and exit(1).
+
+E2E tests in tests/e2e/cli.test.js:
+• Run CLI with --digits 100 --analyze frequency; parse stdout JSON and assert keys 'counts' and 'percentages', total counts equal digits.
+• Run CLI with --digits 50 --analyze chart --output freq.png; assert freq.png exists and is non-empty.
+
+# Documentation
+
+Update README.md to document the new analyze commands:
+
+  node src/lib/main.js --digits 200 --analyze frequency
+  node src/lib/main.js --digits 100 --analyze chart --output pi-frequency.png
+
+Explain JSON frequency output and PNG chart generation. Note dependency on quickchart-js for chart mode.features/DIAGNOSTICS.md
 # features/DIAGNOSTICS.md
-# DIAGNOSTICS Feature
-
-## Overview
-Capture detailed runtime diagnostics for pi computations, benchmarking, chart generation, and HTTP operations. Provide insights into execution time, memory usage, and event-loop utilization to help users and developers analyze performance characteristics of the tool.
-
-## Functional Requirements
-- Integrate Node.js perf_hooks and process APIs to measure key metrics:
-  - Record high-resolution start and end times for parsing inputs, core computation, and output phases.
-  - Capture memoryUsage metrics (heapUsed, heapTotal, rss) before and after main operations.
-  - Use performance.eventLoopUtilization() to collect event-loop idle and active durations.
-- Wrap library functions (calculatePi, benchmarkPi, visualizePiDigits, startHttpServer) when diagnostics is enabled:
-  - Begin diagnostics before the core action and stop after completion or error.
-  - Aggregate timing and memory metrics into a diagnostics report object.
-- Format the diagnostics report as JSON and output it to stderr after the primary CLI output or HTTP response.
-
-## CLI Interface
-- Add a `--diagnostics` boolean flag to src/lib/main.js CLI router (zod schema).
-- When `--diagnostics` is present:
-  - Enable diagnostics collection for the invoked command path.
-  - After the command completes, print a JSON diagnostics report to stderr containing:
-    - totalTimeMs
-    - parseTimeMs
-    - computeTimeMs
-    - outputTimeMs
-    - memoryBefore and memoryAfter (heapUsed, heapTotal, rss)
-    - eventLoopUtilization
-- Example invocation:
-  node src/lib/main.js --digits 1000 --algorithm chudnovsky --diagnostics
-
-## Testing
-- Unit tests in tests/unit/main.test.js:
-  - Mock `perf_hooks.performance` and `process.memoryUsage` to simulate metrics.
-  - Verify that `--diagnostics` triggers a JSON report on stderr with the expected fields.
-  - Confirm no diagnostics output when the flag is absent.
-- CLI integration tests:
-  - Invoke the CLI with `--diagnostics` and sample flags, assert stderr JSON validity and presence of metric keys.
-
-## Dependencies
-- Use built-in Node.js modules (`perf_hooks`, `process`). No new external dependencies required.features/HTTP_API_ENHANCEMENT.md
-# features/HTTP_API_ENHANCEMENT.md
-# HTTP API Enhancement Feature
-
-## Overview
-Extend the existing HTTP server to support REST endpoints for digit distribution, convergence visualization, and performance benchmarking. Clients can retrieve PNG charts or JSON metrics directly via HTTP without writing local files.
-
-## Endpoints
-
-### GET /distribution
-- Query parameters:
-  - digits (integer, required): total number of π digits (including integer part), minimum 1, maximum 1e6.
-  - algorithm (string, optional): machin, gauss-legendre, or chudnovsky; default machin.
-  - format (string, optional): json or png; default json if not requesting an image endpoint.
-- Behavior:
-  - Compute π to the requested precision, count digit frequencies.
-  - If format=json, respond with application/json and body { "0":count0, …, "9":count9 }.
-  - If format=png (or path ends with .png), use QuickChart to render a bar chart and respond image/png.
-
-### GET /convergence
-- Query parameters:
-  - digits (integer, required): maximum decimal places, minimum 10, maximum 1e6.
-  - algorithm (string, optional): machin, gauss-legendre, or chudnovsky; default machin.
-  - iterations (integer, optional): number of sample points, minimum 2, default 10.
-  - format (string, optional): json or png; default json.
-- Behavior:
-  - Compute approximation error at sample precisions.
-  - If format=json, return application/json with { labels:[...], errors:[...] }.
-  - If png, render a line chart via QuickChart and respond image/png.
-
-### GET /benchmark
-- Query parameters:
-  - minDigits (integer, required): starting digit count, minimum 1.
-  - maxDigits (integer, required): ending digit count, must be ≥ minDigits.
-  - step (integer, optional): step increment, minimum 1, default = minDigits.
-  - algorithm (string, optional): machin or gauss-legendre; default machin.
-  - chart (boolean, optional): if true, return a PNG chart; otherwise JSON.
-- Behavior:
-  - Run benchmarkPi to measure time for each digit count.
-  - If chart=true, generate line chart via QuickChart and respond image/png.
-  - Otherwise respond with application/json and array of { digits, timeMs }.
-
-## Implementation
-- In `src/lib/main.js`, import QuickChart from quickchart-js.
-- Register new routes before the 404 handler in `startHttpServer`:
-  - Use `express.json()` and `express.urlencoded()` for request parsing.
-  - Validate query parameters; return 400 JSON { error: msg } on invalid.
-  - Invoke existing library functions: `countPiDigitsJson`, `visualizePiConvergence`, and `benchmarkPi` or inline logic.
-  - For PNG responses, call QuickChart to render to a Buffer and `res.type('image/png').send(buffer)`.
-  - For JSON responses, use `res.json(...)`.
-
-## Testing
-- **Unit Tests** (`tests/unit/http.test.js`):
-  - Mock QuickChart.render or QuickChart.getUrl and stub compute functions to test:
-    - Valid and invalid parameters return correct status, headers, and body shape.
-    - JSON endpoints return expected numeric data.
-    - PNG endpoints return a Buffer starting with PNG signature.
-- **E2E Tests** (`tests/e2e/http.test.js`):
-  - Start server on ephemeral port.
-  - Issue GET requests to `/distribution`, `/convergence`, and `/benchmark` with and without chart flag.
-  - Assert JSON responses for metrics and image responses for charts.
-  - Test error cases: invalid digits ranges or algorithms produce HTTP 400 and JSON error.
-
-## Dependencies
-- Add or confirm `quickchart-js` in `package.json` dependencies.
-- No other new dependencies required.features/PI_ASCII_CONVERGENCE.md
-# features/PI_ASCII_CONVERGENCE.md
-# PI ASCII Convergence Feature
-
-## Overview
-Provide a lightweight, text-based line chart of the convergence error of π approximations directly in the console. This complements the PNG convergence chart by offering an immediate, dependency-free visualization in any terminal or CI environment.
-
-## Functional Requirements
-
-- Add function visualizePiConvergenceText(options) in src/lib/main.js
-  - options.digits: positive integer (minimum 10, default 1000)
-  - options.algorithm: machin, gauss-legendre, or chudnovsky (default machin)
-  - options.iterations: positive integer number of sample points (minimum 2, default 10)
-  - options.width: positive integer specifying maximum chart width in characters (minimum 10, default 50)
-- Compute convergence data by calculating π samples at increasing precision and measuring absolute error relative to final π
-- Scale error values to the maximum error to determine line height positions in characters
-- Construct an ASCII chart with rows representing normalized error thresholds and columns for each sample point, using a character (e.g., `*`) to mark error values
-- Return a multiline string representing the chart, including axis labels or annotations for clarity
-
-## CLI Interface
-
-- Extend src/lib/main.js to accept flags:
-  --ascii-convergence (boolean) to activate ASCII convergence chart
-  --ascii-convergence-width <n> to set maximum chart width
-- When --ascii-convergence is provided:
-  - Parse digits, algorithm, iterations, and ascii-convergence-width from flags
-  - Invoke visualizePiConvergenceText with parsed options and print the returned string to stdout
-  - Exit after printing
-- Update CLI help output to document the new flags and defaults
-
-## Dependencies
-
-- No new external dependencies; use built-in string and console operations
-
-## Testing
-
-- Add unit tests in tests/unit/main.test.js:
-  - Mock calculatePi to return known approximations and error values for small digits and iterations
-  - Verify visualizePiConvergenceText returns correctly formatted ASCII chart lines with expected markers and scaling
-  - Test varying width settings and minimal inputs
-- Add CLI tests in tests/e2e/cli.test.js:
-  - Invoke CLI with --digits 20 --algorithm machin --iterations 5 --ascii-convergence and assert output contains expected number of lines and markers
-  - Test invalid ascii-convergence-width values result in descriptive errorsfeatures/MONTE_CARLO_ESTIMATION.md
-# features/MONTE_CARLO_ESTIMATION.md
 # Overview
-
-Provide a statistical approximation of π using the Monte Carlo method by sampling random points inside the unit square and estimating the ratio that falls within the unit circle.
-
-# Functional Requirements
-
-- Implement function estimatePiMonteCarlo(options) in src/lib/main.js
-  - options.samples: positive integer number of random points to sample (minimum 1, default 1000000)
-- For each sample generate random x and y between 0 and 1 using Math.random
-- Count how many points satisfy x² + y² ≤ 1
-- Compute estimate = 4 × (count inside circle) / samples
-- Return the estimate as a number
+This feature adds a diagnostics mode to the CLI that reports detailed runtime and environment information. Users can invoke diagnostics to inspect Node version, platform details, memory and CPU usage, uptime, current working directory, and key dependency versions. The information is output as JSON for easy consumption.
 
 # CLI Interface
+Extend main(args) to accept the following flag:
+--diagnostics           Run diagnostics and output a JSON object with:
+                        • nodeVersion: string
+                        • platform: string
+                        • arch: string
+                        • uptime: number (seconds)
+                        • memoryUsage: object with rss, heapTotal, heapUsed, external (bytes)
+                        • cpuUsage: object with user and system (microseconds)
+                        • cwd: string
+                        • dependencies: object mapping dependency names to versions
 
-- Add flag --monte-carlo-samples <n> to src/lib/main.js
-- When --monte-carlo-samples is provided:
-  - Parse samples, validate integer ≥ 1
-  - Invoke estimatePiMonteCarlo and print the estimate to stdout with default number formatting
-  - Exit after printing the estimate
+When --diagnostics is present, main should bypass other modes and print the JSON to stdout.
 
-# Dependencies
+# Implementation Details
+In src/lib/main.js:
+  • Parse args to detect --diagnostics
+  • Use process.version, process.platform, process.arch
+  • Use process.uptime() for uptime
+  • Use process.memoryUsage() and process.cpuUsage() for resource metrics
+  • Use process.cwd() for current directory
+  • Read package.json at runtime (via import or fs.readFile) to extract dependencies and devDependencies keys and versions
+  • Compose an object with all fields and write JSON.stringify(object, null, 2) to stdout
+  • Return the diagnostics object from main for ease of testing
 
-- No new external dependencies required; use built-in Math.random
+Ensure that:
+  • Diagnostics mode returns synchronously without error
+  • If reading package.json fails, include an empty dependencies object and note the error in a field error
+
+# Testing
+Add unit tests in tests/unit/main.test.js:
+  • Import main and call main(["--diagnostics"]); verify returned object has correct shape and types
+  • Mock process.memoryUsage and process.cpuUsage to fixed values and verify they appear in the returned object
+
+Add e2e tests in tests/e2e/cli.test.js (create tests/e2e directory if needed):
+  • Spawn the CLI with node src/lib/main.js --diagnostics
+  • Parse stdout as JSON
+  • Assert presence and types of all expected keys
+
+# Documentation
+Update README.md to describe the --diagnostics flag:
+  • Explain each field in the JSON output
+  • Provide example command and sample output
+  • Note that reading package.json may add overhead and potential error handlingfeatures/BATCH_API.md
+# features/BATCH_API.md
+# Overview
+
+Introduce a batch processing endpoint to the HTTP server mode so clients can request multiple π calculations in a single API call. This reduces round-trip overhead and supports efficient bulk computations.
+
+# HTTP Endpoint
+
+Define a new POST route when the server is active:
+
+POST /pi/batch
+  • Accepts a JSON array of request objects with fields:
+      • digits: integer number of decimal places (required)
+      • algorithm: optional string (machin|chudnovsky|ramanujan)
+      • workers: optional positive integer for chudnovsky parallelism
+  • Validates the array and each item using Zod schema.
+  • Computes π for each request sequentially or in parallel, returning an array of results:
+      [{ digits, pi }]
+  • On validation error, responds with status 400 and JSON { error: string } without performing computations.
+
+# Implementation Details
+
+• In src/lib/main.js during server setup when --serve is enabled:
+  – Import express.json and zod.
+  – Define a Zod schema: an array of objects { digits: z.number().int().min(1).max(1000), algorithm: z.enum([...]).optional(), workers: z.number().int().min(1).optional() }.
+  – Apply express.json() middleware and mount app.post('/pi/batch', handler).
+  – In handler, safeParse the request body. On failure, respond 400 with { error: issues message }.
+  – On success, iterate over the parsed array, for each item call calculatePi(digits, { algorithm, workers }).
+  – Collect results into an array of { digits, pi } and send JSON response with status 200.
+  – Ensure errors in individual computations are caught and returned as a 500 error with a generic message.
 
 # Testing
 
-- Add unit tests in tests/unit/main.test.js:
-  - Stub Math.random to produce a known sequence and verify estimate for small sample counts
-  - Test default sample count behavior and validation of invalid sample values
-- Add CLI tests in tests/e2e/cli.test.js:
-  - Invoke the CLI with --monte-carlo-samples 100 and stub random to check printed estimate
-  - Test invalid sample flag exits with descriptive errorfeatures/HEALTH_CHECK.md
-# features/HEALTH_CHECK.md
-# Health Check Feature
+• Add unit tests in tests/unit/main.test.js using supertest:
+  – Test POST /pi/batch with valid body [{ digits:5 }, { digits:3, algorithm:'ramanujan' }] returns status 200 and JSON array with correct pi strings.
+  – Test invalid bodies (non-array, missing digits, invalid types) yield 400 and JSON error.
+  – Simulate internal error by mocking calculatePi to throw; assert status 500 and JSON error.
 
-## Overview
-Provide a lightweight readiness and liveness endpoint for the HTTP API server to support monitoring and deployment probes. This endpoint allows clients and orchestration systems to verify that the service is running and healthy without invoking expensive π computations.
+# Documentation
 
-## Functional Requirements
+• Update README.md under HTTP API section:
+  – Document the POST /pi/batch endpoint, request schema and example:
+      POST /pi/batch
+      [ { "digits": 10 }, { "digits": 100, "algorithm": "chudnovsky", "workers": 2 } ]
+      Response:
+      [ { "digits": 10, "pi": "3.1415926536" }, { "digits": 100, "pi": "3.14..." } ]
+  – Note validation rules and error responses.features/API_KEY_AUTH.md
+# features/API_KEY_AUTH.md
+# Overview
 
-- In `startHttpServer` within `src/lib/main.js`, register a new route GET `/health` before any other routes:
-  - Respond with status code `200` and a JSON object:
-    {
-      "status": "ok",
-      "uptime": <number>,
-      "timestamp": "<ISO 8601 string>"
+Add API key authentication to the HTTP server, SSE, and WebSocket endpoints so that only authorized clients can access π calculation and analysis services.
+
+# CLI and Configuration Interface
+
+Allow users to configure an API key via environment variable or configuration file:
+
+• API key environment variable: PI_API_KEY
+• Configuration file key: apiKey
+
+Provide a new CLI flag:
+
+--api-key-header <name>    HTTP header name to check for API key (default: X-API-Key)
+
+When --serve is enabled and an API key is configured, all incoming requests to REST endpoints, SSE path, and WebSocket upgrades must present the correct API key in the specified header, otherwise the server responds with status 401 and JSON { error: "Unauthorized" } or closes the connection.
+
+# Implementation Details
+
+In src/lib/main.js during server setup:
+• After loading configuration, read opts.apiKey from merged config or process.env.PI_API_KEY.
+• Read opts.apiKeyHeader from CLI flag or default to 'X-API-Key'.
+• If opts.apiKey is defined:
+  – Add Express middleware before all routes:
+      if request.headers[lowercase opts.apiKeyHeader] !== opts.apiKey then respond 401 { error: "Unauthorized" } and return.
+• For SSE endpoint:
+  – Before initiating getPiStream, check header and if invalid respond 401 and end response.
+• For WebSocket upgrades:
+  – In the upgrade handler, inspect request.headers[lowercase opts.apiKeyHeader]; if missing or incorrect, send HTTP 401 and destroy socket.
+
+# Testing
+
+Add unit tests in tests/unit/main.test.js and tests/unit/ws.test.js:
+• Start server with main(["--serve","0","--api-key-header","X-My-Key"]) and set PI_API_KEY or config.apiKey to 'secret'.
+• Test without header: GET /pi?digits=5 returns 401 and JSON { error: "Unauthorized" }.
+• Test with wrong header value: 401 response as above.
+• Test with correct header: GET /pi?digits=5 returns 200 and valid pi data.
+• For SSE: GET /pi/sse?digits=5 with missing header returns 401 and JSON error, with correct header streams data.
+• For WebSocket: connect without header or wrong key, connection is closed; with correct header, handshake succeeds and streaming works.
+
+# Documentation
+
+Update README.md under HTTP API section:
+• Describe API key authentication and show examples:
+    export PI_API_KEY=secret
+    node src/lib/main.js --serve 3000 --api-key-header X-My-Key
+    curl -H "X-My-Key: secret" http://localhost:3000/pi?digits=10
+
+Note that if no API key is configured, the server remains open as before.features/CALCULATE_PI.md
+# features/CALCULATE_PI.md
+# Overview
+Extend the existing π calculation feature to support structured output formats and file outputs for seamless machine integration and flexible workflows.
+
+# CLI Interface
+Add the following flags to main(args):
+--digits <n>          Number of decimal places to calculate (integer, default: 10, max 1000)
+--format <text|json>  Output format: plain text or JSON (default: text)
+--output <file>       Path to write output; if omitted, write to stdout
+--help, -h            Show help information and exit
+
+When --format is json, the tool emits a JSON object with fields:
+  digits: requested digit count
+  pi: computed π string
+
+If --output is provided, write the formatted output (text or JSON) to the specified file; otherwise print to stdout.
+
+# Implementation Details
+• In src/lib/main.js, enhance argument parsing to detect --format and --output flags alongside existing --digits and --help.
+• Validate that --format accepts only 'text' or 'json'; on invalid value, print an error and exit with status 1.
+• After computing π via calculatePi(digits), branch on format:
+  - text: retain existing behavior of printing π string
+  - json: create an object { digits, pi: piString } and serialize with JSON.stringify(obj, null, 2)
+• If --output is set:
+  - Import fs/promises and write the formatted string to the given file path
+  - On write error, print an error message and exit with status 1
+• If --output is not set, console.log the formatted output and exit status 0
+• Ensure backward compatibility: if --format and --output are omitted, behavior matches previous calculatePi CLI
+
+# Testing
+• Add unit tests in tests/unit/main.test.js to:
+  - Invoke main with ["--digits","5","--format","json"] and verify console.log was called with valid JSON matching structure
+  - Mock fs/promises.writeFile to simulate writing and verify it is invoked when --output is provided
+  - Test invalid --format values result in error and exit code 1
+  - Test --output with unwritable path triggers error and exit code 1
+• Add e2e tests in tests/e2e/cli.test.js:
+  - Run the CLI with --digits 3 --format json and parse stdout as JSON to assert fields and values
+  - Run the CLI with --digits 2 --format text --output temp.txt and verify temp.txt exists with expected content
+
+# Documentation
+• Update README.md under Features to document new --format and --output flags, describe default behaviors and provide examples:
+    node src/lib/main.js --digits 5 --format json
+    node src/lib/main.js --digits 8 --format text --output pi.txt
+• Note that JSON output enables easy integration with other tools and scriptsfeatures/COMMANDER_CLI.md
+# features/COMMANDER_CLI.md
+# Overview
+
+Integrate Commander.js into the CLI entry point to replace manual argument parsing and provide a robust, declarative interface for all existing and future flags. This will simplify parsing, improve validation, auto-generate help, and make it easier to add new options.
+
+# Implementation Details
+
+• Add "commander" as a dependency in package.json.
+• In src/lib/main.js:
+  • Import { Command, Option, Argument } from "commander" and read version and description from package.json.
+  • Create a Command instance named "pi-calculator" with .name(), .version(), and .description().
+  • Declare options using .option() or new Option():
+    --digits <n>            number of decimal places (integer, default 10, min 1, max 1000)
+    --format <text|json>    output format, choices text or json (default text)
+    --output <file>         file path to write output (optional)
+    --help, -h              show help information (built-in)
+  • Use custom arg parsers to coerce and validate numeric values and enforce ranges; rely on .choices() for format.
+  • After program.parse(argv), read opts via program.opts().
+  • Branch behavior:
+    - If format is json: build object { digits, pi } and JSON.stringify with 2-space indent.
+    - Otherwise print the PI string.
+  • If opts.output is set, import fs/promises and write the formatted string to that file, handling errors by program.error() and exit code 1.
+  • Remove manual argv loops, console.log/console.error argument parsing, and process.exit calls are replaced by commander’s exitOverride or program.error.
+  
+# Testing
+
+• Update tests/unit/main.test.js or create tests/unit/cli-commander.test.js:
+  - Mock fs/promises.writeFile to verify file writes when --output is provided.
+  - Test parsing and behavior for:
+    * Defaults: running with no flags prints a PI string and exits 0.
+    * --digits 3 prints correct formatted output.
+    * --format json prints valid JSON with digits and pi fields.
+    * --output writes to file and does not print to stdout.
+    * Invalid values for digits or format cause commander to display an error and exit code 1.
+  • Ensure existing calculatePi unit tests remain passing.
+
+# Documentation
+
+• Update README.md:
+  - Add a "CLI Usage" section showing examples:
+      node src/lib/main.js                   # 10 digits, text
+      node src/lib/main.js --digits 5        # 5 digits, text
+      node src/lib/main.js --digits 5 --format json
+      node src/lib/main.js --digits 8 --format json --output pi.json
+  - Include a snippet of auto-generated help output showing all available options and defaults.
+  - Note that commander handles validation, help, and suggestions, simplifying future extensions.
+features/STREAM_PI.md
+# features/STREAM_PI.md
+# Overview
+Enable incremental streaming of π digits as they are calculated, allowing consumers to receive and process digits in real time rather than waiting for the full computation to complete.
+
+# CLI Interface
+Extend main(args) to accept the following flags:
+--stream                 Stream π digits to stdout in chunks as they are computed (default: off)
+--chunk-size <n>         Number of digits per chunk when streaming (integer, default: 100)
+
+When --stream is present, main should bypass buffering the full π string and instead write successive chunks of digits to stdout as soon as they are generated, then exit when complete.
+
+# HTTP API
+Add a new endpoint:
+GET /pi/stream
+  Query parameters:
+    digits: integer number of decimal places (default 10)
+    chunkSize: integer chunk size (default 100)
+  Response:
+    - Uses HTTP chunked transfer encoding
+    - Writes successive chunks of π digits as plain text
+    - Closes the response when all digits are sent
+
+# Implementation Details
+• Refactor calculatePi to expose an async generator getPiStream(digits, chunkSize) that:
+  - Internally computes π digits in blocks (e.g. slicing the decimal portion) and yields string chunks of length up to chunkSize
+• In CLI mode, detect --stream and --chunk-size, then:
+  - Call getPiStream with the requested digits and chunk size
+  - Use for await on the generator and write each chunk to process.stdout.write
+  - Ensure process.exit(0) after streaming completes
+• In HTTP server mode, under /pi/stream:
+  - Parse and validate query parameters using existing zod schemas
+  - Set response headers for text/plain and transfer-encoding: chunked
+  - For each chunk from getPiStream, call res.write(chunk)
+  - On completion, call res.end()
+  - Handle client abort events by stopping the generator
+• Ensure streaming works up to the maximum supported digits and endorses backpressure in HTTP mode
+
+# Testing
+• Unit tests in tests/unit/main.test.js:
+  - Mock getPiStream to yield known chunks; verify main writes chunks to stdout in correct order and exits with code 0
+  - Test invalid --chunk-size values trigger error and exit code 1
+• E2E tests in tests/e2e/cli.test.js:
+  - Run CLI with --digits 50 --stream --chunk-size 10; capture stdout and assert chunks of 10 characters until full π string received
+  - Run CLI without --stream to verify existing behavior remains unchanged
+• HTTP API tests in tests/unit/main.test.js:
+  - Use supertest to GET /pi/stream?digits=20&chunkSize=5; buffer response chunks and assert chunk sizes and combined result matches calculatePi(20)
+  - Test invalid query parameters result in 400 status and error JSON
+
+# Documentation
+Update README.md to:
+• Document the --stream and --chunk-size flags under Features
+• Provide CLI example:
+    node src/lib/main.js --digits 200 --stream --chunk-size 50
+• Document HTTP streaming example:
+    curl http://localhost:3000/pi/stream?digits=100&chunkSize=25
+
+Explain that streaming reduces initial latency and enables real-time consumption of large π calculations.features/PROGRESS_INDICATOR.md
+# features/PROGRESS_INDICATOR.md
+# Overview
+Enable real-time progress reporting during π digit calculations in the CLI to give users visual feedback when computing large numbers of digits.
+
+# CLI Interface
+Extend main(args) to accept the following flag:
+--progress            Display a progress bar during π calculation (default: off)
+
+Behavior:
+  • When --progress is present, initialize a console progress bar before starting the algorithm.
+  • Update the bar as computation proceeds, reflecting the percentage of work done.
+  • On completion, render the full π result and stop the progress bar.
+
+# Implementation Details
+• Add a new dependency cli-progress for terminal progress bars.
+• Refactor calculatePi(digits, options) to accept an optional onProgress callback.  
+  – In Machin-formula implementation, report progress after each term or iteration.  
+  – In Chudnovsky series, determine total iterations and call onProgress(completed/total).
+• In main.js, when parsing flags detect --progress.  
+  – When enabled, instantiate cli-progress SingleBar with a format template {bar} {percentage}% | ETA: {eta}s.  
+  – Pass a callback to calculatePi that updates the bar with current progress.  
+  – Ensure the bar is started with total steps equal to expected iterations and is stopped on finish or error.
+• Maintain backward compatibility: if --progress is absent, behavior remains unchanged.
+
+# Testing
+• Unit tests in tests/unit/main.test.js:  
+  – Mock a simplified calculatePi that invokes onProgress multiple times; verify progress bar start, update, and stop calls through a stubbed cli-progress API.  
+  – Test that calculatePi without --progress does not instantiate the progress bar.
+• E2E tests in tests/e2e/cli.test.js:  
+  – Run CLI with --digits 1000 --progress.  
+  – Capture stdout and assert lines matching progress bar patterns (e.g., constructs containing percent signs).  
+  – Confirm final π output is correct and that the progress bar was cleared.
+
+# Documentation
+• Update README.md under Features to document the --progress flag.  
+• Provide an example usage:  
+    node src/lib/main.js --digits 500 --progress
+• Note that progress reporting adds minimal overhead and requires the cli-progress dependency.features/GRAPHQL_API.md
+# features/GRAPHQL_API.md
+# Overview
+
+Add a GraphQL endpoint to the existing HTTP server that unifies PI calculation, digit frequency analysis, and performance benchmarking under a single flexible GraphQL schema. Clients can submit queries or mutations to compute PI, inspect digit distributions, or run benchmarks with a single HTTP POST.
+
+# Schema Definition
+
+Define a GraphQL schema with the following types and fields
+
+Query
+  pi(digits: Int!): PiResult
+  analyzeFrequency(digits: Int!): AnalysisResult
+  benchmark(digits: [Int!]!): [BenchmarkResult!]!
+
+Type PiResult
+  digits: Int!
+  pi: String!
+
+Type AnalysisResult
+  digits: Int!
+  counts: [Int!]!
+  percentages: [Float!]!
+
+Type BenchmarkResult
+  digits: Int!
+  time: Float!
+
+# Implementation Details
+
+• Add dependencies graphql and express-graphql to dependencies file
+• In src/lib/main.js, detect a new flag --graphql to enable GraphQL server mode
+• Import express, express.json, graphqlHTTP from express-graphql, and buildSchema from graphql
+• Build the schema text and resolver object mapping pi analyzeFrequency and benchmark functions to existing calculatePi, analyzePi, and benchmarkPi implementations
+• Mount a POST route at /graphql using graphqlHTTP with schema and root resolvers
+• Apply express.json middleware before the GraphQL handler to parse request bodies
+• Support query validation and error handling through graphqlHTTP default mechanisms
+• Ensure existing REST endpoints remain unchanged when --graphql is not present
+
+# Testing
+
+• Add unit tests in tests/unit/main.test.js using supertest and vitest
+  – Start the server with main(["--serve","0","--graphql"]) and capture the instance
+  – POST a GraphQL query { pi(digits:5){ pi } } and assert status 200 and data pi matches 3.14159
+  – POST a query for analyzeFrequency(digits:5) and assert counts array length 10 and percentages sum close to 100
+  – POST a mutation or query for benchmark(digits:[10,100]) and assert an array of two objects with digits fields and numeric time
+  – Test invalid queries produce GraphQL errors with status 400
+
+# Documentation
+
+• Update README.md to add a GraphQL API section under HTTP API
+  – Document starting the server with --graphql flag and default port
+  – Provide example curl commands posting JSON bodies with GraphQL queries
+  – Show sample query and response for each field type
+  – Note dependencies and endpoint path /graphqlfeatures/HTTP_API.md
+# features/HTTP_API.md
+# Overview
+
+Add an HTTP server mode to the CLI tool that exposes π calculation and benchmarking endpoints and provides an interactive Swagger UI for API exploration. This feature enables programmatic integration, monitoring, and effortless testing of the service.
+
+# CLI Interface
+
+Extend main(args) to accept the following flags:
+
+--serve <port>       Start HTTP server on the specified port (default: 3000)
+--cors                Enable CORS support on all routes for cross-origin requests
+--swagger-ui          Serve an interactive Swagger UI at /docs for API documentation and testing
+
+When --serve is present, the tool launches the HTTP server instead of performing local calculations or benchmarks.
+
+# Implementation Details
+
+• Install and import express and cors as dependencies in package.json.
+• In src/lib/main.js:  
+  – After parsing args, detect opts.serve and opts.cors.  
+  – Create an Express app.  
+  – If opts.cors is true, apply cors() middleware globally.  
+  – Apply express.json() and express.urlencoded({ extended: true }) for future extension.  
+
+• Define routes:  
+  GET /pi  
+    - Query parameter digits (integer, default 10).  
+    - Validate with zod. On error, respond 400 JSON { error: string }.  
+    - Call calculatePi(digits) and respond JSON { digits, pi } with status 200.  
+
+  GET /benchmark  
+    - Query parameter digits (comma-separated integers, default 10,100,500).  
+    - Validate list items with zod. On error, respond 400.  
+    - Call benchmarkPi(digitsArray) and respond JSON array of { digits, time } objects.  
+
+  GET /openapi.json  
+    - Generate or load the OpenAPI 3.0 spec for /pi and /benchmark endpoints.  
+    - Respond JSON spec with correct content type.  
+
+• Swagger UI Integration (if --swagger-ui is true):  
+  – Install swagger-ui-dist as a dependency.  
+  – Import absolutePath from swagger-ui-dist.  
+  – Serve static files at /docs from swagger-ui-dist.absolutePath().  
+  – Instruct users to navigate to /docs?url=/openapi.json to view the API docs.  
+
+• Start the server:  
+  – Call app.listen(opts.serve) and return the server instance from main when invoked programmatically.  
+  – Ensure main awaits server startup in test scenarios.
+
+# Testing
+
+Add unit tests in tests/unit/main.test.js with supertest and vitest:
+
+• Start the server with main(["--serve","0"]) and capture the instance.  
+• Test GET /pi?digits=5 returns status 200 and body { digits: 5, pi: string matching /^3\.14159/ }.  
+• Test GET /pi?digits=invalid returns status 400 and error JSON.  
+• Test GET /benchmark?digits=2,5 returns status 200 and an array of two objects with correct digits fields.  
+• Test GET /openapi.json returns 200 and a valid OpenAPI JSON with paths /pi and /benchmark.  
+• When --swagger-ui is supplied, test GET /docs returns status 200 and HTML containing link to swagger-ui.css.  
+
+After tests, close the server to free the port.
+
+# Documentation
+
+Update README.md under a new HTTP Server section:
+
+• Document the --serve, --cors, and --swagger-ui flags and defaults.  
+• Provide examples:  
+    node src/lib/main.js --serve 4000 --cors --swagger-ui  
+    curl http://localhost:4000/pi?digits=50  
+    curl http://localhost:4000/benchmark?digits=10,100  
+    Open http://localhost:4000/docs?url=/openapi.json in a browser.  
+• Note that Swagger UI assets are served under /docs and API spec under /openapi.json.  
+• Ensure links and examples are accurate and show user flows for JSON APIs and UI exploration.features/SSE_API.md
+# features/SSE_API.md
+# Overview
+
+Introduce a Server-Sent Events endpoint in HTTP server mode to stream π digits in real time using EventSource clients. This complements existing HTTP chunk streaming and WebSocket APIs by offering a lightweight, browser-friendly SSE protocol.
+
+# CLI Interface
+
+Extend main(args) to accept the following flags alongside --serve and --cors:
+
+--sse                       Enable SSE endpoint for π streaming (default: off)
+--sse-path <path>           URL path for the SSE endpoint (default: /pi/sse)
+--sse-chunk-size <n>        Number of digits per SSE message (default: 100)
+
+When --sse is provided and the server is running, clients can connect with EventSource to the specified path with query parameters digits and optionally override chunkSize.
+
+# Implementation Details
+
+In src/lib/main.js during HTTP server setup when --serve and opts.sse are enabled:
+• Import the existing getPiStream async generator from calculation module.
+• After express.json and other middleware, define a route:
+  app.get(opts.ssePath, async (req, res) => {
+    // Validate query params digits (integer ≥1 ≤1000) and chunkSize (positive integer)
+    // On validation error respond with 400 and JSON error
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    const controller = new AbortController();
+    req.on('close', () => controller.abort());
+    try {
+      for await (const chunk of getPiStream(digits, chunkSize, { signal: controller.signal })) {
+        // SSE data event per chunk
+        res.write(`data: ${chunk}\n\n`);
+      }
+      // Signal completion
+      res.write('event: done\ndata: done\n\n');
+    } catch (err) {
+      // On abort do nothing; on other errors send event:error
+      if (!controller.signal.aborted) {
+        res.write(`event: error\ndata: ${err.message}\n\n`);
+      }
+    } finally {
+      res.end();
     }
-  - `uptime` must be obtained from `process.uptime()` (in seconds, as a number).
-  - `timestamp` must be `new Date().toISOString()`.
-  - Set `Content-Type` header to `application/json`.
+  });
 
-## Testing
-
-- **Unit Tests** (`tests/unit/http.test.js`):
-  - After starting the server on an ephemeral port, issue a GET request to `/health`:
-    - Assert status `200`.
-    - Assert `Content-Type` is `application/json`.
-    - Assert response JSON has keys `status`, `uptime`, and `timestamp`.
-    - Assert `status` is the string "ok".
-    - Assert `uptime` is a non-negative number.
-    - Assert `timestamp` is a valid ISO 8601 string.
-
-- **Integration Tests** (`tests/e2e/http.test.js`):
-  - Start the server with `--serve --port 0`, then GET `/health`:
-    - Verify `200` and JSON structure as above.
-    - Ensure unexpected routes (e.g., `/healthz`) still return `404` JSON error as before.
-
-## Documentation Changes
-
-- Update `README.md` under the **HTTP API** section to document the new `/health` endpoint.
-- In `docs/HTTP_API.md`, add a **GET /health** section with description, response schema, and examples.
-features/SWAGGER_UI.md
-# features/SWAGGER_UI.md
-# Swagger UI Documentation Feature
-
-## Overview
-Enable interactive API exploration by integrating Swagger UI and providing an OpenAPI specification for the existing HTTP endpoints. This empowers developers and integrators to discover, understand, and test the RESTful π operations directly in a browser without external tooling.
-
-## Functional Requirements
-
-- Add `swagger-ui-express` to `package.json` dependencies and install it.
-- In `src/lib/main.js`, import `{ serve, setup }` from `swagger-ui-express` and construct an OpenAPI spec object:
-  - `openapi` version `3.0.0`.
-  - `info`: include `title`, `version` (read from `package.json`), and a brief `description` matching the mission.
-  - `servers`: list one server with URL `http://localhost:{port}` and description `Local server`.
-  - `paths`: document `/pi`, `/distribution`, `/convergence`, and `/benchmark`:
-    - For each path, define `get` operation with `summary`, `description`, `parameters` (query parameters with names, types, required flags, descriptions, constraints), and `responses` for `200` and `400` or `500` status codes with media types.
-- Mount the Swagger UI middleware in `startHttpServer` before the fallback handler:
-  - Serve the raw OpenAPI JSON at `/docs.json` with `res.json(spec)`.
-  - Serve the Swagger UI at `/docs`, using `app.use('/docs', serve, setup(spec))`.
-- Ensure the generated documentation stays in sync with any changes to endpoint parameters by referencing the same validation logic or zod schemas where applicable.
-
-## Dependencies
-
-- `swagger-ui-express`: for serving the Swagger UI assets and middleware.
-
-## Testing
-
-- **Unit Tests**:
-  - Request `GET /docs.json` and assert status `200`, `Content-Type: application/json`, and that the JSON has an `openapi` key and correct `paths` entries.
-  - Mock `express` routes to verify that `serve` and `setup` are called with the spec.
-- **Integration Tests**:
-  - Start the server on an ephemeral port and issue `GET /docs`:
-    - Assert status `200`, `Content-Type: text/html`.
-    - Confirm the response body contains `Swagger UI` initialization script and references `/docs.json`.
-features/PI_CONTINUED_FRACTION.md
-# features/PI_CONTINUED_FRACTION.md
-# Overview
-Compute and output the continued fraction representation and rational convergents of π to support analysis of best rational approximations.
-
-# Functional Requirements
-- Implement function computePiContinuedFraction(options) in src/lib/main.js
-  - options.digits: positive integer specifying decimal precision for π calculation (minimum 10, default 100)
-  - options.depth: positive integer specifying number of continued fraction terms to generate (minimum 1, default 10)
-  - options.maxDenominator: positive integer specifying maximum allowed denominator for convergent approximations (optional)
-- Internally calculate π at the specified precision using calculatePi
-- Derive the continued fraction terms by iterating: a₀ = floor(pi), x = pi - a₀, then for each term aᵢ = floor(1/x), x = 1/x - aᵢ
-- Collect the sequence of terms up to the specified depth or until denominator exceeds maxDenominator
-- For each term index, compute the convergent rational approximation p/q and include numerator and denominator
-- Return an object containing:
-  - terms: array of integers (continued fraction terms)
-  - convergents: array of objects { index:n, numerator:p, denominator:q }
-
-# CLI Interface
-- Extend src/lib/main.js to accept flags:
-  --cf-digits <n>            Decimal precision for π calculation (minimum 10)
-  --cf-depth <n>             Number of continued fraction terms (minimum 1)
-  --cf-max-denominator <n>   Maximum denominator for convergents
-  --cf-json                  Emit output as a JSON object instead of plain text
-- When any --cf flag is provided:
-  - Parse and validate cf-digits, cf-depth, cf-max-denominator, and cf-json
-  - Invoke computePiContinuedFraction with parsed options
-  - If cf-json is set, print the returned object as JSON to stdout
-  - Otherwise, print a readable summary:
-    Continued fraction terms: [a0, a1, …]
-    Convergent 1: p1/q1
-    Convergent 2: p2/q2
-    …
-  - Exit with code zero on success or non-zero on validation errors
-
-# Dependencies
-- No new external dependencies required; use existing Decimal.js and built-in operations
-
-# Testing
-- Unit tests in tests/unit/main.test.js:
-  - Mock calculatePi to return a known value to test term extraction
-  - Verify computePiContinuedFraction returns correct terms and convergents for small depth values
-  - Test validation rejects invalid cf-digits, cf-depth, and cf-max-denominator
-- CLI tests in tests/e2e/cli.test.js:
-  - Invoke CLI with --cf-depth 4 --cf-digits 20 and assert output contains expected terms
-  - Test --cf-json emits valid JSON with terms and convergents
-  - Test invalid flag combinations exit with non-zero code and descriptive errorfeatures/PI_DISTRIBUTION_JSON.md
-# features/PI_DISTRIBUTION_JSON.md
-# PI Distribution JSON Feature
-
-## Overview
-Provide a machine-readable JSON representation of the frequency distribution of π digits for programmatic consumption and automated analysis.
-
-## Functional Requirements
-
-- Add function countPiDigitsJson(options) in src/lib/main.js
-  - options.digits: positive integer (minimum 1, default 1000)
-  - options.algorithm: "machin", "gauss-legendre", or "chudnovsky" (default "machin")
-- Compute π using calculatePi with the specified digits and algorithm
-- Remove the decimal point and count occurrences of each digit from "0" through "9"
-- Return a plain object mapping each digit string to its integer count
-
-## CLI Interface
-
-- Extend src/lib/main.js to accept a flag:
-  --distribution-json (boolean) to activate JSON output of digit counts
-- When --distribution-json is provided:
-  - Parse digits and algorithm from flags
-  - Invoke countPiDigitsJson with parsed options
-  - Print the JSON-formatted count object to stdout
-  - Exit after printing
-- Update CLI help output to document the new flag and its defaults
-
-## Dependencies
-
-- No new external dependencies required; use built-in string and object operations
-
-## Testing
-
-- Add unit tests in tests/unit/main.test.js:
-  - Mock calculatePi to return a known digit sequence for a small count
-  - Verify countPiDigitsJson returns the correct count object
-  - Test validation of invalid digits and unsupported algorithms
-- Add CLI tests in tests/e2e/cli.test.js:
-  - Invoke the CLI with --digits 20 --algorithm machin --distribution-json
-  - Assert output is valid JSON with keys "0" through "9" and correct counts
-  - Test invalid flags yield descriptive errors and non-zero exit codesfeatures/PI_WORKER_THREADS.md
-# features/PI_WORKER_THREADS.md
-# Overview
-Add support for parallelizing π computation using Node.js worker_threads. Distribute series term computations across multiple threads to improve performance on large digit counts.
-
-# Functional Requirements
-- Extend calculatePi to accept an optional parameter threads (integer ≥1, default 1).
-- When threads >1:
-  - Partition the series iteration range among the specified number of worker threads.
-  - Spawn a Worker for each partition using the worker_threads module and pass algorithm, digits, start, and end indices.
-  - Each Worker computes its partial sum and posts the result back to the main thread.
-  - The main thread aggregates partial sums and finalizes π computation according to the chosen algorithm.
-- Provide an async function calculatePiParallel(digits, algorithm, threads) returning a Decimal instance representing π.
-- Validate threads parameter to be a positive integer not exceeding the number of logical CPU cores.
-
-# CLI Interface
-- Add flag --threads <n> to src/lib/main.js.
-- When specified, invoke calculatePiParallel with the threads parameter; otherwise default to single-threaded calculatePi.
-- Example invocation:
-  node src/lib/main.js --digits 10000 --algorithm chudnovsky --threads 4
-- On invalid thread values exit with code non-zero and descriptive error message.
-
-# Dependencies
-- Import worker_threads from 'worker_threads'.
-- No new external npm dependencies required.
-
-# Testing
-- Add unit tests in tests/unit/main.test.js:
-  - Verify calculatePiParallel(digits, algorithm, 1) matches calculatePi(digits, algorithm).
-  - Test calculatePiParallel for threads=2 and threads=4 on small digit counts (e.g. digits=10) for each algorithm.
-  - Mock Worker to simulate message passing and verify correct aggregation of partial sums.
-- Add CLI tests to confirm --threads flag parsing and error handling for invalid thread counts.features/HTML_REPORT.md
-# features/HTML_REPORT.md
-# HTML Report Generation Feature
-
-# Overview
-
-Provide a single-file static HTML dashboard report that aggregates results from pi computations, visualizations, benchmarks, and searches. Users can generate an interactive HTML summary to review numeric outputs, PNG charts, and search or extraction results in one document.
-
-# Functional Requirements
-
-- Add function generateHtmlReport(options) in src/lib/main.js
-  - options.script: path to a JSON or YAML script defining a sequence of commands (required)
-  - options.output: path to the HTML output file (required)
-  - options.inline: boolean indicating whether to embed PNG images as Base64 (default false)
-- When invoked, parse the script file similar to script mode, collecting results for each command:
-  - Numeric results (pi, search, extraction) as text
-  - File paths of generated PNG charts and exported text files
-  - CSV data for benchmarks
-- Build an HTML document with sections for each command entry:
-  - For numeric outputs, display a code block or paragraph
-  - For PNG charts, include an image tag referencing the file or embed Base64 if inline
-  - For CSV benchmark data, render a table
-  - For exports, provide download links
-- Write the assembled HTML string to the specified output file atomically
-
-# CLI Interface
-
-- Extend src/lib/main.js to accept flags:
-  --script <path> to specify script file (JSON or YAML)
-  --html-report <file.html> to specify report output path
-  --inline-images to embed charts as Base64
-- When --html-report is provided:
-  - Parse --script, --inline-images, and --html-report
-  - Invoke generateHtmlReport with parsed options and exit after writing HTML
-- Update CLI help output to document new report flags
-
-# Dependencies
-
-- Use built-in fs and fs/promises for file operations
-- Import js-yaml for script parsing (already present)
-- Import ejs from ejs for templating the HTML layout (already present)
+Ensure chunkSize override in query and default from opts.sseChunkSize. Existing streaming logic should accept AbortSignal for cancellation.
 
 # Testing
 
-- Add unit tests in tests/unit/main.test.js to mock script parsing and template rendering:
-  - Supply a sample script with a few commands, stub command functions to return known results
-  - Verify generateHtmlReport writes an HTML file containing expected sections
-- Add CLI tests in tests/e2e/cli.test.js:
-  - Create a temporary script file defining pi calculation and distribution commands
-  - Invoke the CLI with --script and --html-report flags and assert the HTML file exists
-  - Confirm the HTML contains numeric pi output and image tags or embedded data according to --inline-images
-features/PI_DIGIT_SEARCH.md
-# features/PI_DIGIT_SEARCH.md
-# PI Digit Search Feature
+Add tests in tests/unit/main.test.js using supertest or raw HTTP:
+• Start server with main(['--serve','0','--sse']); capture the instance.
+• Perform GET /pi/sse?digits=20&chunkSize=5 and intercept raw text events; assert status 200, content-type text/event-stream and body contains "data: " prefixes and an "event: done" event at the end.
+• Test default chunk size when only --sse is enabled and query param chunkSize is omitted.
+• Test invalid query parameters (non-integer digits or negative chunkSize) return status 400 and JSON error body.
+• Simulate client abort by closing connection early and assert server does not hang or throw unhandled exceptions.
 
-## Overview
-Add the ability to search for a numeric substring within the computed digits of π and retrieve its position or all occurrences. This feature enables users to find specific patterns in π digits without manual scanning.
+# Documentation
 
-## Functional Requirements
-
-- Implement function `searchPi(pattern, options)` in `src/lib/main.js`:
-  - `pattern`: string of one or more numeric characters to locate in π
-  - `options.digits`: positive integer specifying the total number of digits to compute (minimum 1, default 1000)
-  - `options.algorithm`: one of `machin`, `gauss-legendre`, or `chudnovsky` (default `machin`)
-  - `options.all`: boolean indicating whether to return all match positions (default `false`)
-- Internally:
-  - Compute π to `options.digits` using `calculatePi`
-  - Convert the result to a continuous digit string by removing the decimal point
-  - Validate `pattern` contains only digits and its length does not exceed `options.digits + 1` (including integer part)
-  - Search the digit string for occurrences of `pattern`:
-    - If `options.all` is false, return the 1-based index of the first match or `-1` if not found
-    - If `options.all` is true, return an array of all 1-based match indices (empty array if none)
-- Export `searchPi` so it can be used programmatically
-
-## CLI Interface
-
-- Extend `main` in `src/lib/main.js` to accept flags:
-  - `--search <pattern>` to specify the digit substring to locate
-  - `--digits <n>` to set how many π digits to compute
-  - `--algorithm <machin|gauss-legendre|chudnovsky>` to choose the algorithm
-  - `--all` to request all match positions
-- When `--search` is provided:
-  - Parse and validate `pattern`, `digits`, `algorithm`, and `all` flags
-  - Invoke `searchPi({ pattern, digits, algorithm, all })`
-  - Print JSON to stdout:
-    - If `all` is false: `{ "position": <number|null> }`
-    - If `all` is true: `{ "positions": [<numbers>] }`
-  - Exit with code `0` on success or non-zero on validation errors
-
-## Testing
-
-- **Unit Tests** in `tests/unit/main.test.js`:
-  - Mock `calculatePi` to return a known digit string for a small digit count
-  - Verify `searchPi('314', { digits: 10, algorithm: 'machin' })` returns correct index
-  - Test with `all=true` returns an array of all match positions
-  - Ensure invalid `pattern` (non-digits or too long) throws descriptive errors
-- **CLI Integration Tests** in `tests/e2e/cli.test.js`:
-  - Invoke the CLI with `--search 314 --digits 10` and assert stdout is JSON `{ "position": 1 }`
-  - Invoke with `--search 14 --digits 10 --all` and assert JSON `{ "positions": [2,?] }`
-  - Test invalid combinations produce non-zero exit codes and error messages
+Update README.md under HTTP API section:
+• Document the --sse, --sse-path, and --sse-chunk-size flags.
+• Provide an example:
+    // Start server with SSE enabled
+    node src/lib/main.js --serve 3000 --cors --sse
+    // In browser or Node.js EventSource:
+    const es = new EventSource('http://localhost:3000/pi/sse?digits=100&chunkSize=20');
+    es.onmessage = e => console.log('chunk', e.data);
+    es.addEventListener('done', () => console.log('stream complete'));

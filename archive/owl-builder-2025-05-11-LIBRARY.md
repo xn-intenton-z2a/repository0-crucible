@@ -1,823 +1,1811 @@
-library/READLINE.md
-# library/READLINE.md
-# READLINE
+library/COMMANDER_JS.md
+# library/COMMANDER_JS.md
+# COMMANDER_JS
 
 ## Crawl Summary
-createInterface(options) required input:Readable, optional output:Writable, completer, terminal auto-detect, history array, historySize number, removeHistoryDuplicates boolean, prompt string, crlfDelay ms, escapeCodeTimeout ms, tabSize int, signal AbortSignal
-InterfaceConstructor methods: close(), dispose(), pause(), resume(), setPrompt(), getPrompt(), prompt(preserveCursor), write(data,key), async iterator(), line,string cursor,number, getCursorPos()
-Events: 'close','line','history','pause','resume','SIGCONT','SIGINT','SIGTSTP'
-Promises API: readlinePromises.Interface.question(query,options):Promise<string>, Readline class with clearLine(dir), clearScreenDown(), cursorTo(x,y), moveCursor(dx,dy), commit(), rollback(), createInterface(options)
-Callback API: readline.Interface.question(query,options,callback), static clearLine, clearScreenDown, cursorTo, moveCursor, emitKeypressEvents
-Completer signature: (line)->[matches[],substring], async supported
-Examples: Tiny CLI, file stream line-by-line via for await or 'line' event
-TTY keybindings table with keys and actions
+Installation via npm. Core API: Command class methods option, requiredOption, version, argument, command, addOption, action, parse, parseAsync. Option types: boolean, value, default, negatable, boolean|value, variadic. Advanced Option: use Option class to set default, choices, env, preset, parser, conflicts, implies. Command definitions: inline action handler, standalone executable, nested subcommands. Lifecycle hooks: preAction, postAction. Help and usage configuration: helpOption, helpCommand, addHelpText, showHelpAfterError, showSuggestionAfterError, usage, name, description, summary, help(), outputHelp(), helpInformation. Parsing modes: enablePositionalOptions, passThroughOptions, allowUnknownOption, allowExcessArguments, storeOptionsAsProperties. Output and error handling: exitOverride, error, configureOutput. TypeScript support: extra-typings package. Examples in /examples directory.
 
 ## Normalised Extract
 Table of Contents
-1 Interface Creation
-2 InterfaceConstructor Methods
-3 Events
-4 Promises API Methods
-5 Callback API Methods
-6 Completer Function
-7 Examples
+1 Installation
+2 Quick Start Example
+3 Option Definitions
+4 Advanced Options via Option Class
+5 Command & Subcommand Configuration
+6 Argument Processing
+7 Action Handlers
+8 Lifecycle Hooks
+9 Help & Usage Customization
+10 Parsing Configuration
+11 Output & Error Handling
+12 TypeScript Integration
 
-1 Interface Creation
-createInterface options:
- input: stream.Readable (required)
- output: stream.Writable (optional)
- completer: Function(line) -> [Array<string>, string]
- terminal: boolean, default output.isTTY
- history: string[], default []
- historySize: number, default 30
- removeHistoryDuplicates: boolean, default false
- prompt: string, default '> '
- crlfDelay: number >=100, default 100
- escapeCodeTimeout: number, default 500
- tabSize: integer >=1, default 8
- signal: AbortSignal
+1 Installation
+npm install commander
 
-2 InterfaceConstructor Methods
- close(): void
- [Symbol.dispose](): void alias
- pause(): void
- resume(): void
- setPrompt(prompt:string): void
- getPrompt(): string
- prompt(preserveCursor?:boolean): void
- write(data:string|null, key?:{ctrl?:boolean,meta?:boolean,shift?:boolean,name:string}): void
- [Symbol.asyncIterator](): AsyncIterator<string>
- line: string
- cursor: number|undefined
- getCursorPos(): {rows:number, cols:number}
+2 Quick Start Example
+File: split.js
+define program via require('commander').program
+program.option('--first')
+       .option('-s, --separator <char>')
+       .argument('<string>')
+program.parse()
+const opts = program.opts()
+const result = program.args[0].split(opts.separator, opts.first ? 1 : undefined)
+console.log(result)
 
-3 Events
- 'close'()
- 'line'(input:string)
- 'history'(history:string[])
- 'pause'()
- 'resume'()
- 'SIGCONT'()
- 'SIGINT'()
- 'SIGTSTP'()
+3 Option Definitions
+program.option(flags:string, description:string, defaultValue?:any, parser?:fn)
+flags supports short and long form, value placeholders <value>, [optional]
+Boolean option: parser omitted, defaultValue omitted
+Value option: <placeholder> syntax
+Default: supply defaultValue argument
+Negatable: prefix long name with no- => sets false or default true
+Boolean|Value: use [value]
+Variadic: <name...> => array of values
+Required: use .requiredOption same flags signature
+Access parsed options via program.opts(), program.optsWithGlobals(), program.getOptionValue(flag), program.getOptionValueSource(flag)
 
-4 Promises API Methods
- readlinePromises.Interface.question(query:string, options?:{signal?:AbortSignal}): Promise<string>
- new readlinePromises.Readline(stream:Writable, options?:{autoCommit?:boolean})
-   clearLine(dir:number): this
-   clearScreenDown(): this
-   cursorTo(x:number,y?:number): this
-   moveCursor(dx:number,dy:number): this
-   commit(): Promise<void>
-   rollback(): this
- createInterface(options): readlinePromises.Interface
+4 Advanced Options via Option Class
+import { Option } from 'commander'
+program.addOption(new Option('-t, --timeout <sec>', 'timeout in seconds').default(60))
+program.addOption(new Option('-d, --drink <size>', 'drink size').choices(['small','medium','large']))
+program.addOption(new Option('-p, --port <num>', 'port number').env('PORT'))
+program.addOption(new Option('--donate [amt]', 'optional donation').preset('20').argParser(parseFloat))
+program.addOption(new Option('--disable-server', 'disable server').conflicts('port'))
+program.addOption(new Option('--free-drink', 'free drink').implies({ drink: 'small' }))
 
-5 Callback API Methods
- readline.Interface.question(query:string, options?:{signal?:AbortSignal}, callback(answer:string)): void
- readline.clearLine(stream:Writable, dir:number, callback?:(err?:Error)=>void): boolean
- readline.clearScreenDown(stream:Writable, callback?:(err?:Error)=>void): boolean
- readline.cursorTo(stream:Writable, x:number, y?:number, callback?:(err?:Error)=>void): boolean
- readline.moveCursor(stream:Writable, dx:number, dy:number, callback?:(err?:Error)=>void): boolean
- readline.emitKeypressEvents(stream:Readable, interface?:InterfaceConstructor): void
+5 Command & Subcommand Configuration
+Inline action:
+program.command('clone <src> [dest]')
+       .description('clone repo')
+       .action((src,dest)=>{ /* implementation */ })
+Standalone exec:
+program.command('install [pkg]', 'install packages', { executableFile:'myInstallCmd', hidden:false, isDefault:false })
+program.executableDir('commands')
+Nested:
+const build = createCommand('build')
+program.addCommand(build)
+Copy inherited settings via program.copyInheritedSettings(subCmd)
+Alias commands via .alias('c')
 
-6 Completer Function
- signature: Function(linePartial:string) -> [Array<string>, string]
- supports Promise return or async function
+6 Argument Processing
+program.argument('<user>', 'username')
+       .argument('[pass]', 'password', 'defaultPass')
+Variadic arg: '<dirs...>' => array of strings
+Argument defaults and parser: argument(name, description, parser, default)
+Custom argument via new Argument(name, desc).choices([...]).default(value)
 
-7 Examples
- Tiny CLI: createInterface, prompt, on 'line', on 'close'
- File stream line-by-line: createReadStream+createInterface(crlfDelay:Infinity), for await, or on 'line'
+7 Action Handlers
+.action((...args, options, command)=>{})
+this refers to command in function expression
+async actions => use program.parseAsync(argv)
 
-## Supplementary Details
-Configuration defaults and effects
- terminal detection: output.isTTY on instantiation
- historySize=0 disables history caching
- crlfDelay coerced to >=100; Infinity to treat CR+LF as one newline
- escapeCodeTimeout controls key sequence disambiguation in ms
- tabSize sets tab width in spaces
- signal aborts question or closes interface
- Implementation steps
- 1 import required module variant
- 2 create interface with explicit options
- 3 attach listeners or use question/async iterator
- 4 close or dispose to terminate
- 5 optional process.stdin.unref() to exit on EOF
+8 Lifecycle Hooks
+program.hook('preAction', (cmd, subcmd)=>{})
+program.hook('postAction', (cmd, subcmd)=>{})
+program.hook('preSubcommand', (cmd, subcmdName)=>{})
 
+9 Help & Usage Customization
+.helpOption(flags:string, description:string) or false
+.helpCommand(name?:string, desc?:string) or true/false
+.addHelpText(position:'before'|'after'|'beforeAll'|'afterAll', textOrFn)
+.showHelpAfterError(message?:string)
+.showSuggestionAfterError(enable:boolean)
+.help(): display & exit
+.outputHelp(): display only
+.helpInformation(): string
+.name(string)
+.usage(string)
+.description(string)
+.summary(string)
 
-## Reference Details
-API Signatures and Full Examples
+10 Parsing Configuration
+.enablePositionalOptions()
+.passThroughOptions()
+.allowUnknownOption()
+.allowExcessArguments()
+.storeOptionsAsProperties()
+.parse(array, { from: 'node'|'user'|'electron' })
+.parseAsync(array, options)
 
-readline.createInterface(options) -> Interface
- options.input:Readable  required
- options.output:Writable
- options.completer:Function(line)->[Array<string>,string]
- options.terminal:boolean default output.isTTY
- options.history:Array<string> default []
- options.historySize:number default 30
- options.removeHistoryDuplicates:boolean default false
- options.prompt:string default '> '
- options.crlfDelay:number>=100 default 100
- options.escapeCodeTimeout:number default 500
- options.tabSize:number>=1 default 8
- options.signal:AbortSignal
+11 Output & Error Handling
+.exitOverride(handler?: (error: CommanderError)=>never)
+.error(message:string, { exitCode?:number, code?:string })
+.configureOutput({ writeOut:(str)=>void, writeErr:(str)=>void, outputError:(str, write)=>void })
 
-InterfaceConstructor Methods
- close():void
- [Symbol.dispose]():void
- pause():void
- resume():void
- setPrompt(prompt:string):void
- getPrompt():string
- prompt(preserveCursor?:boolean):void
- write(data:string|null,key?:{ctrl?:boolean,meta?:boolean,shift?:boolean,name:string}):void
- [Symbol.asyncIterator]():AsyncIterator<string>
- getCursorPos():{rows:number,cols:number}
- Properties
- line:string
- cursor:number|undefined
+12 TypeScript Integration
+import { Command } from '@commander-js/extra-typings'
+const program: Command<Options> = new Command()
 
-Events
- on('close',()=>void)
- on('line',(input:string)=>void)
- on('history',(history:string[])=>void)
- on('pause',()=>void)
- on('resume',()=>void)
- on('SIGCONT',()=>void)
- on('SIGINT',()=>void)
- on('SIGTSTP',()=>void)
-
-Promises API
- readlinePromises.createInterface(options) -> readlinePromises.Interface
- rl.question(query:string,options?{signal:AbortSignal}):Promise<string>
- new Readline(stream:Writable,options?{autoCommit?:boolean})
-   clearLine(dir:number):this
-   clearScreenDown():this
-   cursorTo(x:number,y?:number):this
-   moveCursor(dx:number,dy:number):this
-   commit():Promise<void>
-   rollback():this
-
-Callback API
- rl.question(query:string,options?{signal:AbortSignal},callback(answer:string)):void
- readline.clearLine(stream:Writable,dir:number,callback?:(err?:Error)=>void):boolean
- readline.clearScreenDown(stream:Writable,callback?:(err?:Error)=>void):boolean
- readline.cursorTo(stream:Writable,x:number,y?:number,callback?:(err?:Error)=>void):boolean
- readline.moveCursor(stream:Writable,dx:number,dy:number,callback?:(err?:Error)=>void):boolean
- readline.emitKeypressEvents(stream:Readable,interface?:InterfaceConstructor):void
-
-Complete Examples
-// Tiny CLI
-import { createInterface } from 'node:readline'
-import { stdin, stdout } from 'node:process'
-const rl = createInterface({ input: stdin, output: stdout, prompt: 'OHAI> ' })
-rl.prompt()
-rl.on('line',(line)=>{
-  switch(line.trim()){case 'hello':console.log('world!');break;default:console.log(`heard '${line.trim()}'`)}
-  rl.prompt()
-}).on('close',()=>{
-  console.log('exit');
-  process.exit(0)
-})
-
-// File stream line-by-line with async iterator
-import { createReadStream } from 'node:fs'
-import { createInterface } from 'node:readline'
-async function processFile(){
-  const rl = createInterface({ input: createReadStream('large.txt'), crlfDelay: Infinity })
-  for await(const line of rl){ console.log(`Line: ${line}`) }
-}
-
-// Troubleshooting
-// Missing EOF exit: call process.stdin.unref()
-// Question timeout: pass AbortSignal.timeout(ms)
-
-
-
-## Information Dense Extract
-createInterface(options{input:Readable,output:Writable,completer:Function,terminal:boolean,history:Array<string>,historySize:number,removeHistoryDuplicates:boolean,prompt:string,crlfDelay:number,escapeCodeTimeout:number,tabSize:number,signal:AbortSignal}):InterfaceConstructor; methods close(),dispose(),pause(),resume(),setPrompt(string),getPrompt():string,prompt(bool),write(string| null,{ctrl,meta,shift,name}),asyncIterator():AsyncIterator<string>,getCursorPos():{rows,cols}; properties line:string,cursor:number; events 'close','line'(string),'history'(string[]),'pause','resume','SIGCONT','SIGINT','SIGTSTP'; Promises API: Interface.question(string,{signal}):Promise<string>, Readline(stream,{autoCommit}):clearLine(dir):this,clearScreenDown():this,cursorTo(x,y):this,moveCursor(dx,dy):this,commit():Promise<void>,rollback():this; Callback API: Interface.question(string,{signal},callback:string=>void),static clearLine(stream,dir,callback):boolean,clearScreenDown(stream,callback):boolean,cursorTo(stream,x,y,callback):boolean,moveCursor(stream,dx,dy,callback):boolean,emitKeypressEvents(stream,interface):void; Examples: Tiny CLI, file line-by-line with for-await; keybindings Ctrl+C,D,U,K,A/E,B/F,L,P/N; troubleshooting: use process.stdin.unref(), AbortSignal.timeout(ms).
-
-## Sanitised Extract
-Table of Contents
-1 Interface Creation
-2 InterfaceConstructor Methods
-3 Events
-4 Promises API Methods
-5 Callback API Methods
-6 Completer Function
-7 Examples
-
-1 Interface Creation
-createInterface options:
- input: stream.Readable (required)
- output: stream.Writable (optional)
- completer: Function(line) -> [Array<string>, string]
- terminal: boolean, default output.isTTY
- history: string[], default []
- historySize: number, default 30
- removeHistoryDuplicates: boolean, default false
- prompt: string, default '> '
- crlfDelay: number >=100, default 100
- escapeCodeTimeout: number, default 500
- tabSize: integer >=1, default 8
- signal: AbortSignal
-
-2 InterfaceConstructor Methods
- close(): void
- [Symbol.dispose](): void alias
- pause(): void
- resume(): void
- setPrompt(prompt:string): void
- getPrompt(): string
- prompt(preserveCursor?:boolean): void
- write(data:string|null, key?:{ctrl?:boolean,meta?:boolean,shift?:boolean,name:string}): void
- [Symbol.asyncIterator](): AsyncIterator<string>
- line: string
- cursor: number|undefined
- getCursorPos(): {rows:number, cols:number}
-
-3 Events
- 'close'()
- 'line'(input:string)
- 'history'(history:string[])
- 'pause'()
- 'resume'()
- 'SIGCONT'()
- 'SIGINT'()
- 'SIGTSTP'()
-
-4 Promises API Methods
- readlinePromises.Interface.question(query:string, options?:{signal?:AbortSignal}): Promise<string>
- new readlinePromises.Readline(stream:Writable, options?:{autoCommit?:boolean})
-   clearLine(dir:number): this
-   clearScreenDown(): this
-   cursorTo(x:number,y?:number): this
-   moveCursor(dx:number,dy:number): this
-   commit(): Promise<void>
-   rollback(): this
- createInterface(options): readlinePromises.Interface
-
-5 Callback API Methods
- readline.Interface.question(query:string, options?:{signal?:AbortSignal}, callback(answer:string)): void
- readline.clearLine(stream:Writable, dir:number, callback?:(err?:Error)=>void): boolean
- readline.clearScreenDown(stream:Writable, callback?:(err?:Error)=>void): boolean
- readline.cursorTo(stream:Writable, x:number, y?:number, callback?:(err?:Error)=>void): boolean
- readline.moveCursor(stream:Writable, dx:number, dy:number, callback?:(err?:Error)=>void): boolean
- readline.emitKeypressEvents(stream:Readable, interface?:InterfaceConstructor): void
-
-6 Completer Function
- signature: Function(linePartial:string) -> [Array<string>, string]
- supports Promise return or async function
-
-7 Examples
- Tiny CLI: createInterface, prompt, on 'line', on 'close'
- File stream line-by-line: createReadStream+createInterface(crlfDelay:Infinity), for await, or on 'line'
-
-## Original Source
-Node.js Readline
-https://nodejs.org/api/readline.html
-
-## Digest of READLINE
-
-# Readline
-
-Retrieved: 2024-06-15
-Stability: 2 - Stable
-Source Code: lib/readline.js
-
-# Module Import
-
-Promise-based APIs
-import * as readline from 'node:readline/promises'
-const readline = require('node:readline/promises')
-
-Callback APIs
-import * as readline from 'node:readline'
-const readline = require('node:readline')
-
-# Class: InterfaceConstructor
-
-Added in: v0.1.104
-Extends: EventEmitter
-Constructor: created via createInterface(options)
-Options parameters:
-  input            stream.Readable           required
-  output           stream.Writable           optional
-  completer        Function                  (line) => [matches Array<string>, substring string]
-  terminal         boolean                   default: output.isTTY auto-detect
-  history          string[]                  default: []
-  historySize      number                    default: 30
-  removeHistoryDuplicates boolean              default: false
-  prompt           string                    default: "> "
-  crlfDelay        number                    default: 100 (min 100, Infinity allowed)
-  escapeCodeTimeout number                   default: 500
-  tabSize          integer                   minimum:1 default: 8
-  signal           AbortSignal               optional
-
-# Events
-
-'close'       emitted on rl.close(), input 'end', Ctrl+D, or Ctrl+C without SIGINT listener
-'line'        listener input:string on end-of-line markers (\n,\r,\r\n)
-'history'     listener history:string[] on history change
-'pause'       emitted on input.pause() or SIGCONT
-'resume'      emitted on rl.resume()
-'SIGCONT'     on fg after SIGTSTP, listener(), Windows unsupported
-'SIGINT'      on Ctrl+C, listener(), fallback to 'pause' if no listener
-'SIGTSTP'     on Ctrl+Z, listener(), Windows unsupported
-
-# Methods on InterfaceConstructor instance
-
-rl.close(): void               closes interface, emits 'close'
-rl[Symbol.dispose](): void     alias for rl.close()
-rl.pause(): void               pauses input stream
-rl.resume(): void              resumes input stream
-rl.setPrompt(prompt:string): void    sets prompt string
-rl.getPrompt(): string              returns current prompt
-rl.prompt(preserveCursor?:boolean): void  writes prompt, resumes input, preserveCursor default false
-rl.write(data:string|null, key?:{ctrl?:boolean,meta?:boolean,shift?:boolean,name:string}): void
-                                  writes data or simulated key sequence to input
-rl[Symbol.asyncIterator](): AsyncIterator<string>  iterate lines via for await
-rl.line: string                 current processed input (pre-line event)
-rl.cursor: number|undefined     cursor index in rl.line
-rl.getCursorPos(): {rows:number,cols:number}  real cursor position including wrapping
-
-# Promises API
-
-Class: readlinePromises.Interface extends InterfaceConstructor
-rl.question(query:string, options?:{signal?:AbortSignal}): Promise<string>
-
-Class: readlinePromises.Readline
-new Readline(stream:stream.Writable, options?:{autoCommit?:boolean})
-rl.clearLine(dir:number): this         dir:-1 left,0 full,1 right
-rl.clearScreenDown(): this
-rl.cursorTo(x:number,y?:number): thisl.moveCursor(dx:number,dy:number): this
-rl.commit(): Promise<void>         applies pending actions
-rl.rollback(): this               discards pending actions
-
-readlinePromises.createInterface(options): readlinePromises.Interface
-options same as InterfaceConstructor
-
-# Callback API
-
-Class: readline.Interface extends InterfaceConstructor
-rl.question(query:string, options?:{signal?:AbortSignal},callback:(answer:string)=>void): void
-
-Static functions:
-readline.clearLine(stream:Writable,dir:number,callback?:(err?:Error)=>void): boolean
-readline.clearScreenDown(stream:Writable,callback?:(err?:Error)=>void): boolean
-readline.createInterface(options): readline.Interface  options as above
-readline.cursorTo(stream:Writable,x:number,y?:number,callback?:(err?:Error)=>void): boolean
-readline.moveCursor(stream:Writable,dx:number,dy:number,callback?:(err?:Error)=>void): boolean
-readline.emitKeypressEvents(stream:Readable,interface?:InterfaceConstructor): void
-
-# Examples
-
-Tiny CLI
-import { createInterface } from 'node:readline'
-const rl = createInterface({input:process.stdin,output:process.stdout,prompt:'> '})
-rl.prompt()
-rl.on('line',(line)=>{ switch(line.trim()){case 'hello':console.log('world!');break;default:console.log(`heard '${line.trim()}'`);}
-rl.prompt()}).on('close',()=>process.exit(0))
-
-Read file line-by-line (async iterator)
-import { createReadStream } from 'node:fs'
-import { createInterface } from 'node:readline'
-async function proc(){
-  const rl = createInterface({input:createReadStream('in.txt'),crlfDelay:Infinity})
-  for await(const line of rl){console.log(line)}
-}
-
-# TTY Keybindings
-Ctrl+C SIGINT or close
-Ctrl+D delete or close on empty input
-Ctrl+U delete to line start
-Ctrl+K delete to line end
-Ctrl+A/E move to start/end
-Ctrl+B/F move left/right
-Ctrl+L clear screen
-Ctrl+P/N history prev/next
-
-
-## Attribution
-- Source: Node.js Readline
-- URL: https://nodejs.org/api/readline.html
-- License: Node.js License
-- Crawl Date: 2025-05-10T17:58:40.707Z
-- Data Size: 4221054 bytes
-- Links Found: 3299
-
-## Retrieved
-2025-05-10
-library/EJS_FEATURES.md
-# library/EJS_FEATURES.md
-# EJS_FEATURES
-
-## Crawl Summary
-EJS evaluates plain JavaScript in `<% %>`, compiles templates to JS functions via `compile`, caches compiled functions keyed by filename when `cache=true`, and surfaces errors as JS `Error` with filename and line number.
-
-## Normalised Extract
-Table of Contents
-1. Scriptlet Tags
-2. Template Compilation
-3. Caching Mechanism
-4. Error Handling
-
-1. Scriptlet Tags
-Use `<% code %>` to execute JS without output. Use `<%= expr %>` to output HTML-escaped `expr`. Use `<%- expr %>` to output unescaped `expr`.
-
-2. Template Compilation
-Call `const fn = ejs.compile(templateString, {cache, filename, delimiter})`. `fn(data)` returns the rendered string.
-
-3. Caching Mechanism
-Set `options.cache=true` and provide `options.filename`. Compiled functions are stored in `ejs.cache` under the filename key. Default `cache=false` in development, `true` in production environments when `NODE_ENV=production`.
-
-4. Error Handling
-Rendering errors throw `Error` with message format: `<message> at <filename>:<line>:<column>`. Enable `DEBUG=ejs` to output stack traces and caching logs to console.
 
 
 ## Supplementary Details
-Configuration Options
-- cache: boolean (default false) — enable caching of compiled templates
-- filename: string — identifier for caching and includes
-- root: string|array — base path(s) for resolving includes
-- delimiter: string (default '%') — change scriptlet tag delimiter
+Option.valueParser: (value, previous) => newValue  e.g. parseFloat
+Option.preset(value:string): sets starting value
+Option.env(varName:string): default from process.env[varName]
+Option.choices(array): restrict allowed values, throws error if invalid
+Option.hideHelp(): exclude from help output
+Option.makeOptionMandatory(): alias for .requiredOption
 
-Implementation Steps
-1. Install: `npm install ejs`
-2. Import: `const ejs = require('ejs')`
-3. Compile:
-   ```js
-   const template = '<h1>Hello <%= name %></h1>';
-   const fn = ejs.compile(template, {cache: true, filename: 'greeting.ejs'});
-   ```
-4. Render:
-   ```js
-   const output = fn({name: 'Alice'});
-   ```
-5. Use in Express:
-   ```js
-   app.set('view engine', 'ejs');
-   app.get('/', (req, res) => res.render('index', {user: req.user}));
-   ```
+program.opts(): returns { [camelCasedFlag]: value }
+program.optsWithGlobals(): merges global and local
+program.getOptionValue(flag): returns single value or array
+program.getOptionValueSource(flag): returns 'default'|'env'|'cli'
+
+CommanderError: properties exitCode:number, code:string, message:string
+error override: handler receives CommanderError, must terminate flow
+
+Standalone subcommand lookup order: <executableDir>/<parent>-<sub>.js|.mjs|.cjs
+
+npm run-script passthrough: use -- before args
+
+Debug child process inspect: port incremented by 1 when using --inspect
+VSCode launch.json: "autoAttachChildProcesses": true
+
+Legacy mode .storeOptionsAsProperties(): options assigned to this.optionName
+
+TypeScript extra-typings: infers option keys and types; import from '@commander-js/extra-typings'
+
 
 
 ## Reference Details
-API Specifications
+Class: Command
+constructor(name?:string)
+Properties:
+  .name():string  .name(str):Command
+  .description():string  .description(str, summary?):Command
+  .version():string  .version(ver, flags?, desc?):Command
+  .usage():string  .usage(usageStr):Command
+  .enablePositionalOptions():Command
+  .passThroughOptions():Command
+  .allowUnknownOption():Command
+  .allowExcessArguments(allow?:boolean):Command
+  .storeOptionsAsProperties():Command
+  .configureHelp(config: Partial<HelpOptions>):Command
+  .createHelp():Help
 
-1. ejs.render(template: string, data?: object, options?: RenderOptions, callback?: (err: Error, str: string) => void): string|void
-   - Returns rendered string when no callback provided.
-   - `template`: template string or filename when used with `renderFile`.
-   - `data`: object with keys for interpolation.
-   - `options`:
-     - `cache`: boolean — enable function caching
-     - `filename`: string — template identifier
-     - `delimiter`: string — scriptlet delimiter
-     - `root`: string|array — include search paths
-   - `callback`: optional node-style callback
+Method Signatures:
+  option(flags: string, description: string, defaultValue?: any, parser?: (val:string, prev:any)=>any): Command
+  requiredOption(flags: string, description: string, defaultValue?: any): Command
+  addOption(option: Option): Command
+  command(nameAndArgs: string, description?: string, config?: CommandConfig): Command|this
+  addCommand(cmd: Command, config?: CommandConfig): Command
+  alias(alias: string): Command
+  argument(name: string, description?: string, parserOrDefault?: any, defaultValue?: any): Command
+  addArgument(arg: Argument): Command
+  action(fn: (...args:any[])=>void|Promise<void>): Command
+  hook(event: 'preAction'|'postAction'|'preSubcommand', listener: Function): Command
+  parse(argv?: string[], options?: ParseOptions): Command
+  parseAsync(argv?: string[], options?: ParseOptions): Promise<Command>
+  help(): never
+  outputHelp(): Command
+  helpInformation(): string
+  helpOption(flags: string|false, description?: string): Command
+  helpCommand(name?: string|false, description?: string): Command
+  addHelpText(position:'before'|'after'|'beforeAll'|'afterAll', textOrFn:string|Function): Command
+  showHelpAfterError(message?: string): Command
+  showSuggestionAfterError(enable: boolean): Command
+  exitOverride(handler?: (error: CommanderError)=>never): Command
+  error(message: string, options?: { exitCode?: number; code?: string }): never
+  configureOutput(opts: { writeOut?: (str:string)=>void; writeErr?: (str:string)=>void; outputError?: (str:string, write:(s:string)=>void)=>void }): Command
+  getOptionValue(flag:string): any
+  setOptionValue(flag:string, value:any): Command
+  getOptionValueSource(flag:string): 'cli'|'default'|'env'
+  opts(): Record<string, any>
+  optsWithGlobals(): Record<string, any>
 
-2. ejs.compile(template: string, options?: CompileOptions): (data: object) => string
-   - Returns a render function.
-   - Options as above.
+Class: Option
+constructor(flags: string, description: string)
+methods:
+  default(value: any, description?: string): Option
+  choices(values: any[]): Option
+  env(variableName: string): Option
+  hideHelp(): Option
+  preset(value: any): Option
+  argParser(fn: (input:string, prev:any)=>any): Option
+  conflicts(flag: string|string[]): Option
+  implies(map: Record<string, any>): Option
+  makeOptionMandatory(): Option
 
-3. ejs.renderFile(path: string, data?: object, options?: RenderFileOptions, callback: (err: Error, str: string) => void): void
-   - Asynchronously reads file at `path`, compiles and renders.
-   - `options.cache`: if true, caches compiled function by resolved path.
+Class: Argument
+constructor(name: string, description: string)
+.methods:
+  default(value: any, description?: string): Argument
+  choices(values: any[]): Argument
 
-Best Practices
-- Use `ejs.cache=true` in production to minimize compile overhead.
-- Always provide `filename` when calling `compile` or `renderFile` for accurate error reporting and caching.
-- Sanitize user input manually when using `<%- %>` to avoid XSS.
+Type: ParseOptions { from?: 'node'|'user'|'electron' }
+Type: CommandConfig { executableFile?: string; hidden?: boolean; isDefault?: boolean }
 
-Troubleshooting
-- Error: "Could not find include" — Verify `options.root` and `options.filename` match actual file system paths.
-- To debug caching: set `DEBUG=ejs` environment variable and observe `cache miss` and `cache hit` logs.
-- Template syntax errors: error stack shows exact line and column in the template file.
+Examples:
+  program.error('msg', { exitCode:2, code:'ERR' })
+  program.exitOverride(err=>{ throw err })
+  program.parse(['--port','80'], { from:'user' })
+
+Troubleshooting:
+  Missing arg: error: required argument '<name>' not specified
+  Unknown option: error: unknown option '--bad' (Did you mean '--good'?)
+  Invalid choice: error: option '-d, --drink <size>' argument 'x' is invalid. Allowed choices are small, medium, large.
+  Conflict: error: option '--disable-server' cannot be used with option '-p, --port <num>'
+  To debug subcommands: node --inspect-brk example.js subcmd
+  For npm scripts: npm run start -- --port 3000
+
+Best Practices:
+  Use .requiredOption for mandatory flags
+  Use Option.env for environment defaults
+  Validate inputs via custom parser and throw InvalidArgumentError
+  Suppress suggestions via showSuggestionAfterError(false) in CI
 
 
 ## Information Dense Extract
-EJS uses `<% %>` tags for JS code, `<%= %>` for escaped output, `<%- %>` for raw output. Compile with `ejs.compile(str, {cache, filename, delimiter, root}) => fn(data)`. Render with `ejs.render(str, data, opts)` or `ejs.renderFile(path, data, opts, cb)`. Enable `cache` plus `filename` to store in `ejs.cache`. Errors throw JS Error with `<filename>:<line>:<col>`. Use `DEBUG=ejs` for detailed logs. Default delimiter '%'.
+commander@latest requires Node>=18. npm install commander. import {Command, Option, Argument} from 'commander'. instantiate: const program=new Command(name). chainable API: .name(), .version(ver,flags,desc), .usage(), .description(desc,summary), .argument(name,desc,parser?,default?), .option(flags,desc,default?,parser?), .requiredOption(...), .addOption(new Option(flags,desc).default().choices().env().preset().argParser().conflicts().implies()), .command(name args,desc,config).alias().addCommand().hook(event,fn), .action(fn), .configureHelp(opts), .helpOption(flags,desc), .helpCommand(name,desc), .addHelpText(pos,txt|fn), .showHelpAfterError(msg), .showSuggestionAfterError(bool), .enablePositionalOptions(), .passThroughOptions(), .allowUnknownOption(), .allowExcessArguments(bool), .storeOptionsAsProperties(), .exitOverride(handler), .configureOutput({writeOut,writeErr,outputError}), .parse(argv?,{from:'node'|'user'|'electron'}), .parseAsync(...). program.opts(),optsWithGlobals(),getOptionValue(flag),getOptionValueSource(flag),setOptionValue(flag,value). error(msg,{exitCode,code}) throws CommanderError(exitCode,code,message). help():never, outputHelp():Command, helpInformation():string. Option API: default(val),choices(vals),env(var),hideHelp(),preset(val),argParser(fn),conflicts(flag),implies(map),makeOptionMandatory(). Argument API: default(val),choices(vals). CLI behaviors: boolean flags, value flags <>, optional flags [], variadic <name...>. subcommands inline and standalone via executableDir. TS support via '@commander-js/extra-typings'. troubleshooting patterns: requiredOption error, unknown option suggestion, invalid choice, conflict error. child process debug port increments by 1. VSCode autoAttachChildProcesses=true. npm run-script use -- to pass args. legacy .storeOptionsAsProperties. Output override via configureOutput.   
 
 ## Sanitised Extract
 Table of Contents
-1. Scriptlet Tags
-2. Template Compilation
-3. Caching Mechanism
-4. Error Handling
+1 Installation
+2 Quick Start Example
+3 Option Definitions
+4 Advanced Options via Option Class
+5 Command & Subcommand Configuration
+6 Argument Processing
+7 Action Handlers
+8 Lifecycle Hooks
+9 Help & Usage Customization
+10 Parsing Configuration
+11 Output & Error Handling
+12 TypeScript Integration
 
-1. Scriptlet Tags
-Use '<% code %>' to execute JS without output. Use '<%= expr %>' to output HTML-escaped 'expr'. Use '<%- expr %>' to output unescaped 'expr'.
+1 Installation
+npm install commander
 
-2. Template Compilation
-Call 'const fn = ejs.compile(templateString, {cache, filename, delimiter})'. 'fn(data)' returns the rendered string.
+2 Quick Start Example
+File: split.js
+define program via require('commander').program
+program.option('--first')
+       .option('-s, --separator <char>')
+       .argument('<string>')
+program.parse()
+const opts = program.opts()
+const result = program.args[0].split(opts.separator, opts.first ? 1 : undefined)
+console.log(result)
 
-3. Caching Mechanism
-Set 'options.cache=true' and provide 'options.filename'. Compiled functions are stored in 'ejs.cache' under the filename key. Default 'cache=false' in development, 'true' in production environments when 'NODE_ENV=production'.
+3 Option Definitions
+program.option(flags:string, description:string, defaultValue?:any, parser?:fn)
+flags supports short and long form, value placeholders <value>, [optional]
+Boolean option: parser omitted, defaultValue omitted
+Value option: <placeholder> syntax
+Default: supply defaultValue argument
+Negatable: prefix long name with no- => sets false or default true
+Boolean|Value: use [value]
+Variadic: <name...> => array of values
+Required: use .requiredOption same flags signature
+Access parsed options via program.opts(), program.optsWithGlobals(), program.getOptionValue(flag), program.getOptionValueSource(flag)
 
-4. Error Handling
-Rendering errors throw 'Error' with message format: '<message> at <filename>:<line>:<column>'. Enable 'DEBUG=ejs' to output stack traces and caching logs to console.
+4 Advanced Options via Option Class
+import { Option } from 'commander'
+program.addOption(new Option('-t, --timeout <sec>', 'timeout in seconds').default(60))
+program.addOption(new Option('-d, --drink <size>', 'drink size').choices(['small','medium','large']))
+program.addOption(new Option('-p, --port <num>', 'port number').env('PORT'))
+program.addOption(new Option('--donate [amt]', 'optional donation').preset('20').argParser(parseFloat))
+program.addOption(new Option('--disable-server', 'disable server').conflicts('port'))
+program.addOption(new Option('--free-drink', 'free drink').implies({ drink: 'small' }))
+
+5 Command & Subcommand Configuration
+Inline action:
+program.command('clone <src> [dest]')
+       .description('clone repo')
+       .action((src,dest)=>{ /* implementation */ })
+Standalone exec:
+program.command('install [pkg]', 'install packages', { executableFile:'myInstallCmd', hidden:false, isDefault:false })
+program.executableDir('commands')
+Nested:
+const build = createCommand('build')
+program.addCommand(build)
+Copy inherited settings via program.copyInheritedSettings(subCmd)
+Alias commands via .alias('c')
+
+6 Argument Processing
+program.argument('<user>', 'username')
+       .argument('[pass]', 'password', 'defaultPass')
+Variadic arg: '<dirs...>' => array of strings
+Argument defaults and parser: argument(name, description, parser, default)
+Custom argument via new Argument(name, desc).choices([...]).default(value)
+
+7 Action Handlers
+.action((...args, options, command)=>{})
+this refers to command in function expression
+async actions => use program.parseAsync(argv)
+
+8 Lifecycle Hooks
+program.hook('preAction', (cmd, subcmd)=>{})
+program.hook('postAction', (cmd, subcmd)=>{})
+program.hook('preSubcommand', (cmd, subcmdName)=>{})
+
+9 Help & Usage Customization
+.helpOption(flags:string, description:string) or false
+.helpCommand(name?:string, desc?:string) or true/false
+.addHelpText(position:'before'|'after'|'beforeAll'|'afterAll', textOrFn)
+.showHelpAfterError(message?:string)
+.showSuggestionAfterError(enable:boolean)
+.help(): display & exit
+.outputHelp(): display only
+.helpInformation(): string
+.name(string)
+.usage(string)
+.description(string)
+.summary(string)
+
+10 Parsing Configuration
+.enablePositionalOptions()
+.passThroughOptions()
+.allowUnknownOption()
+.allowExcessArguments()
+.storeOptionsAsProperties()
+.parse(array, { from: 'node'|'user'|'electron' })
+.parseAsync(array, options)
+
+11 Output & Error Handling
+.exitOverride(handler?: (error: CommanderError)=>never)
+.error(message:string, { exitCode?:number, code?:string })
+.configureOutput({ writeOut:(str)=>void, writeErr:(str)=>void, outputError:(str, write)=>void })
+
+12 TypeScript Integration
+import { Command } from '@commander-js/extra-typings'
+const program: Command<Options> = new Command()
 
 ## Original Source
-EJS
-https://ejs.co/#docs
+Commander.js
+https://github.com/tj/commander.js
 
-## Digest of EJS_FEATURES
+## Digest of COMMANDER_JS
 
-# EJS BASIC FEATURES
+# Commander.js Technical Digest
 
-## Use Plain JavaScript
-EJS processes templates by evaluating JavaScript inside scriptlet tags. Supported tags:
-- `<% code %>`: execute code without output
-- `<%= expression %>`: execute and output HTML-escaped result
-- `<%- expression %>`: execute and output unescaped result
+Date Retrieved: 2024-06-18
+Source: https://github.com/tj/commander.js
 
-## Simple Syntax
-Embed JavaScript directly in HTML without preprocessing. No custom template language—use standard JS expressions and control flow.
+# Installation
 
-## Speedy Execution
-Compiled templates produce JavaScript functions. Default behavior:
-- `ejs.compile(templateString, options) -> RenderFunction`
-- Options:
-  - `cache` (boolean, default false): enable in-memory caching of compiled functions
-  - `filename` (string): key for cache, required to use caching and includes
+  npm install commander
 
-Compiled functions are stored in `ejs.cache` keyed by `filename` when `cache` is true.
+# Quick Start Example
 
-## Easy Debugging
-All template errors are thrown as standard JavaScript `Error` objects. Error messages include template `filename` and source `line`:
-- Example error: `Error: Unexpected token % in "<%= user.name %>" at user.ejs:3:12`
-- Use environment variable `DEBUG=ejs` to log stack traces and caching operations.
+  // split.js
+  const { program } = require('commander');
+  program
+    .option('--first')
+    .option('-s, --separator <char>')
+    .argument('<string>');
+  program.parse();
+  const options = program.opts();
+  const limit = options.first ? 1 : undefined;
+  console.log(program.args[0].split(options.separator, limit));
+
+# Core API Specifications
+
+## Command Class Methods
+
+### program.option(flags: string, description: string, defaultValue?: any, parser?: (val: string, prev: any) => any): Command
+- flags: short and long form, e.g. "-p, --port <number>"
+- description: text
+- defaultValue: default if not provided
+- parser: function to coerce or accumulate
+- returns: the Command instance
+
+### program.requiredOption(flags: string, description: string, defaultValue?: any): Command
+Throws error if option missing after parse
+
+### program.version(version: string, flags?: string, description?: string): Command
+- default flags: "-V, --version"
+
+### program.argument(name: string, description?: string, defaultValueOrParser?: any, defaultValue?: any): Command
+- name: "<required>" or "[optional]" or "<name...>"
+
+### program.command(nameAndArgs: string, description?: string, config?: { executableFile?: string, hidden?: boolean, isDefault?: boolean }): Command|this
+- when description passed: returns this; triggers standalone executable lookup
+- when not: returns new Command
+
+### program.addOption(option: Option): Command
+
+### program.action(fn: (...args: any[]) => void|Promise<void>): Command
+- sync or async handler; if async use program.parseAsync
+
+### program.parse(argv?: string[], parseOptions?: { from: 'node'|'user'|'electron' }): Command
+### program.parseAsync(argv?: string[], parseOptions?: object): Promise<Command>
+
+# Option Types and Defaults
+
+- Boolean: .option('-d, --debug', 'desc') => opts().debug === true|undefined
+- Value: .option('-p, --pizza-type <type>', 'desc') => opts().pizzaType: string
+- Default value: .option('-c, --cheese <type>', 'desc', 'blue')
+- Negatable boolean: .option('--no-sauce', 'desc') => opts().sauce === false
+- Boolean or value: .option('-c, --cheese [type]', 'desc') => undefined|true|string
+- Variadic: .option('-n, --number <n...>', 'desc') => number: string[]
+
+# Advanced Option Configuration
+
+  const { Option } = require('commander');
+  program
+    .addOption(new Option('-t, --timeout <sec>', 'timeout in seconds').default(60))
+    .addOption(new Option('-d, --drink <size>', 'cup size').choices(['small','medium','large']))
+    .addOption(new Option('-p, --port <num>', 'port').env('PORT'))
+    .addOption(new Option('--donate [amt]', 'donation').preset('20').argParser(parseFloat))
+    .addOption(new Option('--disable-server', 'disable server').conflicts('port'))
+    .addOption(new Option('--free-drink', 'free drink').implies({ drink: 'small' }));
+
+# Commands and Subcommands
+
+  // action handler style
+  program
+    .command('clone <src> [dest]')
+    .description('clone repo')
+    .action((src, dest) => { /* ... */ });
+
+  // standalone executables
+  program
+    .command('install [pkg]', 'install packages')
+    .executableDir('commands');
+
+  // nested commands
+  const build = createCommand('build');
+  program.addCommand(build);
+
+# Lifecycle Hooks
+
+  program.hook('preAction', (thisCmd, subCmd) => { /* ... */ });
+  program.hook('postAction', async (cmd, action) => { /* ... */ });
+
+# Help and Usage
+
+- Automatic help: -h, --help
+- Change flags: .helpOption('-e, --HELP', 'desc')
+- Disable: .helpOption(false)
+- Custom text: program.addHelpText('after', 'Example: ...')
+- showHelpAfterError(msg?: string)
+- showSuggestionAfterError(false)
+- .help(): display and exit
+- .outputHelp(): display without exit
+- .helpInformation(): return string
+- .usage(str): override usage line
+- .name(str): set program name
+- .description(str): set long description
+- .summary(str): set short description for subcommand list
+
+# Parsing Configuration
+
+- .enablePositionalOptions(): only parse options before commands
+- .passThroughOptions(): stop option parsing after args
+- .allowUnknownOption(): treat unknown as arg
+- .allowExcessArguments(): error on extra args
+- .storeOptionsAsProperties(): legacy behavior
+
+# Output and Error Handling
+
+- .exitOverride(): throw CommanderError instead of process.exit
+- .error(message: string, options?: { exitCode?: number, code?: string })
+- .configureOutput({ writeOut, writeErr, outputError })
+
+# TypeScript
+
+import { Command } from '@commander-js/extra-typings';
+const program = new Command();
+
+type Options = { debug?: boolean; repeat?: number; } // inferred
+
+# Examples Directory
+
+See /examples for complete sample files.
+
+# Data Size and Links
+
+Data Size: 651084 bytes
+Links Found: 4719
+Error: None
 
 
 ## Attribution
-- Source: EJS
-- URL: https://ejs.co/#docs
+- Source: Commander.js
+- URL: https://github.com/tj/commander.js
 - License: MIT License
-- Crawl Date: 2025-05-10T20:36:46.602Z
-- Data Size: 8029 bytes
-- Links Found: 26
+- Crawl Date: 2025-05-11T04:02:54.393Z
+- Data Size: 651084 bytes
+- Links Found: 4719
 
 ## Retrieved
-2025-05-10
+2025-05-11
+library/COMMANDER.md
+# library/COMMANDER.md
+# COMMANDER
+
+## Crawl Summary
+Installation: npm install commander. Import via require or ES import createCommand or new Command. Option API: .option(flags:string,description:string,default?:any),.requiredOption(),.addOption(Option). Option types: boolean, value, optional, negatable, variadic, custom Option(flags,desc). Option retrieval: .opts(), .optsWithGlobals(), .getOptionValue(), .getOptionValueSource(). Command API: .command(name,desc?,opts?), .addCommand(cmd), .argument(name,desc,default?), .alias(), .description(), .version(), .name(), .usage(). Action handler signature: (...args, options, command). Parsing: .parse(), .parseAsync(). Help customization: .helpOption(), .addHelpText(), .showHelpAfterError(), .showSuggestionAfterError(). Hooks: .hook(event, cb). Parsing config: .enablePositionalOptions(), .passThroughOptions(), .allowUnknownOption(), .allowExcessArguments(). Error handling: .error(), .exitOverride(), .configureOutput(). Utility: .version(), .help(), .outputHelp(), .helpInformation(), createCommand().
+
+## Normalised Extract
+Table of Contents:
+1 Option Definition
+2 Option Retrieval
+3 Command & Subcommand Definition
+4 Argument Configuration
+5 Action Handler Signature
+6 Parsing Methods
+7 Help Generation & Customization
+8 Lifecycle Hooks
+9 Error & Exit Handling
+10 Output Configuration
+11 Utility Methods
+
+1 Option Definition
+.option(flags:string,description:string,defaultValue?:any)
+.requiredOption(flags:string,description:string,defaultValue?:any)
+.addOption(option:Option)
+Option types:
+  boolean: flags e.g. '-d, --debug'
+  value: '<name>' placeholder
+  optional: '[name]'
+  negatable: '--no-foo'
+  variadic: '<items...>'
+  custom: new Option(flags,desc).default(val).env('VAR').choices([...]).preset(val).argParser(fn).conflicts(opt).implies({opt:val}).hideHelp().makeOptionMandatory()
+
+2 Option Retrieval
+program.opts(): Record<string,any>
+program.optsWithGlobals(): merged options
+program.getOptionValue(name:string): any
+program.getOptionValueSource(name:string): 'cli'|'default'|'env'
+program.setOptionValue(name:string,value:any)
+program.setOptionValueWithSource(name:string,value:any,source:string)
+
+3 Command & Subcommand Definition
+.command(name:string,desc?:string,config?:{executableFile?:string,isDefault?:boolean}) => Command
+.addCommand(cmd:Command)
+.alias(alias:string)
+.name(name:string)
+.description(desc:string,summary?:string)
+.usage(str:string)
+.version(version:string,flags?:string,description?:string)
+.executableDir(path:string)
+
+4 Argument Configuration
+.argument(name:string,description?:string,defaultValue?:any)
+.addArgument(arg:Argument)
+new Argument(name,desc).choices([...]).default(val,desc).argParser(fn)
+
+5 Action Handler Signature
+.action(handler:Function)
+handler parameters: declared arguments, options (Record), command instance
+async handlers require parseAsync
+
+6 Parsing Methods
+.parse(argv?:string[],options?:{from:'node'|'electron'|'user'})
+.parseAsync(...)
+.enablePositionalOptions()
+.passThroughOptions()
+.allowUnknownOption(allow?:boolean)
+.allowExcessArguments(allow?:boolean)
+.storeOptionsAsProperties()
+
+7 Help Generation & Customization
+.helpOption(flags:string,description:string)
+.helpCommand(name?:string,description?:string)
+.addHelpText(position:'before'|'after',textOrFn:string|Function)
+.showHelpAfterError(msgOrBool?:string|boolean)
+.showSuggestionAfterError(show:boolean)
+.help(): void
+.outputHelp(): void
+.helpInformation(): string
+.configureHelp({sortSubcommands?:boolean,sortOptions?:boolean,showGlobalOptions?:boolean,styleMethods?:Record<string,Function>})
+.createHelp(): Help
+
+8 Lifecycle Hooks
+.hook('preAction'|'postAction',callback:(thisCmd,actionCmd)=>void)
+.hook('preSubcommand',callback:(thisCmd,subCmd)=>void)
+
+9 Error & Exit Handling
+.error(message:string,{exitCode?:number,code?:string}?)
+.exitOverride(handler?:(err:CommanderError)=>void)
+
+10 Output Configuration
+.configureOutput({writeOut:(str:string)=>void,writeErr:(str:string)=>void,outputError:(str:string,write:Function)=>void})
+
+11 Utility Methods
+.createCommand(): Command
+.version(version:string,flags?:string,description?:string)
+.name(name:string)
+.usage(str:string)
+
+
+## Supplementary Details
+Option defaultValue: can be any type. Option.env(varName:string) reads default from process.env[varName]. Option.choices(array) enforces allowed values, error message: "argument '<option>' invalid. Allowed choices are ...". Option.presets sets initial value. Option.argParser(fn) transforms value or throws InvalidArgumentError. Option.conflicts(name) prevents co-usage. Option.implies({opt:val}) sets implied values. hideHelp(): excludes from help. makeOptionMandatory(): identical to requiredOption.
+
+program.version: default flags '-V, --version', description 'output the version'. Custom flags override default. Exits after printing.
+
+Command config: hidden:true omits from help. isDefault:true runs when no subcommand specified.
+
+Argument defaultValue applies only to optional arguments. Variadic only allowed on last argument; collected into array until dash or new option. Default for optional argument is not greedy: stops on dash. argument.argParser(fn) transforms or throws.
+
+Parsing: .parse auto-detects node vs electron. from:user treats all argv as user args. 
+
+Error handling: Unknown option or missing argument: error printed, process.exit(1). showHelpAfterError alters printed message. showSuggestionAfterError can disable suggestion. 
+
+ExitOverride: default override throws CommanderError with exitCode, code, message. error(): use same display formatting as built-in errors.
+
+
+## Reference Details
+// Full SDK Method Signatures and Types
+
+Type CommanderError = { exitCode: number, code: string, message: string }
+interface ParseOptions { from: 'node'|'electron'|'user' }
+
+class Command {
+  constructor(name?: string)
+  name(name: string): this
+  usage(str: string): this
+  description(str: string, summary?: string): this
+  version(version: string, flags?: string, description?: string): this
+  helpOption(flags: string, description: string): this
+  helpCommand(name?: string, description?: string): this
+  addHelpText(position: 'beforeAll'|'before'|'after'|'afterAll', textOrFn: string|(() => string)): this
+  configureHelp(config: { sortCommands?: boolean, sortOptions?: boolean, showGlobalOptions?: boolean, optionTerm?: Function, subcommandTerm?: Function }): this
+  createHelp(): Help
+  exitOverride(handler?: (err: CommanderError) => any): this
+  showHelpAfterError(msgOrBool?: string|boolean): this
+  showSuggestionAfterError(show?: boolean): this
+  allowUnknownOption(allow?: boolean): this
+  allowExcessArguments(allow?: boolean): this
+  enablePositionalOptions(): this
+  passThroughOptions(): this
+  parse(argv?: string[], options?: ParseOptions): this
+  parseAsync(argv?: string[], options?: ParseOptions): Promise<this>
+  error(message: string, opts?: { exitCode?: number, code?: string }): never
+  exit(code?: number): never
+  outputHelp(opts?: { error?: boolean }): this
+  help(opts?: { error?: boolean }): never
+  helpInformation(): string
+  configureOutput(config: { writeOut?: (str: string) => void, writeErr?: (str: string) => void, outputError?: (str: string, write: (str: string) => void) => void }): this
+  addCommand(cmd: Command, opts?: { isDefault?: boolean, hidden?: boolean }): this
+  command(nameAndArgs: string, description?: string, opts?: { executableFile?: string, isDefault?: boolean, hidden?: boolean }): Command
+  executableDir(path: string): this
+  argument(name: string, description?: string, defaultValue?: any): this
+  addArgument(arg: Argument): this
+  option(flags: string, description: string, defaultValue?: any): this
+  requiredOption(flags: string, description: string, defaultValue?: any): this
+  addOption(option: Option): this
+  opts(): Record<string, any>
+  optsWithGlobals(): Record<string, any>
+  getOptionValue(name: string): any
+  setOptionValue(name: string, value: any): this
+  getOptionValueSource(name: string): 'cli'|'default'|'env'
+  setOptionValueWithSource(name: string, value: any, source: string): this
+  storeOptionsAsProperties(): this
+  hook(event: 'preAction'|'postAction'|'preSubcommand', callback: (thisCommand: Command, actionCommand: Command) => any): this
+  args: string[]
+  opts(): Record<string, any>
+}
+
+class Option {
+  constructor(flags: string, description?: string)
+  default(value: any, description?: string): this
+  env(variable: string): this
+  choices(values: Array<string|number>): this
+  preset(value: any): this
+  argParser(fn: (value: string, previous: any) => any): this
+  conflicts(optionName: string): this
+  implies(config: Record<string, any>): this
+  hideHelp(): this
+  makeOptionMandatory(): this
+}
+
+class Argument {
+  constructor(name: string, description?: string)
+  default(value: any, description?: string): this
+  choices(values: Array<string|number>): this
+  argParser(fn: (value: string, previous: any) => any): this
+}
+
+// Full Code Example: string-util.js
+const { Command, Option, Argument } = require('commander');
+const program = new Command('string-util');
+program
+  .description('CLI to JavaScript string utilities')
+  .version('0.8.0', '-v, --vers', 'output version');
+program.command('split <string>')
+  .description('split string')
+  .option('--first', 'first substring only')
+  .addOption(new Option('-s, --separator <char>', 'separator char').default(',', 'comma'))
+  .action((str, options, command) => {
+    const limit = options.first ? 1 : undefined;
+    console.log(str.split(options.separator, limit));
+  });
+program.hook('preAction', (thisCmd, actionCmd) => {
+  if (thisCmd.opts().trace) console.log('Calling', actionCmd.name());
+});
+program.configureOutput({
+  writeOut: str => process.stdout.write(str),
+  writeErr: str => process.stderr.write(str),
+  outputError: (str, write) => write(`ERROR: ${str}`)
+});
+program.exitOverride();
+program.parse(process.argv);
+
+// Troubleshooting Procedures
+// Unknown option:
+// > node app.js --unknown
+// error: unknown option '--unknown'
+// (Did you mean --help?)
+
+// Missing required option:
+// > node app.js split
+// error: required option '-s, --separator <char>' not specified
+
+
+## Information Dense Extract
+npm install commander; import { Command, Option, Argument, createCommand } from 'commander'; const program = createCommand(); program.name(string).version(v,flags,desc).usage(usage).description(desc).helpOption(flags,desc).helpCommand(name,desc); // Options: .option(f,d,df).requiredOption(f,d,df).addOption(new Option(f,d).default(v).env(VAR).choices([...]).preset(v).argParser(fn).conflicts(opt).implies({opt:v}).hideHelp().makeOptionMandatory()); // Args: .argument('<x>',d,def).addArgument(new Argument(name,d).choices([...]).default(v).argParser(fn)); // Commands: .command(nameAndArgs,desc,opts).addCommand(cmd).alias(a).executableDir(path); // Parsing: .parse([argv],{from}).parseAsync(); .enablePositionalOptions().passThroughOptions().allowUnknownOption().allowExcessArguments().storeOptionsAsProperties(); // Retrieval: opts(),optsWithGlobals(),getOptionValue(n),getOptionValueSource(n),setOptionValue(n,v),setOptionValueWithSource(n,v,src),args; // Help: .addHelpText(pos,textOrFn).showHelpAfterError(msg?).showSuggestionAfterError(bool).help();.outputHelp();.helpInformation();.configureHelp(cfg).createHelp(); // Hooks: .hook('preAction'|'postAction'|'preSubcommand',cb); // Errors: .error(msg,{exitCode,code});.exitOverride(cb); // Output: .configureOutput({writeOut,writeErr,outputError}); // Util: createCommand();
+
+## Sanitised Extract
+Table of Contents:
+1 Option Definition
+2 Option Retrieval
+3 Command & Subcommand Definition
+4 Argument Configuration
+5 Action Handler Signature
+6 Parsing Methods
+7 Help Generation & Customization
+8 Lifecycle Hooks
+9 Error & Exit Handling
+10 Output Configuration
+11 Utility Methods
+
+1 Option Definition
+.option(flags:string,description:string,defaultValue?:any)
+.requiredOption(flags:string,description:string,defaultValue?:any)
+.addOption(option:Option)
+Option types:
+  boolean: flags e.g. '-d, --debug'
+  value: '<name>' placeholder
+  optional: '[name]'
+  negatable: '--no-foo'
+  variadic: '<items...>'
+  custom: new Option(flags,desc).default(val).env('VAR').choices([...]).preset(val).argParser(fn).conflicts(opt).implies({opt:val}).hideHelp().makeOptionMandatory()
+
+2 Option Retrieval
+program.opts(): Record<string,any>
+program.optsWithGlobals(): merged options
+program.getOptionValue(name:string): any
+program.getOptionValueSource(name:string): 'cli'|'default'|'env'
+program.setOptionValue(name:string,value:any)
+program.setOptionValueWithSource(name:string,value:any,source:string)
+
+3 Command & Subcommand Definition
+.command(name:string,desc?:string,config?:{executableFile?:string,isDefault?:boolean}) => Command
+.addCommand(cmd:Command)
+.alias(alias:string)
+.name(name:string)
+.description(desc:string,summary?:string)
+.usage(str:string)
+.version(version:string,flags?:string,description?:string)
+.executableDir(path:string)
+
+4 Argument Configuration
+.argument(name:string,description?:string,defaultValue?:any)
+.addArgument(arg:Argument)
+new Argument(name,desc).choices([...]).default(val,desc).argParser(fn)
+
+5 Action Handler Signature
+.action(handler:Function)
+handler parameters: declared arguments, options (Record), command instance
+async handlers require parseAsync
+
+6 Parsing Methods
+.parse(argv?:string[],options?:{from:'node'|'electron'|'user'})
+.parseAsync(...)
+.enablePositionalOptions()
+.passThroughOptions()
+.allowUnknownOption(allow?:boolean)
+.allowExcessArguments(allow?:boolean)
+.storeOptionsAsProperties()
+
+7 Help Generation & Customization
+.helpOption(flags:string,description:string)
+.helpCommand(name?:string,description?:string)
+.addHelpText(position:'before'|'after',textOrFn:string|Function)
+.showHelpAfterError(msgOrBool?:string|boolean)
+.showSuggestionAfterError(show:boolean)
+.help(): void
+.outputHelp(): void
+.helpInformation(): string
+.configureHelp({sortSubcommands?:boolean,sortOptions?:boolean,showGlobalOptions?:boolean,styleMethods?:Record<string,Function>})
+.createHelp(): Help
+
+8 Lifecycle Hooks
+.hook('preAction'|'postAction',callback:(thisCmd,actionCmd)=>void)
+.hook('preSubcommand',callback:(thisCmd,subCmd)=>void)
+
+9 Error & Exit Handling
+.error(message:string,{exitCode?:number,code?:string}?)
+.exitOverride(handler?:(err:CommanderError)=>void)
+
+10 Output Configuration
+.configureOutput({writeOut:(str:string)=>void,writeErr:(str:string)=>void,outputError:(str:string,write:Function)=>void})
+
+11 Utility Methods
+.createCommand(): Command
+.version(version:string,flags?:string,description?:string)
+.name(name:string)
+.usage(str:string)
+
+## Original Source
+Commander.js
+https://github.com/tj/commander.js
+
+## Digest of COMMANDER
+
+# Commander.js Technical Digest (Retrieved on 2024-06-17)
+
+## 1 Installation and Initialization
+
+### Install via npm
+```
+npm install commander
+```
+
+### Require or Import
+
+CommonJS:
+```
+const { Command, Option, Argument } = require('commander');
+const program = new Command();
+```
+
+ESM:
+```
+import { Command, Option, Argument, createCommand } from 'commander';
+const program = createCommand();
+```
+
+TypeScript:
+```
+import { Command } from 'commander';
+const program = new Command();
+```
+
+## 2 Option Definition and Retrieval
+
+### Method Signatures
+
+- `.option(flags: string, description: string, defaultValue?: any): Command`
+- `.requiredOption(flags: string, description: string, defaultValue?: any): Command`
+- `.addOption(option: Option): Command`
+
+### Common Patterns
+
+Boolean option:
+```
+program.option('-d, --debug', 'enable debug mode');
+```
+Value option:
+```
+program.option('-p, --port <number>', 'server port', 3000);
+```
+Optional value:
+```
+program.option('-c, --cheese [type]', 'add cheese optionally');
+```
+Negatable boolean:
+```
+program.option('--no-sauce', 'disable sauce');
+```
+Variadic:
+```
+program.option('-n, --numbers <nums...>', 'list of numbers');
+```
+Custom Option:
+```
+new Option('-t, --timeout <ms>', 'timeout').default(60000).env('TIMEOUT_MS');
+```
+
+### Retrieval
+
+- `program.opts()`: returns `{ [camelCasedFlag]: value }
+`
+- `program.optsWithGlobals()`: merges local and global
+- `program.getOptionValue(name: string)`: single value
+- `program.getOptionValueSource(name: string)`: returns 'cli'|'default'|'env'
+
+## 3 Command and Argument Configuration
+
+### Subcommand Definition
+
+```
+program.command('serve <script> [options]')
+  .description('start server script')
+  .alias('s')
+  .action((script, opts, cmd) => { /* handler */ });
+```
+
+Or stand-alone executable:
+```
+program.command('start <service>', 'start named service', { executableFile: 'bin/start.js' });
+program.executableDir('subcommands');
+```
+
+### Arguments
+
+- `.argument('<name>', 'description')`
+- `.argument('[name]', 'description', defaultValue)`
+- `.argument('<items...>', 'list of items')`
+- `new Argument('<size>', 'cup size').choices(['small','medium','large']).default('medium')`
+
+### Retrieval
+
+- `cmd.args`: array of leftover args
+- handler signature: `(arg1,..., options, command)`
+- `program.parse(argv?: string[], options?: ParseOptions)`
+- `program.parseAsync(...)` for async handlers
+
+## 4 Automated and Custom Help
+
+### Built-in Help
+
+- Default flags: `-h, --help`
+- Shows usage, description, arguments, options
+
+### Custom Help Text
+
+- `.addHelpText(position: 'before'|'after', textOrFn)`
+- `.showHelpAfterError([msg])`
+- `.showSuggestionAfterError(false)`
+
+### Program Methods
+
+- `.help()`: display and exit
+- `.outputHelp()`: display without exit
+- `.helpInformation()`: return help as string
+
+## 5 Lifecycle Hooks
+
+- `.hook(event: 'preAction'|'postAction'|'preSubcommand', callback)`
+- callback parameters: `(thisCommand, actionCommand)` or `(thisCommand, subcommand)`
+
+## 6 Parsing Configuration
+
+- `.enablePositionalOptions()`: only program options before subcommands
+- `.passThroughOptions()`: unknown options become args
+- `.allowUnknownOption()`, `.allowExcessArguments()`
+
+## 7 Error and Exit Handling
+
+### Error Handling Methods
+
+- `program.error(message: string, options?: { exitCode?: number, code?: string })`
+- `.exitOverride()`: throw rather than process.exit
+
+### Output Configuration
+
+- `.configureOutput({ writeOut: fn, writeErr: fn, outputError: fn })`
+
+## 8 Utilities and Misc
+
+- `.version(version: string, flags?: string, description?: string)`
+- `.name(name: string)`
+- `.usage(str: string)`
+- `.description(str: string, summary?: string)`
+- `.helpOption(flags: string, description: string)`
+- `.helpCommand([name], [description])`
+- `.command(name, [description], [opts])`, `.addCommand(cmd)`
+- `.storeOptionsAsProperties()`
+
+
+## Attribution
+- Source: Commander.js
+- URL: https://github.com/tj/commander.js
+- License: MIT License
+- Crawl Date: 2025-05-11T08:59:11.888Z
+- Data Size: 684724 bytes
+- Links Found: 4902
+
+## Retrieved
+2025-05-11
+library/ZOD_REFERENCE.md
+# library/ZOD_REFERENCE.md
+# ZOD_REFERENCE
+
+## Crawl Summary
+Core constructors: z.string(), z.number(), z.object({...}), z.array(), z.enum([...]), z.nativeEnum(...), z.union([...]), z.discriminatedUnion(key, schemas), z.intersection(a,b), z.tuple([...]), z.record(keyType,valueType), z.map(...), z.set(...), z.instanceof(), z.function(). Methods: .parse/.parseAsync, .safeParse/.safeParseAsync, .refine, .superRefine, .transform, .default, .nullable/.nullish, .optional, .catch, .brand, .pipe, .args, .returns, .implement, .parameters, .returnType. String validations: .min, .max, .length, .email, .url, .regex, .includes, .startsWith, .endsWith, .datetime({offset,local,precision}), .date, .time, .ip({version}), .cidr({version}). Number: .min/.max/.int/.positive/.multipleOf/.finite/.safe. BigInt same. Date: z.date(), z.coerce.date(). Object methods: .shape, .extend, .merge, .pick, .omit, .partial, .deepPartial, .required, .passthrough, .strict, .strip, .catchall, .keyof. Array: .min/.max/.length/.nonempty. Tuple .rest. Coercion: z.coerce primitives. Error customization. specific TS inference patterns: z.infer, z.input, z.output. Recursive: z.lazy. Function schemas. Best practices: strict mode, safeParse, discriminatedUnion. Data retrieved on 2024-06-19.
+
+## Normalised Extract
+Table of Contents
+1  Installation
+2  Core Schema Constructors
+3  Parsing & Safe Parsing Methods
+4  String Validations
+5  Number & BigInt Validations
+6  Object Schema Methods
+7  Array & Tuple Methods
+8  Composite Types: Union, Intersection, Discriminated Union
+9  Utility Types: Record, Map, Set, Lazy, Instanceof
+10 Function Schemas
+11 Refinements & Transforms
+12 Coercion Shortcuts
+
+1  Installation
+Requirements: TS >=4.5, tsconfig.json { compilerOptions: { strict: true }}
+npm install zod
+
+2  Core Schema Constructors
+z.string(): ZodString
+z.number(): ZodNumber
+z.bigint(): ZodBigInt
+z.boolean(): ZodBoolean
+z.date(): ZodDate
+z.undefined(): ZodUndefined
+z.null(): ZodNull
+z.void(): ZodVoid
+z.any(): ZodAny
+z.unknown(): ZodUnknown
+z.never(): ZodNever
+
+3  Parsing & Safe Parsing Methods
+.parse(data: unknown): T throws ZodError
+.parseAsync(data: unknown): Promise<T>
+.safeParse(data: unknown): { success: boolean; data?:T; error?:ZodError}
+.safeParseAsync(data: unknown): Promise<{ success:boolean; data?:T; error?:ZodError}>
+
+4  String Validations
+.string()
+  .min(n, { message? })
+  .max(n, { message? })
+  .length(n, { message? })
+  .email({ message? })
+  .url({ message? })
+  .regex(RegExp, { message? })
+  .includes(str, { message? })
+  .startsWith(prefix, { message? })
+  .endsWith(suffix, { message? })
+  .datetime({ offset?:boolean; local?:boolean; precision?:number; message?:string })
+  .date({ message? })
+  .time({ precision?:number; message?:string })
+  .ip({ version?:"v4"|"v6"; message?:string })
+  .cidr({ version?:"v4"|"v6"; message?:string })
+  .trim()
+  .toLowerCase()
+  .toUpperCase()
+
+5  Number & BigInt Validations
+.number()
+  .min(val, { message? }) alias .gte
+  .max(val, { message? }) alias .lte
+  .int({ message? })
+  .positive({ message? })
+  .nonnegative({ message? })
+  .negative({ message? })
+  .nonpositive({ message? })
+  .multipleOf(val, { message? })
+  .finite({ message? })
+  .safe({ message? })
+.bigint() similar: .min/.max/.positive/.negative/.multipleOf
+
+6  Object Schema Methods
+.object({ key: schema, ... })
+  .shape
+  .extend({ additionalKey: schema, ... })
+  .merge(otherZodObject)
+  .pick({ key:true, ... })
+  .omit({ key:true, ... })
+  .partial({ key?:true, ... })
+  .deepPartial()
+  .required({ key?:true, ... })
+  .strict()
+  .passthrough()
+  .strip()
+  .catchall(schema)
+  .keyof()
+
+7  Array & Tuple Methods
+.array(itemSchema)
+  .min(n, { message? })
+  .max(n, { message? })
+  .length(n, { message? })
+  .nonempty({ message? })
+.element property
+
+.tuple([schema1, schema2, ...])
+  .rest(itemSchema)
+
+8  Composite Types
+.z.union([schema1, schema2, ...])
+  .or(otherSchema)
+.z.discriminatedUnion(discriminatorKey, [objectSchemas])
+.z.intersection(schemaA, schemaB)
+
+9  Utility Types
+.z.record(keySchema, valueSchema)
+.z.map(keySchema, valueSchema)
+.z.set(itemSchema)
+  .min/.max/.size/.nonempty
+.z.lazy(() => schema)
+.z.instanceof(ClassConstructor)
+
+10 Function Schemas
+.z.function()
+  .args(...argSchemas)
+  .returns(returnSchema)
+  .implement((...args)=> returnValue)
+  .parameters()
+  .returnType()
+
+11 Refinements & Transforms
+.refine(validatorFn, { message?, path?, params? })
+.superRefine((data, ctx)=> void)
+.transform(transformFn)
+.default(valueOrFn)
+.nullable()
+.nullish()
+.optional()
+.catch(errorHandler)
+.brand<BrandName>()
+.pipe(targetSchema)
+
+12 Coercion Shortcuts
+z.coerce.string()
+z.coerce.number()
+z.coerce.boolean()
+z.coerce.bigint()
+z.coerce.date()
+
+
+## Supplementary Details
+Installation
+tsc --version >= 4.5
+Add to tsconfig.json: { compilerOptions: { strict: true }}
+
+Strict mode enables accurate z.infer and z.input/z.output inference.
+
+Error customization
+z.string({ required_error: 'X required', invalid_type_error: 'X must be string' })
+z.number({ required_error: 'Y required', invalid_type_error: 'Y must be number' })
+
+Custom error messages
+ez.string().min(5, { message: 'Min length 5' })
+
+Coercion with z.preprocess
+const dated = z.preprocess(val=> new Date(val as string), z.date())
+
+Recursive schema
+const Base = z.object({ name: z.string() })
+type Node = { name: string; children: Node[] }
+const NodeSchema: z.ZodType<Node> = Base.extend({ children: z.lazy(()=> NodeSchema.array()) })
+
+JSON type
+const Literal = z.union([z.string(),z.number(),z.boolean(),z.null()])
+type Json = Literal | Json[] | Record<string,Json>
+const JsonSchema: z.ZodType<Json> = z.lazy(()=> z.union([Literal, JsonSchema.array(), z.record(JsonSchema)]))
+
+
+## Reference Details
+// Full Code Examples and Patterns
+
+1. Installing and Importing
+// tsconfig.json
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2020",
+    "module": "CommonJS"
+  }
+}
+
+npm install zod
+
+import { z, ZodError } from 'zod'
+
+2. Parsing Patterns
+// throws on invalid
+try {
+  const result = z.string().min(3).parse(input)
+} catch (err) {
+  if (err instanceof ZodError) {
+    console.error(err.issues)
+  }
+}
+// safe parsing
+const parseResult = z.number().positive().safeParse(maybeNum)
+if (!parseResult.success) {
+  console.error(parseResult.error.issues)
+} else {
+  const num = parseResult.data
+}
+
+3. Object Composition
+const Address = z.object({ street: z.string(), zip: z.string().length(5) })
+const User = z.object({ name: z.string(), age: z.number().int().nonnegative(), address: Address })
+type User = z.infer<typeof User>
+
+User.parse({ name: 'Alice', age: 30, address: { street: 'Main', zip: '12345' } })
+
+4. Discriminated Unions
+const Success = z.object({ status: z.literal('success'), data: z.string() })
+const Failure = z.object({ status: z.literal('failure'), error: z.string() })
+const Response = z.discriminatedUnion('status', [Success, Failure])
+
+Response.parse({ status: 'success', data: 'ok' }) // pass
+Response.parse({ status: 'failure', error: 'bad' }) // pass
+
+5. Function Schema Implementation
+const Multiply = z.function().args(z.number(), z.number()).returns(z.number()).implement((a, b) => a * b)
+const product = Multiply(2, 3) // 6
+
+6. Configuration Options Reference
+
+// z.string()
+.min: minimum length (number)
+.max: maximum length (number)
+.email: validate format
+.url: validate URL
+.datetime: options: { offset:boolean, local:boolean, precision:number }
+
+// z.number()
+.min: minimum value
+.max: maximum value
+.int: integer only
+.positive, .nonnegative, .negative, .nonpositive
+.multipleOf: divisor
+
+7. Troubleshooting
+
+Command: tsc --noEmit
+Expected: No errors; ensures Zod types align with TS types.
+
+Runtime: node dist/app.js
+If ZodError issues reference unexpected path, enable debug with ZodError.format()
+
+Memory: For large schemas use .strict() to trim unneeded keys and reduce object size.
+
+
+## Information Dense Extract
+zod v4 API: constructors string,number,bigint,boolean,date,undefined,null,void,any,unknown,never. parser methods parse/parseAsync, safeParse/safeParseAsync. string validations min,max,length,email,url,regex,includes,startsWith,endsWith,datetime({offset,local,precision}),date,time(ip,version),cidr. number validations min/gte,max/lte,int,positive,nonnegative,negative,nonpositive,multipleOf,finite,safe. object methods shape,extend,merge,pick,omit,partial,deepPartial,required,strict,passthrough,strip,catchall,keyof. arrays min,max,length,nonempty; tuples rest. composite: union/or,discriminatedUnion,key,intersection. utils: record,map,set(restraints),lazy,instanceof,function args/returns/implement/parameters/returnType. refinements refine,superRefine; transforms transform; preprocess; defaults default; nullability nullable,nullish,optional; catch; brand; pipe. coercion z.coerce.{string,number,boolean,bigint,date}. infers: z.infer, z.input, z.output. error customization required_error,invalid_type_error. best practices: TS strict mode, safeParse for inputs, discriminatedUnion for unions, z.preprocess or pipe for advanced coercion.
+
+## Sanitised Extract
+Table of Contents
+1  Installation
+2  Core Schema Constructors
+3  Parsing & Safe Parsing Methods
+4  String Validations
+5  Number & BigInt Validations
+6  Object Schema Methods
+7  Array & Tuple Methods
+8  Composite Types: Union, Intersection, Discriminated Union
+9  Utility Types: Record, Map, Set, Lazy, Instanceof
+10 Function Schemas
+11 Refinements & Transforms
+12 Coercion Shortcuts
+
+1  Installation
+Requirements: TS >=4.5, tsconfig.json { compilerOptions: { strict: true }}
+npm install zod
+
+2  Core Schema Constructors
+z.string(): ZodString
+z.number(): ZodNumber
+z.bigint(): ZodBigInt
+z.boolean(): ZodBoolean
+z.date(): ZodDate
+z.undefined(): ZodUndefined
+z.null(): ZodNull
+z.void(): ZodVoid
+z.any(): ZodAny
+z.unknown(): ZodUnknown
+z.never(): ZodNever
+
+3  Parsing & Safe Parsing Methods
+.parse(data: unknown): T throws ZodError
+.parseAsync(data: unknown): Promise<T>
+.safeParse(data: unknown): { success: boolean; data?:T; error?:ZodError}
+.safeParseAsync(data: unknown): Promise<{ success:boolean; data?:T; error?:ZodError}>
+
+4  String Validations
+.string()
+  .min(n, { message? })
+  .max(n, { message? })
+  .length(n, { message? })
+  .email({ message? })
+  .url({ message? })
+  .regex(RegExp, { message? })
+  .includes(str, { message? })
+  .startsWith(prefix, { message? })
+  .endsWith(suffix, { message? })
+  .datetime({ offset?:boolean; local?:boolean; precision?:number; message?:string })
+  .date({ message? })
+  .time({ precision?:number; message?:string })
+  .ip({ version?:'v4'|'v6'; message?:string })
+  .cidr({ version?:'v4'|'v6'; message?:string })
+  .trim()
+  .toLowerCase()
+  .toUpperCase()
+
+5  Number & BigInt Validations
+.number()
+  .min(val, { message? }) alias .gte
+  .max(val, { message? }) alias .lte
+  .int({ message? })
+  .positive({ message? })
+  .nonnegative({ message? })
+  .negative({ message? })
+  .nonpositive({ message? })
+  .multipleOf(val, { message? })
+  .finite({ message? })
+  .safe({ message? })
+.bigint() similar: .min/.max/.positive/.negative/.multipleOf
+
+6  Object Schema Methods
+.object({ key: schema, ... })
+  .shape
+  .extend({ additionalKey: schema, ... })
+  .merge(otherZodObject)
+  .pick({ key:true, ... })
+  .omit({ key:true, ... })
+  .partial({ key?:true, ... })
+  .deepPartial()
+  .required({ key?:true, ... })
+  .strict()
+  .passthrough()
+  .strip()
+  .catchall(schema)
+  .keyof()
+
+7  Array & Tuple Methods
+.array(itemSchema)
+  .min(n, { message? })
+  .max(n, { message? })
+  .length(n, { message? })
+  .nonempty({ message? })
+.element property
+
+.tuple([schema1, schema2, ...])
+  .rest(itemSchema)
+
+8  Composite Types
+.z.union([schema1, schema2, ...])
+  .or(otherSchema)
+.z.discriminatedUnion(discriminatorKey, [objectSchemas])
+.z.intersection(schemaA, schemaB)
+
+9  Utility Types
+.z.record(keySchema, valueSchema)
+.z.map(keySchema, valueSchema)
+.z.set(itemSchema)
+  .min/.max/.size/.nonempty
+.z.lazy(() => schema)
+.z.instanceof(ClassConstructor)
+
+10 Function Schemas
+.z.function()
+  .args(...argSchemas)
+  .returns(returnSchema)
+  .implement((...args)=> returnValue)
+  .parameters()
+  .returnType()
+
+11 Refinements & Transforms
+.refine(validatorFn, { message?, path?, params? })
+.superRefine((data, ctx)=> void)
+.transform(transformFn)
+.default(valueOrFn)
+.nullable()
+.nullish()
+.optional()
+.catch(errorHandler)
+.brand<BrandName>()
+.pipe(targetSchema)
+
+12 Coercion Shortcuts
+z.coerce.string()
+z.coerce.number()
+z.coerce.boolean()
+z.coerce.bigint()
+z.coerce.date()
+
+## Original Source
+Zod
+https://github.com/colinhacks/zod
+
+## Digest of ZOD_REFERENCE
+
+# Zod API Specifications and Usage (Retrieved 2024-06-19)
+
+## 1. Installation and Setup
+• Requirements: TypeScript >=4.5 with "strict": true in tsconfig.json (compilerOptions.strict = true)
+• Install: npm install zod | yarn add zod | pnpm add zod | bun add zod
+• Canary: npm install zod@canary | yarn add zod@canary | pnpm add zod@canary | bun add zod@canary
+
+## 2. Core Methods and Signatures
+### 2.1 Schema Constructors
+• z.string(): ZodString
+• z.number(): ZodNumber
+• z.bigint(): ZodBigInt
+• z.boolean(): ZodBoolean
+• z.date(): ZodDate
+• z.undefined(): ZodUndefined
+• z.null(): ZodNull
+• z.void(): ZodVoid
+• z.any(): ZodAny
+• z.unknown(): ZodUnknown
+• z.never(): ZodNever
+
+### 2.2 Parsing and Safe Parsing
+• parse(input: unknown): T throws ZodError
+• parseAsync(input: unknown): Promise<T>
+• safeParse(input: unknown): { success: boolean; data?: T; error?: ZodError }
+• safeParseAsync(input: unknown): Promise<{ success: boolean; data?: T; error?: ZodError }>
+
+## 3. String Validations and Transformations
+• Methods and signatures:
+  - .min(min: number, opts?: { message: string }): ZodString
+  - .max(max: number, opts?: { message: string }): ZodString
+  - .length(len: number, opts?: { message: string }): ZodString
+  - .email(opts?: { message: string }): ZodString
+  - .url(opts?: { message: string }): ZodString
+  - .regex(pattern: RegExp, opts?: { message: string }): ZodString
+  - .includes(substr: string, opts?: { message: string }): ZodString
+  - .startsWith(prefix: string, opts?: { message: string }): ZodString
+  - .endsWith(suffix: string, opts?: { message: string }): ZodString
+  - .datetime(opts?: { offset?: boolean; local?: boolean; precision?: number; message?: string }): ZodString
+  - .date(opts?: { message: string }): ZodString
+  - .time(opts?: { precision?: number; message?: string }): ZodString
+  - .ip(opts?: { version?: "v4" | "v6"; message?: string }): ZodString
+  - .cidr(opts?: { version?: "v4" | "v6"; message?: string }): ZodString
+  - .trim(): ZodString
+  - .toLowerCase(): ZodString
+  - .toUpperCase(): ZodString
+
+## 4. Number and BigInt Validations
+• z.number(): ZodNumber
+  - .min(val: number, opts?: { message: string }) alias .gte
+  - .max(val: number, opts?: { message: string }) alias .lte
+  - .int(opts?: { message: string }): ZodNumber
+  - .positive(opts?: { message: string }): ZodNumber
+  - .nonnegative(opts?: { message: string }): ZodNumber
+  - .negative(opts?: { message: string }): ZodNumber
+  - .nonpositive(opts?: { message: string }): ZodNumber
+  - .multipleOf(val: number, opts?: { message: string }): ZodNumber
+  - .finite(opts?: { message: string }): ZodNumber
+  - .safe(opts?: { message: string }): ZodNumber
+• z.bigint(): ZodBigInt with .min/.max/.positive/.negative/.multipleOf
+
+## 5. Object and Utility Methods
+• z.object(shape: Record<string, ZodType>): ZodObject
+  - .shape: Record access
+  - .extend(ext: Record<string, ZodType>): ZodObject
+  - .merge(other: ZodObject): ZodObject
+  - .pick(keys: Record<string, boolean>): ZodObject
+  - .omit(keys: Record<string, boolean>): ZodObject
+  - .partial(keys?: Record<string, boolean>): ZodObject
+  - .deepPartial(): ZodObject
+  - .required(keys?: Record<string, boolean>): ZodObject
+  - .strict(): ZodObject
+  - .passthrough(): ZodObject
+  - .strip(): ZodObject
+  - .catchall(schema: ZodType): ZodObject
+  - .keyof(): ZodEnum
+
+• Arrays: z.array(item: ZodType): ZodArray
+  - .min(n: number, opts?: { message:string }): ZodArray
+  - .max(n: number, opts?: { message:string }): ZodArray
+  - .length(n: number, opts?: { message:string }): ZodArray
+  - .nonempty(opts?: { message:string }): ZodArray
+
+• z.tuple(items: ZodType[]): ZodTuple
+  - .rest(item: ZodType): ZodTuple
+
+• z.union(options: ZodType[]): ZodUnion
+  - .or(other: ZodType): ZodUnion
+• z.discriminatedUnion(key: string, options: ZodObject[]): ZodUnion
+• z.intersection(a: ZodType, b: ZodType): ZodIntersection
+• z.record(keyType: ZodType, valueType: ZodType): ZodRecord
+• z.map(keyType: ZodType, valueType: ZodType): ZodMap
+• z.set(item: ZodType): ZodSet
+  - .min/.max/.size/.nonempty
+• z.lazy(fn: ()=>ZodType): ZodType
+• z.instanceof(classRef: new (...args:any)=> any): ZodType
+• z.function(): ZodFunction
+  - .args(...args: ZodType[]): ZodFunction
+  - .returns(returnType: ZodType): ZodFunction
+  - .implement(fn: (...args:any[])=> any): (...args:any[])=> any
+  - .parameters(): ZodTuple
+  - .returnType(): ZodType
+
+## 6. Refinements, Transforms, Preprocessing
+• .refine(validator: (data:T)=> boolean|Promise<boolean>, opts?: { message?: string; path?: (string|number)[]; params?: any }): ZodType
+• .superRefine((data, ctx)=> void): ZodType
+• .transform(transformer: (data:T)=> any|Promise<any>): ZodType
+• .default(def: T|(()=>T)): ZodType
+• .nullable(): ZodType
+• .nullish(): ZodType
+• .optional(): ZodType
+• .catch(handler: (err: ZodError)=> T): ZodType
+• .brand<U extends string>(): ZodBrandedType
+• .pipe(target: ZodType): ZodType
+
+## 7. Coercion Shortcuts
+• z.coerce.string(): String(input)
+• z.coerce.number(): Number(input)
+• z.coerce.boolean(): Boolean(input)
+• z.coerce.bigint(): BigInt(input)
+• z.coerce.date(): new Date(input)
+
+## 8. Error Handling
+• ZodError.issues: { path: (string|number)[]; message: string; code: string }[]
+• customize required_error and invalid_type_error in constructors
+
+## 9. Best Practices & Troubleshooting
+• Always enable strict TypeScript mode
+• Use safeParse in user input contexts
+• For complex coercion use z.preprocess or z.pipe
+• For discriminated unions prefer z.discriminatedUnion over z.union
+
+
+
+## Attribution
+- Source: Zod
+- URL: https://github.com/colinhacks/zod
+- License: MIT License
+- Crawl Date: 2025-05-11T04:35:14.753Z
+- Data Size: 896451 bytes
+- Links Found: 6108
+
+## Retrieved
+2025-05-11
 library/EXPRESS_MIDDLEWARE.md
 # library/EXPRESS_MIDDLEWARE.md
 # EXPRESS_MIDDLEWARE
 
 ## Crawl Summary
-express.json parses JSON bodies into req.body with options inflate,limit,reviver,strict,type,verify; express.urlencoded parses URL-encoded payloads with extended,inflate,limit,parameterLimit,type,verify; express.raw parses Buffer bodies with inflate,limit,type,verify; express.text parses text bodies with defaultCharset,inflate,limit,type,verify; express.static serves files with options dotfiles,etag,extensions,fallthrough,immutable,index,lastModified,maxAge,redirect,setHeaders; express.Router creates route containers with caseSensitive,mergeParams,strict
+express.json: parse JSON bodies; options inflate(Boolean,true), limit(number|string,100kb), reviver(Function,null), strict(Boolean,true), type(Mixed,application/json), verify(Function)
+express.raw: parse Buffer bodies; options inflate, limit, type(application/octet-stream), verify
+express.text: parse text bodies; options defaultCharset(utf-8), inflate, limit, type(text/plain), verify
+express.urlencoded: parse urlencoded; options extended(true), inflate, limit, parameterLimit(1000), type(application/x-www-form-urlencoded), verify
+express.Router: create router; options caseSensitive(false), mergeParams(false), strict(false)
+express.static: serve files; options dotfiles(undefined), etag(true), extensions(false), fallthrough(true), immutable(false), index(index.html), lastModified(true), maxAge(0), redirect(true), setHeaders(Function)
 
 ## Normalised Extract
-Table of Contents
-1. express.json
-2. express.urlencoded
-3. express.raw
-4. express.text
-5. express.static
-6. express.Router
+Table of Contents:
+1 express.json
+2 express.raw
+3 express.text
+4 express.urlencoded
+5 express.Router
+6 express.static
 
-1. express.json
-Signature: express.json(options)
+1 express.json
+Function signature: express.json(options?) → RequestHandler
 Options:
-inflate: Boolean (true)
-limit: Number|String ('100kb')
-reviver: Function|null
-strict: Boolean (true)
-type: String|Array|Function ('application/json')
-verify: Function|undefined
-Behavior: Parses JSON payloads where Content-Type matches type into req.body object, supports gzip/deflate.
+  inflate: Boolean = true
+  limit: number|string = "100kb"
+  reviver: Function = null
+  strict: Boolean = true
+  type: string|string[]|function = "application/json"
+  verify: function(req,res,buf,encoding) = undefined
+Behavior: parses JSON, populates req.body with object or {} on no body\/no match\/error
 
-2. express.urlencoded
-Signature: express.urlencoded(options)
+2 express.raw
+Function signature: express.raw(options?) → RequestHandler
 Options:
-extended: Boolean (true)
-inflate: Boolean (true)
-limit: Number|String ('100kb')
-parameterLimit: Number (1000)
-type: String|Array|Function ('application/x-www-form-urlencoded')
-verify: Function|undefined
-Behavior: Parses urlencoded payloads into req.body as object or array (qs if extended true).
+  inflate: Boolean = true
+  limit: number|string = "100kb"
+  type: string|string[]|function = "application/octet-stream"
+  verify: function(req,res,buf,encoding) = undefined
+Behavior: parses body into Buffer, populates req.body with Buffer or {}
 
-3. express.raw
-Signature: express.raw(options)
+3 express.text
+Function signature: express.text(options?) → RequestHandler
 Options:
-inflate: Boolean (true)
-limit: Number|String ('100kb')
-type: String|Array|Function ('application/octet-stream')
-verify: Function|undefined
-Behavior: Parses all bodies into Buffer at req.body.
+  defaultCharset: string = "utf-8"
+  inflate: Boolean = true
+  limit: number|string = "100kb"
+  type: string|string[]|function = "text/plain"
+  verify: function(req,res,buf,encoding) = undefined
+Behavior: parses body into string, populates req.body with string or {}
 
-4. express.text
-Signature: express.text(options)
+4 express.urlencoded
+Function signature: express.urlencoded(options?) → RequestHandler
 Options:
-defaultCharset: String ('utf-8')
-inflate: Boolean (true)
-limit: Number|String ('100kb')
-type: String|Array|Function ('text/plain')
-verify: Function|undefined
-Behavior: Parses bodies into string at req.body.
+  extended: Boolean = true
+  inflate: Boolean = true
+  limit: number|string = "100kb"
+  parameterLimit: number = 1000
+  type: string|string[]|function = "application/x-www-form-urlencoded"
+  verify: function(req,res,buf,encoding) = undefined
+Behavior: parses URL-encoded data into object or {}
 
-5. express.static
-Signature: express.static(root,options)
+5 express.Router
+Function signature: express.Router(options?) → Router
 Options:
-dotfiles: 'allow'|'deny'|'ignore'|undefined
-etag: Boolean (true)
-extensions: Array|false (false)
-fallthrough: Boolean (true)
-immutable: Boolean (false)
-index: String|false ('index.html')
-lastModified: Boolean (true)
-maxAge: Number|String (0)
-redirect: Boolean (true)
-setHeaders: Function(res,path,stat)
-Behavior: Serves static assets, on miss calls next(), supports caching headers.
+  caseSensitive: Boolean = false
+  mergeParams: Boolean = false
+  strict: Boolean = false
+Behavior: creates modular route handlers
 
-6. express.Router
-Signature: express.Router(options)
+6 express.static
+Function signature: express.static(root,options?) → RequestHandler
 Options:
-caseSensitive: Boolean (false)
-mergeParams: Boolean (false)
-strict: Boolean (false)
-Behavior: Returns modular router to mount routes and middleware.
+  dotfiles: "allow"|"deny"|"ignore"|undefined = undefined
+  etag: Boolean = true
+  extensions: string[]|false = false
+  fallthrough: Boolean = true
+  immutable: Boolean = false
+  index: string|false = "index.html"
+  lastModified: Boolean = true
+  maxAge: number|string = 0
+  redirect: Boolean = true
+  setHeaders: function(res,path,stat) = undefined
+Behavior: serves static assets with caching and fallback
 
 ## Supplementary Details
-Implementation Steps:
-1. Import express:
-   var express = require('express')
-   var app = express()
-2. Add body parsers before routes:
-   app.use(express.json({limit:'1mb'}))
-   app.use(express.urlencoded({extended:false,parameterLimit:500}))
-3. Serve static files with custom headers:
-   app.use(express.static('public',{maxAge:'1d',setHeaders:function(res,path,stat){res.set('X-Timestamp',Date.now())}}))
-4. Create and mount router:
-   var router = express.Router({mergeParams:true,strict:true})
-   router.get('/items/:id',handler)
-   app.use('/api',router)
-5. Start server:
-   app.listen(3000)
-
-Validation:
-- Always check req.body type before use:
-   if(Buffer.isBuffer(req.body)){ /* raw */ }
-   else if(typeof req.body === 'string'){ /* text */ }
-- Use verify option to reject bad payload:
-   express.json({verify:function(req,res,buf){ if(buf.length>1e6) throw new Error('Too large') }})
+Node.js version >= 0.10 required
+Installation: npm install express
+Import and app creation:
+  var express = require('express')
+  var app = express()
+Mount middleware before routes:
+  app.use(express.json({limit:'1mb'}))
+  app.use(express.urlencoded({extended:false, parameterLimit:500}))
+  app.use(express.text())
+  app.use(express.raw({type:'application/custom'}))
+Create router and mount:
+  var router = express.Router({mergeParams:true, strict:true})
+  router.get('/path', handler)
+  app.use('/api', router)
+Serve static files with custom headers:
+  app.use(express.static('public',{maxAge:'1d', immutable:true, setHeaders:function(res,path,stat){res.set('X-Timestamp',Date.now())}}))
 
 ## Reference Details
-express.json(options) -> Middleware
-Parameters:
-- options.inflate: Boolean default true
-- options.limit: Number|String default '100kb'
-- options.reviver: Function|null
-- options.strict: Boolean default true
-- options.type: String|Array|Function default 'application/json'
-- options.verify: Function(req,res,buf,encoding)
-Returns: Function(req,res,next)
+Function Signatures:
+  express.json(options?:{
+    inflate?:boolean;
+    limit?:number|string;
+    reviver?:(key:any,value:any)=>any;
+    strict?:boolean;
+    type?:string|string[]|(req:Request)=>boolean;
+    verify?:(req:Request,res:Response,buf:Buffer,encoding:string)=>void;
+  }):RequestHandler
+  express.raw(options?:{
+    inflate?:boolean;
+    limit?:number|string;
+    type?:string|string[]|(req:Request)=>boolean;
+    verify?:(req:Request,res:Response,buf:Buffer,encoding:string)=>void;
+  }):RequestHandler
+  express.text(options?:{
+    defaultCharset?:string;
+    inflate?:boolean;
+    limit?:number|string;
+    type?:string|string[]|(req:Request)=>boolean;
+    verify?:(req:Request,res:Response,buf:Buffer,encoding:string)=>void;
+  }):RequestHandler
+  express.urlencoded(options?:{
+    extended?:boolean;
+    inflate?:boolean;
+    limit?:number|string;
+    parameterLimit?:number;
+    type?:string|string[]|(req:Request)=>boolean;
+    verify?:(req:Request,res:Response,buf:Buffer,encoding:string)=>void;
+  }):RequestHandler
+  express.Router(options?:{
+    caseSensitive?:boolean;
+    mergeParams?:boolean;
+    strict?:boolean;
+  }):Router
+  express.static(root:string,options?:{
+    dotfiles?:'allow'|'deny'|'ignore';
+    etag?:boolean;
+    extensions?:string[]|false;
+    fallthrough?:boolean;
+    immutable?:boolean;
+    index?:string|false;
+    lastModified?:boolean;
+    maxAge?:number|string;
+    redirect?:boolean;
+    setHeaders?:(res:Response,path:string,stat:fs.Stats)=>void;
+  }):RequestHandler
 
-express.urlencoded(options) -> Middleware
-Parameters:
-- options.extended: Boolean default true
-- options.inflate: Boolean default true
-- options.limit: Number|String default '100kb'
-- options.parameterLimit: Number default 1000
-- options.type: String|Array|Function default 'application/x-www-form-urlencoded'
-- options.verify: Function(req,res,buf,encoding)
-Returns: Function(req,res,next)
-
-express.raw(options) -> Middleware
-Parameters:
-- options.inflate: Boolean default true
-- options.limit: Number|String default '100kb'
-- options.type: String|Array|Function default 'application/octet-stream'
-- options.verify: Function(req,res,buf,encoding)
-Returns: Function(req,res,next)
-
-express.text(options) -> Middleware
-Parameters:
-- options.defaultCharset: String default 'utf-8'
-- options.inflate: Boolean default true
-- options.limit: Number|String default '100kb'
-- options.type: String|Array|Function default 'text/plain'
-- options.verify: Function(req,res,buf,encoding)
-Returns: Function(req,res,next)
-
-express.static(root,options) -> Middleware
-Parameters:
-- root: String directory path
-- options.dotfiles: 'allow'|'deny'|'ignore'|undefined
-- options.etag: Boolean default true
-- options.extensions: Array|false default false
-- options.fallthrough: Boolean default true
-- options.immutable: Boolean default false
-- options.index: String|false default 'index.html'
-- options.lastModified: Boolean default true
-- options.maxAge: Number|String default 0
-- options.redirect: Boolean default true
-- options.setHeaders: Function(res,path,stat)
-Returns: Function(req,res,next)
-
-express.Router(options) -> Router
-Parameters:
-- options.caseSensitive: Boolean default false
-- options.mergeParams: Boolean default false
-- options.strict: Boolean default false
-Returns: Router object with methods .get,.post,.use,.param
-
-Examples:
-var express = require('express')
-var app = express()
-app.use(express.json({limit:'500kb'}))
-app.post('/data',function(req,res){res.json(req.body)})
-app.use(express.static('public',{immutable:true,maxAge:'7d'}))
+Code Examples:
+  var express = require('express')
+  var app = express()
+  app.use(express.json({limit:'2mb', strict:false}))
+  app.use(express.urlencoded({extended:true, parameterLimit:2000}))
+  var apiRouter = express.Router({caseSensitive:true})
+  apiRouter.post('/item', function(req,res){
+    if(typeof req.body.id!=='string') return res.status(400).send('Invalid');
+    res.json({created:true, id:req.body.id})
+  })
+  app.use('/api', apiRouter)
+  app.use(express.static('public',{maxAge:'1h', immutable:true}))
+  app.listen(3000)
 
 Best Practices:
-- Place body parsers before routes
-- Limit payload size to prevent DOS
-- Validate req.body shape explicitly
-- Use mergeParams when nesting routers with params
-- Set maxAge and immutable for immutable assets
+  Validate req.body properties before use
+  Test body type: if(!Buffer.isBuffer(req.body)) throw Error
+  Use reverse proxy cache for static assets
 
 Troubleshooting:
-Command: curl -X POST http://localhost:3000/data -H 'Content-Type: application/json' -d '{"a":1}'
-Expected: {"a":1}
-Error: payload too large -> increase limit or send smaller body
-Command: curl http://localhost:3000/missing.png
-Expected: 404 from next() or custom handler
-Fix: ensure file exists or configure fallthrough=false to get err in next(err)
+  Command: curl -X POST http://localhost:3000/api/item -H "Content-Type: application/json" -d '{"id":"123"}'
+  Expected: JSON {"created":true,"id":"123"}
+  If req.body is empty: check Content-Type header; verify limit not exceeded
+  If parsing error: enable verify option to throw on malformed body:
+    app.use(express.json({verify:function(req,res,buf){try{JSON.parse(buf)}catch(e){throw e}}}))
 
 ## Information Dense Extract
-json(options:inflate=true,limit='100kb',reviver=null,strict=true,type='application/json',verify) -> middleware parses JSON->req.body; urlencoded(options:extended=true,inflate=true,limit='100kb',parameterLimit=1000,type='application/x-www-form-urlencoded',verify) -> middleware parses URL-encoded->req.body; raw(options:inflate=true,limit='100kb',type='application/octet-stream',verify) -> middleware parses Buffer->req.body; text(options:defaultCharset='utf-8',inflate=true,limit='100kb',type='text/plain',verify) -> middleware parses String->req.body; static(root,options:dotfiles,etag=true,extensions=false,fallthrough=true,immutable=false,index='index.html',lastModified=true,maxAge=0,redirect=true,setHeaders) -> static file server; Router(options:caseSensitive=false,mergeParams=false,strict=false) -> modular router with .get/.post/.use/.param
+express.json:inflate:true|limit:100kb|reviver:null|strict:true|type:application/json|verify:fn → RequestHandler; express.raw:inflate:true|limit:100kb|type:application/octet-stream|verify:fn → RequestHandler; express.text:defaultCharset:utf-8|inflate:true|limit:100kb|type:text/plain|verify:fn → RequestHandler; express.urlencoded:extended:true|inflate:true|limit:100kb|parameterLimit:1000|type:application/x-www-form-urlencoded|verify:fn → RequestHandler; express.Router:caseSensitive:false|mergeParams:false|strict:false → Router; express.static:maxAge:0|etag:true|extensions:false|dotfiles:undefined|fallthrough:true|immutable:false|index:index.html|lastModified:true|redirect:true|setHeaders:fn → RequestHandler
 
 ## Sanitised Extract
-Table of Contents
-1. express.json
-2. express.urlencoded
-3. express.raw
-4. express.text
-5. express.static
-6. express.Router
+Table of Contents:
+1 express.json
+2 express.raw
+3 express.text
+4 express.urlencoded
+5 express.Router
+6 express.static
 
-1. express.json
-Signature: express.json(options)
+1 express.json
+Function signature: express.json(options?)  RequestHandler
 Options:
-inflate: Boolean (true)
-limit: Number|String ('100kb')
-reviver: Function|null
-strict: Boolean (true)
-type: String|Array|Function ('application/json')
-verify: Function|undefined
-Behavior: Parses JSON payloads where Content-Type matches type into req.body object, supports gzip/deflate.
+  inflate: Boolean = true
+  limit: number|string = '100kb'
+  reviver: Function = null
+  strict: Boolean = true
+  type: string|string[]|function = 'application/json'
+  verify: function(req,res,buf,encoding) = undefined
+Behavior: parses JSON, populates req.body with object or {} on no body'/no match'/error
 
-2. express.urlencoded
-Signature: express.urlencoded(options)
+2 express.raw
+Function signature: express.raw(options?)  RequestHandler
 Options:
-extended: Boolean (true)
-inflate: Boolean (true)
-limit: Number|String ('100kb')
-parameterLimit: Number (1000)
-type: String|Array|Function ('application/x-www-form-urlencoded')
-verify: Function|undefined
-Behavior: Parses urlencoded payloads into req.body as object or array (qs if extended true).
+  inflate: Boolean = true
+  limit: number|string = '100kb'
+  type: string|string[]|function = 'application/octet-stream'
+  verify: function(req,res,buf,encoding) = undefined
+Behavior: parses body into Buffer, populates req.body with Buffer or {}
 
-3. express.raw
-Signature: express.raw(options)
+3 express.text
+Function signature: express.text(options?)  RequestHandler
 Options:
-inflate: Boolean (true)
-limit: Number|String ('100kb')
-type: String|Array|Function ('application/octet-stream')
-verify: Function|undefined
-Behavior: Parses all bodies into Buffer at req.body.
+  defaultCharset: string = 'utf-8'
+  inflate: Boolean = true
+  limit: number|string = '100kb'
+  type: string|string[]|function = 'text/plain'
+  verify: function(req,res,buf,encoding) = undefined
+Behavior: parses body into string, populates req.body with string or {}
 
-4. express.text
-Signature: express.text(options)
+4 express.urlencoded
+Function signature: express.urlencoded(options?)  RequestHandler
 Options:
-defaultCharset: String ('utf-8')
-inflate: Boolean (true)
-limit: Number|String ('100kb')
-type: String|Array|Function ('text/plain')
-verify: Function|undefined
-Behavior: Parses bodies into string at req.body.
+  extended: Boolean = true
+  inflate: Boolean = true
+  limit: number|string = '100kb'
+  parameterLimit: number = 1000
+  type: string|string[]|function = 'application/x-www-form-urlencoded'
+  verify: function(req,res,buf,encoding) = undefined
+Behavior: parses URL-encoded data into object or {}
 
-5. express.static
-Signature: express.static(root,options)
+5 express.Router
+Function signature: express.Router(options?)  Router
 Options:
-dotfiles: 'allow'|'deny'|'ignore'|undefined
-etag: Boolean (true)
-extensions: Array|false (false)
-fallthrough: Boolean (true)
-immutable: Boolean (false)
-index: String|false ('index.html')
-lastModified: Boolean (true)
-maxAge: Number|String (0)
-redirect: Boolean (true)
-setHeaders: Function(res,path,stat)
-Behavior: Serves static assets, on miss calls next(), supports caching headers.
+  caseSensitive: Boolean = false
+  mergeParams: Boolean = false
+  strict: Boolean = false
+Behavior: creates modular route handlers
 
-6. express.Router
-Signature: express.Router(options)
+6 express.static
+Function signature: express.static(root,options?)  RequestHandler
 Options:
-caseSensitive: Boolean (false)
-mergeParams: Boolean (false)
-strict: Boolean (false)
-Behavior: Returns modular router to mount routes and middleware.
+  dotfiles: 'allow'|'deny'|'ignore'|undefined = undefined
+  etag: Boolean = true
+  extensions: string[]|false = false
+  fallthrough: Boolean = true
+  immutable: Boolean = false
+  index: string|false = 'index.html'
+  lastModified: Boolean = true
+  maxAge: number|string = 0
+  redirect: Boolean = true
+  setHeaders: function(res,path,stat) = undefined
+Behavior: serves static assets with caching and fallback
 
 ## Original Source
 Express.js API Reference
@@ -825,3609 +1813,2450 @@ https://expressjs.com/en/4x/api.html
 
 ## Digest of EXPRESS_MIDDLEWARE
 
-# Express Middleware Reference (retrieved 2024-06-15)
+# Express.js 4.x API Reference (Built-in Middleware Functions)
+Content retrieved: 2024-06-30
+Data Size: 26740539 bytes
 
-## express()
-Creates an Express application function:
+# express.json([options])
+Parses incoming requests with JSON payloads. Based on body-parser.
 
-```js
-var express = require('express')
-var app = express()
-```
+| Option   | Type                                                  | Default            | Description                                                                                              |
+|----------|-------------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------|
+| inflate  | Boolean                                               | true               | Enable handling of gzip/deflate compressed bodies                                                        |
+| limit    | number or string                                      | "100kb"           | Max request body size; number in bytes or string parsed by bytes library                                |
+| reviver  | function(key, value)                                  | null               | Passed as second argument to JSON.parse                                                                   |
+| strict   | Boolean                                               | true               | Accept only arrays and objects; false accepts any JSON.parse input                                        |
+| type     | string, string[], or function(req) → boolean          | "application/json"| Media type to parse; passed to type-is or custom function                                                |
+| verify   | function(req, res, buf, encoding)                    | undefined          | Called before parsing; throw error to abort parsing                                                       |
 
-## express.json([options])
-Built-in JSON body parser (v4.16.0+), based on body-parser.
+# express.raw([options])
+Parses all bodies as Buffer. Based on body-parser.
 
-Signature:
-```js
-express.json({
-  inflate: true,
-  limit: '100kb',
-  reviver: null,
-  strict: true,
-  type: 'application/json',
-  verify: undefined
-})
-```
-Parses requests where Content-Type matches `type` into `req.body` object. Supports gzip/deflate.
+| Option   | Type                                                  | Default                  | Description                                                                                              |
+|----------|-------------------------------------------------------|--------------------------|----------------------------------------------------------------------------------------------------------|
+| inflate  | Boolean                                               | true                     | Enable handling of gzip/deflate compressed bodies                                                        |
+| limit    | number or string                                      | "100kb"                 | Max request body size                                                                                   |
+| type     | string, string[], or function(req) → boolean          | "application/octet-stream" | Media type to parse                                                                                      |
+| verify   | function(req, res, buf, encoding)                    | undefined                | Called before parsing; throw error to abort parsing                                                       |
 
-Options:
-- inflate (Boolean, default true)
-- limit (Number|String, default '100kb')
-- reviver (Function, default null)
-- strict (Boolean, default true)
-- type (String|Array|Function, default 'application/json')
-- verify (Function(req,res,buf,encoding))
+# express.text([options])
+Parses bodies into string. Based on body-parser.
 
-## express.urlencoded([options])
-Built-in URL-encoded body parser (v4.16.0+), based on body-parser.
+| Option         | Type                                                | Default      | Description                                                                                              |
+|----------------|-----------------------------------------------------|--------------|----------------------------------------------------------------------------------------------------------|
+| defaultCharset | string                                              | "utf-8"     | Default charset when not specified in Content-Type                                                       |
+| inflate        | Boolean                                             | true         | Enable handling of gzip/deflate compressed bodies                                                        |
+| limit          | number or string                                    | "100kb"     | Max request body size                                                                                   |
+| type           | string, string[], or function(req) → boolean        | "text/plain"| Media type to parse                                                                                      |
+| verify         | function(req, res, buf, encoding)                  | undefined    | Called before parsing; throw error to abort parsing                                                       |
 
-Signature:
-```js
-express.urlencoded({
-  extended: true,
-  inflate: true,
-  limit: '100kb',
-  parameterLimit: 1000,
-  type: 'application/x-www-form-urlencoded',
-  verify: undefined
-})
-```
-Parses URL-encoded payloads into `req.body` (object or array). UTF-8 only.
+# express.urlencoded([options])
+Parses URL-encoded bodies. Based on body-parser.
 
-Options:
-- extended (Boolean, default true)
-- inflate (Boolean, default true)
-- limit (Number|String, default '100kb')
-- parameterLimit (Number, default 1000)
-- type (String|Array|Function, default 'application/x-www-form-urlencoded')
-- verify (Function)
+| Option         | Type                                                | Default            | Description                                                                                              |
+|----------------|-----------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------|
+| extended       | Boolean                                             | true               | false uses querystring, true uses qs library                                                              |
+| inflate        | Boolean                                             | true               | Enable handling of gzip/deflate compressed bodies                                                        |
+| limit          | number or string                                    | "100kb"           | Max request body size                                                                                   |
+| parameterLimit | number                                              | 1000               | Max number of URL-encoded parameters                                                                     |
+| type           | string, string[], or function(req) → boolean        | "application/x-www-form-urlencoded" | Media type to parse                                                      |
+| verify         | function(req, res, buf, encoding)                  | undefined          | Called before parsing; throw error to abort parsing                                                       |
 
-## express.raw([options])
-Built-in raw body parser (v4.17.0+), based on body-parser.
+# express.Router([options])
+Creates router. Options:
 
-Signature:
-```js
-express.raw({
-  inflate: true,
-  limit: '100kb',
-  type: 'application/octet-stream',
-  verify: undefined
-})
-```
-Parses payloads into a Buffer at `req.body`.
+| Option        | Type    | Default | Description                                              |
+|---------------|---------|---------|----------------------------------------------------------|
+| caseSensitive | Boolean | false   | Enable case sensitivity on route paths                   |
+| mergeParams   | Boolean | false   | Preserve parent req.params values                        |
+| strict        | Boolean | false   | Enable strict routing: "/foo" != "/foo/"             |
 
-Options:
-- inflate (Boolean, default true)
-- limit (Number|String, default '100kb')
-- type (String|Array|Function, default 'application/octet-stream')
-- verify (Function)
+# express.static(root, [options])
+Serves static files from root.
 
-## express.text([options])
-Built-in text body parser (v4.17.0+), based on body-parser.
+| Option      | Type                   | Default       | Description                                                                                     |
+|-------------|------------------------|---------------|-------------------------------------------------------------------------------------------------|
+| dotfiles    | "allow","deny","ignore" or undefined | undefined     | How to treat files starting with dot                                                           |
+| etag        | Boolean                | true          | Enable weak ETag generation                                                                     |
+| extensions  | string[] or false      | false         | File extension fallbacks: serve first existing extension                                         |
+| fallthrough | Boolean                | true          | if true call next() on client errors; if false invoke next(err)                                  |
+| immutable   | Boolean                | false         | Enable immutable Cache-Control directive (
+| index       | string or false        | "index.html" | Specify directory index file or disable                                                           |
+| lastModified| Boolean                | true          | Set Last-Modified header                                                                        |
+| maxAge      | number or string       | 0             | Set Cache-Control max-age in ms or ms format                                                     |
+| redirect    | Boolean                | true          | Redirect to trailing slash for directories                                                      |
+| setHeaders  | function(res, path, stat) | undefined    | Custom header setter; called synchronously                                                        |
 
-Signature:
-```js
-express.text({
-  defaultCharset: 'utf-8',
-  inflate: true,
-  limit: '100kb',
-  type: 'text/plain',
-  verify: undefined
-})
-```
-Parses payloads into a string at `req.body`.
-
-Options:
-- defaultCharset (String, default 'utf-8')
-- inflate (Boolean, default true)
-- limit (Number|String, default '100kb')
-- type (String|Array|Function, default 'text/plain')
-- verify (Function)
-
-## express.static(root, [options])
-Built-in static file server, based on serve-static.
-
-Signature:
-```js
-express.static(rootDir, {
-  dotfiles: undefined,
-  etag: true,
-  extensions: false,
-  fallthrough: true,
-  immutable: false,
-  index: 'index.html',
-  lastModified: true,
-  maxAge: 0,
-  redirect: true,
-  setHeaders: undefined
-})
-```
-Serves files from `rootDir` and calls `next()` on miss. Supports reverse proxy caching.
-
-Options:
-- dotfiles: 'allow'|'deny'|'ignore'|undefined
-- etag: Boolean (default true)
-- extensions: Array|false (default false)
-- fallthrough: Boolean (default true)
-- immutable: Boolean (default false)
-- index: String|false (default 'index.html')
-- lastModified: Boolean (default true)
-- maxAge: Number|String (default 0)
-- redirect: Boolean (default true)
-- setHeaders: Function(res,path,stat)
-
-## express.Router([options])
-Creates modular route handlers.
-
-Signature:
-```js
-var router = express.Router({
-  caseSensitive: false,
-  mergeParams: false,
-  strict: false
-})
-```
-Options:
-- caseSensitive (Boolean, default false)
-- mergeParams (Boolean, default false)
-- strict (Boolean, default false)
-
-## Mounting Middleware
-```js
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static('public', { maxAge: '1d' }))
-app.use('/api', router)
-```
+Attribution: source=https://expressjs.com/en/4x/api.html
 
 ## Attribution
 - Source: Express.js API Reference
 - URL: https://expressjs.com/en/4x/api.html
 - License: MIT License
-- Crawl Date: 2025-05-11T02:10:27.212Z
+- Crawl Date: 2025-05-11T04:57:58.184Z
 - Data Size: 26740539 bytes
 - Links Found: 21583
 
 ## Retrieved
 2025-05-11
-library/ABORTCONTROLLER.md
-# library/ABORTCONTROLLER.md
-# ABORTCONTROLLER
+library/SWAGGER_UI_INSTALLATION.md
+# library/SWAGGER_UI_INSTALLATION.md
+# SWAGGER_UI_INSTALLATION
 
 ## Crawl Summary
-Constructor: new AbortController() → AbortController instance. Property: signal (AbortSignal) read-only. Method: abort() → void, dispatches 'abort' event, causes fetch, streams, and response body reads to reject with DOMException named 'AbortError'. fetch(url, { signal }) integration. Catch AbortError to handle cancellations.
+Installation via npm: swagger-ui, swagger-ui-react, swagger-ui-dist with commands. Import patterns for bundlers and static asset serving with absolutePath. Docker usage: pull image, run with env vars SWAGGER_JSON, SWAGGER_JSON_URL, BASE_URL, PORT, PORT_IPV6, EMBEDDING. unpkg integration: CSS and JS URLs, script initialization. Static hosting: copy /dist, update swagger-initializer.js.
 
 ## Normalised Extract
 Table of Contents
-1. Constructor Signature
-2. signal Property
-3. abort() Method
-4. Fetch Integration
-5. Error Handling
-6. Response Body Abort
+1. NPM Installation
+2. swagger-ui-dist Usage
+3. Docker Usage
+4. unpkg Integration
+5. Static Hosting
 
-1. Constructor Signature
-new AbortController() returns an AbortController instance.
+1. NPM Installation
+Install modules:
+npm install swagger-ui swagger-ui-react swagger-ui-dist
 
-2. signal Property
-AbortController.signal is an AbortSignal used to register for abort events and to pass into abortable APIs.
+Import and initialize:
+import SwaggerUI from 'swagger-ui'
+// or
+const SwaggerUI = require('swagger-ui')
+SwaggerUI({ dom_id: '#myDomId', url: <OpenAPI URL>, presets: [], layout: '' })
 
-3. abort() Method
-Calling AbortController.abort() synchronously sets signal.aborted to true, dispatches an "abort" event, and tears down any associated operations.
+2. swagger-ui-dist Usage
+Retrieve absolute path:
+const path = require('swagger-ui-dist').absolutePath()
+Server assets:
+app.use(express.static(path));
+Exports:
+SwaggerUIBundle(options), SwaggerUIStandalonePreset
+Options: url:string, dom_id:string, presets:Array, layout:string
 
-4. Fetch Integration
-Pass controller.signal in fetch init: fetch(url, { signal: controller.signal }) associates the signal. 
-Calling controller.abort() rejects the fetch promise with a DOMException named "AbortError".
+3. Docker Usage
+Commands:
+docker pull docker.swagger.io/swaggerapi/swagger-ui
+docker run -p hostPort:containerPort
+Environment variables:
+  SWAGGER_JSON=path
+  SWAGGER_JSON_URL=url
+  BASE_URL=pathPrefix
+  PORT=number (default 8080)
+  PORT_IPV6=number (none by default)
+  EMBEDDING=true|false (default false)
 
-5. Error Handling
-In catch clause, inspect err.name === 'AbortError' to differentiate cancellations from other errors.
+4. unpkg Integration
+CSS URL: https://unpkg.com/swagger-ui-dist@latest/swagger-ui.css
+JS URLs: bundle and standalone-preset
+Initialization in window.onload:
+SwaggerUIBundle({ url, dom_id, presets, layout })
 
-6. Response Body Abort
-If abort is invoked after fetch resolves but before reading response body, further methods like response.text() or response.json() will reject with AbortError.
-
-## Supplementary Details
-Implementation Steps
-1. Instantiate controller: const controller = new AbortController();
-2. Extract signal: const signal = controller.signal;
-3. Initiate fetch: fetch(endpointUrl, { signal });
-4. Trigger abort: controller.abort();
-5. Handle AbortError: catch(err) if err.name === 'AbortError'
-
-Configuration Options
-- fetch init: { signal: AbortSignal }
-- Request constructor: new Request(input, { signal })
-
-Parameter Values
-- signal.aborted: boolean (initial false, true after abort)
-- AbortSignal.reason: any value passed to abort(reason) if supported
-
-Integration Points
-- Streams: any ReadableStream tied to signal will error on abort.
-- DOM fetch, ReadableStream, Request, Response
-
-
-## Reference Details
-API Specifications
-
-Interface AbortController
-- constructor AbortController(): AbortController
-- readonly property signal: AbortSignal
-- method abort(): void
-
-AbortSignal (for context)
-- readonly property aborted: boolean
-- readonly property reason: any (DOMException or value)
-- method throwIfAborted(): void throws if signal.aborted
-- event abort: fired when controller.abort() is called
-
-Method Signatures
-```ts
-interface AbortController {
-  constructor(): void;
-  readonly signal: AbortSignal;
-  abort(): void;
-}
-
-interface AbortSignal extends EventTarget {
-  readonly aborted: boolean;
-  readonly reason: any;
-  throwIfAborted(): void;
-  addEventListener(type: 'abort', listener: (this: AbortSignal, ev: Event) => any): void;
-  removeEventListener(type: 'abort', listener: (this: AbortSignal, ev: Event) => any): void;
-}
-```
-
-Code Examples
-
-1. Basic Usage
-```js
-const controller = new AbortController();
-const signal = controller.signal;
-fetch('https://example.com/data', { signal })
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(err => {
-    if (err.name === 'AbortError') {
-      console.warn('Fetch aborted');
-    } else {
-      console.error('Fetch error', err);
-    }
-  });
-
-// abort after 5 seconds
-setTimeout(() => controller.abort(), 5000);
-```
-
-2. Abort after response resolution but before reading body
-```js
-async function fetchWithLateAbort() {
-  const controller = new AbortController();
-  const request = new Request('https://example.org/get', { signal: controller.signal });
-  const response = await fetch(request);
-  controller.abort();
-  try {
-    const text = await response.text(); // throws AbortError
-    console.log(text);
-  } catch (err) {
-    console.error(err.name); // 'AbortError'
-  }
-}
-```
-
-Best Practices
-- Always attach a timeout or user-cancel control to avoid hanging requests.
-- Reuse a single controller when aborting multiple related operations.
-- Call signal.throwIfAborted() in custom abortable code paths.
-
-Troubleshooting Procedures
-1. Fetch never returns: ensure controller.abort() is called or remove signal option.
-2. Unexpected errors: in catch, log err.name and err.message.
-3. Verify support: check 'AbortController' in global scope before use.
-   ```js
-   if (typeof AbortController === 'undefined') {
-     // polyfill or fallback
-   }
-   ```
-4. Stream errors: listening to signal.addEventListener('abort', () => stream.cancel());
-5. Expected output on abort: console.warn('Fetch aborted') or custom log.
-
-
-## Information Dense Extract
-AbortController():AbortController; signal:AbortSignal; abort():void dispatches 'abort'; fetch(url,{signal}) rejects with DOMException name='AbortError'; response methods text(),json() after abort reject; use err.name==='AbortError' to differentiate; create controller, pass signal, call abort, catch cancellations; AbortSignal.aborted boolean; signal.throwIfAborted() throws; addEventListener('abort') for cleanup; support since Mar 2019.
-
-## Sanitised Extract
-Table of Contents
-1. Constructor Signature
-2. signal Property
-3. abort() Method
-4. Fetch Integration
-5. Error Handling
-6. Response Body Abort
-
-1. Constructor Signature
-new AbortController() returns an AbortController instance.
-
-2. signal Property
-AbortController.signal is an AbortSignal used to register for abort events and to pass into abortable APIs.
-
-3. abort() Method
-Calling AbortController.abort() synchronously sets signal.aborted to true, dispatches an 'abort' event, and tears down any associated operations.
-
-4. Fetch Integration
-Pass controller.signal in fetch init: fetch(url, { signal: controller.signal }) associates the signal. 
-Calling controller.abort() rejects the fetch promise with a DOMException named 'AbortError'.
-
-5. Error Handling
-In catch clause, inspect err.name === 'AbortError' to differentiate cancellations from other errors.
-
-6. Response Body Abort
-If abort is invoked after fetch resolves but before reading response body, further methods like response.text() or response.json() will reject with AbortError.
-
-## Original Source
-Node.js AbortController
-https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-
-## Digest of ABORTCONTROLLER
-
-# AbortController
-
-## Constructor
-
-### new AbortController()
-Creates a new AbortController instance.
-
-Signature
-```js
-constructor AbortController(): AbortController
-```
-
-## Instance Properties
-
-### signal: AbortSignal (read-only)
-Returns the associated AbortSignal used to communicate or abort an asynchronous operation.
-
-## Instance Methods
-
-### abort(): void
-Aborts all associated operations. Dispatches an "abort" event on the signal. Causes fetch requests, response bodies, streams, and other abortable operations to terminate and reject with a DOMException named "AbortError".
-
-## Usage Examples
-
-### Abort a fetch request midway
-```js
-let controller = new AbortController();
-let signal = controller.signal;
-
-const responsePromise = fetch('video.mp4', { signal: signal });
-
-// Later, when abort is needed
-controller.abort(); // triggers AbortError on responsePromise
-```
-
-### Handling AbortError
-```js
-try {
-  const response = await fetch(url, { signal: controller.signal });
-  // process response
-} catch (err) {
-  if (err.name === 'AbortError') {
-    console.log('Request was aborted');
-  } else {
-    throw err;
-  }
-}
-```
-
-## Specifications
-
-- Interface: AbortController
-- Defined in: DOM Standard
-- Constructor: new AbortController()
-- Properties:
-  - signal: AbortSignal (read-only)
-- Methods:
-  - abort(): void
-
-## Browser Compatibility
-
-Feature available since March 2019 across modern browsers and Web Workers.
-
-
-## Attribution
-- Source: Node.js AbortController
-- URL: https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-- License: CC BY-SA 2.5
-- Crawl Date: 2025-05-10T16:58:52.359Z
-- Data Size: 1458842 bytes
-- Links Found: 16102
-
-## Retrieved
-2025-05-10
-library/DECIMAL_JS.md
-# library/DECIMAL_JS.md
-# DECIMAL_JS
-
-## Crawl Summary
-Constructor: Decimal(value: number|string|Decimal)⇒Decimal; supports ±0, ±Infinity, NaN, decimal/binary/octal/hex with prefixes, exponential notation with e/E or p/P; throws on invalid value or exponent outside [minE,maxE]. Configuration via Decimal.set({precision:1–1e9=20, rounding:0–8=4, minE:–9e15=–9e15, maxE:0–9e15=9e15, toExpNeg:–9e15=–7, toExpPos:0–9e15=20, modulo:0–9=1, crypto:false}); direct assignment bypasses validation. Static methods: abs, acos, acosh, add(x,y), asin, asinh, atan, atanh, atan2(y,x): range [–π,π], cbrt, ceil, clamp, clone(config), cos, cosh, div, exp, floor, hypot, ln, log, log2, log10, max, min, mod, mul, noConflict, pow, random(dp), round, set(config), sign, sin, sinh, sqrt, sub, sum, tan, tanh, trunc. Instance methods: absoluteValue, abs, ceil, cmp, clamp, cos, cosh, div, exp, floor, ln, log, mod, mul, neg, plus, pow, round, sin, sqrt, sub, toFixed, toExponential, toPrecision, toSignificantDigits, toDP, toHex, toOctal, toString, valueOf, etc. Constants: ROUND_UP=0,…,EUCLID=9. Errors: DecimalError. Zero, NaN, ±Infinity follow JS semantics.
-
-## Normalised Extract
-Table of Contents
-1  Constructor
-2  Configuration
-3  Static Methods
-4  Instance Methods
-5  Constants
-6  Errors & Special Values
-
-1  Constructor
-Signature: Decimal(value: number|string|Decimal)⇒Decimal
-Valid value: integer or float including ±0, ±Infinity, NaN; string may be decimal, binary (0b/0B), octal (0o/0O), hexadecimal (0x/0X); exponential notation uses e/E for decimal, p/P for non-decimal; unlimited digits apart from JS array size and processing time; exponent must be between minE and maxE; throws DecimalError on invalid input.
-
-2  Configuration
-Method: Decimal.set(object)⇒DecimalConstructor
-Properties:
-  precision: 1–1e9, default 20
-  rounding: 0–8, default 4
-  minE: –9e15–0, default –9e15
-  maxE: 0–9e15, default 9e15
-  toExpNeg: –9e15–0, default –7
-  toExpPos: 0–9e15, default 20
-  modulo: 0–9, default 1
-  crypto: boolean, default false
-  defaults: boolean flag to reset unspecified to defaults
-Throws DecimalError on invalid property values.
-Direct assignment: Decimal.precision=40 (no validation).
-Clone: Decimal.clone([object])⇒DecimalConstructor; clone copies or applies object settings; object.defaults=true resets to defaults then applies other properties.
-
-3  Static Methods
-abs(x)⇒Decimal | acos(x)⇒Decimal | acosh(x)⇒Decimal | add(x,y)⇒Decimal | asin(x)⇒Decimal | asinh(x)⇒Decimal | atan(x)⇒Decimal | atanh(x)⇒Decimal | atan2(y,x)⇒Decimal (Range –π to π) | cbrt(x)⇒Decimal | ceil(x)⇒Decimal | clamp(min,max)⇒Decimal | clone([object])⇒DecimalConstructor | cos(x)⇒Decimal | cosh(x)⇒Decimal | div(x,y)⇒Decimal | exp(x)⇒Decimal | floor(x)⇒Decimal | hypot([x,y,…])⇒Decimal | ln(x)⇒Decimal | log(x[,base])⇒Decimal | log2(x)⇒Decimal | log10(x)⇒Decimal | max(x[,y,…])⇒Decimal | min(x[,y,…])⇒Decimal | mod(x,y)⇒Decimal | mul(x,y)⇒Decimal | noConflict()⇒DecimalConstructor | pow(base,exp)⇒Decimal | random([dp])⇒Decimal | round(x)⇒Decimal | set(object)⇒DecimalConstructor | sign(x)⇒number (1,–1,0,–0,NaN) | sin(x)⇒Decimal | sinh(x)⇒Decimal | sqrt(x)⇒Decimal | sub(x,y)⇒Decimal | sum(x[,y,…])⇒Decimal | tan(x)⇒Decimal | tanh(x)⇒Decimal | trunc(x)⇒Decimal
-
-4  Instance Methods
-absoluteValue()⇒Decimal | abs()⇒Decimal | ceil()⇒Decimal | cmp(x)⇒number | clamp(min,max)⇒Decimal | cos()⇒Decimal | cosh()⇒Decimal | div(x)⇒Decimal | divToInt(x)⇒Decimal | eq(x)⇒boolean | floor()⇒Decimal | gt(x)⇒boolean | gte(x)⇒boolean | sinh()⇒Decimal | sin()⇒Decimal | log(x)⇒Decimal | ln()⇒Decimal | minus(x)⇒Decimal | mod(x)⇒Decimal | exp()⇒Decimal | neg()⇒Decimal | plus(x)⇒Decimal | sd([includeZeros])⇒number | round()⇒Decimal | toDP(dp[,rm])⇒Decimal | toHex()⇒string | toPower(exp)⇒Decimal | toSD(sd[,rm])⇒Decimal | toString()⇒string | toPrecision(sd[,rm])⇒string | toFixed(dp[,rm])⇒string | toExponential(dp[,rm])⇒string | toNearest(step[,rm])⇒Decimal | valueOf()⇒string | etc.
-
-5  Constants
-ROUND_UP=0, ROUND_DOWN=1, ROUND_CEIL=2, ROUND_FLOOR=3, ROUND_HALF_UP=4, ROUND_HALF_DOWN=5, ROUND_HALF_EVEN=6, ROUND_HALF_CEIL=7, ROUND_HALF_FLOOR=8, EUCLID=9
-
-6  Errors & Special Values
-DecimalError: invalid constructor or set arguments; ±0 has sign bit; NaN; ±Infinity
+5. Static Hosting
+Steps:
+Download release, extract /dist
+Serve files via any HTTP server
+Edit swagger-initializer.js: replace default spec URL with your own
 
 ## Supplementary Details
-Default configuration object for Decimal constructor:
- precision:20
- rounding:4 (ROUND_HALF_UP)
- toExpNeg:-7
- toExpPos:20
- maxE:9e15
- minE:-9e15
- modulo:1
- crypto:false
-
-Usage patterns:
- • Require via npm: const Decimal=require('decimal.js');
- • Browser: <script src='decimal.min.js'></script>
- • Global crypto in Node.js: global.crypto=require('crypto');
- • For independent settings: const D9=Decimal.clone({precision:9}); D9.div(1,3)=>0.333333333
- • Restore defaults: Decimal.set({defaults:true});
- • Reset one property: Decimal.set({precision:50, defaults:true});
-
-Error handling:
- • Invalid precision: DecimalError: Invalid argument: precision: 0
- • Missing crypto: if crypto=true and no global crypto, Decimal.random() throws Exception
-
-Precision limits:
- • Trigonometric methods limited by Pi constant precision (see source)
- • naturalLogarithm accurate up to 1000 digits; LN10 constant precision 1025 digits; increase LN10 precision in source for >1000 digits
-
-Range behaviors:
- • Underflow to zero when exponent < minE
- • Overflow to Infinity when exponent > maxE
+Default module versions align with npm latest release. swagger-ui exports main(options:Object):void where options.dom_id default '#swagger-ui', options.url default 'https://petstore.swagger.io/v2/swagger.json'. swagger-ui-dist.absolutePath():string returns filesystem path. Bundle includes swagger-ui-bundle.js and swagger-ui-standalone-preset.js. Docker image tag corresponds with release; always use latest or specify tag. Base URL env var must start with '/'. Port vars override container HTTP and IPv6 listener. EMBEDDING=true sets X-Frame-Options to allow embedding. unpkg uses dist@5.11.0; adjust version accordingly. swagger-initializer.js default spec path is hardcoded; update variable 'spec' in that file.
 
 ## Reference Details
-Class: Decimal
-Constructor: new Decimal(value: number|string|Decimal) ⇒ Decimal
- Throws: DecimalError
-Properties (static): precision:number, rounding:number, minE:number, maxE:number, toExpNeg:number, toExpPos:number, modulo:number, crypto:boolean
-Constants: Decimal.ROUND_UP = 0
-           Decimal.ROUND_DOWN = 1
-           Decimal.ROUND_CEIL = 2
-           Decimal.ROUND_FLOOR = 3
-           Decimal.ROUND_HALF_UP = 4
-           Decimal.ROUND_HALF_DOWN = 5
-           Decimal.ROUND_HALF_EVEN = 6
-           Decimal.ROUND_HALF_CEIL = 7
-           Decimal.ROUND_HALF_FLOOR = 8
-           Decimal.EUCLID = 9
+SDK Methods:
+functions:
+  SwaggerUI(options:Object):{}
+    options.dom_id:string required
+    options.url:string
+    options.presets:Array
+    options.layout:string
+    returns instance Object with methods init(), render(), destroy()
 
-Static Methods:
- abs(x: number|string|Decimal) ⇒ Decimal
- acos(x: number|string|Decimal) ⇒ Decimal
- acosh(x: number|string|Decimal) ⇒ Decimal
- add(x: number|string|Decimal, y: number|string|Decimal) ⇒ Decimal
- atan2(y: number|string|Decimal, x: number|string|Decimal) ⇒ Decimal
- random(dp?: number) ⇒ Decimal throws if crypto=true and no secure source
- set(config: { precision?:number, rounding?:number, toExpNeg?:number, toExpPos?:number, minE?:number, maxE?:number, modulo?:number, crypto?:boolean, defaults?:boolean }) ⇒ DecimalConstructor
- clone(config?:object) ⇒ DecimalConstructor
- noConflict() ⇒ DecimalConstructor (browser only)
+  require('swagger-ui-dist').absolutePath():string
 
-Instance Methods:
- plus(x: number|string|Decimal) ⇒ Decimal
- minus(x: number|string|Decimal) ⇒ Decimal
- times(x: number|string|Decimal) ⇒ Decimal
- div(x: number|string|Decimal) ⇒ Decimal
- divToInt(x: number|string|Decimal) ⇒ Decimal
- mod(x: number|string|Decimal) ⇒ Decimal
- pow(exp: number|string|Decimal) ⇒ Decimal
- sqrt() ⇒ Decimal
- cbrt() ⇒ Decimal
- ln() ⇒ Decimal
- log(base?: number|string|Decimal) ⇒ Decimal
- log2() ⇒ Decimal
- log10() ⇒ Decimal
- exp() ⇒ Decimal
- sin() ⇒ Decimal
- cos() ⇒ Decimal
- tan() ⇒ Decimal
- sinh() ⇒ Decimal
- cosh() ⇒ Decimal
- tanh() ⇒ Decimal
- asin() ⇒ Decimal
- acos() ⇒ Decimal
- atan() ⇒ Decimal
- asinh() ⇒ Decimal
- acosh() ⇒ Decimal
- atanh() ⇒ Decimal
- abs() ⇒ Decimal
- neg() ⇒ Decimal
- cmp(x: number|string|Decimal) ⇒ number
- eq(x: number|string|Decimal) ⇒ boolean
- gt(x: number|string|Decimal) ⇒ boolean
- gte(x: number|string|Decimal) ⇒ boolean
- lt(x: number|string|Decimal) ⇒ boolean
- lte(x: number|string|Decimal) ⇒ boolean
- isFinite() ⇒ boolean
- isNaN() ⇒ boolean
- isZero() ⇒ boolean
- isPos() ⇒ boolean
- isNeg() ⇒ boolean
- precision(includeZeros?:boolean) ⇒ number
- toString() ⇒ string
- toNumber() ⇒ number
- toJSON() ⇒ string
- toFixed(dp: number, rm?: number) ⇒ string
- toExponential(dp: number, rm?: number) ⇒ string
- toPrecision(sd: number, rm?: number) ⇒ string
- toSignificantDigits(sd: number, rm?: number) ⇒ Decimal
- toDecimalPlaces(dp: number, rm?: number) ⇒ Decimal
- toHex() ⇒ string
- toOctal() ⇒ string
- toBinary() ⇒ string
- toFraction(maxDenominator?: number) ⇒ [Decimal, Decimal]
- toNearest(step: number|string|Decimal, rm?: number) ⇒ Decimal
- valueOf() ⇒ string
+  require('swagger-ui-dist').SwaggerUIBundle(options:Object):object same as SwaggerUI
+  require('swagger-ui-dist').SwaggerUIStandalonePreset:Object
 
-Usage Examples:
- const { Decimal } = require('decimal.js');
- Decimal.set({ precision: 30, rounding: Decimal.ROUND_HALF_EVEN });
- const x = new Decimal('1.23456789e-10');
- const y = x.mul(1e10).toFixed(5); // '1.23457'
+Docker Environment Variables:
+  SWAGGER_JSON: path to local swagger.json Default: none
+  SWAGGER_JSON_URL: HTTP(s) URL to spec Default: none
+  BASE_URL: root URL path Default: '/'
+  PORT: HTTP listener port Default: '8080'
+  PORT_IPV6: IPv6 listener port Default: none
+  EMBEDDING: 'true'|'false' Default: 'false'
 
 Best Practices:
- • Use clone() for different global settings rather than reconfiguring the global constructor.
- • For cryptographic randoms, set crypto=true and provide secure global.crypto in Node.js.
- • Always catch DecimalError when parsing user input.
+- Use swagger-ui in bundler-based projects to reduce payload.
+- Use swagger-ui-dist for static asset serving.
+- Pin unpkg versions to avoid breaking changes.
+- Configure BASE_URL for reverse proxies and subpath deployments.
+- Enable EMBEDDING only if embedding in iframes is required.
 
 Troubleshooting:
- Command: node -e "const D=require('decimal.js'); D.set({precision:0});"
- Expected Error: [DecimalError] Invalid argument: precision: 0
-
- Command: node -e "const D=require('decimal.js'); D.crypto=true; console.log(D.random());"
- If no global.crypto: Error: crypto not available
-
- Test underflow/overflow:
- node -e "const D=require('decimal.js'); D.set({minE:-3}); console.log(new D(0.0001).valueOf());" // '0'
- node -e "const D=require('decimal.js'); D.set({maxE:4}); console.log(new D(100000).valueOf());" // 'Infinity'
+Verify asset serving:
+  curl -I http://localhost:3000/swagger-ui.css
+Expected 'HTTP/1.1 200 OK'
+Check Docker logs:
+  docker logs <container>
 
 ## Information Dense Extract
-Decimal(value:number|string|Decimal)⇒Decimal; supports decimal, 0b/0B,0o/0O,0x/0X,exp e/E,p/P; throws DecimalError on invalid or exponent<minE/maxE. Config: Decimal.set({precision:1–1e9=20, rounding:0–8=4, minE:–9e15=–9e15, maxE:0–9e15=9e15, toExpNeg:–9e15=–7, toExpPos:0–9e15=20, modulo:0–9=1, crypto:false, defaults?:boolean}). Constants: ROUND_UP=0…EUCLID=9. Static methods: abs,acos,acosh,add(x,y),asin,asinh,atan,atanh,atan2(y,x),cbrt,ceil,clamp,clone,cos,cosh,div,exp,floor,hypot,ln,log,log2,log10,max,min,mod,mul,noConflict,pow,random(dp),round,set,sign,sin,sinh,sqrt,sub,sum,tan,tanh,trunc. Instance methods: plus,minus,times,div,divToInt,mod,pow,sqrt,cbrt,ln,log,log2,log10,exp,sin,cos,tan,sinh,cosh,tanh,asin,acos,atan,asinh,acosh,atanh,abs,neg,cmp,eq,gt,gte,lt,lte,isFinite,isNaN,isZero,isPos,isNeg,sd,precision,toString,toNumber,toJSON,toFixed,toExponential,toPrecision,toSignificantDigits,toDecimalPlaces,toHex,toOctal,toBinary,toFraction,toNearest,valueOf. Best practices: use clone for per-context config; set crypto with global.crypto for secure random; catch DecimalError. Troubleshoot common errors: invalid precision, missing crypto, underflow, overflow checks via set minE/maxE.
+npm install swagger-ui swagger-ui-react swagger-ui-dist; import SwaggerUI({dom_id, url, presets, layout}); express.static(require('swagger-ui-dist').absolutePath()); exports SwaggerUIBundle, SwaggerUIStandalonePreset; Docker pull/run with -e SWAGGER_JSON, SWAGGER_JSON_URL, BASE_URL, PORT, PORT_IPV6, EMBEDDING; unpkg CSS at /swagger-ui.css and JS at /swagger-ui-bundle.js,/swagger-ui-standalone-preset.js; static host /dist + edit swagger-initializer.js to your spec URL
 
 ## Sanitised Extract
 Table of Contents
-1  Constructor
-2  Configuration
-3  Static Methods
-4  Instance Methods
-5  Constants
-6  Errors & Special Values
+1. NPM Installation
+2. swagger-ui-dist Usage
+3. Docker Usage
+4. unpkg Integration
+5. Static Hosting
 
-1  Constructor
-Signature: Decimal(value: number|string|Decimal)Decimal
-Valid value: integer or float including 0, Infinity, NaN; string may be decimal, binary (0b/0B), octal (0o/0O), hexadecimal (0x/0X); exponential notation uses e/E for decimal, p/P for non-decimal; unlimited digits apart from JS array size and processing time; exponent must be between minE and maxE; throws DecimalError on invalid input.
+1. NPM Installation
+Install modules:
+npm install swagger-ui swagger-ui-react swagger-ui-dist
 
-2  Configuration
-Method: Decimal.set(object)DecimalConstructor
-Properties:
-  precision: 11e9, default 20
-  rounding: 08, default 4
-  minE: 9e150, default 9e15
-  maxE: 09e15, default 9e15
-  toExpNeg: 9e150, default 7
-  toExpPos: 09e15, default 20
-  modulo: 09, default 1
-  crypto: boolean, default false
-  defaults: boolean flag to reset unspecified to defaults
-Throws DecimalError on invalid property values.
-Direct assignment: Decimal.precision=40 (no validation).
-Clone: Decimal.clone([object])DecimalConstructor; clone copies or applies object settings; object.defaults=true resets to defaults then applies other properties.
+Import and initialize:
+import SwaggerUI from 'swagger-ui'
+// or
+const SwaggerUI = require('swagger-ui')
+SwaggerUI({ dom_id: '#myDomId', url: <OpenAPI URL>, presets: [], layout: '' })
 
-3  Static Methods
-abs(x)Decimal | acos(x)Decimal | acosh(x)Decimal | add(x,y)Decimal | asin(x)Decimal | asinh(x)Decimal | atan(x)Decimal | atanh(x)Decimal | atan2(y,x)Decimal (Range  to ) | cbrt(x)Decimal | ceil(x)Decimal | clamp(min,max)Decimal | clone([object])DecimalConstructor | cos(x)Decimal | cosh(x)Decimal | div(x,y)Decimal | exp(x)Decimal | floor(x)Decimal | hypot([x,y,])Decimal | ln(x)Decimal | log(x[,base])Decimal | log2(x)Decimal | log10(x)Decimal | max(x[,y,])Decimal | min(x[,y,])Decimal | mod(x,y)Decimal | mul(x,y)Decimal | noConflict()DecimalConstructor | pow(base,exp)Decimal | random([dp])Decimal | round(x)Decimal | set(object)DecimalConstructor | sign(x)number (1,1,0,0,NaN) | sin(x)Decimal | sinh(x)Decimal | sqrt(x)Decimal | sub(x,y)Decimal | sum(x[,y,])Decimal | tan(x)Decimal | tanh(x)Decimal | trunc(x)Decimal
+2. swagger-ui-dist Usage
+Retrieve absolute path:
+const path = require('swagger-ui-dist').absolutePath()
+Server assets:
+app.use(express.static(path));
+Exports:
+SwaggerUIBundle(options), SwaggerUIStandalonePreset
+Options: url:string, dom_id:string, presets:Array, layout:string
 
-4  Instance Methods
-absoluteValue()Decimal | abs()Decimal | ceil()Decimal | cmp(x)number | clamp(min,max)Decimal | cos()Decimal | cosh()Decimal | div(x)Decimal | divToInt(x)Decimal | eq(x)boolean | floor()Decimal | gt(x)boolean | gte(x)boolean | sinh()Decimal | sin()Decimal | log(x)Decimal | ln()Decimal | minus(x)Decimal | mod(x)Decimal | exp()Decimal | neg()Decimal | plus(x)Decimal | sd([includeZeros])number | round()Decimal | toDP(dp[,rm])Decimal | toHex()string | toPower(exp)Decimal | toSD(sd[,rm])Decimal | toString()string | toPrecision(sd[,rm])string | toFixed(dp[,rm])string | toExponential(dp[,rm])string | toNearest(step[,rm])Decimal | valueOf()string | etc.
+3. Docker Usage
+Commands:
+docker pull docker.swagger.io/swaggerapi/swagger-ui
+docker run -p hostPort:containerPort
+Environment variables:
+  SWAGGER_JSON=path
+  SWAGGER_JSON_URL=url
+  BASE_URL=pathPrefix
+  PORT=number (default 8080)
+  PORT_IPV6=number (none by default)
+  EMBEDDING=true|false (default false)
 
-5  Constants
-ROUND_UP=0, ROUND_DOWN=1, ROUND_CEIL=2, ROUND_FLOOR=3, ROUND_HALF_UP=4, ROUND_HALF_DOWN=5, ROUND_HALF_EVEN=6, ROUND_HALF_CEIL=7, ROUND_HALF_FLOOR=8, EUCLID=9
+4. unpkg Integration
+CSS URL: https://unpkg.com/swagger-ui-dist@latest/swagger-ui.css
+JS URLs: bundle and standalone-preset
+Initialization in window.onload:
+SwaggerUIBundle({ url, dom_id, presets, layout })
 
-6  Errors & Special Values
-DecimalError: invalid constructor or set arguments; 0 has sign bit; NaN; Infinity
+5. Static Hosting
+Steps:
+Download release, extract /dist
+Serve files via any HTTP server
+Edit swagger-initializer.js: replace default spec URL with your own
 
 ## Original Source
-Decimal.js
-https://mikemcl.github.io/decimal.js/
+OpenAPI and Swagger UI
+https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/
 
-## Digest of DECIMAL_JS
+## Digest of SWAGGER_UI_INSTALLATION
 
-# Decimal.js Arbitrary-Precision Decimal Type
-Date Retrieved: 2024-06-19
-Data Size: 13874875 bytes
-Links Found: 21129
+# NPM Installation
 
-# Constructor
-**Signature:** Decimal(value) ⇒ Decimal
-**Parameters:**
-  • value: number | string | Decimal
-    – ±0, ±Infinity, NaN
-    – decimal, binary (0b/0B), octal (0o/0O), hexadecimal (0x/0X)
-    – exponential: e/E for base-10, p/P for base-2 (binary/hex/octal)
-**Behavior:** Throws DecimalError on invalid value or exponent outside [minE, maxE]
+Install packages using npm:
 
-# Configuration Properties
-Set via `Decimal.set(object)` or direct assignment (no validation):
-  • precision: integer 1–1e9, default 20
-  • rounding: integer 0–8, default 4
-    – 0: ROUND_UP, 1: ROUND_DOWN, 2: ROUND_CEIL, 3: ROUND_FLOOR,
-      4: ROUND_HALF_UP, 5: ROUND_HALF_DOWN, 6: ROUND_HALF_EVEN,
-      7: ROUND_HALF_CEIL, 8: ROUND_HALF_FLOOR
-  • minE: integer –9e15 to 0, default –9e15
-  • maxE: integer 0 to 9e15, default 9e15
-  • toExpNeg: integer –9e15 to 0, default –7
-  • toExpPos: integer 0 to 9e15, default 20
-  • modulo: integer 0–9, default 1 (ROUND_DOWN)
-  • crypto: boolean, default false
+```bash
+npm install swagger-ui
+npm install swagger-ui-react
+npm install swagger-ui-dist
+```
 
-# Static Methods
-• abs(x) ⇒ Decimal
-• acos(x) ⇒ Decimal
-• acosh(x) ⇒ Decimal
-• add(x, y) ⇒ Decimal
-• asin(x) ⇒ Decimal
-• asinh(x) ⇒ Decimal
-• atan(x) ⇒ Decimal
-• atanh(x) ⇒ Decimal
-• atan2(y, x) ⇒ Decimal  Domain: [–∞, ∞], Range: [–π, π]
-• cbrt(x) ⇒ Decimal
-… (full list as per API)
+Import and invoke:
 
-# Instance Methods
-Inherited from prototype; immutable chaining.
-• absoluteValue() ⇒ Decimal
-• abs() ⇒ Decimal alias
-• ceil() ⇒ Decimal
-• cmp(x) ⇒ number 1, –1, 0 or NaN
-• clamp(min, max) ⇒ Decimal
-• cos() ⇒ Decimal
-• cosh() ⇒ Decimal
-• div(x) ⇒ Decimal
-• exp() ⇒ Decimal
-• floor() ⇒ Decimal
-… (full list as per API)
+```js
+import SwaggerUI from 'swagger-ui'
+// or
+const SwaggerUI = require('swagger-ui')
 
-# Constants
-• ROUND_UP = 0
-• ROUND_DOWN = 1
-• ROUND_CEIL = 2
-• ROUND_FLOOR = 3
-• ROUND_HALF_UP = 4
-• ROUND_HALF_DOWN = 5
-• ROUND_HALF_EVEN = 6
-• ROUND_HALF_CEIL = 7
-• ROUND_HALF_FLOOR = 8
-• EUCLID = 9
+SwaggerUI({ dom_id: '#myDomId' })
+```
 
-# Errors
-DecimalError: thrown on invalid constructor value or invalid configuration
+# swagger-ui-dist Usage
 
-# Zero, NaN & Infinity
-Consistent with JavaScript: signed zeros, NaN, ±Infinity
+Access assets for server-side projects:
+
+```js
+const express = require('express')
+const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
+const app = express()
+app.use(express.static(pathToSwaggerUi))
+app.listen(3000)
+```
+
+Expose bundle API:
+
+```js
+const { SwaggerUIBundle, SwaggerUIStandalonePreset } = require('swagger-ui-dist')
+const ui = SwaggerUIBundle({
+  url: 'https://petstore.swagger.io/v2/swagger.json',
+  dom_id: '#swagger-ui',
+  presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+  layout: 'StandaloneLayout'
+})
+```
+
+# Docker
+
+Pull image and run:
+
+```bash
+docker pull docker.swagger.io/swaggerapi/swagger-ui
+docker run -p 80:8080 docker.swagger.io/swaggerapi/swagger-ui
+```
+
+Run with host swagger.json file:
+
+```bash
+docker run -p 80:8080 -e SWAGGER_JSON=/foo/swagger.json -v /bar:/foo docker.swagger.io/swaggerapi/swagger-ui
+```
+
+Run with remote URL:
+
+```bash
+docker run -p 80:8080 -e SWAGGER_JSON_URL=https://petstore3.swagger.io/api/v3/openapi.json docker.swagger.io/swaggerapi/swagger-ui
+```
+
+Customize base URL and ports:
+
+```bash
+docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/swagger.json -v /bar:/foo docker.swagger.io/swaggerapi/swagger-ui
+docker run -p 80:80 -e PORT=80 docker.swagger.io/swaggerapi/swagger-ui
+docker run -p 80:80 -e PORT_IPV6=8080 docker.swagger.io/swaggerapi/swagger-ui
+docker run -p 80:80 -e EMBEDDING=true docker.swagger.io/swaggerapi/swagger-ui
+```
+
+# unpkg Integration
+
+Embed via script tags in HTML:
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css" />
+<script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js" crossorigin></script>
+<script>
+  window.onload = function() {
+    window.ui = SwaggerUIBundle({ url: 'https://petstore3.swagger.io/api/v3/openapi.json', dom_id: '#swagger-ui' })
+  }
+</script>
+```
+
+Use standalone preset:
+
+```html
+<script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-standalone-preset.js" crossorigin></script>
+<script>
+  window.ui = SwaggerUIBundle({ presets:[SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset], layout:'StandaloneLayout' })
+</script>
+```
+
+# Static Hosting
+
+Copy contents of /dist and serve:
+
+1. Download release and extract /dist.
+2. Copy files to webroot.
+3. Edit swagger-initializer.js to point to your OpenAPI spec URL.
+
 
 ## Attribution
-- Source: Decimal.js
-- URL: https://mikemcl.github.io/decimal.js/
-- License: MIT License
-- Crawl Date: 2025-05-10T19:28:47.609Z
-- Data Size: 13874875 bytes
-- Links Found: 21129
+- Source: OpenAPI and Swagger UI
+- URL: https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/
+- License: CC0 1.0 Universal / Apache-2.0
+- Crawl Date: 2025-05-11T07:31:12.655Z
+- Data Size: 802053 bytes
+- Links Found: 7569
 
 ## Retrieved
-2025-05-10
-library/VITEST_API.md
-# library/VITEST_API.md
-# VITEST_API
+2025-05-11
+library/EJS_OVERVIEW.md
+# library/EJS_OVERVIEW.md
+# EJS_OVERVIEW
 
 ## Crawl Summary
-Type Awaitable<T>=T|PromiseLike<T>; TestFunction=()=>Awaitable<void>; interface TestOptions { timeout?:number; retry?:number=0; repeats?:number=0 }. test(name:string|Function, fn:TestFunction, options?:TestOptions, timeout?:number):void. Aliases: it, test.skip, test.only, test.concurrent, test.runIf, test.skipIf, test.sequential, test.todo, test.fails, test.each, test.for. bench(name:string|Function, fn:BenchFunction, options?:BenchOptions):void; BenchOptions fields: time:number=500; iterations:number=10; now():number; signal:AbortSignal; throws:boolean; warmupTime:number=100; warmupIterations:number=5; setup:Hook; teardown:Hook; TaskResult fields: totalTime,min,max,hz,period,samples,mean,variance,sd,sem,df,critical,moe,rme,mad,p50,p75,p99,p995,p999. describe(name,fn,options?):void; aliases: describe.skip, only, concurrent, sequential, todo, each, for. Hooks: beforeEach,afterEach,beforeAll,afterAll(onTestFinished,onTestFailed).
+EJS templates embed plain JavaScript in <% %> scriptlet tags, support escaped (<%=) and unescaped (<%-) output, compile templates to JS functions cached in memory, and throw errors as JS exceptions including file and line info.
 
 ## Normalised Extract
 Table of Contents
+1 Template Syntax
+2 Output Modes
+3 Caching Mechanism
+4 Debugging Options
 
-1. Type Definitions
-2. TestOptions Interface
-3. Core Test Function
-4. Test Modifiers and Aliases
-5. Parameterized Tests
-6. Benchmark API
-7. Suite API
-8. Lifecycle Hooks
+1 Template Syntax
+- Scriptlet: <% code %> for control flow and logic.
 
-1. Type Definitions
-  Awaitable<T> = T or PromiseLike<T>
-  TestFunction = () => Awaitable<void>
+2 Output Modes
+- Escaped: <%= expression %> escapes HTML.
+- Raw: <%- expression %> outputs unescaped HTML.
 
-2. TestOptions Interface
-  timeout?: number milliseconds before fail
-  retry?: number  // retries on failure, default 0
-  repeats?: number // repeat count, default 0
+3 Caching Mechanism
+- Option cache: boolean (default false).
+- When true, compiled functions stored in memory keyed by template filename.
 
-3. Core Test Function
-  Signature: test(name:string|Function, fn:TestFunction, options?:TestOptions, timeout?:number):void
-  name: test title or function reference
-  fn: synchronous or async function returning void or promise
-  options: object for skip, concurrent, timeout, retry, repeats
-  timeout: numeric override if passed last
-
-4. Test Modifiers and Aliases
-  test.skip(name, fn, timeout?)
-  test.only(name, fn, timeout?)
-  test.concurrent(name, fn, timeout?)
-  test.runIf(condition)(name, fn, timeout?)
-  test.skipIf(condition)(name, fn, timeout?)
-  test.sequential(name, fn)
-  test.todo(name)
-  test.fails(name, fn)
-  Aliases: it, it.skip, it.only, it.concurrent, etc.
-
-5. Parameterized Tests
-  test.each(cases)(name template, fn)
-  test.for(cases)(name template, fn) // array case not spread
-  printf tokens: %s %d %i %f %j %o #%$ %%
-  Template syntax: backtick table|column definitions
-
-6. Benchmark API
-  bench(name:string|Function, fn:BenchFunction, options?:BenchOptions):void
-  Options:
-    time:number=500
-    iterations:number=10
-    warmupTime:number=100
-    warmupIterations:number=5
-    now():number
-    signal:AbortSignal
-    throws:boolean
-    setup:Hook
-    teardown:Hook
-  Return via on cycle logs and TaskResult structure
-
-7. Suite API
-  describe(name:string|Function, fn:TestFunction, options?:number|TestOptions):void
-  Modifiers: describe.skip, only, concurrent, sequential, todo, each, for
-
-8. Lifecycle Hooks
-  beforeEach(fn, timeout?)
-  afterEach(fn, timeout?)
-  beforeAll(fn, timeout?)
-  afterAll(fn, timeout?)
-  onTestFinished(callback)
-  onTestFailed(callback)
-
+4 Debugging Options
+- Option debug: boolean (default false).
+- When true, stack traces include template source context and line numbers.
 
 ## Supplementary Details
-Default Values and Global Configuration
-- Default test timeout: 5000ms, override via TestOptions.timeout or global config testTimeout
-- Default retry and repeats: 0
-- CLI flags: --sequence.concurrent to enable parallel, --sequence.shuffle true to randomize order, --sequence.seed to fix shuffle seed
-- Global config in vitest.config.js:
-  export default {
-    test: {
-      testTimeout: 10000,
-      sequence: { concurrent: true, shuffle: false, seed: 12345 }
-    },
-    chaiConfig: { truncateThreshold: 80 }
-  }
+Tag Delimiters
+- Scriptlet: <% code %>
+- Escaped Output: <%= value %>
+- Unescaped Output: <%- value %>
+
+Options
+- cache: boolean = false. Enables in-memory cache of compiled templates.
+- debug: boolean = false. Includes template context in error stack traces.
+
 Implementation Steps
-1. Import desired APIs:
-   import { test, describe, bench, beforeEach, afterEach, onTestFinished } from 'vitest'
-2. Define fixtures via test.extend({ ... }) to add custom context
-3. Write tests with modifiers: .only, .skip, .concurrent
-4. For parameterized tests, choose test.each or test.for according to spread behavior
-5. Add lifecycle hooks at file or suite scope
-6. Run with npx vitest [options]
+1. Install: npm install ejs
+2. Use render: const output = ejs.render(templateString, data, {cache:true, debug:true});
+3. Use compile: const fn = ejs.compile(templateString, {cache:true}); fn(data);
+
 
 
 ## Reference Details
-Complete API Signatures and Examples
+API: ejs.render(template: string, data: object, options?: {cache?: boolean, debug?: boolean}) => string | throws Error
+API: ejs.compile(template: string, options?: {cache?: boolean, debug?: boolean}) => (data: object) => string
+Options:
+- cache: boolean. Default false. Enables per-filename caching of compiled functions.
+- debug: boolean. Default false. Includes template file and line numbers in exception stack.
+Usage Example:
+const ejs = require('ejs');
+const tpl = '<h1><%= title %></h1>';
+// Immediate render
+const html = ejs.render(tpl, {title:'Test'}, {cache:true, debug:false});
+// Precompile and render
+const fn = ejs.compile(tpl, {cache:true});
+const html2 = fn({title:'Demo'});
 
-// Core Test
-function test(
-  name: string | Function,
-  optionsOrFn: TestOptions | TestFunction,
-  fnOrTimeout?: TestFunction | number,
-  timeoutIfProvided?: number
-): void
+Best Practice:
+- Enable cache in production: {cache:true, debug:false}
+- Enable debug in development: {cache:false, debug:true}
 
-// Options object usage
-test('heavy', { timeout: 20000, retry: 2, repeats: 3, skip: false, concurrent: true }, async () => {
-  await expect(doWork()).resolves.toBeDefined()
-})
-
-// Chained modifiers
-test.skip('will skip', () => {})
-test.concurrent.skip('skip concurrent', () => {})
-
-test.runIf(process.env.NODE_ENV==='test')('run only in test', () => {})
-
-test.sequential('serial test', async () => {})
-
-test.todo('to implement')
-
-test.fails('expected failure', async ()=>{ await expect(f()).rejects.toThrow() })
-
-// Parameterized tests
-const cases = [[1,2,3],[2,3,5]]
-test.each(cases)('sum(%i,%i)->%i', (a,b,exp)=>{ expect(a+b).toBe(exp) })
-test.for(cases)('sum unspread', ([a,b,exp])=>{ expect(a+b).toBe(exp) })
-
-test.each`
-a|b|exp
-${1}|${1}|${2}
-${2}|${3}|${5}
-`('sum $a+$b->$exp', ({a,b,exp})=>{expect(a+b).toBe(exp)})
-
-// Benchmark
-function bench(
-  name: string | Function,
-  fn: BenchFunction,
-  options?: BenchOptions
-): void
-
-bench('sort', () => { arr.sort() }, { time:1000, iterations:20, warmupTime:200 })
-
-// Suite
-function describe(
-  name: string | Function,
-  fn: TestFunction,
-  options?: number | TestOptions
-): void
-
-describe.only('focused suite', ()=>{ test('a', ()=>{}) })
-
-// Hooks
-beforeEach(async ()=>{ await resetDb() }, 10000)
-afterEach(()=>cleanupTemp())
-beforeAll(()=>startService())
-afterAll(()=>stopService())
-
-// Test-scoped hooks
-test('db', ({ onTestFinished, onTestFailed })=>{
-  const conn=connect()
-  onTestFinished(()=>conn.close())
-  onTestFailed(({ task })=>console.error(task.result.errors))
-})
-
-Best Practices
-- Use async/await tests instead of done callback
-- Isolate fixtures with test.extend and teardown via onTestFinished
-- Use test.concurrent for I/O-bound independent tests
-- Parameterize edge cases via test.each with template tables for clarity
-
-Troubleshooting
-1. To rerun only failures:
-   npx vitest --run --onlyFailures
-2. To increase snapshot threshold:
-   export default { chaiConfig:{ truncateThreshold:150 } }
-3. For debugging timeouts:
-   npx vitest --timeout=20000 --runs=false
-4. Clear cache if test context wrong:
-   npx vitest --clearCache
-
+Troubleshooting:
+Command: node -e "console.log(ejs.render('<div><%= x %>', {}))"
+Expected Error: ReferenceError: x is not defined at eval (eval at compile (path/to/template), <template>:1:6)
+Check template for undefined variables or missing data keys.
 
 ## Information Dense Extract
-Awaitable<T>=T|PromiseLike<T>; TestFunction=()=>Awaitable<void>; TestOptions{timeout?:number;retry?:number=0;repeats?:number=0}. test(name,fn,options?,timeout?):void. Modifiers: skip,only,concurrent,runIf,skipIf,sequential,todo,fails. test.each|for for parameterized. bench(name,fn,options?):void; BenchOptions{time=500ms,iterations=10,warmupTime=100ms,warmupIterations=5,now(),signal,throws,setup,teardown}. TaskResult fields: totalTime,min,max,hz,period,samples[],mean,variance,sd,sem,df,critical,moe,rme,mad,p50,p75,p99,p995,p999. describe(name,fn,options?):void; same modifiers. Hooks: beforeEach,afterEach,beforeAll,afterAll(onTestFinished,onTestFailed). Global config via vitest.config.js. CLI flags: --sequence.concurrent,--sequence.shuffle,--runs,--clearCache. Focus: async tests, fixtures via test.extend, onTestFinished teardown.
+EJS: <% code %>, <%= escaped %>, <%- raw %>. Options: cache=false|true, debug=false|true. render(str,data,opts)->string|Error. compile(str,opts)->(data)->string. Errors include file:line. Cache keyed by filename.
 
 ## Sanitised Extract
 Table of Contents
+1 Template Syntax
+2 Output Modes
+3 Caching Mechanism
+4 Debugging Options
 
-1. Type Definitions
-2. TestOptions Interface
-3. Core Test Function
-4. Test Modifiers and Aliases
-5. Parameterized Tests
-6. Benchmark API
-7. Suite API
-8. Lifecycle Hooks
+1 Template Syntax
+- Scriptlet: <% code %> for control flow and logic.
 
-1. Type Definitions
-  Awaitable<T> = T or PromiseLike<T>
-  TestFunction = () => Awaitable<void>
+2 Output Modes
+- Escaped: <%= expression %> escapes HTML.
+- Raw: <%- expression %> outputs unescaped HTML.
 
-2. TestOptions Interface
-  timeout?: number milliseconds before fail
-  retry?: number  // retries on failure, default 0
-  repeats?: number // repeat count, default 0
+3 Caching Mechanism
+- Option cache: boolean (default false).
+- When true, compiled functions stored in memory keyed by template filename.
 
-3. Core Test Function
-  Signature: test(name:string|Function, fn:TestFunction, options?:TestOptions, timeout?:number):void
-  name: test title or function reference
-  fn: synchronous or async function returning void or promise
-  options: object for skip, concurrent, timeout, retry, repeats
-  timeout: numeric override if passed last
-
-4. Test Modifiers and Aliases
-  test.skip(name, fn, timeout?)
-  test.only(name, fn, timeout?)
-  test.concurrent(name, fn, timeout?)
-  test.runIf(condition)(name, fn, timeout?)
-  test.skipIf(condition)(name, fn, timeout?)
-  test.sequential(name, fn)
-  test.todo(name)
-  test.fails(name, fn)
-  Aliases: it, it.skip, it.only, it.concurrent, etc.
-
-5. Parameterized Tests
-  test.each(cases)(name template, fn)
-  test.for(cases)(name template, fn) // array case not spread
-  printf tokens: %s %d %i %f %j %o #%$ %%
-  Template syntax: backtick table|column definitions
-
-6. Benchmark API
-  bench(name:string|Function, fn:BenchFunction, options?:BenchOptions):void
-  Options:
-    time:number=500
-    iterations:number=10
-    warmupTime:number=100
-    warmupIterations:number=5
-    now():number
-    signal:AbortSignal
-    throws:boolean
-    setup:Hook
-    teardown:Hook
-  Return via on cycle logs and TaskResult structure
-
-7. Suite API
-  describe(name:string|Function, fn:TestFunction, options?:number|TestOptions):void
-  Modifiers: describe.skip, only, concurrent, sequential, todo, each, for
-
-8. Lifecycle Hooks
-  beforeEach(fn, timeout?)
-  afterEach(fn, timeout?)
-  beforeAll(fn, timeout?)
-  afterAll(fn, timeout?)
-  onTestFinished(callback)
-  onTestFailed(callback)
+4 Debugging Options
+- Option debug: boolean (default false).
+- When true, stack traces include template source context and line numbers.
 
 ## Original Source
-Vitest Testing Framework
-https://vitest.dev/api/
+EJS Templating Engine
+https://ejs.co/#docs
 
-## Digest of VITEST_API
+## Digest of EJS_OVERVIEW
 
-# Vitest API Reference
+# EJS Template Engine Overview
 
-Retrieved: 2024-06-12  
-Data Size: 35151778 bytes
+Retrieved: 2024-06-12
 
-## Types
+## Key Features
 
-```ts
-// Promise or synchronous return
-type Awaitable<T> = T | PromiseLike<T>
+- Uses plain JavaScript in templates via scriptlet tags.
+- Template syntax: scriptlet tags for logic, escaped and unescaped output.
+- Caches compiled template functions for fast execution.
+- Runtime errors thrown as JavaScript exceptions with template file and line numbers.
 
-// Test function signature
-type TestFunction = () => Awaitable<void>
-```
+## Template Syntax
 
-## Interface TestOptions
+- Scriptlet tags: <% JavaScript code %>
+- Escaped output: <%= expression %>
+- Unescaped output: <%- expression %>
 
-```ts
-interface TestOptions {
-  /** milliseconds before timing out */
-  timeout?: number
-  /** retry count, default 0 */
-  retry?: number
-  /** repeat cycles, default 0 */
-  repeats?: number
-}
-```
+## Performance and Caching
 
-## Test API
+- Templates compiled to JavaScript functions.
+- Option cache: boolean flag to enable in-memory caching per filename.
 
-### test(name, fn, options?, timeout?)
-```ts
-function test(
-  name: string | Function,
-  optionsOrFn: TestOptions | TestFunction,
-  fnOrTimeout?: TestFunction | number,
-  timeoutIfProvided?: number
-): void
-```
-- name: string or Function
-- fn: TestFunction
-- options: TestOptions
-- timeout: number milliseconds
+## Debugging
 
-### Aliases
-- it, test.skip, it.skip
-- test.only, it.only
-- test.concurrent, it.concurrent
-- test.runIf, test.skipIf
-- test.sequential, it.sequential
-- test.todo, it.todo
-- test.fails, it.fails
-- test.each, it.each
-- test.for, it.for
+- Option debug: boolean flag to include original template context in stack traces.
+- Errors include file path and line number referencing the template source.
 
-## Bench API
+## Active Development
 
-### bench(name, fn, options?)
-```ts
-function bench(
-  name: string | Function,
-  fn: BenchFunction,
-  options?: BenchOptions
-): void
-```
-
-#### BenchOptions
-```ts
-interface BenchOptions {
-  time?: number       // ms, default 500
-  iterations?: number // default 10
-  now?: () => number
-  signal?: AbortSignal
-  throws?: boolean
-  warmupTime?: number      // ms, default 100
-  warmupIterations?: number// default 5
-  setup?: Hook
-  teardown?: Hook
-}
-```
-
-#### TaskResult
-```ts
-interface TaskResult {
-  error?: unknown
-  totalTime: number
-  min: number
-  max: number
-  hz: number
-  period: number
-  samples: number[]
-  mean: number
-  variance: number
-  sd: number
-  sem: number
-  df: number
-  critical: number
-  moe: number
-  rme: number
-  mad: number
-  p50: number
-  p75: number
-  p99: number
-  p995: number
-  p999: number
-}
-```
-
-## Suite API
-
-### describe(name, fn, options?)
-```ts
-function describe(
-  name: string | Function,
-  fn: TestFunction,
-  options?: number | TestOptions
-): void
-```
-
-Aliases: describe.skip, describe.only, describe.concurrent, describe.sequential, describe.todo, describe.each, describe.for
-
-## Hooks
-
-```ts
-beforeEach(fn: () => Awaitable<void>, timeout?: number): void
-afterEach(fn: () => Awaitable<void>, timeout?: number): void
-beforeAll(fn: () => Awaitable<void>, timeout?: number): void
-afterAll(fn: () => Awaitable<void>, timeout?: number): void
-```
-
-### Test-scoped hooks
-```ts
-onTestFinished(callback: () => void): void
-onTestFailed(callback: (context: ExtendedContext) => void): void
-```
+- Maintained under active development with community support.
 
 ## Attribution
-- Source: Vitest Testing Framework
-- URL: https://vitest.dev/api/
+- Source: EJS Templating Engine
+- URL: https://ejs.co/#docs
 - License: MIT License
-- Crawl Date: 2025-05-10T21:30:03.683Z
-- Data Size: 35151778 bytes
-- Links Found: 25273
+- Crawl Date: 2025-05-11T09:31:31.867Z
+- Data Size: 8029 bytes
+- Links Found: 26
 
 ## Retrieved
-2025-05-10
+2025-05-11
 library/JS_YAML.md
 # library/JS_YAML.md
 # JS_YAML
 
 ## Crawl Summary
-js-yaml v1.2 parser/writer. Install via npm install js-yaml. CLI: js-yaml [options] file. API.load(string, options) returns object|string|number|null throws YAMLException. Options: filename, onWarning, schema (FAILSAFE, JSON, CORE, DEFAULT), json override duplicate key behavior. API.loadAll supports multi-doc and optional iterator. API.dump(object, options) returns YAML string. DumpOptions include indent, noArrayIndent, skipInvalid, flowLevel, styles map, schema, sortKeys, lineWidth, noRefs, noCompatMode, condenseFlow, quotingType, forceQuotes, replacer. Styles mapping for tags !!null, !!int, !!bool, !!float. Supported tags list. Caveats: JS limitations on keys and implicit mapping.
+Installation via npm; global CLI supports -h, -v, -c, -t flags; import with require('js-yaml'); three core methods: load(string, options), loadAll(string, iterator, options), dump(object, options) with detailed option defaults; supported schemas (FAILSAFE, JSON, CORE, DEFAULT); dump-specific options including indent, flowLevel, styles, sortKeys, lineWidth, noRefs, noCompatMode, condenseFlow, quotingType, forceQuotes, replacer; full YAML tag-to-JS type mapping; caveats on object keys and anchor handling.
 
 ## Normalised Extract
 Table of Contents:
-1 Installation
-2 CLI Usage
-3 API.load
-4 API.loadAll
-5 API.dump
-6 Styles Mapping
-7 Supported Types
-8 Caveats
+1. Installation
+2. CLI Executable and Usage
+3. Import Statement
+4. API Methods
+   4.1 load(string, options)
+   4.2 loadAll(string, iterator, options)
+   4.3 dump(object, options)
+5. Method Options and Defaults
+6. Supported Schemas
+7. Supported YAML Types
+8. Caveats
 
-1 Installation
-   Command: npm install js-yaml
-   Global CLI: npm install -g js-yaml
+1. Installation
+   npm install js-yaml
 
-2 CLI Usage
-   Usage: js-yaml [ -h | --help ] [ -v | --version ] [ -c | --compact ] [ -t | --trace ] file
+2. CLI Executable and Usage
+   npm install -g js-yaml
+   Usage: js-yaml [-h] [-v] [-c] [-t] file
+   Flags:
+     -h, --help     Show help
+     -v, --version  Show version
+     -c, --compact  Compact error output
+     -t, --trace    Stack trace on error
 
-3 API.load
-   Signature: load(input: string, options?: {
-     filename?: string;
-     onWarning?: (warning: YAMLException) => void;
-     schema?: Schema;
-     json?: boolean;
-   }): any
-   Returns: object|string|number|null|undefined. Throws: YAMLException.
-   Default options: filename=null, onWarning=null, schema=DEFAULT_SCHEMA, json=false.
+3. Import Statement
+   const yaml = require('js-yaml');
+   const fs   = require('fs');
 
-4 API.loadAll
-   Signature: loadAll(input: string, iterator?: (doc: any) => void, options?: LoadOptions): any[]
-   Behavior: Parses multi-document streams. If iterator provided, invoked per document; else returns array.
+4. API Methods
+  4.1 load(string, options)
+    - Returns: Object|string|number|null|undefined
+    - Throws: YAMLException
+    - Options:
+        filename: string|null (default null)
+        onWarning: (YAMLException) → void (default null)
+        schema: Schema (DEFAULT_SCHEMA)
+        json: boolean (default false)
+  4.2 loadAll(string, iterator, options)
+    - Returns: any[] or applies iterator(doc)
+    - Iterator signature: (doc: any) → void
+    - Same options as load
+  4.3 dump(object, options)
+    - Returns: string
+    - Options:
+        indent: number = 2
+        noArrayIndent: boolean = false
+        skipInvalid: boolean = false
+        flowLevel: number = -1
+        styles: Record<string,string> = {}
+        schema: Schema = DEFAULT_SCHEMA
+        sortKeys: boolean|((a,b)=>number) = false
+        lineWidth: number = 80
+        noRefs: boolean = false
+        noCompatMode: boolean = false
+        condenseFlow: boolean = false
+        quotingType: ' or " = '\''
+        forceQuotes: boolean = false
+        replacer: (key,value) => any
 
-5 API.dump
-   Signature: dump(data: any, options?: {
-     indent?: number;
-     noArrayIndent?: boolean;
-     skipInvalid?: boolean;
-     flowLevel?: number;
-     styles?: Record<string,string>;
-     schema?: Schema;
-     sortKeys?: boolean|function;
-     lineWidth?: number;
-     noRefs?: boolean;
-     noCompatMode?: boolean;
-     condenseFlow?: boolean;
-     quotingType?: string;
-     forceQuotes?: boolean;
-     replacer?: (key: any, value: any) => any;
-   }): string
-   Default options: indent=2, noArrayIndent=false, skipInvalid=false, flowLevel=-1, schema=DEFAULT_SCHEMA, sortKeys=false, lineWidth=80, noRefs=false, noCompatMode=false, condenseFlow=false, quotingType="'", forceQuotes=false.
+5. Method Options and Defaults
+   All options have defined defaults. Override per method call.
 
-6 Styles Mapping
-   !!null: canonical(~), lowercase(null), uppercase(NULL), camelcase(Null), empty("")
-   !!int: binary(0b1), octal(0o1), decimal(1), hexadecimal(0x1)
-   !!bool: lowercase(true/false), uppercase(TRUE/FALSE), camelcase(True/False)
-   !!float: lowercase(.nan/.inf), uppercase(.NAN/.INF), camelcase(.NaN/.Inf)
+6. Supported Schemas
+   FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA
 
-7 Supported Types
-   !!null, !!bool, !!int, !!float, !!binary, !!timestamp, !!omap, !!pairs, !!set, !!str, !!seq, !!map
+7. Supported YAML Types
+   !!null, !!bool, !!int, !!float, !!binary, !!timestamp,
+   !!omap, !!pairs, !!set, !!str, !!seq, !!map
 
-8 Caveats
-   Objects/arrays as keys are stringified. Implicit block mapping property access unsupported.
-
+8. Caveats
+   Objects/arrays as keys are stringified. Anchors with duplicate keys throw exceptions.
 
 ## Supplementary Details
-Schemas Constants:
-- FAILSAFE_SCHEMA: allows only strings, arrays, objects.
-- JSON_SCHEMA: JSON-compatible types.
-- CORE_SCHEMA: alias of JSON_SCHEMA.
-- DEFAULT_SCHEMA: full YAML support.
-
-Error Handling:
-- load throws YAMLException on parse errors or multi-document input.
-- loadAll throws on invalid streams.
-
-Callback onWarning:
-- Receives YAMLException per warning.
-
-Enterprise:
-- Tidelift Subscription includes support, maintenance SLA.
+• Default schemas derive from YAML1.2 spec; JSON_SCHEMA/Core allow JSON notation variations (e.g. Null, NULL, binary integer prefixes).
+• Use json:true to override duplicate-key errors by last-value-wins behavior.
+• To skip unsupported types on dump (RegExp, Function), set skipInvalid:true.
+• For compact YAML output (URL params), set condenseFlow:true and adjust flowLevel to 0.
+• To force quoting of every non-key string, set forceQuotes:true and quotingType: '"'.
+• Implement custom replacer analogous to JSON.stringify for transforming values.
+• onWarning callback prototype: function warningHandler(warning: YAMLException) { /* log or collect warnings */ }
+• Error stack trace for CLI: use --trace flag.
 
 
 ## Reference Details
-Require and FS import:
+### Method Signatures
+
+```js
+// Load single document
+yaml.load(input: string, options?: {
+  filename?: string|null,
+  onWarning?: ((warning: YAMLException) => void)|null,
+  schema?: Schema,
+  json?: boolean
+}): any
+
+// Load multiple documents
+yaml.loadAll(input: string, iterator?: (doc: any) => void, options?: {
+  filename?: string|null,
+  onWarning?: ((warning: YAMLException) => void)|null,
+  schema?: Schema,
+  json?: boolean
+}): any[]
+
+// Dump object to YAML string
+yaml.dump(obj: any, options?: {
+  indent?: number,
+  noArrayIndent?: boolean,
+  skipInvalid?: boolean,
+  flowLevel?: number,
+  styles?: Record<string,string>,
+  schema?: Schema,
+  sortKeys?: boolean|((a: string,b: string)=>number),
+  lineWidth?: number,
+  noRefs?: boolean,
+  noCompatMode?: boolean,
+  condenseFlow?: boolean,
+  quotingType?: '"'|'\'',
+  forceQuotes?: boolean,
+  replacer?: (key: any, value: any) => any
+}): string;
+```
+
+### Complete Code Examples
+
+```js
 const yaml = require('js-yaml');
 const fs   = require('fs');
 
-// Load example
 try {
-  const doc = yaml.load(fs.readFileSync('/path/to/file.yml','utf8'), { filename: 'file.yml', onWarning: warn => console.warn(warn), schema: yaml.JSON_SCHEMA, json: true });
-  console.log(doc);
+  const content = fs.readFileSync('config.yml', 'utf8');
+  const config = yaml.load(content, {
+    filename: 'config.yml',
+    onWarning: (warn) => console.warn('YAML Warning:', warn.message),
+    schema: yaml.JSON_SCHEMA,
+    json: true
+  });
+  console.log('Loaded config:', config);
 } catch (e) {
-  if (e instanceof yaml.YAMLException) console.error('YAML error:', e.message);
-  else throw e;
+  console.error('Failed to load YAML:', e.stack);
 }
 
-// loadAll example
-const docs = yaml.loadAll(fs.readFileSync('multi.yml','utf8'), null, { schema: yaml.DEFAULT_SCHEMA });
-// or with iterator
-yaml.loadAll(data, doc => process(doc));
+const obj = { name: 'test', items: [1,2,3], nested: { a: null } };
+const yamlStr = yaml.dump(obj, {
+  indent: 4,
+  noArrayIndent: true,
+  flowLevel: 1,
+  styles: { '!!null': 'camelcase' },
+  sortKeys: (a,b) => a.localeCompare(b),
+  lineWidth: 120,
+  noRefs: true,
+  condenseFlow: true,
+  quotingType: '"',
+  forceQuotes: true
+});
+console.log(yamlStr);
+```
 
-// dump example
-const yamlStr = yaml.dump({ foo: 'bar', arr: [1,2,3] }, { indent:4, skipInvalid:true, sortKeys:true, styles:{ '!!null':'canonical' } });
+### CLI Usage Patterns
 
-// CLI troubleshooting
-Command: js-yaml invalid.yaml
-Expected: YAMLException with line and column. With --compact shows only message; with --trace shows stack.
+- Inspect file with errors compact:
+  js-yaml --compact settings.yml
+- Full trace:
+  js-yaml --trace settings.yml
 
-Best Practices:
-- Use DEFAULT_SCHEMA for full features.
-- Enable json:true for JSON-parse compatibility when expecting JSON-only input.
-- Set noRefs:true to inline all nodes.
+### Configuration Options Effects
 
-Troubleshooting:
-- Ensure utf8 encoding. Use fs.readFileSync(path,'utf8').
-- Validate schema constant usage: yaml.CORE_SCHEMA, yaml.JSON_SCHEMA.
-- Use onWarning callback to capture warnings for deprecated tags.
+indent:
+  Number of spaces per indent level in dump.
+noArrayIndent:
+  Prevent extra indent on sequence items.
+skipInvalid:
+  Omit pairs with unsupported types instead of throwing.
+flowLevel:
+  Threshold nesting level to switch to flow style.
+sortKeys:
+  Boolean or compare function to order keys in output.
+condenseFlow:
+  Remove spaces in flow collections for URL-friendly output.
+quotingType:
+  Define string quote style; affects non-printable fallback.
+forceQuotes:
+  Quote all strings regardless of content.
+replacer:
+  Transform values during serialization, signature like JSON.stringify.
 
+### Best Practices
+
+- Use SAFE_SCHEMA for untrusted input: yaml.load(str, { schema: yaml.FAILSAFE_SCHEMA })
+- Always wrap load in try/catch and inspect YAMLException.message and marke
+- Provide onWarning handler to capture non-fatal issues with custom tags
+- For large objects, set noRefs:true to inline repeated structures
+
+### Troubleshooting Procedures
+
+1. Duplicate key error on load:
+   - Enable json:true to override duplicates, or remove duplicates in source.
+2. Unsupported type on dump:
+   - Set skipInvalid:true or extend schema via js-yaml-js-types plugin.
+3. Unexpected flow style:
+   - Adjust flowLevel or set condenseFlow accordingly.
+4. Error messages lacking context:
+   - Pass filename option to include path in YAMLException.
+
+### Commands and Expected Outputs
+
+```bash
+$ js-yaml config.yml
+name: Example
+list:
+  - a
+  - b
+
+$ js-yaml --compact config.yml
+YAMLException: duplicated mapping key at line 3, column 5:
+    key: value
+        ^
+
+$ js-yaml --trace config.yml
+YAMLException: duplicated mapping key
+    at generateError (...)
+    at loadDocuments (...)
+    ...stack trace...
+```
 
 ## Information Dense Extract
-load(string,options={filename:null,onWarning:null,schema:DEFAULT_SCHEMA,json:false}): any throws YAMLException; loadAll(string,iterator?,options): any[]; dump(object,options={indent:2,noArrayIndent:false,skipInvalid:false,flowLevel:-1,styles:{},schema:DEFAULT_SCHEMA,sortKeys:false,lineWidth:80,noRefs:false,noCompatMode:false,condenseFlow:false,quotingType:"'",forceQuotes:false,replacer:null}): string; Schemas: FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA; Styles for !!null, !!int, !!bool, !!float; Supported types list; CLI js-yaml [-h|-v|-c|-t] file; FS readFileSync(path,'utf8') input; onWarning(YAMLException) callback; json:true overrides duplicate-key error to override; Caveats: objects/arrays as keys stringified; implicit mapping key access unsupported.
+install: npm install js-yaml | import: const yaml = require('js-yaml')
+
+load(input: string, {filename?:string|null= null, onWarning?:(YAMLException)=>void, schema?:Schema=DEFAULT_SCHEMA, json?:boolean=false}): any throws YAMLException
+
+loadAll(input: string, iterator?:(any)=>void, opts?): any[]
+
+dump(obj:any, {indent:number=2, noArrayIndent:boolean=false, skipInvalid:boolean=false, flowLevel:number=-1, styles:Record<tag,style>={}, schema:Schema=DEFAULT_SCHEMA, sortKeys:boolean|func=false, lineWidth:number=80, noRefs:boolean=false, noCompatMode:boolean=false, condenseFlow:boolean=false, quotingType:'"'|'\''='\'', forceQuotes:boolean=false, replacer?:(key,value)=>any}): string
+
+schemas: FAILSAFE_SCHEMA | JSON_SCHEMA | CORE_SCHEMA | DEFAULT_SCHEMA
+
+types: !!null,null; !!bool,boolean; !!int,number; !!float,number; !!binary,Buffer; !!timestamp,Date; !!omap,Array<[k,v]>; !!pairs,Array<[k,v]>; !!set,Object; !!str,string; !!seq,Array; !!map,Object
+
+cli: js-yaml [-h|--help] [-v|--version] [-c|--compact] [-t|--trace] file
+
+best practices: use FAILSAFE_SCHEMA for untrusted; wrap load in try/catch; onWarning handler; skipInvalid for unsupported; flowLevel & condenseFlow for URL
+
+troubleshoot: duplicate keys→json:true; skipInvalid→omit invalid; filename→context in errors; flags --compact/--trace for error verbosity
 
 ## Sanitised Extract
 Table of Contents:
-1 Installation
-2 CLI Usage
-3 API.load
-4 API.loadAll
-5 API.dump
-6 Styles Mapping
-7 Supported Types
-8 Caveats
+1. Installation
+2. CLI Executable and Usage
+3. Import Statement
+4. API Methods
+   4.1 load(string, options)
+   4.2 loadAll(string, iterator, options)
+   4.3 dump(object, options)
+5. Method Options and Defaults
+6. Supported Schemas
+7. Supported YAML Types
+8. Caveats
 
-1 Installation
-   Command: npm install js-yaml
-   Global CLI: npm install -g js-yaml
+1. Installation
+   npm install js-yaml
 
-2 CLI Usage
-   Usage: js-yaml [ -h | --help ] [ -v | --version ] [ -c | --compact ] [ -t | --trace ] file
+2. CLI Executable and Usage
+   npm install -g js-yaml
+   Usage: js-yaml [-h] [-v] [-c] [-t] file
+   Flags:
+     -h, --help     Show help
+     -v, --version  Show version
+     -c, --compact  Compact error output
+     -t, --trace    Stack trace on error
 
-3 API.load
-   Signature: load(input: string, options?: {
-     filename?: string;
-     onWarning?: (warning: YAMLException) => void;
-     schema?: Schema;
-     json?: boolean;
-   }): any
-   Returns: object|string|number|null|undefined. Throws: YAMLException.
-   Default options: filename=null, onWarning=null, schema=DEFAULT_SCHEMA, json=false.
+3. Import Statement
+   const yaml = require('js-yaml');
+   const fs   = require('fs');
 
-4 API.loadAll
-   Signature: loadAll(input: string, iterator?: (doc: any) => void, options?: LoadOptions): any[]
-   Behavior: Parses multi-document streams. If iterator provided, invoked per document; else returns array.
+4. API Methods
+  4.1 load(string, options)
+    - Returns: Object|string|number|null|undefined
+    - Throws: YAMLException
+    - Options:
+        filename: string|null (default null)
+        onWarning: (YAMLException)  void (default null)
+        schema: Schema (DEFAULT_SCHEMA)
+        json: boolean (default false)
+  4.2 loadAll(string, iterator, options)
+    - Returns: any[] or applies iterator(doc)
+    - Iterator signature: (doc: any)  void
+    - Same options as load
+  4.3 dump(object, options)
+    - Returns: string
+    - Options:
+        indent: number = 2
+        noArrayIndent: boolean = false
+        skipInvalid: boolean = false
+        flowLevel: number = -1
+        styles: Record<string,string> = {}
+        schema: Schema = DEFAULT_SCHEMA
+        sortKeys: boolean|((a,b)=>number) = false
+        lineWidth: number = 80
+        noRefs: boolean = false
+        noCompatMode: boolean = false
+        condenseFlow: boolean = false
+        quotingType: ' or ' = ''''
+        forceQuotes: boolean = false
+        replacer: (key,value) => any
 
-5 API.dump
-   Signature: dump(data: any, options?: {
-     indent?: number;
-     noArrayIndent?: boolean;
-     skipInvalid?: boolean;
-     flowLevel?: number;
-     styles?: Record<string,string>;
-     schema?: Schema;
-     sortKeys?: boolean|function;
-     lineWidth?: number;
-     noRefs?: boolean;
-     noCompatMode?: boolean;
-     condenseFlow?: boolean;
-     quotingType?: string;
-     forceQuotes?: boolean;
-     replacer?: (key: any, value: any) => any;
-   }): string
-   Default options: indent=2, noArrayIndent=false, skipInvalid=false, flowLevel=-1, schema=DEFAULT_SCHEMA, sortKeys=false, lineWidth=80, noRefs=false, noCompatMode=false, condenseFlow=false, quotingType=''', forceQuotes=false.
+5. Method Options and Defaults
+   All options have defined defaults. Override per method call.
 
-6 Styles Mapping
-   !!null: canonical(~), lowercase(null), uppercase(NULL), camelcase(Null), empty('')
-   !!int: binary(0b1), octal(0o1), decimal(1), hexadecimal(0x1)
-   !!bool: lowercase(true/false), uppercase(TRUE/FALSE), camelcase(True/False)
-   !!float: lowercase(.nan/.inf), uppercase(.NAN/.INF), camelcase(.NaN/.Inf)
+6. Supported Schemas
+   FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA
 
-7 Supported Types
-   !!null, !!bool, !!int, !!float, !!binary, !!timestamp, !!omap, !!pairs, !!set, !!str, !!seq, !!map
+7. Supported YAML Types
+   !!null, !!bool, !!int, !!float, !!binary, !!timestamp,
+   !!omap, !!pairs, !!set, !!str, !!seq, !!map
 
-8 Caveats
-   Objects/arrays as keys are stringified. Implicit block mapping property access unsupported.
+8. Caveats
+   Objects/arrays as keys are stringified. Anchors with duplicate keys throw exceptions.
 
 ## Original Source
-js-yaml
-https://github.com/nodeca/js-yaml
+Configuration File and Environment Variables Libraries
+https://github.com/nodeca/js-yaml#readme
 
 ## Digest of JS_YAML
 
-# JS-YAML Technical Digest (retrieved 2024-06-30)
-
 # Installation
 
-- npm install js-yaml
-- npm install -g js-yaml  (for CLI executable)
+YAML module for Node.js
 
-# CLI Usage
+    npm install js-yaml
 
-Usage: js-yaml [ -h ] [ -v ] [ -c ] [ -t ] file
+# CLI Executable
 
-Options:
-- -h, --help     Show help and exit
-- -v, --version  Show version and exit
-- -c, --compact  Display errors in compact mode
-- -t, --trace    Show stack trace on error
+Global install for CLI usage:
 
-# API: load(string, options)
+    npm install -g js-yaml
 
-Signature:
-load(input: string, options?: LoadOptions): any throws YAMLException
+Usage:
 
-LoadOptions:
-- filename?: string (default null)
-- onWarning?: (warning: YAMLException) => void
-- schema?: Schema (default DEFAULT_SCHEMA)
-- json?: boolean (default false)
+    js-yaml [-h] [-v] [-c] [-t] file
 
-Schemas:
-- FAILSAFE_SCHEMA
-- JSON_SCHEMA
-- CORE_SCHEMA
-- DEFAULT_SCHEMA
+Positional arguments:
+  file           File with YAML document(s)
 
-# API: loadAll(string, iterator?, options?)
+Optional arguments:
+  -h, --help     Show this help message and exit.
+  -v, --version  Show program's version number and exit.
+  -c, --compact  Display errors in compact mode
+  -t, --trace    Show stack trace on error
 
-Signature:
-loadAll(input: string, iterator?: (doc: any) => void, options?: LoadOptions): any[]
+# Import
 
-# API: dump(object, options)
+    const yaml = require('js-yaml');
+    const fs   = require('fs');
 
-Signature:
-dump(data: any, options?: DumpOptions): string
+# Primary Methods
 
-DumpOptions:
-- indent?: number (default 2)
-- noArrayIndent?: boolean (default false)
-- skipInvalid?: boolean (default false)
-- flowLevel?: number (default -1)
-- styles?: Record<string, string>
-- schema?: Schema (default DEFAULT_SCHEMA)
-- sortKeys?: boolean | ((a: string, b: string) => number) (default false)
-- lineWidth?: number (default 80)
-- noRefs?: boolean (default false)
-- noCompatMode?: boolean (default false)
-- condenseFlow?: boolean (default false)
-- quotingType?: "'" | '"' (default "'")
-- forceQuotes?: boolean (default false)
-- replacer?: (key: any, value: any) => any
+## load(string[, options])
 
-# Styles Table
+Parses a single YAML document. Returns plain object, string, number, null, or undefined; throws YAMLException on error.
 
-Tag     | Style       | Example Output
-!!null  | canonical   | ~
-!!null  | lowercase   | null
-!!int   | binary      | 0b101010
-...     | ...         | ...
+**Signature:**
 
-# Supported YAML Types
+    yaml.load(string, options?) → any | throws YAMLException
 
-!!null, !!bool, !!int, !!float, !!binary, !!timestamp, !!omap, !!pairs, !!set, !!str, !!seq, !!map
+**Options:**
+
+  • filename (string|null)       Default: null
+  • onWarning (function|null)   Default: null
+  • schema (Schema)             Default: DEFAULT_SCHEMA
+  • json (boolean)              Default: false
+
+**Schemas:**
+
+  • FAILSAFE_SCHEMA
+  • JSON_SCHEMA
+  • CORE_SCHEMA
+  • DEFAULT_SCHEMA
+
+## loadAll(string[, iterator][, options])
+
+Parses multi-document YAML. Returns array of documents or applies iterator to each document.
+
+**Signature:**
+
+    yaml.loadAll(string, iterator?, options?) → any[]
+
+## dump(object[, options])
+
+Serializes object to YAML string. Throws on invalid types unless skipInvalid=true.
+
+**Signature:**
+
+    yaml.dump(object, options?) → string
+
+**Options:**
+
+  • indent (number)             Default: 2
+  • noArrayIndent (boolean)     Default: false
+  • skipInvalid (boolean)       Default: false
+  • flowLevel (number)          Default: -1
+  • styles (Object)             Default: {}
+  • schema (Schema)             Default: DEFAULT_SCHEMA
+  • sortKeys (boolean|function) Default: false
+  • lineWidth (number)          Default: 80
+  • noRefs (boolean)            Default: false
+  • noCompatMode (boolean)      Default: false
+  • condenseFlow (boolean)      Default: false
+  • quotingType (' or ")       Default: '
+  • forceQuotes (boolean)       Default: false
+  • replacer (function)         Default: undefined
+
+# Supported Types
+
+| Tag        | JavaScript Type                         |
+|------------|-----------------------------------------|
+| !!null     | null                                    |
+| !!bool     | boolean                                 |
+| !!int      | number                                  |
+| !!float    | number                                  |
+| !!binary   | Buffer                                  |
+| !!timestamp| Date                                    |
+| !!omap     | Array<[key,value]>                      |
+| !!pairs    | Array<[key,value]>                      |
+| !!set      | Object with null values                 |
+| !!str      | string                                  |
+| !!seq      | Array                                   |
+| !!map      | Object                                  |
+
+# JavaScript-specific Tags
+
+Use https://github.com/nodeca/js-yaml-js-types for extra types (e.g., RegExp, Function).
 
 # Caveats
 
-- Objects or arrays used as map keys are stringified via toString().
-- Implicit block mapping key property access not supported.
+• Objects or arrays as keys are stringified via toString().
 
-# Enterprise Support
+• Implicit block mapping keys with anchors and aliases may produce duplicate-key exceptions.
 
-- Available via Tidelift Subscription for commercial maintenance.
+# Retrieval Metadata
 
+- Date Retrieved: 2024-06-05
+- Data Size: 656477 bytes
+- Links Found: 4956
 
 ## Attribution
-- Source: js-yaml
-- URL: https://github.com/nodeca/js-yaml
+- Source: Configuration File and Environment Variables Libraries
+- URL: https://github.com/nodeca/js-yaml#readme
 - License: MIT License
-- Crawl Date: 2025-05-10T23:58:36.322Z
-- Data Size: 953543 bytes
-- Links Found: 5780
-
-## Retrieved
-2025-05-10
-library/COSMICONFIG.md
-# library/COSMICONFIG.md
-# COSMICONFIG
-
-## Crawl Summary
-cosmiconfig module exposes async and sync entry points. Async: cosmiconfig(name,options), sync: cosmiconfigSync(name,options). Default search path includes package.json, rc files in root and .config subdir, config files with extensions. Explorer methods: search, load, clearLoadCache, clearSearchCache, clearCaches. Options control searchStrategy, searchPlaces, loaders, packageProp, stopDir, cache, transform, ignoreEmptySearchPlaces. Default loaders map extensions to loadJson, loadYaml, loadJs, loadTs. JS modules loaded via dynamic import in async API; sync API uses require. Caching per-explorer, clearable. Differs from rc: stops at first match, supports JS/TS.
-
-## Normalised Extract
-Table of Contents
-
-1. Async API Instantiation
-2. Explorer.search
-3. Explorer.load
-4. Cache Management
-5. Configuration Options
-   5.1 searchStrategy
-   5.2 searchPlaces
-   5.3 loaders
-   5.4 packageProp
-   5.5 stopDir
-   5.6 cache
-   5.7 transform
-   5.8 ignoreEmptySearchPlaces
-6. Default Search Places
-7. Default Loaders
-8. Loading JS Modules
-9. Caching
-10. Differences from rc
-
-1. Async API Instantiation
-Function signature: cosmiconfig(moduleName: string, options?: CosmiconfigOptions): Explorer
-moduleName must be filename-safe, no scoped names
-Returns Explorer with initialized caches
-
-2. Explorer.search
-Signature: search(searchFrom?: string): Promise<Result|null>
-Default searchFrom: process.cwd()
-Result object structure: { config: any; filepath: string; isEmpty?: true }
-Search order per directory: package.json property, .moduleName rc, .rc.json/.yaml/.yml/.js/.ts/.mjs/.cjs, .config subdir variants, moduleName.config.js/.ts/.mjs/.cjs
-Strategy after current directory determined by searchStrategy: none, project, or global. global then checks OS config dir ~/.config/moduleName/
-
-3. Explorer.load
-Signature: load(loadPath: string): Promise<Result>
-Reads loadPath via loader based on extension or noExt
-Throws if file missing or parse error
-
-4. Cache Management
-clearLoadCache(): void clears load cache
-clearSearchCache(): void clears search cache
-clearCaches(): void calls both
-
-5. Configuration Options
-5.1 searchStrategy: none|project|global default none or global if stopDir set
-5.2 searchPlaces: string[] default 22 paths built from moduleName
-5.3 loaders: { [ext]: loader } merged with defaultLoaders; keys ext include ".js", ".json", ".yaml", ".ts", ".mjs", ".cjs", "noExt"
-5.4 packageProp: string|string[] default moduleName
-5.5 stopDir: string default home directory
-5.6 cache: boolean default true
-5.7 transform: (result)=>Result|Promise<Result> transform cached result
-5.8 ignoreEmptySearchPlaces: boolean default true
-
-6. Default Search Places
-Asynchronous default searchPlaces list of 22 file paths as above
-
-7. Default Loaders
-Ext to defaultLoaders mapping: see defaultLoaders export
-Sync version excludes .mjs
-
-8. Loading JS Modules
-Async uses dynamic import for .js/.ts/.mjs/.cjs
-Sync uses require for .js/.cjs only
-
-9. Caching
-Per-instance caches for search and load
-Cache disabled by option cache=false or by clear methods
-
-10. Differences from rc
-Finds first config then stops, no merging
-Built-in JSON, YAML, CommonJS support
-Asynchronous by default
-
-## Supplementary Details
-Default values
-searchStrategy: none or global if stopDir set
-searchPlaces: see normalisedExtract section 6
-loaders: defaultLoaders Async with .mjs,.cjs,.js,.ts,.json,.yaml,.yml,noExt; Sync excludes .mjs
-packageProp: moduleName
-stopDir: os.homedir()
-cache: true
-ignoreEmptySearchPlaces: true
-
-Implementation Steps
-1. npm install cosmiconfig
-2. import { cosmiconfig } from 'cosmiconfig'
-3. const explorer = cosmiconfig('myapp',{ cache:false, searchStrategy:'project' })
-4. const result = await explorer.search('/path/to/start')
-5. if(result) use result.config; else handle no config
-6. explorer.clearCaches() before program exit to free memory
-
-Loader Customization Example
-cosmiconfig('foo',{ loaders:{ '.json':defaultLoadersSync['.json'] } }) // enforce strict JSON
-
-Transform Example
-cosmiconfig('foo',{ transform:result=>{ result.config.env=process.env.NODE_ENV; return result } })
-
-## Reference Details
-Async API
-
-import { cosmiconfig, defaultLoaders } from 'cosmiconfig'
-
-const explorer = cosmiconfig('appName',{
-  searchStrategy:'global',
-  searchPlaces:[
-    'package.json',
-    '.appnrc',
-    '.appnrc.json',
-    '.config/appnrc.yaml',
-    'appn.config.js'
-  ],
-  loaders: {
-    '.yaml': defaultLoaders['.yaml'],
-    'noExt': defaultLoaders['.json']
-  },
-  packageProp:['configs','appName'],
-  stopDir:'/project/root',
-  cache:false,
-  transform: async result => ({ ...result, config: sanitize(result.config) }),
-  ignoreEmptySearchPlaces:false
-})
-
-// search()
-// Returns Promise<{ config:any; filepath:string; isEmpty?:true } | null>
-
-explorer.search('/cwd/subdir')
-  .then(result=>{
-    if(!result) throw new Error('No config found')
-    applyConfig(result.config)
-  })
-  .catch(err=>console.error('config load error',err))
-
-// load()
-// Returns Promise<Result>
-
-explorer.load('/config/path/app.config.yaml')
-  .then(({config,filepath})=> console.log('loaded',filepath))
-  .catch(err=> console.error(err))
-
-// Caching methods
-e.explorer.clearLoadCache()
-explorer.clearSearchCache()
-explorer.clearCaches()
-
-Sync API
-
-import { cosmiconfigSync, defaultLoadersSync } from 'cosmiconfig'
-
-const explorerSync = cosmiconfigSync('appName',{ cache:true })
-const resultSync = explorerSync.search('/start')
-if(resultSync) use(resultSync.config)
-
-Configuration Options Table
-
-| Option                  | Type                         | Default                                        | Effect                                          |
-|-------------------------|------------------------------|------------------------------------------------|-------------------------------------------------|
-| searchStrategy          | 'none'|'project'|'global'  | 'none' if no stopDir, 'global' if stopDir set  | Controls directory traversal strategy           |
-| searchPlaces            | string[]                     | default 22 module-based places                 | Defines files and paths to check per directory  |
-| loaders                 | { [ext]: loader }            | defaultLoaders/Sync                            | Maps extensions to parse functions              |
-| packageProp             | string  string[]       | moduleName                                     | Property path in package.json                   |
-| stopDir                 | string                       | os.homedir()                                   | Directory where search stops                    |
-| cache                   | boolean                      | true                                           | Enables caching of results                      |
-| transform               | (Result)=>ResultPromise | identity                                       | Transforms result before caching                |
-| ignoreEmptySearchPlaces | boolean                      | true                                           | Skip empty files during search                  |
-
-Best Practice Example
-
-// Enforce strict JSON for rc files and disable caching
-const explorerStrict = cosmiconfig('myapp',{
-  cache:false,
-  loaders:{ noExt:defaultLoaders['.json'] }
-})
-
-const resultStrict = await explorerStrict.search()
-if(resultStrict) console.log(JSON.stringify(resultStrict.config))
-
-Troubleshooting
-
-1. No config found but file exists
-   Command: console.log(explorer.searchPlaces)
-   Expected: array includes your filename
-   Fix: add custom searchPlaces covering extension
-
-2. Syntax error in JS config
-   Command: try explorer.load('path.js').catch(console.error)
-   Expected: SyntaxError with stack trace
-   Fix: ensure file exports via module.exports or use ESM with .mjs and async API
-
-3. Transform not applied
-   Check: option transform is async vs sync API mismatch
-   Fix: use sync-only transform for cosmiconfigSync
-
-
-## Information Dense Extract
-cosmiconfig(name,options) returns Explorer with methods search(searchFrom?), load(path), clearLoadCache(), clearSearchCache(), clearCaches(). Default search files per directory: package.json->packageProp, .name rc (noExt->YAML/JSON), .rc.json/.yaml/.yml/.js/.ts/.mjs/.cjs, .config subdir variants, name.config.js/.ts/.mjs/.cjs. Options: searchStrategy('none'|'project'|'global'), searchPlaces(string[]), loaders({ext:loader}), packageProp(string|string[]), stopDir(string), cache(boolean), transform(function), ignoreEmptySearchPlaces(boolean). Default loaders Async: .mjs,.cjs,.js(loadJs),.ts(loadTs),.json(loadJson),.yaml/.yml(loadYaml),noExt(loadYaml). JS modules loaded via dynamic import in async API; sync API uses require, ignores .mjs. Caching per instance, clearable. cosmiconfigSync for sync API identical signatures without promises.
-
-## Sanitised Extract
-Table of Contents
-
-1. Async API Instantiation
-2. Explorer.search
-3. Explorer.load
-4. Cache Management
-5. Configuration Options
-   5.1 searchStrategy
-   5.2 searchPlaces
-   5.3 loaders
-   5.4 packageProp
-   5.5 stopDir
-   5.6 cache
-   5.7 transform
-   5.8 ignoreEmptySearchPlaces
-6. Default Search Places
-7. Default Loaders
-8. Loading JS Modules
-9. Caching
-10. Differences from rc
-
-1. Async API Instantiation
-Function signature: cosmiconfig(moduleName: string, options?: CosmiconfigOptions): Explorer
-moduleName must be filename-safe, no scoped names
-Returns Explorer with initialized caches
-
-2. Explorer.search
-Signature: search(searchFrom?: string): Promise<Result|null>
-Default searchFrom: process.cwd()
-Result object structure: { config: any; filepath: string; isEmpty?: true }
-Search order per directory: package.json property, .moduleName rc, .rc.json/.yaml/.yml/.js/.ts/.mjs/.cjs, .config subdir variants, moduleName.config.js/.ts/.mjs/.cjs
-Strategy after current directory determined by searchStrategy: none, project, or global. global then checks OS config dir ~/.config/moduleName/
-
-3. Explorer.load
-Signature: load(loadPath: string): Promise<Result>
-Reads loadPath via loader based on extension or noExt
-Throws if file missing or parse error
-
-4. Cache Management
-clearLoadCache(): void clears load cache
-clearSearchCache(): void clears search cache
-clearCaches(): void calls both
-
-5. Configuration Options
-5.1 searchStrategy: none|project|global default none or global if stopDir set
-5.2 searchPlaces: string[] default 22 paths built from moduleName
-5.3 loaders: { [ext]: loader } merged with defaultLoaders; keys ext include '.js', '.json', '.yaml', '.ts', '.mjs', '.cjs', 'noExt'
-5.4 packageProp: string|string[] default moduleName
-5.5 stopDir: string default home directory
-5.6 cache: boolean default true
-5.7 transform: (result)=>Result|Promise<Result> transform cached result
-5.8 ignoreEmptySearchPlaces: boolean default true
-
-6. Default Search Places
-Asynchronous default searchPlaces list of 22 file paths as above
-
-7. Default Loaders
-Ext to defaultLoaders mapping: see defaultLoaders export
-Sync version excludes .mjs
-
-8. Loading JS Modules
-Async uses dynamic import for .js/.ts/.mjs/.cjs
-Sync uses require for .js/.cjs only
-
-9. Caching
-Per-instance caches for search and load
-Cache disabled by option cache=false or by clear methods
-
-10. Differences from rc
-Finds first config then stops, no merging
-Built-in JSON, YAML, CommonJS support
-Asynchronous by default
-
-## Original Source
-cosmiconfig
-https://github.com/davidtheclark/cosmiconfig
-
-## Digest of COSMICONFIG
-
-# Installation
-
-Installation Command
-
-npm install cosmiconfig
-
-Supported Environments
-
-Node.js >=14
-
-# Asynchronous API
-
-Function: cosmiconfig(moduleName: string, options?: CosmiconfigOptions): Explorer
-
-Explorer Methods:
-
-search(searchFrom?: string): Promise<Result|null>
-load(loadPath: string): Promise<Result>
-clearLoadCache(): void
-clearSearchCache(): void
-clearCaches(): void
-
-# Synchronous API
-
-Function: cosmiconfigSync(moduleName: string, options?: CosmiconfigOptions): ExplorerSync
-
-ExplorerSync Methods:
-
-search(searchFrom?: string): Result|null
-load(loadPath: string): Result
-clearLoadCache(): void
-clearSearchCache(): void
-clearCaches(): void
-
-# CosmiconfigOptions
-
-searchStrategy: 'none' | 'project' | 'global'  default none unless stopDir is set then global
-searchPlaces: string[]  default array of 22 paths based on moduleName
-loaders: {[ext: string]: SyncLoader|AsyncLoader}  merged with defaultLoaders
-packageProp: string|string[]  default moduleName
-stopDir: string  default user home directory
-cache: boolean  default true
-transform: (result: Result)=> Result|Promise<Result>
-ignoreEmptySearchPlaces: boolean  default true
-
-# Default searchPlaces (async)
-
-package.json
-.${moduleName}rc
-.${moduleName}rc.json
-.${moduleName}rc.yaml
-.${moduleName}rc.yml
-.${moduleName}rc.js
-.${moduleName}rc.ts
-.${moduleName}rc.mjs
-.${moduleName}rc.cjs
-.config/${moduleName}rc
-.config/${moduleName}rc.json
-.config/${moduleName}rc.yaml
-.config/${moduleName}rc.yml
-.config/${moduleName}rc.js
-.config/${moduleName}rc.ts
-.config/${moduleName}rc.mjs
-.config/${moduleName}rc.cjs
-${moduleName}.config.js
-${moduleName}.config.ts
-${moduleName}.config.mjs
-${moduleName}.config.cjs
-
-# Default loaders (async)
-
-Extension to function mapping:
-.mjs -> loadJs
-.cjs -> loadJs
-.js  -> loadJs
-.ts  -> loadTs
-.json-> loadJson
-.yaml-> loadYaml
-.yml -> loadYaml
-noExt-> loadYaml
-
-# Loading JS modules
-
-Async API uses dynamic import for .js,.ts,.mjs,.cjs
-Sync API treats all .js/.cjs as CommonJS, ignores .mjs
-
-# Caching
-
-Each Explorer instance has separate caches for search and load
-default cache=true
-clearLoadCache clears load cache
-e.g. explorer.clearLoadCache()
-
-# Differences from rc
-
-Stops at first found config, does not merge up-tree
-Built-in JSON,YAML,CommonJS support
-Asynchronous by default
-
-
-## Attribution
-- Source: cosmiconfig
-- URL: https://github.com/davidtheclark/cosmiconfig
-- License: MIT License
-- Crawl Date: 2025-05-10T23:33:14.117Z
-- Data Size: 1796518 bytes
-- Links Found: 7855
-
-## Retrieved
-2025-05-10
-library/WORKER_THREADS.md
-# library/WORKER_THREADS.md
-# WORKER_THREADS
-
-## Crawl Summary
-Worker constructor accepts filename:string|URL and options including argv:any[], env:ProcessEnv|SHARE_ENV, eval:boolean, execArgv:string[], stdin/ stdout/ stderr booleans, workerData:any, trackUnmanagedFds:boolean(default true), transferList:any[], resourceLimits:{maxYoungGenerationSizeMb, maxOldGenerationSizeMb, codeRangeSizeMb, stackSizeMb}, name:string(default 'WorkerThread').  Worker instance exposes threadId:number, resourceLimits, stdio streams, workerData, parentPort, performance.  Instance methods: postMessage(value,transferList), postMessageToThread(threadId,value,transferList,timeout):Promise, getHeapSnapshot(options):Promise<Readable>, getHeapStatistics():Promise<HeapStatistics>, terminate(), ref()/unref().  Global APIs: isMainThread, isInternalThread, set/getEnvironmentData(key,value), SHARE_ENV, markAsUntransferable(object), isMarkedAsUntransferable(object), markAsUncloneable(object), moveMessagePortToContext(port,context):MessagePort, receiveMessageOnPort(port):{message}|undefined.  MessageChannel: new MessageChannel()→{port1,port2}.  MessagePort methods: postMessage(value,transferList), close(),start(),ref(),unref(),hasRef(); events 'message','messageerror','close'.  BroadcastChannel: new BroadcastChannel(name), methods postMessage,close,ref,unref; events onmessage,onmessageerror.  Diagnostics: performance.eventLoopUtilization(util1?,util2?)→utilization result.  Transfer/clones: transferring ArrayBuffer detaches views; markAsUntransferable prevents transfer; markAsUncloneable prevents clone; structured clone strips prototypes and accessors.
-
-## Normalised Extract
-Table of Contents:
-1. Worker constructor
-2. Worker instance API
-3. Thread introspection properties
-4. Environment data API
-5. Message passing APIs
-6. Channel classes: MessageChannel, MessagePort, BroadcastChannel
-7. Transfer & clone control
-8. Diagnostics methods
-
-1. Worker constructor
-Signature:
-new Worker(filename: string | URL, options?: {
-  argv?: any[];
-  env?: NodeJS.ProcessEnv | symbol;
-  eval?: boolean;
-  execArgv?: string[];
-  stdin?: boolean;
-  stdout?: boolean;
-  stderr?: boolean;
-  workerData?: any;
-  trackUnmanagedFds?: boolean;
-  transferList?: any[];
-  resourceLimits?: {
-    maxYoungGenerationSizeMb?: number;
-    maxOldGenerationSizeMb?: number;
-    codeRangeSizeMb?: number;
-    stackSizeMb?: number;
-  };
-  name?: string;
-})
-Default values:
-env=process.env; trackUnmanagedFds=true; name='WorkerThread'; execArgv=inherit; stdio piping active=false; argv=[]; transferList=[]
-
-2. Worker instance API
-Properties:
-- threadId: unique integer
-- resourceLimits: {maxYoungGenerationSizeMb, maxOldGenerationSizeMb, codeRangeSizeMb, stackSizeMb}
-- stdin: Writable if options.stdin=true
-- stdout: Readable if options.stdout=true
-- stderr: Readable if options.stderr=true
-- workerData: clone of options.workerData
-- parentPort: MessagePort | null
-- performance: { eventLoopUtilization(util1?,util2?): result }
-
-Methods:
-- postMessage(value: any, transferList?: any[]): void
-- postMessageToThread(threadId: number, value: any, transferList?: any[], timeout?: number): Promise<void>
-- getHeapSnapshot(options?: { exposeInternals?: boolean; exposeNumericValues?: boolean }): Promise<Readable>
-- getHeapStatistics(): Promise<HeapStatistics>
-- terminate(): void
-- ref(): void
-- unref(): void
-
-Events (Worker extends EventEmitter):
-- 'online'
-- 'message'(value: any)
-- 'messageerror'(error: Error)
-- 'error'(err: Error)
-- 'exit'(exitCode: number)
-
-3. Thread introspection properties
-- isMainThread: boolean
-- isInternalThread: boolean
-- threadId: number
-- workerData: any
-
-4. Environment data API
-- setEnvironmentData(key: any, value?: any): void
-- getEnvironmentData(key: any): any
-- SHARE_ENV: symbol
-
-5. Message passing APIs
-- receiveMessageOnPort(port: MessagePort | BroadcastChannel): { message: any } | undefined
-
-6. Channel classes
-MessageChannel:
-- new MessageChannel(): { port1: MessagePort; port2: MessagePort }
-
-MessagePort (extends EventTarget):
-Methods: postMessage(value: any, transferList?: any[]): void; close(): void; start(): void; ref(): void; unref(): void; hasRef(): boolean
-Events: 'message'(value); 'messageerror'(error); 'close'()
-
-BroadcastChannel (extends EventTarget):
-- new BroadcastChannel(name: any)
-Methods: postMessage(message: any): void; close(): void; ref(): void; unref(): void
-Properties: onmessage: (event)=>void; onmessageerror: (event)=>void
-
-7. Transfer & clone control
-- markAsUntransferable(object: any): void
-- isMarkedAsUntransferable(object: any): boolean
-- markAsUncloneable(object: any): void
-- moveMessagePortToContext(port: MessagePort, contextifiedSandbox: any): MessagePort
-
-8. Diagnostics methods
-- performance.eventLoopUtilization(util1?: EventLoopUtilization, util2?: EventLoopUtilization): EventLoopUtilizationResult
-
-## Supplementary Details
-Worker pool pattern using AsyncResource:
-import { Worker } from 'node:worker_threads';
-import { AsyncResource } from 'async_hooks';
-class TaskResource extends AsyncResource {
-  constructor() { super('WorkerTask'); }
-  run(taskFn, callback) {
-    this.runInAsyncScope(taskFn, null, callback);
-  }
-}
-class WorkerPool {
-  constructor(size) {
-    this.workers = []; this.queue = [];
-    for (let i = 0; i < size; i++) this.workers.push(new WorkerPoolWorker());
-  }
-  exec(taskData) {
-    return new Promise((resolve, reject) => {
-      const resource = new TaskResource();
-      this.queue.push({ taskData, resolve, reject, resource });
-      this.dequeue();
-    });
-  }
-  dequeue() {
-    if (!this.queue.length) return;
-    const worker = this.workers.find(w => w.idle);
-    if (!worker) return;
-    const { taskData, resolve, reject, resource } = this.queue.shift();
-    worker.idle = false;
-    resource.run(() => worker.postMessage(taskData), (err, result) => {
-      worker.idle = true;
-      err ? reject(err) : resolve(result);
-      this.dequeue();
-    });
-  }
-}
-
-Recommended pool size: os.cpus().length; catch 'error' and 'exit' on Worker to respawn if necessary.
-
-ResourceLimits tuning:
-Providing resourceLimits to constructor sets V8 memory ceilings. Example:
-new Worker(file, { resourceLimits: { maxOldGenerationSizeMb:512, maxYoungGenerationSizeMb:128, codeRangeSizeMb:64, stackSizeMb:4 } });
-
-## Reference Details
-Worker constructor:
-new Worker(filename: string|URL,
-  options?: {
-    argv?: any[];
-    env?: NodeJS.ProcessEnv|symbol;
-    eval?: boolean;
-    execArgv?: string[];
-    stdin?: boolean;
-    stdout?: boolean;
-    stderr?: boolean;
-    workerData?: any;
-    trackUnmanagedFds?: boolean;
-    transferList?: any[];
-    resourceLimits?: {
-      maxYoungGenerationSizeMb?: number;
-      maxOldGenerationSizeMb?: number;
-      codeRangeSizeMb?: number;
-      stackSizeMb?: number;
-    };
-    name?: string;
-  }
-) => Worker
-
-postMessage:
-worker.postMessage(value: any, transferList?: any[]): void
-Throws if untransferable in transferList
-
-postMessageToThread:
-worker.postMessageToThread(threadId: number, value: any, transferList?: any[], timeout?: number): Promise<void>
-Errors: ERR_WORKER_MESSAGING_FAILED, ERR_WORKER_MESSAGING_SAME_THREAD, ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST, ERR_WORKER_MESSAGING_TIMEOUT, ERR_WORKER_MESSAGING_ERRORED
-
-receiveMessageOnPort:
-receiveMessageOnPort(port: MessagePort|BroadcastChannel):
-  undefined if queue empty or { message: any }
-
-setEnvironmentData:
-setEnvironmentData(key: any, value?: any): void
-getEnvironmentData(key: any): any
-SHARE_ENV: symbol
-
-markAsUntransferable(object: any): void
-isMarkedAsUntransferable(object: any): boolean
-markAsUncloneable(object: any): void
-moveMessagePortToContext(port: MessagePort, contextifiedSandbox: any): MessagePort
-
-MessageChannel:
-new MessageChannel(): { port1: MessagePort; port2: MessagePort }
-
-MessagePort:
-postMessage(value: any, transferList?: any[]): void
-close(): void
-start(): void
-ref(): void
-unref(): void
-hasRef(): boolean
-Events: 'message'(value), 'messageerror'(error), 'close'()
-
-BroadcastChannel:
-new BroadcastChannel(name: any)
-postMessage(message: any): void
-close(): void
-ref(): void
-unref(): void
-onmessage(event: MessageEvent): void
-onmessageerror(event: MessageErrorEvent): void
-
-Worker methods:
-getHeapSnapshot(options?: { exposeInternals?: boolean; exposeNumericValues?: boolean }): Promise<Readable>
-getHeapStatistics(): Promise<HeapStatistics>
-performance.eventLoopUtilization(util1?: EventLoopUtilization, util2?: EventLoopUtilization): EventLoopUtilizationResult
-terminate(): void
-ref(): void
-unref(): void
-
-Best practices:
-• Use a fixed thread pool sized by os.cpus().length
-• Use AsyncResource to correlate tasks in async_hooks
-• Handle 'error' and 'exit' to respawn workers
-
-Troubleshooting:
-• List active workers: console.log(worker.threadId)
-• Snapshot heap: await worker.getHeapSnapshot()
-• Inspect memory usage: await worker.getHeapStatistics()
-• Measure event loop: worker.performance.eventLoopUtilization()
-• Enable inspector: node --inspect-brk main.js
-• Trace events: --trace-events-enabled
-
-## Information Dense Extract
-WorkerOptions:{argv:any[],env:ProcessEnv|symbol=process.env,eval:boolean,execArgv:string[]=inherit,stdin:boolean=false,stdout:boolean=false,stderr:boolean=false,workerData:any,trackUnmanagedFds:boolean=true,transferList:any[],resourceLimits:{maxYoungGenerationSizeMb?,maxOldGenerationSizeMb?,codeRangeSizeMb?,stackSizeMb?},name:string='WorkerThread'}; Worker:{threadId:number,resourceLimits,stdin?,stdout?,stderr?,workerData,parentPort?,performance}; Methods: postMessage(value:any,transferList?:any[]):void; postMessageToThread(id:number,value:any,transferList?:any[],timeout?:number):Promise<void>; getHeapSnapshot(opts?):Promise<Readable>; getHeapStatistics():Promise<HeapStatistics>; terminate():void; ref():void; unref():void; Events:'online','message'(value),'messageerror'(err),'error'(err),'exit'(code). Static: isMainThread:boolean; isInternalThread:boolean; setEnvironmentData(key:any,value?):void; getEnvironmentData(key:any):any; SHARE_ENV; markAsUntransferable(obj):void; isMarkedAsUntransferable(obj):boolean; markAsUncloneable(obj):void; moveMessagePortToContext(port,ctx):MessagePort; receiveMessageOnPort(port):{message:any}|undefined. Channels: MessageChannel->{port1,port2}; MessagePort:{postMessage,close,start,ref,unref,hasRef},events 'message','messageerror','close'; BroadcastChannel:{new BroadcastChannel(name),postMessage,close,ref,unref,onmessage,onmessageerror}. Diagnostics: performance.eventLoopUtilization(util1?,util2?):result. Transfer: ArrayBuffer transfers detach views; clone strips prototypes/non-enumerables/accessors.
-
-## Sanitised Extract
-Table of Contents:
-1. Worker constructor
-2. Worker instance API
-3. Thread introspection properties
-4. Environment data API
-5. Message passing APIs
-6. Channel classes: MessageChannel, MessagePort, BroadcastChannel
-7. Transfer & clone control
-8. Diagnostics methods
-
-1. Worker constructor
-Signature:
-new Worker(filename: string | URL, options?: {
-  argv?: any[];
-  env?: NodeJS.ProcessEnv | symbol;
-  eval?: boolean;
-  execArgv?: string[];
-  stdin?: boolean;
-  stdout?: boolean;
-  stderr?: boolean;
-  workerData?: any;
-  trackUnmanagedFds?: boolean;
-  transferList?: any[];
-  resourceLimits?: {
-    maxYoungGenerationSizeMb?: number;
-    maxOldGenerationSizeMb?: number;
-    codeRangeSizeMb?: number;
-    stackSizeMb?: number;
-  };
-  name?: string;
-})
-Default values:
-env=process.env; trackUnmanagedFds=true; name='WorkerThread'; execArgv=inherit; stdio piping active=false; argv=[]; transferList=[]
-
-2. Worker instance API
-Properties:
-- threadId: unique integer
-- resourceLimits: {maxYoungGenerationSizeMb, maxOldGenerationSizeMb, codeRangeSizeMb, stackSizeMb}
-- stdin: Writable if options.stdin=true
-- stdout: Readable if options.stdout=true
-- stderr: Readable if options.stderr=true
-- workerData: clone of options.workerData
-- parentPort: MessagePort | null
-- performance: { eventLoopUtilization(util1?,util2?): result }
-
-Methods:
-- postMessage(value: any, transferList?: any[]): void
-- postMessageToThread(threadId: number, value: any, transferList?: any[], timeout?: number): Promise<void>
-- getHeapSnapshot(options?: { exposeInternals?: boolean; exposeNumericValues?: boolean }): Promise<Readable>
-- getHeapStatistics(): Promise<HeapStatistics>
-- terminate(): void
-- ref(): void
-- unref(): void
-
-Events (Worker extends EventEmitter):
-- 'online'
-- 'message'(value: any)
-- 'messageerror'(error: Error)
-- 'error'(err: Error)
-- 'exit'(exitCode: number)
-
-3. Thread introspection properties
-- isMainThread: boolean
-- isInternalThread: boolean
-- threadId: number
-- workerData: any
-
-4. Environment data API
-- setEnvironmentData(key: any, value?: any): void
-- getEnvironmentData(key: any): any
-- SHARE_ENV: symbol
-
-5. Message passing APIs
-- receiveMessageOnPort(port: MessagePort | BroadcastChannel): { message: any } | undefined
-
-6. Channel classes
-MessageChannel:
-- new MessageChannel(): { port1: MessagePort; port2: MessagePort }
-
-MessagePort (extends EventTarget):
-Methods: postMessage(value: any, transferList?: any[]): void; close(): void; start(): void; ref(): void; unref(): void; hasRef(): boolean
-Events: 'message'(value); 'messageerror'(error); 'close'()
-
-BroadcastChannel (extends EventTarget):
-- new BroadcastChannel(name: any)
-Methods: postMessage(message: any): void; close(): void; ref(): void; unref(): void
-Properties: onmessage: (event)=>void; onmessageerror: (event)=>void
-
-7. Transfer & clone control
-- markAsUntransferable(object: any): void
-- isMarkedAsUntransferable(object: any): boolean
-- markAsUncloneable(object: any): void
-- moveMessagePortToContext(port: MessagePort, contextifiedSandbox: any): MessagePort
-
-8. Diagnostics methods
-- performance.eventLoopUtilization(util1?: EventLoopUtilization, util2?: EventLoopUtilization): EventLoopUtilizationResult
-
-## Original Source
-Node.js Worker Threads API
-https://nodejs.org/api/worker_threads.html
-
-## Digest of WORKER_THREADS
-
-# Worker threads API (Node.js v24.0.1)
-
-Data Size: 3424865 bytes  
-Retrieval Date: 2024-06-07  
-
-# Worker Constructor
-**Signature**:  
-`new Worker(filename: string | URL, options?: WorkerOptions)`  
-
-**WorkerOptions**:  
-• argv: any[] – values appended to process.argv  
-• env: NodeJS.ProcessEnv | symbol – initial process.env or SHARE_ENV  
-• eval: boolean – treat filename as code  
-• execArgv: string[] – CLI options passed to worker (inherits parent by default)  
-• stdin: boolean – enable worker.stdin writable stream  
-• stdout: boolean – disable auto-piping to parent stdout  
-• stderr: boolean – disable auto-piping to parent stderr  
-• workerData: any – cloneable JS value for workerData  
-• trackUnmanagedFds: boolean – auto-close raw fds on exit (default: true)  
-• transferList: any[] – MessagePort-like objects in workerData  
-• resourceLimits: { maxYoungGenerationSizeMb?: number; maxOldGenerationSizeMb?: number; codeRangeSizeMb?: number; stackSizeMb?: number }  
-• name: string – worker name for debugging (default: 'WorkerThread')
-
-# Worker Properties & Methods
-
-## Properties
-• threadId: number  
-• resourceLimits: ResourceLimits  
-• stderr: Writable  
-• stdout: Readable  
-• stdin: Writable  
-• workerData: any  
-• parentPort: MessagePort | null  
-• performance: WorkerPerformance  
-
-## Instance Methods
-• postMessage(value: any, transferList?: any[]): void  
-• postMessageToThread(threadId: number, value: any, transferList?: any[], timeout?: number): Promise<void>  
-• getHeapSnapshot(options?: { exposeInternals?: boolean; exposeNumericValues?: boolean }): Promise<Readable>  
-• getHeapStatistics(): Promise<HeapStatistics>  
-• terminate(): void  
-• ref(): void  
-• unref(): void
-
-# Static APIs & Context Utilities
-
-## Thread Info
-• isMainThread: boolean  
-• isInternalThread: boolean  
-• threadId: number  
-• workerData: any
-
-## Environment Data
-• setEnvironmentData(key: any, value?: any): void  
-• getEnvironmentData(key: any): any  
-• SHARE_ENV: symbol
-
-## Transfer & Clone Control
-• markAsUntransferable(object: any): void  
-• isMarkedAsUntransferable(object: any): boolean  
-• markAsUncloneable(object: any): void  
-• moveMessagePortToContext(port: MessagePort, contextifiedSandbox: any): MessagePort  
-• receiveMessageOnPort(port: MessagePort | BroadcastChannel): { message: any } | undefined
-
-# MessageChannel & MessagePort
-
-## MessageChannel
-• new MessageChannel(): { port1: MessagePort; port2: MessagePort }
-
-## MessagePort Methods
-• postMessage(value: any, transferList?: any[]): void  
-• close(): void  
-• start(): void  
-• ref(): void  
-• unref(): void  
-• hasRef(): boolean
-
-## MessagePort Events
-• 'message'(value: any)  
-• 'messageerror'(error: Error)  
-• 'close'()
-
-# BroadcastChannel
-
-## Signature
-• new BroadcastChannel(name: any)  
-
-## Methods
-• postMessage(message: any): void  
-• close(): void  
-• ref(): void  
-• unref(): void
-
-## Events
-• onmessage(event: MessageEvent)  
-• onmessageerror(event: MessageErrorEvent)
-
-# Performance & Diagnostics
-
-## performance.eventLoopUtilization([util1?: EventLoopUtilization, util2?: EventLoopUtilization]): EventLoopUtilizationResult
-
-# Transfer & Clone Considerations
-
-• Transferring an ArrayBuffer renders all TypedArray/Buffer views unusable.  
-• markAsUntransferable() prevents transfer in transferList.  
-• markAsUncloneable() prevents cloning when posting messages.  
-• After transfer, objects are detached on sender side.  
-• Structured clone omits prototypes, non-enumerables, accessors.
-
-
-## Attribution
-- Source: Node.js Worker Threads API
-- URL: https://nodejs.org/api/worker_threads.html
-- License: Node.js License
-- Crawl Date: 2025-05-10T18:59:19.377Z
-- Data Size: 3424865 bytes
-- Links Found: 728
-
-## Retrieved
-2025-05-10
-library/GAUSS_LEGENDRE.md
-# library/GAUSS_LEGENDRE.md
-# GAUSS_LEGENDRE
-
-## Crawl Summary
-Initial a0=1, b0=1/√2, t0=¼, p0=1. Iteration: a=(a+b)/2, b=√(ab), t=t−p(a−a_prev)^2, p=2p. π≈(a+b)^2/(4t). Quadratic convergence. Use arbitrary-precision, Newton–Raphson for √. Check |a−b|<ε.
-
-## Normalised Extract
-Table of Contents:
-1. Variable Initialization
-2. Iteration Formulae
-3. Convergence Criterion
-4. π Computation Formula
-5. Implementation Steps
-6. Precision & Performance
-
-1. Variable Initialization
- set a=1, b=1/√2, t=0.25, p=1 using arbitrary-precision type.
-
-2. Iteration Formulae
- a_next = (a + b) / 2
- b_next = sqrt(a * b)
- t_next = t − p * (a − a_next)^2
- p_next = 2 * p
-
-3. Convergence Criterion
- stop when |a_next − b_next| <= ε where ε corresponds to target digit count.
-
-4. π Computation Formula
- π ≈ ((a_final + b_final)^2) / (4 * t_final)
-
-5. Implementation Steps
- - Choose precision bits = digits * log2(10) + margin
- - Initialize a,b,t,p
- - Loop compute next values storing previous a
- - Break when |a−b|<threshold
- - Apply π formula
- - Round/truncate to target digits.
-
-6. Precision & Performance
- - Multiply cost M(n): use FFT-based libs for >10k digits
- - Square-root: Newton iteration: x_{k+1}=(x_k + N/x_k)/2 to same precision
- - Memory O(n) per big number
-
-## Supplementary Details
-Parameter definitions:
- ε: target error bound = 10^{-digits}
- Precision bits: bits = digits * 3.32193 + 16
- 
-Implementation options:
- - sqrt via library function or Newton–Raphson
- - Use balanced tree multiplication for large n
- 
-Error tracking:
- - track Δ = |a−b| each iteration
- - estimate digits ≈ −log10(Δ)
-
-
-## Reference Details
-Pseudocode:
-```
-function computePi(digits):
-  bits = digits * log2(10) + 16
-  a = BigFloat(1, bits)
-  b = BigFloat(1, bits) / BigFloat(sqrt(2), bits)
-  t = BigFloat(0.25, bits)
-  p = BigFloat(1, bits)
-  while true:
-    a_next = (a + b) / 2
-    b_next = sqrt(a * b)
-    diff = a - a_next
-    t = t - p * diff * diff
-    p = p * 2
-    a = a_next
-    b = b_next
-    if |a - b| < 10^{-digits}: break
-  return ((a + b)*(a + b)) / (4 * t)
-```
-
-Best Practices:
-- Preallocate big-int buffers to avoid GC
-- Use FFT multiply for >1e4 digits
-- Use Newton–Raphson sqrt as above
-- Monitor convergence via Δ
-
-Troubleshooting:
-Command: run with digits=1e6 produces slow sqrt
-Expected: use specialized sqrt routine
-Solution: implement divide and Newton loop with cutoff
-
-
-## Information Dense Extract
-a0=1,b0=1/√2,t0=0.25,p0=1; loop an=(an-1+bn-1)/2,bn=√(an-1*bn-1),tn=tn-1−pn-1*(an-1−an)^2,pn=2pn-1 until |an−bn|<10^{-D}; π≈(aN+bN)^2/(4tN); precision bits=D*log2(10)+16; sqrt via Newton: x←(x+N/x)/2; use FFT multiplication; convergence quadratic
-
-## Sanitised Extract
-Table of Contents:
-1. Variable Initialization
-2. Iteration Formulae
-3. Convergence Criterion
-4.  Computation Formula
-5. Implementation Steps
-6. Precision & Performance
-
-1. Variable Initialization
- set a=1, b=1/2, t=0.25, p=1 using arbitrary-precision type.
-
-2. Iteration Formulae
- a_next = (a + b) / 2
- b_next = sqrt(a * b)
- t_next = t  p * (a  a_next)^2
- p_next = 2 * p
-
-3. Convergence Criterion
- stop when |a_next  b_next| <=  where  corresponds to target digit count.
-
-4.  Computation Formula
-   ((a_final + b_final)^2) / (4 * t_final)
-
-5. Implementation Steps
- - Choose precision bits = digits * log2(10) + margin
- - Initialize a,b,t,p
- - Loop compute next values storing previous a
- - Break when |ab|<threshold
- - Apply  formula
- - Round/truncate to target digits.
-
-6. Precision & Performance
- - Multiply cost M(n): use FFT-based libs for >10k digits
- - Square-root: Newton iteration: x_{k+1}=(x_k + N/x_k)/2 to same precision
- - Memory O(n) per big number
-
-## Original Source
-Gauss–Legendre Algorithm
-https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm
-
-## Digest of GAUSS_LEGENDRE
-
-# Gauss–Legendre Algorithm
-
-## Initial Variable Definitions
-```text
-a0 = 1
-b0 = 1/√2
-t0 = 1/4
-p0 = 1
-```  
-All variables are high-precision floating-point.  
-
-## Iteration Loop
-Repeat until |an+1 − bn+1| < ε where ε is target precision:  
-```text
-an+1 = (an + bn) / 2
-bn+1 = √(an * bn)
-tn+1 = tn − pn * (an − an+1)^2
-pn+1 = 2 * pn
-```  
-Calculate √ via Newton–Raphson or library call.
-
-## Final π Approximation
-```text
-π ≈ ((aN + bN)^2) / (4 * tN)
-```
-
-## Convergence Rate
-Quadratic: digits double per iteration.
-
-## Implementation Steps
-1. Initialize variables a,b,t,p at required precision.  
-2. Loop: compute next a,b,t,p.  
-3. Check |a−b|.  
-4. Exit when below threshold.  
-5. Compute π.
-
-## Precision & Memory Considerations
-- Use arbitrary-precision library with O(M(n) log n) multiplication.  
-- Each iteration O(M(n)), M(n)=cost of multiply.  
-- Memory: O(n) for big ints.
-
-
-
-## Attribution
-- Source: Gauss–Legendre Algorithm
-- URL: https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm
-- License: CC BY-SA 3.0
-- Crawl Date: 2025-05-10T19:58:01.586Z
-- Data Size: 4985050 bytes
-- Links Found: 26014
-
-## Retrieved
-2025-05-10
-library/EXPRESS.md
-# library/EXPRESS.md
-# EXPRESS
-
-## Crawl Summary
-Built-in body parsers express.json, express.raw, express.text, express.urlencoded with their options: inflate (true), limit ("100kb"), type defaults and verify hooks. Router creation with caseSensitive, mergeParams, strict flags. Static file serving with options dotfiles, etag, extensions, fallthrough, immutable, index, lastModified, maxAge, redirect, setHeaders. Routing methods app.METHOD for all HTTP verbs. app.listen signature as alias for http.Server.listen.
-
-## Normalised Extract
-Table of Contents:
-1  express.json
-2  express.raw
-3  express.text
-4  express.urlencoded
-5  express.Router
-6  express.static
-7  Routing methods
-8  app.listen
-
-1  express.json([options])
-  Function parses JSON bodies. Signature: express.json({inflate,limit,reviver,strict,type,verify}). Default inflate=true, limit="100kb", reviver=null, strict=true, type="application/json". Use in middleware chain: app.use(express.json({limit:'1mb'})).
-
-2  express.raw([options])
-  Parses raw Buffer bodies. Signature: express.raw({inflate,limit,type,verify}). Default type="application/octet-stream".
-
-3  express.text([options])
-  Parses text bodies. Options: defaultCharset="utf-8", inflate=true, limit="100kb", type="text/plain", verify.
-
-4  express.urlencoded([options])
-  Parses URL-encoded. Options: extended=true (qs), inflate=true, limit="100kb", parameterLimit=1000, type="application/x-www-form-urlencoded", verify.
-
-5  express.Router([options])
-  Creates router. Options: caseSensitive=false, mergeParams=false, strict=false. Use router.get/post etc.
-
-6  express.static(root, [options])
-  Serves static. Options with defaults: dotfiles=undefined, etag=true, extensions=false, fallthrough=true, immutable=false, index="index.html", lastModified=true, maxAge=0, redirect=true, setHeaders.
-
-7  Routing methods
-  app.get/post/put/delete/patch/all(path, ...handlers). app.all applies to all verbs. Use wildcard patterns.
-
-8  app.listen(...)
-  Calls http.createServer(app).listen. Accepts path or port,host,backlog,callback.
-
-## Supplementary Details
-Version: Express v4.x requires Node.js >=0.10. express.json and express.urlencoded require body-parser v1. Use gzip/deflate with inflate=true. Type matching uses type-is library: strings, arrays or custom fn(req). verify(req,res,buf,encoding) allows aborting by throw. Router supports nested params with mergeParams. Static serves fallthrough on missing files; set fallthrough=false to send errors. dotfiles: allow,deny,ignore. Immutable directive requires maxAge>0. For directory index disable index or set index=false. setHeaders must be sync. app.listen returns http.Server for both HTTP and UNIX sockets.
-
-## Reference Details
-express.json(options) => middleware
-  options.inflate: boolean = true
-  options.limit: string|number = "100kb"
-  options.reviver: Function|null = null
-  options.strict: boolean = true
-  options.type: string|string[]|Function = "application/json"
-  options.verify(req,res,buf,encoding): void
-Example:
-  app.use(express.json({limit:'2mb', verify:function(req,res,buf){ if(buf.length>1e6) throw Error('Payload too large'); }}));
-
-express.raw(options) => middleware
-  options.inflate: boolean = true
-  options.limit: string|number = "100kb"
-  options.type: string|string[]|Function = "application/octet-stream"
-  options.verify(req,res,buf,encoding)
-Example:
-  app.post('/upload', express.raw({type:'application/octet-stream'}), function(req,res){ fs.writeFileSync('/tmp/data',req.body); res.sendStatus(200); });
-
-express.text(options) => middleware
-  options.defaultCharset: string = "utf-8"
-  options.inflate, limit, type, verify as above
-Example:
-  app.use(express.text({type:'text/*'}));
-
-express.urlencoded(options) => middleware
-  options.extended: boolean = true
-  options.inflate: boolean = true
-  options.limit: string|number = "100kb"
-  options.parameterLimit: number = 1000
-  options.type: string|string[]|Function = "application/x-www-form-urlencoded"
-  options.verify
-Example:
-  app.use(express.urlencoded({extended:false, parameterLimit:5000}));
-
-express.Router(options) => Router
-  options.caseSensitive: boolean = false
-  options.mergeParams: boolean = false
-  options.strict: boolean = false
-Example:
-  var router = express.Router({mergeParams:true});
-
-express.static(root,options) => middleware
-  options.dotfiles: 'allow'|'deny'|'ignore'
-  options.etag: boolean = true
-  options.extensions: string[]|false = false
-  options.fallthrough: boolean = true
-  options.immutable: boolean = false
-  options.index: string|false = "index.html"
-  options.lastModified: boolean = true
-  options.maxAge: number|string = 0
-  options.redirect: boolean = true
-  options.setHeaders(res,path,stat)
-Example:
-  app.use(express.static('public',{maxAge:'1d', immutable:true, setHeaders:function(res,path){ res.set('X-Served-By','Express'); }}));
-
-Routing:
-  app.get(path,handlers)
-  app.post,path, handlers
-  app.put,path, handlers
-  app.delete,path, handlers
-  app.all(path,handlers)
-Examples:
-  app.all('/api/*', checkAuth, loadUser);
-  app['m-search']('/',function(req,res){res.send('search');});
-
-app.listen(port,host,backlog,callback)
-  returns http.Server
-Example:
-  var server = app.listen(3000,'127.0.0.1',511,function(){console.log('Listening');});
-
-Best Practices:
-  Validate req.body before use.
-  Use helmet and compression for security and performance.
-  Mount static with reverse proxy for caching.
-  Use router.param for pre-loading resources.
-
-Troubleshooting:
-  JSON SyntaxError: catch with error handler after express.json.
-    app.use(function(err,req,res,next){ if(err.type==='entity.parse.failed') res.status(400).send('Bad JSON'); });
-  Static 404 fallthrough: set fallthrough=false to handle missing files.
-  Large payloads: increase limit option, monitor req.socket.bytesRead.
-Commands:
-  curl -X POST -H "Content-Type: application/json" -d '{"a":1}' http://localhost:3000/data
-Expected: 200 OK or 400 on invalid.
-
-
-
-## Information Dense Extract
-express.json opts:{inflate=true,limit=100kb,reviver=null,strict=true,type='application/json',verify}; express.raw opts:{inflate=true,limit=100kb,type='application/octet-stream',verify}; express.text opts:{defaultCharset='utf-8',inflate=true,limit=100kb,type='text/plain',verify}; express.urlencoded opts:{extended=true,inflate=true,limit=100kb,parameterLimit=1000,type='application/x-www-form-urlencoded',verify}; express.Router opts:{caseSensitive=false,mergeParams=false,strict=false}; express.static root+opts:{dotfiles,etag=true,extensions=false,fallthrough=true,immutable=false,index='index.html',lastModified=true,maxAge=0,redirect=true,setHeaders}; routing: app.METHOD(path,...), app.all; app.listen([...],callback)->http.Server.
-
-## Sanitised Extract
-Table of Contents:
-1  express.json
-2  express.raw
-3  express.text
-4  express.urlencoded
-5  express.Router
-6  express.static
-7  Routing methods
-8  app.listen
-
-1  express.json([options])
-  Function parses JSON bodies. Signature: express.json({inflate,limit,reviver,strict,type,verify}). Default inflate=true, limit='100kb', reviver=null, strict=true, type='application/json'. Use in middleware chain: app.use(express.json({limit:'1mb'})).
-
-2  express.raw([options])
-  Parses raw Buffer bodies. Signature: express.raw({inflate,limit,type,verify}). Default type='application/octet-stream'.
-
-3  express.text([options])
-  Parses text bodies. Options: defaultCharset='utf-8', inflate=true, limit='100kb', type='text/plain', verify.
-
-4  express.urlencoded([options])
-  Parses URL-encoded. Options: extended=true (qs), inflate=true, limit='100kb', parameterLimit=1000, type='application/x-www-form-urlencoded', verify.
-
-5  express.Router([options])
-  Creates router. Options: caseSensitive=false, mergeParams=false, strict=false. Use router.get/post etc.
-
-6  express.static(root, [options])
-  Serves static. Options with defaults: dotfiles=undefined, etag=true, extensions=false, fallthrough=true, immutable=false, index='index.html', lastModified=true, maxAge=0, redirect=true, setHeaders.
-
-7  Routing methods
-  app.get/post/put/delete/patch/all(path, ...handlers). app.all applies to all verbs. Use wildcard patterns.
-
-8  app.listen(...)
-  Calls http.createServer(app).listen. Accepts path or port,host,backlog,callback.
-
-## Original Source
-Express.js API Reference
-https://expressjs.com/en/4x/api.html
-
-## Digest of EXPRESS
-
-# Express.js API Reference (Retrieved: 2024-06-16)
-Data Size: 27220755 bytes
-
-# express.json([options])
-Signature:
-  express.json(options?: {
-    inflate?: boolean;
-    limit?: number|string;
-    reviver?: Function|null;
-    strict?: boolean;
-    type?: string|string[]|((req: any) => boolean);
-    verify?: (req: any, res: any, buf: Buffer, encoding: string) => void;
-  }): (req: any, res: any, next: Function) => void
-
-Parses JSON bodies where Content-Type matches options.type. Populates req.body or {}. Throws on invalid JSON or verify failure.
-
-Options:
-  inflate     Boolean    true       handle deflate/gzip
-  limit       Mixed      "100kb"   max body size
-  reviver     Function   null       JSON.parse reviver
-  strict      Boolean    true       accept only arrays/objects
-  type        Mixed      "application/json"
-  verify      Function   undefined  fn(req,res,buf,encoding)
-
-# express.raw([options])
-Signature:
-  express.raw(options?: {
-    inflate?: boolean;
-    limit?: number|string;
-    type?: string|string[]|((req: any) => boolean);
-    verify?: (req: any, res: any, buf: Buffer, encoding: string) => void;
-  }): (req: any, res: any, next: Function) => void
-
-Parses bodies into Buffer where Content-Type matches options.type. Populates req.body (Buffer) or {}.
-
-Options:
-  inflate Boolean   true     handle deflate/gzip
-  limit   Mixed     "100kb" max body size
-  type    Mixed     "application/octet-stream"
-  verify  Function  undefined
-
-# express.text([options])
-Signature:
-  express.text(options?: {
-    defaultCharset?: string;
-    inflate?: boolean;
-    limit?: number|string;
-    type?: string|string[]|((req: any) => boolean);
-    verify?: (req: any, res: any, buf: Buffer, encoding: string) => void;
-  }): (req: any, res: any, next: Function) => void
-
-Parses bodies into string where Content-Type matches options.type. Populates req.body (string) or {}.
-
-Options:
-  defaultCharset String  "utf-8"
-  inflate        Boolean true
-  limit          Mixed   "100kb"
-  type           Mixed   "text/plain"
-  verify         Function undefined
-
-# express.urlencoded([options])
-Signature:
-  express.urlencoded(options?: {
-    extended?: boolean;
-    inflate?: boolean;
-    limit?: number|string;
-    parameterLimit?: number;
-    type?: string|string[]|((req: any) => boolean);
-    verify?: (req: any, res: any, buf: Buffer, encoding: string) => void;
-  }): (req: any, res: any, next: Function) => void
-
-Parses URL-encoded bodies where Content-Type matches options.type. Populates req.body (object) or {}.
-
-Options:
-  extended       Boolean  true      qs vs querystring
-  inflate        Boolean  true
-  limit          Mixed    "100kb"
-  parameterLimit Number   1000      max params
-  type           Mixed    "application/x-www-form-urlencoded"
-  verify         Function undefined
-
-# express.Router([options])
-Signature:
-  express.Router(options?: {
-    caseSensitive?: boolean;
-    mergeParams?: boolean;
-    strict?: boolean;
-  }): Router
-
-Options:
-  caseSensitive Boolean false  treat /Foo and /foo distinct
-  mergeParams   Boolean false  inherit parent req.params
-  strict        Boolean false  trailing slash difference
-
-# express.static(root, [options])
-Signature:
-  express.static(root: string, options?: {
-    dotfiles?: "allow"|"deny"|"ignore";
-    etag?: boolean;
-    extensions?: string[]|false;
-    fallthrough?: boolean;
-    immutable?: boolean;
-    index?: string|false;
-    lastModified?: boolean;
-    maxAge?: number|string;
-    redirect?: boolean;
-    setHeaders?: (res: any, path: string, stat: any) => void;
-  }): (req: any, res: any, next: Function) => void
-
-Options:
-  dotfiles     String   undefined  "allow"|"deny"|"ignore"
-  etag         Boolean  true       send weak ETag
-  extensions   Mixed    false      ['html','htm'] fallback
-  fallthrough  Boolean  true       next() on errors
-  immutable    Boolean  false      Cache-Control immutable
-  index        Mixed    "index.html"
-  lastModified Boolean  true       set Last-Modified header
-  maxAge       Number   0          ms or "1d"
-  redirect     Boolean  true       slash redirect
-  setHeaders   Function             fn(res,path,stat)
-
-# Routing Methods: app.METHOD(path, ...)
-Variants: checkout, copy, delete, get, head, lock, merge, mkactivity, mkcol, move, m-search, notify, options, patch, post, purge, put, report, search, subscribe, trace, unlock, unsubscribe
-
-# app.listen([port[, host[, backlog]]], [callback])
-Alias for http.Server.listen. Returns http.Server.
-
----
-Attribution: Express 4.x API Reference, expressjs.com/en/4x/api.html
-
-## Attribution
-- Source: Express.js API Reference
-- URL: https://expressjs.com/en/4x/api.html
-- License: MIT License
-- Crawl Date: 2025-05-10T20:58:28.425Z
-- Data Size: 27220755 bytes
-- Links Found: 21728
-
-## Retrieved
-2025-05-10
-library/DECIMALJS.md
-# library/DECIMALJS.md
-# DECIMALJS
-
-## Crawl Summary
-Constructor: Decimal(value:string|number|Decimal)->Decimal; supports decimal, binary(0b), octal(0o), hex(0x) formats with e/E and p/P exponents; throws DecimalError on invalid. Configuration: Decimal.set({precision:int1-1e9, rounding:0-8, toExpNeg:-9e15-0, toExpPos:0-9e15, minE:-9e15-0, maxE:0-9e15, modulo:0-9, crypto:bool}); Decimal.clone([object])->new constructor. Methods: add, sub, mul, div, mod, pow with aliases plus, minus, times, dividedBy, modulo, toPower. Rounding: ceil, floor, round, trunc, toDecimalPlaces, toSignificantDigits. Comparison: cmp, eq, lt, lte, gt, gte. Conversion: toString, toNumber, toJSON, toFixed, toExponential, toPrecision. Random: Decimal.random([dp])->Decimal using crypto or Math.random. Default settings: precision=20, rounding=4, toExpNeg=-7, toExpPos=20, minE=-9e15, maxE=9e15, modulo=1, crypto=false.
-
-## Normalised Extract
-Table of Contents:
-1 Constructor
-2 Configuration Options
-3 Arithmetic Operations
-4 Rounding and Truncation
-5 Comparison
-6 Conversion
-7 Random Number Generation
-
-1 Constructor
-Signature: Decimal(value) -> Decimal
-Parameters:
-  value: number | string | Decimal
-Supported string literals:
-  - Decimal: '123.456', '4.321e+4', '-735.0918e-430'
-  - Binary (0b): '0b1011.01', '0b1.1p-5'
-  - Octal (0o): '0o7.4', '0o1.4p-5'
-  - Hexadecimal (0x): '0xff.8', '0x1.8p-5'
-Behaviour:
-  - Throws DecimalError on invalid value
-  - Exponent range enforced by minE and maxE
-
-2 Configuration Options
-Method: Decimal.set(object) -> Decimal constructor
-object properties:
-  precision: integer 1–1e9 default 20
-  rounding: integer 0–8 default 4
-  toExpNeg: integer –9e15–0 default –7
-  toExpPos: integer 0–9e15 default 20
-  minE: integer –9e15–0 default –9e15
-  maxE: integer 0–9e15 default 9e15
-  modulo: integer 0–9 default 1
-  crypto: boolean default false
-Direct assignment bypasses validation. Use set for safety.
-Clone: Decimal.clone([object]) -> new Decimal constructor with independent settings
-
-3 Arithmetic Operations
-add(x,y) / plus(y) -> Decimal
-sub(x,y) / minus(y) -> Decimal
-mul(x,y) / times(y) -> Decimal
-div(x,y) / dividedBy(y) -> Decimal
-mod(x,y) / modulo(y) -> Decimal
-pow(base,exp) / toPower(exp) -> Decimal
-All operations return new Decimal rounded to precision significant digits using rounding mode.
-
-4 Rounding and Truncation
-ceil(x)/ceil() -> Decimal rounded toward +Infinity
-floor(x)/floor() -> Decimal toward –Infinity
-round(x)/round() -> Decimal nearest
-trunc(x)/trunc() -> Decimal toward zero
-toDecimalPlaces(dp)/toDP(dp) -> Decimal with dp decimals
-toSignificantDigits(sd)/toSD(sd) -> Decimal with sd significant digits
-
-5 Comparison
-cmp(x) / comparedTo(x) -> number {–1,0,1,NaN}
-eq(x)/equals(x) -> boolean
-lt(x), lte(x), gt(x), gte(x) -> boolean
-
-6 Conversion
-toString(), toNumber(), toJSON() -> string|number
-toFixed(dp) -> string with dp decimals
-toExponential(dp) -> string in exponential form
-toPrecision(sd) -> string with sd significant digits
-
-7 Random Number Generation
-random([dp]) -> Decimal
-  dp: integer 0–1e9 default precision
-  if crypto=true and global crypto available uses secure PRNG, else Math.random
-  throws if crypto=true but no crypto object
-
-## Supplementary Details
-Exponent Limits:
-  - minE: lowest exponent before underflow to zero, default –9e15
-  - maxE: highest exponent before overflow to Infinity, default 9e15
-Modulo Modes:
-  - ROUND_UP (0), ROUND_DOWN (1), ROUND_CEIL (2), ROUND_FLOOR (3), ROUND_HALF_UP (4), ROUND_HALF_DOWN (5), ROUND_HALF_EVEN (6), ROUND_HALF_CEIL (7), ROUND_HALF_FLOOR (8), EUCLID (9)
-  - modulo property sets division remainder mode
-Crypto Integration:
-  - global.crypto = require('crypto') in Node.js
-  - Decimal.set({ crypto: true }) to enable secure random
-Clone Patterns:
-  - Decimal9 = Decimal.clone({ precision: 9 })
-  - D2 = Decimal.clone({ defaults: true, precision: 50 })
-Best Practice:
-  - Use clone to isolate configuration per module
-  - Always use set with defaults:true to reset config
-
-NoConflict (Browser):
-  - Decimal.noConflict() -> original constructor
-Errors:
-  - Decimal.set({ precision: 0 }) throws DecimalError: Invalid argument: precision: 0
-  - new Decimal('invalid') throws DecimalError: Invalid argument: value: invalid
-
-## Reference Details
-API Signatures:
-Constructor:
-  new Decimal(value: number|string|Decimal) -> Decimal
-Configuration:
-  Decimal.set(object: {
-    precision?: number, rounding?: number, toExpNeg?: number, toExpPos?: number,
-    minE?: number, maxE?: number, modulo?: number, crypto?: boolean, defaults?: boolean
-  }) -> this Decimal constructor
-  Decimal.clone(object?: as above) -> new Decimal constructor
-Arithmetic Methods:
-  static add(x: number|string|Decimal, y: number|string|Decimal) -> Decimal
-  instance plus(y: number|string|Decimal) -> Decimal
-  static sub(x, y) / instance minus(y) -> Decimal
-  static mul(x, y) / instance times(y) -> Decimal
-  static div(x, y) / instance dividedBy(y) -> Decimal
-  static mod(x, y) / instance modulo(y) -> Decimal
-  static pow(base: any, exponent: any) / instance toPower(exponent) -> Decimal
-Rounding and Truncation:
-  static ceil(x) / instance ceil() -> Decimal
-  static floor(x) / instance floor() -> Decimal
-  static round(x) / instance round() -> Decimal
-  static trunc(x) / instance trunc() -> Decimal
-  instance toDP(dp: number, rm?: number) -> Decimal
-  instance toSD(sd: number, rm?: number) -> Decimal
-Comparison:
-  instance cmp(x) -> number
-  instance eq(x) -> boolean
-  instance lt(x), lte(x), gt(x), gte(x) -> boolean
-Conversion:
-  instance toString() -> string
-  instance toNumber() -> number
-  instance toJSON() -> string
-  instance toFixed(dp: number, rm?: number) -> string
-  instance toExponential(dp?: number, rm?: number) -> string
-  instance toPrecision(sd?: number, rm?: number) -> string
-Random:
-  static random(dp?: number) -> Decimal
-
-Code Examples:
-// Constructor
-let x = new Decimal('1.234e+2')    // '123.4'
-// Configuration
-Decimal.set({ precision: 10, rounding: Decimal.ROUND_HALF_EVEN })
-// Clone
-const D50 = Decimal.clone({ precision: 50 })
-// Arithmetic
-let sum = Decimal.add('0.1', '0.2')
-let prod = new Decimal(5).times('3')
-// Rounding
-let r = new Decimal('1.005').toDP(2, Decimal.ROUND_HALF_UP) // '1.01'
-// Conversion
-let s = new Decimal(0.000123).toExponential(3) // '1.230e-4'
-// Random
-global.crypto = require('crypto')
-Decimal.set({ crypto: true })
-let rnd = Decimal.random(16)
-
-Troubleshooting:
-// Invalid precision
-try {
-  Decimal.set({ precision: 0 })
-} catch (e) {
-  console.error(e.message) // Invalid argument: precision: 0
-}
-// Missing crypto
-try {
-  Decimal.set({ crypto: true })
-  Decimal.random()
-} catch (e) {
-  console.error(e.message) // Exception: crypto object not available
-}
-
-## Information Dense Extract
-Decimal(value)->Decimal; value:number|string|Decimal; string supports decimal,0b,0o,0x prefixes and e/E, p/P exponents; Decimal.set({precision:1–1e9 default20, rounding:0–8 default4, toExpNeg:-9e15–0 default-7, toExpPos:0–9e15 default20, minE:-9e15–0 default-9e15, maxE:0–9e15 default9e15, modulo:0–9 default1, crypto:false}); Decimal.clone([cfg])->new Decimal; Arithmetic: add, sub, mul, div, mod, pow with aliases; Rounding: ceil, floor, round, trunc, toDP, toSD; Comparison: cmp, eq, lt, lte, gt, gte; Conversion: toString, toNumber, toJSON, toFixed, toExponential, toPrecision; Random(dp)->Decimal uses crypto or Math.random; Rounding modes: 0:UP,1:DOWN,2:CEIL,3:FLOOR,4:HALF_UP,5:HALF_DOWN,6:HALF_EVEN,7:HALF_CEIL,8:HALF_FLOOR,9:EUCLID; Errors: DecimalError on invalid args; Exponent limits: underflow below minE->0, overflow above maxE->Infinity.
-
-## Sanitised Extract
-Table of Contents:
-1 Constructor
-2 Configuration Options
-3 Arithmetic Operations
-4 Rounding and Truncation
-5 Comparison
-6 Conversion
-7 Random Number Generation
-
-1 Constructor
-Signature: Decimal(value) -> Decimal
-Parameters:
-  value: number | string | Decimal
-Supported string literals:
-  - Decimal: '123.456', '4.321e+4', '-735.0918e-430'
-  - Binary (0b): '0b1011.01', '0b1.1p-5'
-  - Octal (0o): '0o7.4', '0o1.4p-5'
-  - Hexadecimal (0x): '0xff.8', '0x1.8p-5'
-Behaviour:
-  - Throws DecimalError on invalid value
-  - Exponent range enforced by minE and maxE
-
-2 Configuration Options
-Method: Decimal.set(object) -> Decimal constructor
-object properties:
-  precision: integer 11e9 default 20
-  rounding: integer 08 default 4
-  toExpNeg: integer 9e150 default 7
-  toExpPos: integer 09e15 default 20
-  minE: integer 9e150 default 9e15
-  maxE: integer 09e15 default 9e15
-  modulo: integer 09 default 1
-  crypto: boolean default false
-Direct assignment bypasses validation. Use set for safety.
-Clone: Decimal.clone([object]) -> new Decimal constructor with independent settings
-
-3 Arithmetic Operations
-add(x,y) / plus(y) -> Decimal
-sub(x,y) / minus(y) -> Decimal
-mul(x,y) / times(y) -> Decimal
-div(x,y) / dividedBy(y) -> Decimal
-mod(x,y) / modulo(y) -> Decimal
-pow(base,exp) / toPower(exp) -> Decimal
-All operations return new Decimal rounded to precision significant digits using rounding mode.
-
-4 Rounding and Truncation
-ceil(x)/ceil() -> Decimal rounded toward +Infinity
-floor(x)/floor() -> Decimal toward Infinity
-round(x)/round() -> Decimal nearest
-trunc(x)/trunc() -> Decimal toward zero
-toDecimalPlaces(dp)/toDP(dp) -> Decimal with dp decimals
-toSignificantDigits(sd)/toSD(sd) -> Decimal with sd significant digits
-
-5 Comparison
-cmp(x) / comparedTo(x) -> number {1,0,1,NaN}
-eq(x)/equals(x) -> boolean
-lt(x), lte(x), gt(x), gte(x) -> boolean
-
-6 Conversion
-toString(), toNumber(), toJSON() -> string|number
-toFixed(dp) -> string with dp decimals
-toExponential(dp) -> string in exponential form
-toPrecision(sd) -> string with sd significant digits
-
-7 Random Number Generation
-random([dp]) -> Decimal
-  dp: integer 01e9 default precision
-  if crypto=true and global crypto available uses secure PRNG, else Math.random
-  throws if crypto=true but no crypto object
-
-## Original Source
-Decimal.js
-https://mikemcl.github.io/decimal.js/
-
-## Digest of DECIMALJS
-
-# Decimal.js Detailed Digest (Retrieved 2024-06-13)
-
-# Constructor
-- Signature: Decimal(value) -> Decimal
-- value types: number, string, Decimal
-- string formats: decimal, binary (0b/0B), octal (0o/0O), hexadecimal (0x/0X)
-- exponential notation: decimal uses e/E; non-decimal uses p/P
-- allowable exponent range bounded by minE and maxE
-- throws DecimalError on invalid value
-
-# Configuration
-- Decimal.set(object) -> this Decimal constructor
-- object properties:
-  - precision: integer 1 to 1e9 inclusive, default 20
-  - rounding: integer 0 to 8 inclusive, default 4 (ROUND_HALF_UP)
-  - toExpNeg: integer -9e15 to 0 inclusive, default -7
-  - toExpPos: integer 0 to 9e15 inclusive, default 20
-  - minE: integer -9e15 to 0 inclusive, default -9e15
-  - maxE: integer 0 to 9e15 inclusive, default 9e15
-  - modulo: integer 0 to 9 inclusive, default 1 (ROUND_DOWN)
-  - crypto: boolean, default false
-- Decimal.clone([object]) -> new independent Decimal constructor with same or specified settings
-
-# Core Methods
-- Arithmetic:
-  - add(x,y) / plus(y)        -> Decimal
-  - sub(x,y) / minus(y)       -> Decimal
-  - mul(x,y) / times(y)       -> Decimal
-  - div(x,y) / dividedBy(y)   -> Decimal
-  - mod(x,y) / modulo(y)      -> Decimal
-  - pow(base,exp) / toPower(exp) -> Decimal
-- Rounding and truncation:
-  - ceil(x) / ceil()         -> Decimal
-  - floor(x) / floor()       -> Decimal
-  - round(x) / round()       -> Decimal
-  - trunc(x) / trunc()       -> Decimal
-  - toDecimalPlaces(dp)/toDP(dp)     -> Decimal
-  - toSignificantDigits(sd)/toSD(sd) -> Decimal
-- Comparison:
-  - cmp(x) / comparedTo(x)   -> number (-1,0,1,NaN)
-  - eq(x) / equals(x)        -> boolean
-  - lt(x), lte(x), gt(x), gte(x) -> boolean
-- Conversion:
-  - toString(), toNumber(), toJSON() -> string | number
-  - toFixed(dp), toExponential(dp), toPrecision(sd) -> string
-
-# Random Number Generation
-- Decimal.random([dp]) -> Decimal
-  - dp: integer 0 to 1e9 inclusive, default current precision
-  - if crypto=true and global crypto available uses crypto.getRandomValues or crypto.randomBytes, else Math.random
-  - throws if crypto=true but no crypto object
-
-# Errors
-- DecimalError thrown by constructor or set on invalid argument or configuration
-
-# Attribution
-Source: https://mikemcl.github.io/decimal.js/  Data Size: 13874875 bytes
-
-## Attribution
-- Source: Decimal.js
-- URL: https://mikemcl.github.io/decimal.js/
-- License: MIT License
-- Crawl Date: 2025-05-11T00:44:40.798Z
-- Data Size: 13874875 bytes
-- Links Found: 21129
+- Crawl Date: 2025-05-11T09:26:48.437Z
+- Data Size: 656477 bytes
+- Links Found: 4956
 
 ## Retrieved
 2025-05-11
-library/PROPER_LOCKFILE.md
-# library/PROPER_LOCKFILE.md
-# PROPER_LOCKFILE
+library/QUICKCHART_JS.md
+# library/QUICKCHART_JS.md
+# QUICKCHART_JS
 
 ## Crawl Summary
-
+QuickChartJS exports QuickChart class with constructor(options?:{width:number;height:number;format:string;version:string;devicePixelRatio:number;backgroundColor:string}), methods setConfig(config:Object):QuickChart, getUrl(opts?):string, getShortUrl(opts?):Promise<string>, toBinary():Promise<Buffer>, toFile(path:string):Promise<void>. Default host quickchart.io. Supports API key for getShortUrl. Timeout default 15000ms. Chart config uses Chart.js v2 schema.
 
 ## Normalised Extract
+Table of Contents:
+1 Installation
+2 QuickChart Class
+3 Configuration Method
+4 URL Generation
+5 Short URL Generation
+6 Binary and File Output
+7 Authentication
+8 Troubleshooting
+
+1 Installation
+  npm install quickchart-js@latest
+
+2 QuickChart Class
+  Constructor signature: QuickChart(options?:{
+    width?:number, height?:number, format?:string, version?:string,
+    devicePixelRatio?:number, backgroundColor?:string
+  })
+  Default options: width=500, height=300, format='png', version='2', devicePixelRatio=1, backgroundColor='transparent'
+
+3 Configuration Method
+  setConfig(config:Object):QuickChart
+    Accepts Chart.js v2 config object
+
+4 URL Generation
+  getUrl(opts?:{
+    width?:number, height?:number, format?:string,
+    devicePixelRatio?:number, backgroundColor?:string, version?:string
+  }):string
+    Returns full URL to rendered chart. No network call.
+
+5 Short URL Generation
+  getShortUrl(opts?:{
+    apiKey?:string, timeout?:number
+  }):Promise<string>
+    Default timeout:15000ms. Returns a Promise resolving to a shortened URL string.
+
+6 Binary and File Output
+  toBinary():Promise<Buffer>
+    Fetches image data as Buffer
+  toFile(path:string):Promise<void>
+    Writes image to filesystem at specified path
+
+7 Authentication
+  Provide apiKey in getShortUrl opts. No auth needed for getUrl or toBinary/toFile.
+
+8 Troubleshooting
+  Increase timeout via getShortUrl({timeout:30000}) to avoid ETIMEDOUT errors
 
 
 ## Supplementary Details
+Default Host and Protocol
+  host: 'quickchart.io'
+  protocol: 'https:'
+  path: '/chart'
+  port: 443
+
+Default Chart Options
+  width: 500
+  height: 300
+  format: 'png'
+  version: '2'
+  devicePixelRatio: 1
+  backgroundColor: 'transparent'
+
+Configuration Steps
+  1 Import library or require
+  2 Instantiate QuickChart with options
+  3 setConfig with Chart.js schema object
+  4 call getUrl/getShortUrl/toBinary/toFile
+
+Error Handling
+  - getShortUrl rejects with Error if status >=400
+  - toBinary rejects on network or parsing errors
+  - toFile rejects on FS write errors
+
+Timeouts
+  Default 15000ms, configurable per request
 
 
 ## Reference Details
+QuickChart(options?:{
+  width?:number,
+  height?:number,
+  format?:string,
+  version?:string,
+  devicePixelRatio?:number,
+  backgroundColor?:string
+}):QuickChart
+
+Methods:
+setConfig(config:Object):QuickChart
+  config: Chart.js v2 configuration object
+
+getUrl(opts?:{
+  width?:number,
+  height?:number,
+  format?:string,
+  devicePixelRatio?:number,
+  backgroundColor?:string,
+  version?:string
+}):string
+  Returns URL. No network call.
+
+getShortUrl(opts?:{
+  apiKey?:string,
+  timeout?:number
+}):Promise<string>
+  apiKey: QuickChart API key string
+  timeout: Request timeout in ms (default 15000)
+
+toBinary():Promise<Buffer>
+  Returns Promise resolving to image Buffer
+
+toFile(path:string):Promise<void>
+  path: Absolute or relative file path
+
+Code Example:
+const QuickChart = require('quickchart-js');
+(async () => {
+  const chart = new QuickChart({ width:600, height:400 });
+  chart.setConfig({ type:'pie', data:{ labels:['A','B'], datasets:[{ data:[30,70] }] } });
+  const url = chart.getUrl();
+  const shortUrl = await chart.getShortUrl({ apiKey:'KEY123', timeout:20000 });
+  const buffer = await chart.toBinary();
+  await chart.toFile('./chart.png');
+})();
+
+Best Practices:
+- Batch short URL requests to reduce latency
+- Use toBinary for embedding images in buffers
+- Set backgroundColor for transparent or white backgrounds
+- Cache getUrl result to avoid repeated config parsing
+
+Troubleshooting:
+Error: ETIMEDOUT in getShortUrl
+  Command: Increase timeout: getShortUrl({timeout:30000})
+
+Error: HTTP 400 Bad Request
+  Check Chart.js config validity against schema
+
+Error: ENOENT writing file
+  Ensure directory exists before calling toFile
 
 
 ## Information Dense Extract
-
+QuickChartJS: constructor(opts{width?,height?,format?,version?,devicePixelRatio?,backgroundColor?}) defaults{500,300,'png','2',1,'transparent'}. setConfig(config:ChartjsV2Config):QuickChart. getUrl(opts{width?,height?,format?,devicePixelRatio?,backgroundColor?,version?}):string. getShortUrl(opts{apiKey?,timeout?=15000}):Promise<string>. toBinary():Promise<Buffer>. toFile(path:string):Promise<void>. host=https://quickchart.io/chart port=443. Auth only for shortUrl. Error handling via promise rejection. Troubleshoot ETIMEDOUT by raising timeout; HTTP 400 by validating config; ENOENT by ensuring path exists.
 
 ## Sanitised Extract
+Table of Contents:
+1 Installation
+2 QuickChart Class
+3 Configuration Method
+4 URL Generation
+5 Short URL Generation
+6 Binary and File Output
+7 Authentication
+8 Troubleshooting
 
+1 Installation
+  npm install quickchart-js@latest
+
+2 QuickChart Class
+  Constructor signature: QuickChart(options?:{
+    width?:number, height?:number, format?:string, version?:string,
+    devicePixelRatio?:number, backgroundColor?:string
+  })
+  Default options: width=500, height=300, format='png', version='2', devicePixelRatio=1, backgroundColor='transparent'
+
+3 Configuration Method
+  setConfig(config:Object):QuickChart
+    Accepts Chart.js v2 config object
+
+4 URL Generation
+  getUrl(opts?:{
+    width?:number, height?:number, format?:string,
+    devicePixelRatio?:number, backgroundColor?:string, version?:string
+  }):string
+    Returns full URL to rendered chart. No network call.
+
+5 Short URL Generation
+  getShortUrl(opts?:{
+    apiKey?:string, timeout?:number
+  }):Promise<string>
+    Default timeout:15000ms. Returns a Promise resolving to a shortened URL string.
+
+6 Binary and File Output
+  toBinary():Promise<Buffer>
+    Fetches image data as Buffer
+  toFile(path:string):Promise<void>
+    Writes image to filesystem at specified path
+
+7 Authentication
+  Provide apiKey in getShortUrl opts. No auth needed for getUrl or toBinary/toFile.
+
+8 Troubleshooting
+  Increase timeout via getShortUrl({timeout:30000}) to avoid ETIMEDOUT errors
 
 ## Original Source
-Atomic File Writes and Locking
-https://github.com/atomicjolt/proper-lockfile#readme
+quickchart-js Client Library
+https://github.com/quickchart/quickchart-js
 
-## Digest of PROPER_LOCKFILE
+## Digest of QUICKCHART_JS
 
+# QuickChart JS Client Library
 
+## 1. Installation
+
+  npm install quickchart-js@latest
+
+## 2. Initialization
+
+  const QuickChart = require('quickchart-js');
+  const chart = new QuickChart({
+    width: 500,
+    height: 300,
+    format: 'png',
+    version: '2',
+  });
+
+## 3. Configuration
+
+### 3.1 setConfig(config: Object): QuickChart
+
+  chart.setConfig({
+    type: 'bar',
+    data: { labels: ['Q1','Q2'], datasets: [{ label: 'Sales', data: [50,75] }] },
+    options: { scales: { y: { beginAtZero: true } } }
+  });
+
+## 4. Chart URL Generation
+
+### 4.1 getUrl(opts?: { width?: number; height?: number; format?: string; devicePixelRatio?: number; backgroundColor?: string; version?: string; }): string
+
+  const url = chart.getUrl({ width: 600, height: 400 });
+
+## 5. Short URL Generation
+
+### 5.1 getShortUrl(opts?: { apiKey?: string; timeout?: number; }): Promise<string>
+
+  const shortUrl = await chart.getShortUrl({ apiKey: 'YOUR_KEY', timeout: 15000 });
+
+## 6. Binary and File Output
+
+### 6.1 toBinary(): Promise<Buffer>
+
+  const imageBuffer = await chart.toBinary();
+
+### 6.2 toFile(path: string): Promise<void>
+
+  await chart.toFile('/tmp/chart.png');
+
+## 7. Authentication & API Key
+
+  chart.setConfig({ ... });
+  chart.getShortUrl({ apiKey: 'ABC123' });
+
+## 8. Troubleshooting
+
+  // Increase timeout if getShortUrl times out
+  chart.getShortUrl({ timeout: 30000 });
+
+---
+
+Retrieved: 2024-06-15
+Source: quickchart/quickchart-js GitHub README
+Data Size: 12 KB
 
 ## Attribution
-- Source: Atomic File Writes and Locking
-- URL: https://github.com/atomicjolt/proper-lockfile#readme
-- License: License: MIT
-- Crawl Date: 2025-05-10T11:57:27.134Z
+- Source: quickchart-js Client Library
+- URL: https://github.com/quickchart/quickchart-js
+- License: MIT License
+- Crawl Date: 2025-05-11T09:58:17.576Z
 - Data Size: 0 bytes
 - Links Found: 0
 
 ## Retrieved
-2025-05-10
+2025-05-11
+library/EXPRESS_CORS.md
+# library/EXPRESS_CORS.md
+# EXPRESS_CORS
+
+## Crawl Summary
+cors middleware installation via npm install cors; cors(options?) returns Express middleware function(req,res,next); global: app.use(cors()); per-route: app.get(path, cors(options), handler); options object with properties: origin Boolean|String|RegExp|Array|Function default '*'; methods String|Array default 'GET,HEAD,PUT,PATCH,POST,DELETE'; allowedHeaders String|Array default reflect request; exposedHeaders String|Array default none; credentials Boolean default false; maxAge Number default undefined; preflightContinue Boolean default false; optionsSuccessStatus Number default 204; dynamic origin via function(origin,callback); async config via function(req,callback) returning options; pre-flight via app.options; default config shown
+
+## Normalised Extract
+Table of Contents
+1 Installation
+2 Initialization
+3 Global Middleware
+4 Per-Route Middleware
+5 Configuration Options
+   5.1 origin
+   5.2 methods
+   5.3 allowedHeaders
+   5.4 exposedHeaders
+   5.5 credentials
+   5.6 maxAge
+   5.7 preflightContinue
+   5.8 optionsSuccessStatus
+6 Dynamic Origin
+7 Async Configuration
+8 Pre-Flight Handling
+
+1 Installation
+npm install cors
+
+2 Initialization
+var express = require('express')
+var cors = require('cors')
+var app = express()
+
+3 Global Middleware
+app.use(cors())
+
+4 Per-Route Middleware
+app.get('/products/:id', cors(), handler)
+
+5 Configuration Options
+5.1 origin
+  Boolean true reflects request origin or false disables; String exact origin; RegExp pattern test; Array of String or RegExp; Function(origin,callback(err,allowedOrigin))
+5.2 methods
+  Comma-delimited string or Array of methods
+5.3 allowedHeaders
+  Comma-delimited string or Array; defaults to Access-Control-Request-Headers
+5.4 exposedHeaders
+  Comma-delimited string or Array; no default
+5.5 credentials
+  Boolean; if true sets Access-Control-Allow-Credentials
+5.6 maxAge
+  Integer; sets Access-Control-Max-Age
+5.7 preflightContinue
+  Boolean; if true passes preflight to next handler
+5.8 optionsSuccessStatus
+  Integer; status for successful OPTIONS responses
+
+6 Dynamic Origin
+origin option can be function(origin,callback) to load allowed origins from database
+
+7 Async Configuration
+cors accepts function(req,callback(err,options)) to compute options per request
+
+8 Pre-Flight Handling
+app.options('/path', cors()) for specific routes
+app.options('*', cors()) globally
+
+
+## Supplementary Details
+Default configuration object
+{
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+}
+
+Implementation steps
+1 Install cors package
+2 Require cors in application
+3 Use app.use(cors()) before other middlewares
+4 For specific routes, call cors(options) inline
+5 Configure dynamic origin by supplying origin function
+6 Handle preflight using app.options
+
+Key parameter effects
+origin true reflects origin header; false disables CORS; String limits to that domain; RegExp matches origins; Array accepts multiple; Function custom logic
+optionsSuccessStatus 200 needed for IE11 and SmartTVs
+
+
+## Reference Details
+Function Signature
+cors(options?: Object|Function) => function(req: IncomingMessage, res: ServerResponse, next: Function)
+
+Parameters
+options.origin Boolean|String|RegExp|Array|Function default '*'
+options.methods String|Array default ['GET','HEAD','PUT','PATCH','POST','DELETE']
+options.allowedHeaders String|Array default request Access-Control-Request-Headers
+options.exposedHeaders String|Array default []
+options.credentials Boolean default false
+options.maxAge Number default undefined
+options.preflightContinue Boolean default false
+options.optionsSuccessStatus Number default 204
+
+Usage Examples
+// Global
+app.use(cors())
+
+// Single route
+app.get('/data', cors({ origin: 'http://example.com', optionsSuccessStatus: 200 }), handler)
+
+// Dynamic origin
+var corsOptions = { origin: function(origin, callback) { db.getAllowed(function(err,origins){ callback(err, origins) }) }}
+app.get('/data', cors(corsOptions), handler)
+
+// Async delegate
+function corsDelegate(req, callback) { var allowed = allowlist.includes(req.header('Origin')); callback(null, { origin: allowed }) }
+app.get('/data', cors(corsDelegate), handler)
+
+// Preflight
+app.options('/data', cors())
+
+Best Practices
+Place app.use(cors()) before static, body-parser and routes
+Use optionsSuccessStatus 200 for legacy browsers
+Limit origins to reduce security risk
+Use dynamic origin loading from secure source
+
+Troubleshooting
+Issue: Missing CORS header on DELETE requests
+Check that app.options('/path', cors()) is registered before app.del
+
+Issue: IE11 preflight returns 204 leading to network error
+Set optionsSuccessStatus to 200
+
+Commands
+curl -i -X OPTIONS -H 'Origin: http://example.com' http://localhost/data
+Expect HTTP/1.1 200 OK
+Access-Control-Allow-Origin: http://example.com
+
+
+## Information Dense Extract
+npm install cors; require('cors'); app.use(cors()); app.get(path, cors(options), handler); options: origin[Boolean|String|RegExp|Array|Function]='*', methods[String|Array]='GET,HEAD,PUT,PATCH,POST,DELETE', allowedHeaders[String|Array]=reflect request, exposedHeaders[String|Array]=none, credentials[Boolean]=false, maxAge[Number]=undefined, preflightContinue[Boolean]=false, optionsSuccessStatus[Number]=204; dynamic origin via function(origin,callback); async via function(req,callback); preflight via app.options(path,cors()); signature returns middleware(req,res,next).
+
+## Sanitised Extract
+Table of Contents
+1 Installation
+2 Initialization
+3 Global Middleware
+4 Per-Route Middleware
+5 Configuration Options
+   5.1 origin
+   5.2 methods
+   5.3 allowedHeaders
+   5.4 exposedHeaders
+   5.5 credentials
+   5.6 maxAge
+   5.7 preflightContinue
+   5.8 optionsSuccessStatus
+6 Dynamic Origin
+7 Async Configuration
+8 Pre-Flight Handling
+
+1 Installation
+npm install cors
+
+2 Initialization
+var express = require('express')
+var cors = require('cors')
+var app = express()
+
+3 Global Middleware
+app.use(cors())
+
+4 Per-Route Middleware
+app.get('/products/:id', cors(), handler)
+
+5 Configuration Options
+5.1 origin
+  Boolean true reflects request origin or false disables; String exact origin; RegExp pattern test; Array of String or RegExp; Function(origin,callback(err,allowedOrigin))
+5.2 methods
+  Comma-delimited string or Array of methods
+5.3 allowedHeaders
+  Comma-delimited string or Array; defaults to Access-Control-Request-Headers
+5.4 exposedHeaders
+  Comma-delimited string or Array; no default
+5.5 credentials
+  Boolean; if true sets Access-Control-Allow-Credentials
+5.6 maxAge
+  Integer; sets Access-Control-Max-Age
+5.7 preflightContinue
+  Boolean; if true passes preflight to next handler
+5.8 optionsSuccessStatus
+  Integer; status for successful OPTIONS responses
+
+6 Dynamic Origin
+origin option can be function(origin,callback) to load allowed origins from database
+
+7 Async Configuration
+cors accepts function(req,callback(err,options)) to compute options per request
+
+8 Pre-Flight Handling
+app.options('/path', cors()) for specific routes
+app.options('*', cors()) globally
+
+## Original Source
+CORS Middleware for Express
+https://github.com/expressjs/cors
+
+## Digest of EXPRESS_CORS
+
+# Installation
+
+Install CORS middleware via npm:
+
+```bash
+npm install cors
+```
+
+# Usage
+
+Require and apply middleware globally:
+
+```javascript
+var express = require('express')
+var cors = require('cors')
+var app = express()
+
+app.use(cors())
+
+app.get('/products/:id', function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for all origins!'})
+})
+
+app.listen(80, function () {
+  console.log('CORS-enabled web server listening on port 80')
+})
+```
+
+Enable CORS on a single route:
+
+```javascript
+app.get('/products/:id', cors(), function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for a Single Route'})
+})
+```
+
+# Configuration Options
+
+All options are properties of an options object passed to cors(options).
+
+- origin  Default '*'  Type: Boolean|String|RegExp|Array|Function
+- methods  Default 'GET,HEAD,PUT,PATCH,POST,DELETE'  Type: String|Array
+- allowedHeaders  Default reflect request's Access-Control-Request-Headers  Type: String|Array
+- exposedHeaders  Default none  Type: String|Array
+- credentials  Default false  Type: Boolean
+- maxAge  Default undefined  Type: Number
+- preflightContinue  Default false  Type: Boolean
+- optionsSuccessStatus  Default 204  Type: Number
+
+# Dynamic Origin
+
+Provide origin as a function(origin, callback) to load allowed origins at runtime.
+
+# Async Configuration
+
+Use a delegate function corsOptionsDelegate(req, callback) that returns error and options.
+
+# Pre-Flight Handling
+
+Enable pre-flight for specific routes:
+
+```javascript
+app.options('/products/:id', cors())
+app.del('/products/:id', cors(), handler)
+```
+
+Or enable globally before routes:
+
+```javascript
+app.options('*', cors())
+```
+
+## Attribution
+- Source: CORS Middleware for Express
+- URL: https://github.com/expressjs/cors
+- License: MIT License
+- Crawl Date: 2025-05-11T03:40:35.328Z
+- Data Size: 917679 bytes
+- Links Found: 5739
+
+## Retrieved
+2025-05-11
+library/EXPRESS_API.md
+# library/EXPRESS_API.md
+# EXPRESS_API
+
+## Crawl Summary
+express.json: parses JSON bodies; options inflate:boolean=true, limit:100kb, reviver:null, strict:true, type:application/json, verify:undefined; populates req.body. express.urlencoded: parses URL-encoded; options extended:true, inflate:true, limit:100kb, parameterLimit:1000, type:application/x-www-form-urlencoded, verify:undefined; req.body as object. express.static: serves static files; options dotfiles:undefined, etag:true, extensions:false, fallthrough:true, immutable:false, index:"index.html", lastModified:true, maxAge:0, redirect:true, setHeaders:Function; calls next() on missing. express.Router: create router; options caseSensitive:false, mergeParams:false, strict:false; use router.METHOD and middleware.
+
+## Normalised Extract
+Table of Contents
+
+1. JSON Body Parser
+2. URL-Encoded Body Parser
+3. Static File Server
+4. Router Creation
+
+1. JSON Body Parser
+
+Use express.json([options]) to parse application/json requests. Import:
+var express = require('express')
+var app = express()
+app.use(express.json({limit:'100kb', strict:true}))
+
+Options:
+inflate       (Boolean) defaults to true; handles compressed bodies
+limit         (String|Number) defaults to '100kb'; max request size
+reviver       (Function) defaults to null; passed to JSON.parse
+strict        (Boolean) defaults to true; only accepts objects and arrays
+type          (String|Array|Function) defaults to 'application/json'
+verify        (Function) defaults to undefined; called as verify(req,res,buf,encoding)
+
+Effect:
+On match, sets req.body to parsed object or {}. Throws error on invalid JSON.
+
+2. URL-Encoded Body Parser
+
+Use express.urlencoded([options]) for application/x-www-form-urlencoded. Example:
+app.use(express.urlencoded({extended:false, limit:'50kb'}))
+
+Options:
+extended        (Boolean) defaults to true; false uses querystring, true uses qs
+inflate         (Boolean) defaults to true; handle compressed bodies
+limit           (String|Number) defaults to '100kb'; max body size
+parameterLimit  (Number) defaults to 1000; max parameters
+type            (String|Array|Function) defaults to 'application/x-www-form-urlencoded'
+verify          (Function) defaults to undefined; called as verify(req,res,buf,encoding)
+
+Effect:
+Populates req.body with key-value pairs or arrays.
+
+3. Static File Server
+
+Use express.static(root, [options]) to serve static assets. Example:
+app.use(express.static('public', {maxAge:'7d', immutable:true}))
+
+Options:
+dotfiles      (String) default undefined; 'allow', 'deny', 'ignore'
+etag          (Boolean) default true; sends weak ETags
+extensions    (Array|false) default false; fallback extensions
+fallthrough   (Boolean) default true; next() on client errors
+immutable     (Boolean) default false; Cache-Control immutable directive
+index         (String|false) default 'index.html'; directory index file
+lastModified  (Boolean) default true; set Last-Modified header
+maxAge        (Number|String) default 0; Cache-Control max-age
+redirect      (Boolean) default true; redirect to trailing '/'
+setHeaders    (Function) default undefined; fn(res,path,stat)
+
+Effect:
+Serves files, calls next() if not found. Use reverse proxy for caching.
+
+4. Router Creation
+
+Use express.Router([options]) to create a router. Import:
+var router = express.Router({mergeParams:true})
+app.use('/items', router)
+
+Options:
+caseSensitive  (Boolean) default false; treat '/Foo' vs '/foo'
+mergeParams    (Boolean) default false; preserve parent req.params
+strict         (Boolean) default false; treat '/foo' vs '/foo/'
+
+Effect:
+Create modular route handlers: router.get, router.post, router.use.
+
+
+## Supplementary Details
+Implementation Steps:
+1. Install Express: npm install express
+2. Require express: const express = require('express')
+3. Create app: const app = express()
+4. Apply body parsers before routes:
+   app.use(express.json({limit:'200kb'}))
+   app.use(express.urlencoded({extended:true, parameterLimit:5000}))
+5. Serve static files:
+   app.use('/static', express.static(path.join(__dirname,'public'), {
+     dotfiles:'ignore', etag:false, extensions:['htm','html'], index:false,
+     maxAge:86400000, immutable:true,
+     setHeaders: function(res, path, stat) { res.set('X-Timestamp', Date.now()) }
+   }))
+6. Create routers for modularization:
+   const router = express.Router({caseSensitive:true, strict:true})
+   router.get('/', (req,res)=>{res.send('OK')})
+   app.use('/admin', router)
+
+Core Configurations:
+Node.js >=0.10 is required.
+Order matters: body parsers must precede routes accessing req.body.
+Use express.Router for sub-app isolation and parameter merging.
+
+
+## Reference Details
+TypeScript Definitions:
+interface JSONOptions {
+  inflate?: boolean;
+  limit?: number | string;
+  reviver?: (this: any, key: string, value: any) => any;
+  strict?: boolean;
+  type?: string | string[] | ((req: express.Request) => boolean);
+  verify?: (req: express.Request, res: express.Response, buf: Buffer, encoding: string) => void;
+}
+interface URLEncodedOptions {
+  extended?: boolean;
+  inflate?: boolean;
+  limit?: number | string;
+  parameterLimit?: number;
+  type?: string | string[] | ((req: express.Request) => boolean);
+  verify?: (req: express.Request, res: express.Response, buf: Buffer, encoding: string) => void;
+}
+interface StaticOptions {
+  dotfiles?: 'allow' | 'deny' | 'ignore';
+  etag?: boolean;
+  extensions?: string[] | false;
+  fallthrough?: boolean;
+  immutable?: boolean;
+  index?: string | false;
+  lastModified?: boolean;
+  maxAge?: number | string;
+  redirect?: boolean;
+  setHeaders?: (res: express.Response, path: string, stat: fs.Stats) => void;
+}
+
+express.json(options?: JSONOptions): express.RequestHandler
+express.urlencoded(options?: URLEncodedOptions): express.RequestHandler
+express.static(root: string, options?: StaticOptions): express.RequestHandler
+express.Router(options?: {caseSensitive?: boolean; mergeParams?: boolean; strict?: boolean}): express.Router
+
+Usage Examples:
+app.use(express.json());
+app.post('/data', (req,res) => { res.json(req.body); });
+
+Best Practices:
+Validate req.body shape: if (typeof req.body.foo !== 'string') return res.status(400).send('Invalid');
+Limit body size to mitigate DoS: express.json({limit:'10kb'}).
+Escape HTML in JSON responses: app.set('json escape', true).
+
+Troubleshooting:
+Command:
+curl -X POST http://localhost:3000/data -H 'Content-Type: application/json' -d @large.json
+Expected on limit exceed: HTTP 413 Payload Too Large
+Resolution: increase limit setting.
+
+Check static file serving:
+curl http://localhost:3000/static/image.png -I
+Expected header: Cache-Control: max-age=0
+Change maxAge to alter caching.
+
+
+## Information Dense Extract
+express.json([options]) parses JSON: inflate=true, limit=100kb, strict=true, type='application/json', reviver=null, verify undefined; populates req.body or {}. express.urlencoded([opts]) parses URL-encoded: extended=true, inflate=true, limit=100kb, parameterLimit=1000, type='application/x-www-form-urlencoded', verify undefined; req.body key-value pairs. express.static(root, [opts]) serves files: dotfiles undefined, etag=true, extensions false, fallthrough=true, immutable=false, index='index.html', lastModified=true, maxAge=0, redirect=true, setHeaders undefined; next() on miss. express.Router([opts]) creates router: caseSensitive=false, mergeParams=false, strict=false; use router.METHOD and router.use. Ensure Node>=0.10, apply body parsers before routes, validate req.body, set json escape, adjust limits, test with curl.
+
+## Sanitised Extract
+Table of Contents
+
+1. JSON Body Parser
+2. URL-Encoded Body Parser
+3. Static File Server
+4. Router Creation
+
+1. JSON Body Parser
+
+Use express.json([options]) to parse application/json requests. Import:
+var express = require('express')
+var app = express()
+app.use(express.json({limit:'100kb', strict:true}))
+
+Options:
+inflate       (Boolean) defaults to true; handles compressed bodies
+limit         (String|Number) defaults to '100kb'; max request size
+reviver       (Function) defaults to null; passed to JSON.parse
+strict        (Boolean) defaults to true; only accepts objects and arrays
+type          (String|Array|Function) defaults to 'application/json'
+verify        (Function) defaults to undefined; called as verify(req,res,buf,encoding)
+
+Effect:
+On match, sets req.body to parsed object or {}. Throws error on invalid JSON.
+
+2. URL-Encoded Body Parser
+
+Use express.urlencoded([options]) for application/x-www-form-urlencoded. Example:
+app.use(express.urlencoded({extended:false, limit:'50kb'}))
+
+Options:
+extended        (Boolean) defaults to true; false uses querystring, true uses qs
+inflate         (Boolean) defaults to true; handle compressed bodies
+limit           (String|Number) defaults to '100kb'; max body size
+parameterLimit  (Number) defaults to 1000; max parameters
+type            (String|Array|Function) defaults to 'application/x-www-form-urlencoded'
+verify          (Function) defaults to undefined; called as verify(req,res,buf,encoding)
+
+Effect:
+Populates req.body with key-value pairs or arrays.
+
+3. Static File Server
+
+Use express.static(root, [options]) to serve static assets. Example:
+app.use(express.static('public', {maxAge:'7d', immutable:true}))
+
+Options:
+dotfiles      (String) default undefined; 'allow', 'deny', 'ignore'
+etag          (Boolean) default true; sends weak ETags
+extensions    (Array|false) default false; fallback extensions
+fallthrough   (Boolean) default true; next() on client errors
+immutable     (Boolean) default false; Cache-Control immutable directive
+index         (String|false) default 'index.html'; directory index file
+lastModified  (Boolean) default true; set Last-Modified header
+maxAge        (Number|String) default 0; Cache-Control max-age
+redirect      (Boolean) default true; redirect to trailing '/'
+setHeaders    (Function) default undefined; fn(res,path,stat)
+
+Effect:
+Serves files, calls next() if not found. Use reverse proxy for caching.
+
+4. Router Creation
+
+Use express.Router([options]) to create a router. Import:
+var router = express.Router({mergeParams:true})
+app.use('/items', router)
+
+Options:
+caseSensitive  (Boolean) default false; treat '/Foo' vs '/foo'
+mergeParams    (Boolean) default false; preserve parent req.params
+strict         (Boolean) default false; treat '/foo' vs '/foo/'
+
+Effect:
+Create modular route handlers: router.get, router.post, router.use.
+
+## Original Source
+Express.js Documentation
+https://expressjs.com/en/4x/api.html
+
+## Digest of EXPRESS_API
+
+# express.json([options])
+
+This middleware is available in Express v4.16.0 onwards.
+
+Parses incoming requests with JSON payloads. Based on body-parser.
+
+Signature
+
+express.json([options])
+
+Options table
+
+Property      Type      Default           Description
+inflate       Boolean   true              enable handling deflated bodies
+limit         Mixed     "100kb"          max request body size (bytes or string)
+reviver       Function  null              passed to JSON.parse as second arg
+strict        Boolean   true              only accept arrays and objects
+type          Mixed     "application/json" media type(s) to parse
+verify        Function  undefined         verify(req,res,buf,encoding)
+
+Behavior
+
+On match, populates req.body with parsed object or {}. Throws on parse errors. Supports gzip and deflate.
+
+# express.urlencoded([options])
+
+This middleware is available in Express v4.16.0 onwards.
+
+Parses URL-encoded payloads. Based on body-parser.
+
+Signature
+
+express.urlencoded([options])
+
+Options table
+
+Property        Type      Default                Description
+extended        Boolean   true                   true: use qs for rich objects; false: querystring
+inflate         Boolean   true                   enable handling deflated bodies
+limit           Mixed     "100kb"               max request body size
+parameterLimit  Number    1000                   max number of parameters
+type            Mixed     "application/x-www-form-urlencoded" media type(s) to parse
+verify          Function  undefined              verify(req,res,buf,encoding)
+
+Behavior
+
+Populates req.body with an object. Supports gzip and deflate. Extended controls value types.
+
+# express.static(root, [options])
+
+Built-in middleware for serving static files. Based on serve-static.
+
+Signature
+
+express.static(root, [options])
+
+Arguments
+
+root    String  directory to serve
+options Object  see table
+
+Options table
+
+Property      Type      Default          Description
+dotfiles      String    undefined        allow|deny|ignore handling of dotfiles
+etag          Boolean   true             enable weak ETag generation
+extensions    Mixed     false            ['ext','...'] file extension fallbacks
+fallthrough   Boolean   true             next() on client errors
+immutable     Boolean   false            enable Cache-Control immutable
+index         Mixed     "index.html"    directory index file or false
+type          Mixed     undefined        see dotfiles handling
+lastModified  Boolean   true             set Last-Modified header
+maxAge        Number    0                Cache-Control max-age in ms
+redirect      Boolean   true             add trailing slash redirect
+setHeaders    Function  undefined        fn(res,path,stat) to set headers
+
+Behavior
+
+Serves files by combining req.url with root. On missing file calls next().
+
+# express.Router([options])
+
+Creates modular mountable route handlers.
+
+Signature
+
+express.Router([options])
+
+Options table
+
+Property       Type     Default  Availability
+caseSensitive  Boolean  false    all versions
+mergeParams    Boolean  false    4.5.0+
+strict         Boolean  false    all versions
+
+Behavior
+
+Use router.METHOD(...) and router.use(...) to attach middleware or routes.
+
+Retrieved 2024-06-17
+Data Size: 18301639 bytes
+
+## Attribution
+- Source: Express.js Documentation
+- URL: https://expressjs.com/en/4x/api.html
+- License: MIT License
+- Crawl Date: 2025-05-11T06:58:11.039Z
+- Data Size: 18301639 bytes
+- Links Found: 17680
+
+## Retrieved
+2025-05-11
+library/EXPRESS_GRAPHQL.md
+# library/EXPRESS_GRAPHQL.md
+# EXPRESS_GRAPHQL
+
+## Crawl Summary
+graphqlHTTP(options) returns an Express middleware handling GraphQL over HTTP GET and POST. Options.schema must be a GraphQLSchema. Optional options include rootValue, context, graphiql (false by default), pretty (false), validationRules array, customFormatErrorFn(error) handler, fieldResolver resolver function, and extensions hook. Supports standard query parameters: query, variables (JSON), operationName, raw.
+
+## Normalised Extract
+Table of Contents:
+ 1 Installation
+ 2 Middleware Setup
+ 3 Options Interface
+ 4 GraphQL over HTTP Parameters
+ 5 GraphiQL Integration
+ 6 Error Handling
+
+1 Installation
+  npm install express-graphql graphql express
+
+2 Middleware Setup
+  const app = express()
+  app.use('/graphql', graphqlHTTP({ schema, rootValue, graphiql }))
+
+3 Options Interface
+  schema: GraphQLSchema (required)
+  rootValue: any container for resolvers
+  context: any passed to resolvers
+  graphiql: boolean enable IDE (default false)
+  pretty: boolean enable pretty JSON (default false)
+  validationRules: ValidationRule[] override rules
+  customFormatErrorFn: (error) => formatted error object
+  fieldResolver: (source, args, context, info) => resolved value
+  extensions: (info) => additional response extensions
+
+4 GraphQL over HTTP Parameters
+  HTTP Methods: GET, POST
+  query: GraphQL query string
+  variables: JSON object of variables
+  operationName: name of operation to execute
+  raw: boolean if raw result without formatting
+
+5 GraphiQL Integration
+  Enable only in development
+  graphiql option accepts boolean
+  Defaults: endpoint URL '/graphql'
+
+6 Error Handling
+  Missing schema throws Error 'Must provide schema'
+  malformed JSON body returns 400 with error message
+
+
+## Supplementary Details
+Default values:
+  graphiql: false
+  pretty: false
+  validationRules: GraphQL specified rules from graphql/validation
+  context: {} if not provided
+Middleware ordering:
+  Place bodyParser.json() before graphqlHTTP to parse POST bodies
+
+Environment-based GraphiQL:
+  const dev = process.env.NODE_ENV !== 'production'
+  app.use('/graphql', graphqlHTTP({ schema, graphiql: dev }))
+
+Integration steps:
+  1 Import express, graphqlHTTP, buildSchema
+  2 Define GraphQL schema string
+  3 Build schema with buildSchema
+  4 Define rootValue with resolver functions
+  5 Apply middleware to Express route
+  6 Start server on chosen port
+
+
+## Reference Details
+API Specification:
+  Function: graphqlHTTP
+    Signature: (options: Options | () => Options) => (req: Request, res: Response, next: NextFunction) => void
+  Type Options:
+    schema                   GraphQLSchema (must implement GraphQLSchema)
+    rootValue?               any
+    context?                 any
+    graphiql?                boolean default: false
+    pretty?                  boolean default: false
+    validationRules?         ValidationRule[] default: [specified rules]
+    customFormatErrorFn?     (error: GraphQLError) => any
+    fieldResolver?           GraphQLFieldResolver<any, any>
+    extensions?              (info: { document: DocumentNode, variables: Record<string, any>, operationName: string, result: ExecutionResult }) => Record<string, any>
+
+Code Example:
+import express from 'express'
+import graphqlHTTP from 'express-graphql'
+import { buildSchema } from 'graphql'
+const schema = buildSchema('type Query{hello:String}')
+const root = { hello: () => 'Hello!' }
+const app = express()
+app.use('/graphql', graphqlHTTP({
+  schema,
+  rootValue: root,
+  context: { user: req.user },
+  graphiql: true,
+  validationRules: [],
+  customFormatErrorFn: (err) => ({ message: err.message, locations: err.locations }),
+  extensions: ({ result }) => ({ runTime: Date.now() - startTime }),
+}))
+app.listen(4000, () => console.log('Server running'))
+
+Implementation Patterns:
+  Use environment variable for GraphiQL flag
+  Use middleware chaining: bodyParser.json(), graphqlHTTP()
+  Pass context per request by supplying a function thunk returning options
+
+Configuration Options:
+  graphiql true enables IDE at endpoint
+  pretty true formats JSON output with indentation
+  customFormatErrorFn allows masking stack trace
+
+Best Practices:
+  Restrict graphiql to non-production
+  Pre-compile schema in build step
+  Supply context for authentication
+
+Troubleshooting Procedures:
+  Command: curl -X POST -H 'Content-Type: application/json' --data '{"query":"{hello}"}' http://localhost:4000/graphql
+    Expected: {"data":{"hello":"Hello"}}
+  Error 'Must provide schema': Ensure options.schema is set
+  400 on invalid JSON: Check body-parser placement
+
+
+## Information Dense Extract
+graphqlHTTP(options) returns Express middleware. Options.schema: GraphQLSchema. Optional: rootValue, context, graphiql=false, pretty=false, validationRules: ValidationRule[], customFormatErrorFn(error)->any, fieldResolver(source,args,context,info)->any, extensions({document,variables,operationName,result})->object. Middleware requires bodyParser.json() ahead. HTTP GET/POST params: query(String), variables(JSON), operationName(String), raw(Boolean). Enable graphiql only in dev. Use curl -X POST -H 'Content-Type: application/json' --data '{"query":"..."}' to test. Error 'Must provide schema' if schema missing. Validate requests with customFormatErrorFn and validationRules overrides. Context injection via options thunk: graphqlHTTP(() => ({schema, context: {user}})).
+
+## Sanitised Extract
+Table of Contents:
+ 1 Installation
+ 2 Middleware Setup
+ 3 Options Interface
+ 4 GraphQL over HTTP Parameters
+ 5 GraphiQL Integration
+ 6 Error Handling
+
+1 Installation
+  npm install express-graphql graphql express
+
+2 Middleware Setup
+  const app = express()
+  app.use('/graphql', graphqlHTTP({ schema, rootValue, graphiql }))
+
+3 Options Interface
+  schema: GraphQLSchema (required)
+  rootValue: any container for resolvers
+  context: any passed to resolvers
+  graphiql: boolean enable IDE (default false)
+  pretty: boolean enable pretty JSON (default false)
+  validationRules: ValidationRule[] override rules
+  customFormatErrorFn: (error) => formatted error object
+  fieldResolver: (source, args, context, info) => resolved value
+  extensions: (info) => additional response extensions
+
+4 GraphQL over HTTP Parameters
+  HTTP Methods: GET, POST
+  query: GraphQL query string
+  variables: JSON object of variables
+  operationName: name of operation to execute
+  raw: boolean if raw result without formatting
+
+5 GraphiQL Integration
+  Enable only in development
+  graphiql option accepts boolean
+  Defaults: endpoint URL '/graphql'
+
+6 Error Handling
+  Missing schema throws Error 'Must provide schema'
+  malformed JSON body returns 400 with error message
+
+## Original Source
+GraphQL API Documentation
+https://github.com/graphql/express-graphql
+
+## Digest of EXPRESS_GRAPHQL
+
+# express-graphql Middleware
+
+express-graphql exports a single function graphqlHTTP
+
+# Method Signature
+
+graphqlHTTP(options: Options | () => Options) => RequestHandler
+
+# Options Interface
+
+Options:
+  schema                  GraphQLSchema (required)
+  rootValue               any
+  context                 any
+  graphiql                boolean (default false)
+  pretty                  boolean (default false)
+  validationRules         ValidationRule[]
+  customFormatErrorFn     (error: GraphQLError) => any
+  fieldResolver           GraphQLFieldResolver<any, any>
+  extensions              (info: ExtensionInfo) => Record<string, any)
+
+# Usage Example
+
+import express from 'express'
+import graphqlHTTP from 'express-graphql'
+import { buildSchema } from 'graphql'
+
+const schema = buildSchema(
+  'type Query { hello: String }'
+)
+const root = { hello: () => 'Hello world!' }
+
+const app = express()
+app.use(
+  '/graphql',
+  graphqlHTTP({ schema, rootValue: root, graphiql: true })
+)
+app.listen(4000)
+
+# GraphQL over HTTP Details
+
+Supports GET and POST
+Query parameters:
+  query         GraphQL query string
+  variables     JSON object
+  operationName string
+  raw           boolean
+
+# Retrieval
+
+Content retrieved on 2024-06-20
+
+## Attribution
+- Source: GraphQL API Documentation
+- URL: https://github.com/graphql/express-graphql
+- License: CC0 1.0 Universal / MIT License
+- Crawl Date: 2025-05-11T07:58:32.270Z
+- Data Size: 552486 bytes
+- Links Found: 4716
+
+## Retrieved
+2025-05-11
 library/CLI_PROGRESS.md
 # library/CLI_PROGRESS.md
 # CLI_PROGRESS
 
 ## Crawl Summary
-No technical details available; source returned zero bytes.
+CLI-PROGRESS v3.9.1 exports SingleBar and MultiBar classes with Presets. SingleBar constructed via new SingleBar(options, preset) accepts SingleBarOptions (format, barCompleteChar, barIncompleteChar, hideCursor, stopOnComplete, fps, barsize, stream). Methods: start(total, startValue, payload), update(value, payload), increment(step, payload), stop(), lastDraw(), render(). MultiBar via new MultiBar(options, preset) plus create(total, startValue, payload, options), stop(), stopAll(). Default options: format '{bar} {percentage}%', completeChar '=', incompleteChar '-', hideCursor true, stopOnComplete true, fps 10, barsize 40, stream stderr. Templates in Presets.shades_classic and shades_grey.
 
 ## Normalised Extract
-Table of Contents:
-1. Overview
-2. Installation
-3. API Methods
-4. Configuration Options
+Table of Contents
+1 Installation
+2 Import and Presets
+3 SingleBar Class
+4 MultiBar Class
+5 Configuration Options
+6 Methods
+7 Examples
 
-No content available for each section.
+1 Installation
+npm install cli-progress@3.9.1
+
+2 Import and Presets
+const { SingleBar, MultiBar, Presets } = require('cli-progress');
+Presets.shades_classic, Presets.shades_grey
+
+3 SingleBar Class
+Constructor: new SingleBar(options?: SingleBarOptions, preset?: Preset)
+
+4 MultiBar Class
+Constructor: new MultiBar(options?: SingleBarOptions, preset?: Preset)
+
+5 Configuration Options (SingleBarOptions)
+format: string                // e.g. 'progress | {bar} | {percentage}% | ETA: {eta}s'
+barCompleteChar: string        // default '='
+barIncompleteChar: string      // default '-'
+hideCursor: boolean            // default true
+stopOnComplete: boolean        // default true
+fps: number                    // default 10
+barsize: number                // default 40
+stream: NodeJS.WritableStream  // default process.stderr
+clearOnComplete: boolean       // MultiBar default false
+
+6 Methods
+SingleBar:start(total: number, startValue?: number, payload?: Object): void
+SingleBar:update(value: number, payload?: Object): void
+SingleBar:increment(step?: number, payload?: Object): void
+SingleBar:stop(): void
+SingleBar:lastDraw(): Record<string, any>
+SingleBar:render(): void
+MultiBar:create(total: number, startValue?: number, payload?: Object, options?: SingleBarOptions): SingleBar
+MultiBar:stop(): void
+MultiBar:stopAll(): void
+
+7 Examples
+SingleBar usage: instantiate with options and preset, call start, update/increment in loop, stop when done.
+MultiBar usage: instantiate Multibar, create individual bars with create, control each bar independently, stop all at end.
 
 ## Supplementary Details
-None available.
+Default Option Values
+format: '{bar} {percentage}%'
+barCompleteChar: '='
+barIncompleteChar: '-'
+hideCursor: true
+stopOnComplete: true
+fps: 10
+barsize: 40
+stream: process.stderr
+clearOnComplete (MultiBar): false
+
+Implementation Steps
+1 Install module
+2 Import SingleBar, MultiBar, Presets
+3 Instantiate bar(s) with desired options and preset
+4 Call start(total, startValue)
+5 In work loop call update(value) or increment(step)
+6 On completion call stop() or multibar.stopAll()
+
+Core Functionality
+- Payload parameter merges into format tokens
+- lastDraw() returns object {value, total, eta, ...}
+- render() forces immediate draw
+
+Error Handling
+- Ensure hideCursor false if bar not stopped to restore cursor
+- Use clearOnComplete false to preserve final bar on screen
 
 ## Reference Details
-None available.
+Module Exports:
+- function new SingleBar(options?: SingleBarOptions, preset?: Preset): SingleBar
+- function new MultiBar(options?: SingleBarOptions, preset?: Preset): MultiBar
+- object Presets { shades_classic, shades_grey }
+
+SingleBarOptions Interface:
+interface SingleBarOptions {
+  format?: string;
+  barCompleteChar?: string;
+  barIncompleteChar?: string;
+  hideCursor?: boolean;
+  stopOnComplete?: boolean;
+  fps?: number;
+  barsize?: number;
+  stream?: NodeJS.WritableStream;
+  clearOnComplete?: boolean;
+}
+
+SingleBar Methods:
+start(total: number, startValue?: number, payload?: Record<string, any>): void
+update(value: number, payload?: Record<string, any>): void
+increment(step?: number, payload?: Record<string, any>): void
+stop(): void
+lastDraw(): { value: number; total: number; eta: number; percentage: number; [key: string]: any }
+render(): void
+
+MultiBar Methods:
+create(total: number, startValue?: number, payload?: Record<string, any>, options?: SingleBarOptions): SingleBar
+stop(): void
+stopAll(): void
+
+Best Practices:
+- Use stopOnComplete: false to chain animations
+- Set hideCursor: false during debug to avoid lost cursor position
+- Use process.stderr for logging parallel to stdout output
+- Encapsulate bar logic in try/finally to ensure stop()
+
+Troubleshooting:
+Issue: bar hangs in CI
+  Command: export CI=true && node script.js
+  Solution: set clearOnComplete: true or disable hideCursor
+
+Issue: malformed format
+  Symptom: format tokens not replaced
+  Fix: ensure payload keys match tokens
+
+Issue: performance drop
+  Check fps and barsize, reduce fps or barsize to optimize
+
+Commands:
+node --version
+npm list cli-progress
+
 
 ## Information Dense Extract
-No technical details available; source returned zero bytes.
-
-None available.
-
-None available.
-
-# CLI Progress Bars
-
-No content retrieved from source.
+SingleBar(options, preset) options:format:string,barCompleteChar:string='=',barIncompleteChar:string='-',hideCursor:boolean=true,stopOnComplete:boolean=true,fps:number=10,barsize:number=40,stream:WritableStream=stderr,clearOnComplete:boolean=false. Methods:start(total:number,startValue?:number,payload?:object):void;update(value:number,payload?:object):void;increment(step?:number,payload?:object):void;stop():void;lastDraw():{value, total, eta, percentage, ...};render():void. MultiBar(options,preset).create(total, startValue?, payload?, options?):SingleBar;stop():void;stopAll():void. Presets:shades_classic,shades_grey. Example: const bar=new SingleBar({format:'{bar} {percentage}%',hideCursor:false},Presets.shades_classic);bar.start(100,0);bar.increment();bar.stop().
 
 ## Sanitised Extract
-Table of Contents:
-1. Overview
-2. Installation
-3. API Methods
-4. Configuration Options
+Table of Contents
+1 Installation
+2 Import and Presets
+3 SingleBar Class
+4 MultiBar Class
+5 Configuration Options
+6 Methods
+7 Examples
 
-No content available for each section.
+1 Installation
+npm install cli-progress@3.9.1
+
+2 Import and Presets
+const { SingleBar, MultiBar, Presets } = require('cli-progress');
+Presets.shades_classic, Presets.shades_grey
+
+3 SingleBar Class
+Constructor: new SingleBar(options?: SingleBarOptions, preset?: Preset)
+
+4 MultiBar Class
+Constructor: new MultiBar(options?: SingleBarOptions, preset?: Preset)
+
+5 Configuration Options (SingleBarOptions)
+format: string                // e.g. 'progress | {bar} | {percentage}% | ETA: {eta}s'
+barCompleteChar: string        // default '='
+barIncompleteChar: string      // default '-'
+hideCursor: boolean            // default true
+stopOnComplete: boolean        // default true
+fps: number                    // default 10
+barsize: number                // default 40
+stream: NodeJS.WritableStream  // default process.stderr
+clearOnComplete: boolean       // MultiBar default false
+
+6 Methods
+SingleBar:start(total: number, startValue?: number, payload?: Object): void
+SingleBar:update(value: number, payload?: Object): void
+SingleBar:increment(step?: number, payload?: Object): void
+SingleBar:stop(): void
+SingleBar:lastDraw(): Record<string, any>
+SingleBar:render(): void
+MultiBar:create(total: number, startValue?: number, payload?: Object, options?: SingleBarOptions): SingleBar
+MultiBar:stop(): void
+MultiBar:stopAll(): void
+
+7 Examples
+SingleBar usage: instantiate with options and preset, call start, update/increment in loop, stop when done.
+MultiBar usage: instantiate Multibar, create individual bars with create, control each bar independently, stop all at end.
 
 ## Original Source
-CLI Progress Bars
-https://github.com/cli-progress/cli-progress#readme
+cli-progress
+https://github.com/streamich/cli-progress#readme
 
 ## Digest of CLI_PROGRESS
 
-# CLI Progress Bars
+# CLI-PROGRESS README (Retrieved: 2024-06-05)
 
-No content retrieved from source.
+# Installation
+
+npm install cli-progress@3.9.1
+
+# Import and Presets
+
+```js
+const { SingleBar, MultiBar, Presets } = require('cli-progress');
+``` 
+- Presets.shades_classic
+- Presets.shades_grey
+
+# SingleBar Class
+
+## Constructor
+
+```ts
+new SingleBar(options?: SingleBarOptions, preset?: Preset);
+```
+
+### SingleBarOptions
+
+- format: string                          // e.g. 'progress | {bar} | {percentage}% | ETA: {eta}s'
+- barCompleteChar: string                // default '='
+- barIncompleteChar: string              // default '-'
+- hideCursor: boolean                    // default true
+- stopOnComplete: boolean                // default true
+- fps: number                            // default 10
+- barsize: number                        // default 40
+- stream: NodeJS.WritableStream          // default process.stderr
+
+## Methods
+
+```ts
+start(total: number, startValue?: number, payload?: Object): void
+update(value: number, payload?: Object): void
+increment(step?: number, payload?: Object): void
+stop(): void
+lastDraw(): Record<string, any>
+render(): void
+``` 
+
+# MultiBar Class
+
+## Constructor
+
+```ts
+new MultiBar(options?: SingleBarOptions, preset?: Preset);
+``` 
+
+## Methods
+
+```ts
+create(total: number, startValue?: number, payload?: Object, options?: SingleBarOptions): SingleBar
+stop(): void
+stopAll(): void
+``` 
+
+# Examples
+
+### Single Progress
+```js
+const bar = new SingleBar({ format: ' {bar} {percentage}% | ETA: {eta}s', hideCursor: false }, Presets.shades_classic);
+bar.start(200, 0);
+let value = 0;
+const timer = setInterval(() => {
+  value++;
+  bar.update(value);
+  if (value >= 200) {
+    clearInterval(timer);
+    bar.stop();
+  }
+}, 20);
+```
+
+### Multi Progress
+```js
+const multibar = new MultiBar({ clearOnComplete: false, hideCursor: true }, Presets.shades_grey);
+const task1 = multibar.create(100, 0, { task: 'Download' });
+const task2 = multibar.create(200, 0, { task: 'Upload' });
+
+task1.start(100, 0);
+task2.start(200, 0);
+
+// increment tasks independently
+multibar.on('stop', () => multibar.stop());
+```
 
 ## Attribution
-- Source: CLI Progress Bars
-- URL: https://github.com/cli-progress/cli-progress#readme
-- License: License: MIT
-- Crawl Date: 2025-05-10T10:02:21.081Z
+- Source: cli-progress
+- URL: https://github.com/streamich/cli-progress#readme
+- License: MIT License
+- Crawl Date: 2025-05-11T08:35:14.819Z
 - Data Size: 0 bytes
 - Links Found: 0
-
-## Retrieved
-2025-05-10
-library/SWAGGER_UI_EXPRESS.md
-# library/SWAGGER_UI_EXPRESS.md
-# SWAGGER_UI_EXPRESS
-
-## Crawl Summary
-Exposes three middleware functions: serve, serveFiles(document?, options?), setup(document?, options?).  setup options include explorer:boolean(default false), swaggerOptions with validatorUrl|null, url or urls[], customCss|string, customCssUrl|string|string[], customJs|string|string[], customJsStr|string|string[].  Supports loading from local JSON/YAML, remote URL, multiple specs dropdown, inline CSS/JS injection, dynamic per-request docs via req.swaggerDoc, and multiple UI instances.  Requires Node>=0.10.32, Express>=4.  Installation via npm install swagger-ui-express.  Serve static assets before setup handler.  Examples include Express app and Router patterns.
-
-## Normalised Extract
-Table of Contents
-1 Installation
-2 Middleware Functions
-3 Setup Options
-4 SwaggerOptions
-5 Custom CSS Injection
-6 Custom JS Injection
-7 Loading from URL
-8 Loading YAML
-9 Dynamic Request Docs
-10 Multiple UI Instances
-11 Link Endpoint
-12 Requirements
-13 Testing
-
-1 Installation
-  npm install swagger-ui-express
-
-2 Middleware Functions
-  Import: const swaggerUi = require('swagger-ui-express')
-  Serve static assets: swaggerUi.serve
-  Serve files & index: swaggerUi.serveFiles(swaggerDocument?, options?)
-  Render UI HTML: swaggerUi.setup(swaggerDocument?, options?)
-
-3 Setup Options
-  explorer:boolean (default false)
-  customCss:string
-  customCssUrl:string|string[]
-  customJs:string|string[]
-  customJsStr:string|string[]
-
-4 SwaggerOptions
-  validatorUrl:string|null
-  url:string               // when initial document null
-  urls: [{url:string, name:string}]
-
-5 Custom CSS Injection
-  customCss applies raw CSS string after base styles
-  customCssUrl loads external CSS files
-
-6 Custom JS Injection
-  customJs loads external JS files
-  customJsStr embeds inline JS strings
-
-7 Loading from URL
-  setup(null, { swaggerOptions: { url: 'http://...' } })
-
-8 Loading YAML
-  Use yaml.parse on fs.readFileSync
-  Pass parsed object to setup
-
-9 Dynamic Request Docs
-  In middleware set req.swaggerDoc = modifiedDocument
-  Use serveFiles() and setup() with no arguments
-
-10 Multiple UI Instances
-  Use serveFiles(doc, opts) then setup(doc)
-  Register distinct routes per instance
-
-11 Link Endpoint
-  app.get('/path/swagger.json', res.json(document))
-  setup(null, { swaggerOptions: { url: '/path/swagger.json' } })
-
-12 Requirements
-  Node >=0.10.32
-  Express >=4
-
-13 Testing
-  npm install phantom
-  npm test
-
-## Supplementary Details
-Version pinning: swagger UI assets pulled from swagger-ui-dist; lock the version via package-lock.json or yarn.lock to ensure consistent UI across environments.  Implementation steps: 1. npm install swagger-ui-express 2. require module 3. import or parse swagger spec 4. app.use/or router.use static assets via swaggerUi.serve or swaggerUi.serveFiles 5. mount setup handler swaggerUi.setup with spec and options 6. open /api-docs 7. optional: add express middleware before serveFiles to modify req.swaggerDoc 8. for YAML use yaml module 9. for multiple specs use swaggerOptions.urls array 10. for CSS/JS injection use customCss, customCssUrl, customJs, customJsStr.  Example router integration: const router = express.Router(); router.use('/docs', swaggerUi.serve); router.get('/docs', swaggerUi.setup(swaggerSpec, { explorer: true })); app.use(router).
-
-## Reference Details
-/* Module Import */
-const swaggerUi = require('swagger-ui-express')
-
-/* Middleware Signatures */
-serve: (req: Request, res: Response, next: NextFunction) => void
-serveFiles: (swaggerDocument?: object, options?: SetupOptions) => (req: Request, res: Response, next: NextFunction) => void
-setup: (swaggerDocument?: object, options?: SetupOptions) => (req: Request, res: Response, next: NextFunction) => void
-
-/* SetupOptions Interface */
-interface SetupOptions {
-  explorer?: boolean               // default false
-  swaggerOptions?: {
-    url?: string                   // load spec from URL
-    urls?: { url: string; name: string }[] // multiple specs dropdown
-    validatorUrl?: string | null   // default online validator, null disables
-    filter?: boolean | string
-    docExpansion?: 'none' | 'list' | 'full'
-    defaultModelsExpandDepth?: number
-    defaultModelExpandDepth?: number
-    defaultModelRendering?: 'example' | 'model'
-    displayRequestDuration?: boolean
-    operationsSorter?: string | ((a,b) => number)
-    tagsSorter?: string | ((a,b) => number)
-    supportedSubmitMethods?: string[]
-    showExtensions?: boolean
-    showCommonExtensions?: boolean
-  }
-  customCss?: string               // raw CSS
-  customCssUrl?: string | string[] // external CSS URLs
-  customJs?: string | string[]     // external JS URLs
-  customJsStr?: string | string[]  // inline JS strings
-}
-
-/* Example Code Patterns */
-// Basic setup
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
-// Explorer bar
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }))
-
-// Custom validator
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { swaggerOptions: { validatorUrl: null } }))
-
-// Inline CSS
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { customCss: '.topbar { display: none }' }))
-
-// Multiple specs dropdown
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, { explorer: true, swaggerOptions: { urls: [{ url:'a.json', name:'A' },{ url:'b.json', name:'B' }] } }))
-
-// YAML load
-const YAML = require('yaml')
-const fs = require('fs')
-const doc = YAML.parse(fs.readFileSync('swagger.yaml','utf8'))
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(doc))
-
-// Dynamic host
-app.use('/api-docs', (req,_,next) => { req.swaggerDoc = Object.assign({}, swaggerDocument, { host: req.get('host') }); next() }, swaggerUi.serveFiles(), swaggerUi.setup())
-
-// Troubleshooting
-// 1. Verify JSON parse errors: console.log(swaggerDocument)
-// 2. Check route ordering: static assets before setup
-// 3. Curl health check: curl -I http://localhost:3000/api-docs | grep HTTP
-// Expected: HTTP/1.1 200 OK
-
-/* Requirements */
-// Node v0.10.32+  Express 4+
-
-/* Testing */
-// npm install phantom
-// npm test
-
-
-## Information Dense Extract
-serve:RequestHandler; serveFiles(doc?:object,opts?:{explorer?:boolean,swaggerOptions?:{url?:string,urls?:{url,name}[],validatorUrl?:string|null},customCss?:string,customCssUrl?:string|string[],customJs?:string|string[],customJsStr?:string|string[]}):RequestHandler; setup(doc?:object,opts?:Same):RequestHandler; usage: npm install swagger-ui-express; import const swaggerUi=require('swagger-ui-express'); app.use('/api-docs',serve,setup(doc,opts)); key opts: explorer:boolean(false), swaggerOptions:{validatorUrl:null, url:string, urls:[{url,name}]}, customCss:string, customCssUrl:string|string[], customJs:string|string[], customJsStr:string|string[]; YAML: use yaml.parse(fs.readFileSync); dynamic: req.swaggerDoc before serveFiles(); multiple: serveFiles(doc1),setup(doc1) on separate routes; link JSON: app.get('/swagger.json',res.json(doc)); setup(null,{swaggerOptions:{url:'/swagger.json'}}); requires Node>=0.10.32, Express>=4; tests: npm install phantom && npm test
-
-## Sanitised Extract
-Table of Contents
-1 Installation
-2 Middleware Functions
-3 Setup Options
-4 SwaggerOptions
-5 Custom CSS Injection
-6 Custom JS Injection
-7 Loading from URL
-8 Loading YAML
-9 Dynamic Request Docs
-10 Multiple UI Instances
-11 Link Endpoint
-12 Requirements
-13 Testing
-
-1 Installation
-  npm install swagger-ui-express
-
-2 Middleware Functions
-  Import: const swaggerUi = require('swagger-ui-express')
-  Serve static assets: swaggerUi.serve
-  Serve files & index: swaggerUi.serveFiles(swaggerDocument?, options?)
-  Render UI HTML: swaggerUi.setup(swaggerDocument?, options?)
-
-3 Setup Options
-  explorer:boolean (default false)
-  customCss:string
-  customCssUrl:string|string[]
-  customJs:string|string[]
-  customJsStr:string|string[]
-
-4 SwaggerOptions
-  validatorUrl:string|null
-  url:string               // when initial document null
-  urls: [{url:string, name:string}]
-
-5 Custom CSS Injection
-  customCss applies raw CSS string after base styles
-  customCssUrl loads external CSS files
-
-6 Custom JS Injection
-  customJs loads external JS files
-  customJsStr embeds inline JS strings
-
-7 Loading from URL
-  setup(null, { swaggerOptions: { url: 'http://...' } })
-
-8 Loading YAML
-  Use yaml.parse on fs.readFileSync
-  Pass parsed object to setup
-
-9 Dynamic Request Docs
-  In middleware set req.swaggerDoc = modifiedDocument
-  Use serveFiles() and setup() with no arguments
-
-10 Multiple UI Instances
-  Use serveFiles(doc, opts) then setup(doc)
-  Register distinct routes per instance
-
-11 Link Endpoint
-  app.get('/path/swagger.json', res.json(document))
-  setup(null, { swaggerOptions: { url: '/path/swagger.json' } })
-
-12 Requirements
-  Node >=0.10.32
-  Express >=4
-
-13 Testing
-  npm install phantom
-  npm test
-
-## Original Source
-Swagger UI Express Middleware
-https://github.com/scottie1984/swagger-ui-express
-
-## Digest of SWAGGER_UI_EXPRESS
-
-# SWAGGER UI EXPRESS
-
-This module adds middleware to Express to serve Swagger UI based on a Swagger JSON/YAML document.
-
-# Usage
-
-```bash
-npm install swagger-ui-express
-```  
-```js
-const express = require('express')
-const app = express()
-const swaggerUi = require('swagger-ui-express')
-const swaggerDocument = require('./swagger.json')
-
-app.use(
-  '/api-docs',
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument)
-)
-```  
-Or with Express Router:
-```js
-const router = require('express').Router()
-const swaggerUi = require('swagger-ui-express')
-const swaggerDocument = require('./swagger.json')
-
-router.use('/api-docs', swaggerUi.serve)
-router.get('/api-docs', swaggerUi.setup(swaggerDocument))
-```  
-
-Open `http://<host>:<port>/api-docs` to view.
-
-# API Methods
-
-## swaggerUi.serve
-Express middleware (Request, Response, Next) serving Swagger UI static assets.
-
-## swaggerUi.serveFiles(document, options)
-Signature: `serveFiles(swaggerDocument?: Object, options?: SetupOptions): RequestHandler`  
-Serves static assets and index with provided document.
-
-## swaggerUi.setup(document, options)
-Signature: `setup(swaggerDocument?: Object, options?: SetupOptions): RequestHandler`  
-Renders Swagger UI HTML page bound to `swaggerDocument`.
-
-# Configuration Options
-
-Pass second parameter to `setup()` with the following shape:
-
-```js
-const options = {
-  explorer: true,                // display search bar
-  swaggerOptions: {              // passed directly to Swagger UI
-    validatorUrl: null,          // disable online validator
-    url: 'http://example.com',   // load from URL if first param null
-    urls: [                      // dropdown of multiple specs
-      { url: 'http://a.json', name: 'A' },
-      { url: 'http://b.json', name: 'B' }
-    ]
-  },
-  customCss: '.swagger-ui .topbar { display: none }',
-  customCssUrl: ['/c1.css', 'https://x/c2.css'],
-  customJs: ['/c1.js', 'https://x/c2.js'],
-  customJsStr: ['console.log("Hello")', 'var x=1']
-}
-```  
-
-Refer to Swagger UI Configuration for full list.
-
-# Loading YAML
-
-```bash
-npm install yaml
-```  
-```js
-const fs = require('fs')
-const YAML = require('yaml')
-const file = fs.readFileSync('./swagger.yaml', 'utf8')
-const swaggerDocument = YAML.parse(file)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-```
-
-# Dynamic Document
-
-```js
-app.use(
-  '/api-docs',
-  (req, res, next) => {
-    req.swaggerDoc = /* modified JSON */
-    next()
-  },
-  swaggerUi.serveFiles(),
-  swaggerUi.setup()
-)
-```
-
-# Multiple Instances
-
-```js
-app.use(
-  '/docs1',
-  swaggerUi.serveFiles(doc1, opts),
-  swaggerUi.setup(doc1)
-)
-app.use(
-  '/docs2',
-  swaggerUi.serveFiles(doc2, opts),
-  swaggerUi.setup(doc2)
-)
-```
-
-# Link to Swagger JSON
-
-```js
-app.get('/api-docs/swagger.json', (req, res) => res.json(swaggerDocument))
-const options = { swaggerOptions: { url: '/api-docs/swagger.json' } }
-app.use('/api-docs', swaggerUi.serveFiles(null, options), swaggerUi.setup(null, options))
-```
-
-# Requirements
-
-Node >= 0.10.32  
-Express >= 4
-
-# Testing
-
-```bash
-npm install phantom
-npm test
-```
-
-## Attribution
-- Source: Swagger UI Express Middleware
-- URL: https://github.com/scottie1984/swagger-ui-express
-- License: MIT License
-- Crawl Date: 2025-05-11T02:58:12.310Z
-- Data Size: 1061638 bytes
-- Links Found: 5606
 
 ## Retrieved
 2025-05-11
@@ -4436,318 +4265,253 @@ library/ZOD_CORE.md
 # ZOD_CORE
 
 ## Crawl Summary
-Installation: TS4.5+, enable strict. npm|yarn|pnpm|bun|deno install zod. Basic Usage: z.string, z.object, z.infer. Primitives: z.string, z.number, z.bigint, z.boolean, z.date, empty/catchall types. Coercion: z.coerce.* uses built-in constructors. Parsing: .parse, .parseAsync, .safeParse, .safeParseAsync. Composition: object, array, tuple, union, discriminatedUnion, record, map, set, intersection. Schema methods: .extend, .merge, .pick/.omit, .partial/.deepPartial, .required, .strict/.passthrough/.strip/.catchall. Refinements: .refine, .superRefine; transforms: .transform, .preprocess, .pipe. Enums: z.enum, z.nativeEnum with .enum and .options, .extract/.exclude. Helpers: .optional, .nullable. Advanced: .lazy for recursion, ZodType<>, function schemas, z.instanceof. Errors: custom messages. Troubleshooting: cycles, promise schemas, boolean coercion caveats.
+Installation requirements: TypeScript 4.5+, strict mode in tsconfig. Install zod via npm, yarn, pnpm, bun. Import z from 'zod'. Core schema types: string, number, bigint, boolean, date, literal. Methods: min, max, email, url, regex, int, positive, nonnegative. Coercion via z.coerce. Object: shape, extend, merge, pick, omit, partial, required, strict, passthrough, catchall. Array: min, max, nonempty, element. Tuple: fixed length, rest. Unions: union, or, discriminatedUnion. Intersection: and, merge. Refinements: refine, superRefine, transform, preprocess. Parsing: parse, safeParse, parseAsync, safeParseAsync. Type inference via z.infer.
 
 ## Normalised Extract
-Table of Contents:
-1. Installation
-2. Basic Usage
-3. Primitives & Coercion
-4. Parsing Methods
-5. Schema Composition
-6. Refinements & Transforms
-7. Enums & Helpers
-8. Advanced Patterns
-9. Troubleshooting
+Table of Contents
+1 Installation
+2 Basic Usage
+3 Primitives
+4 Objects
+5 Arrays & Tuples
+6 Unions & Intersections
+7 Refinements & Transforms
+8 Parsing Methods
 
-1. Installation
-   - Requirements: TypeScript>=4.5, tsconfig.json strict=true
-   - Commands: npm install zod | yarn add zod | pnpm add zod | bun add zod | deno add npm:zod
-   - Canary: install zod@canary
+1 Installation
+TypeScript >=4.5 with strict:true in tsconfig
+npm install zod
 
-2. Basic Usage
-   import { z } from "zod"
-   z.string().parse("foo")           // returns "foo"
-   z.string().safeParse(123)           // { success:false,... }
-   const User = z.object({ username:z.string() })
-   User.parse({ username:"alice" })  // returns object
-   type User = z.infer<typeof User>    // { username: string }
+2 Basic Usage
+import { z } from "zod"
 
-3. Primitives & Coercion
-   z.string(opts?), z.number(opts?), z.bigint(), z.boolean(), z.date(), z.undefined(), z.null(), z.void(), z.any(), z.unknown(), z.never()
-   z.coerce.string() -> String(input)
-   z.coerce.number() -> Number(input)
-   z.coerce.boolean() -> Boolean(input)
-   z.coerce.date() -> new Date(input)
+3 Primitives
+z.string()
+  .min( length, { message } )
+  .max( length, { message } )
+  .email( { message } )
 
-4. Parsing Methods
-   .parse(data:unknown):T
-   .parseAsync(data:unknown):Promise<T>
-   .safeParse(data:unknown):{success:boolean;data?:T;error?:ZodError}
-   .safeParseAsync(data:unknown):Promise<same>
+z.number()
+  .min( value, { message } )
+  .max( value, { message } )
+  .int()
+  .positive()
 
-5. Schema Composition
-   Objects: z.object(shape)
-      .extend(fields), .merge(obj)
-      .pick(keys), .omit(keys)
-      .partial(keys?), .deepPartial()
-      .required(keys?)
-      .strict(), .passthrough(), .strip(), .catchall(schema)
-   Arrays: z.array(item)
-      .nonempty({message}), .min(n,{message}), .max(n), .length(n)
-   Tuples: z.tuple([schemas]).rest(schema)
-   Unions: z.union([schemas]), schema1.or(schema2)
-   Discriminated union: z.discriminatedUnion(key, options[])
-   Record: z.record(keySchema,valueSchema)
-   Map: z.map(keySchema,valueSchema)
-   Set: z.set(item).nonempty()/min()/max()/size()
-   Intersection: z.intersection(A,B) or A.and(B)
+z.boolean()
+z.bigint()
+z.date()
 
-6. Refinements & Transforms
-   .refine(validator,val=>boolean, {message?,path?})
-   .superRefine((val,ctx)=>ctx.addIssue({code,path,message}))
-   .transform(fn:val=>newVal)
-   .preprocess(fn:input=>converted, targetSchema)
-   .pipe(schema)
+Coercion: z.coerce.string(), z.coerce.number(), z.coerce.date(), z.coerce.boolean(), z.coerce.bigint()
 
-7. Enums & Helpers
-   z.enum(["A","B",...]) -> ZodEnum
-      .enum property, .options, .extract(vals), .exclude(vals)
-   z.nativeEnum(NativeEnumObj)
-   .optional(), .nullable()
+4 Objects
+z.object({ key: schema, ... })
+  .extend({ newKey: schema })
+  .merge( otherObject )
+  .pick({ key:true, ... })
+  .omit({ key:true, ... })
+  .partial({ key:true })
+  .required({ key:true })
+  .strict()
+  .passthrough()
+  .catchall( schema )
 
-8. Advanced Patterns
-   z.lazy(()=>schema) for recursion
-   const schema: ZodType<Output,Def,Input> = base.extend({})
-   z.function().args(...schemas).returns(schema).implement(fn)
-   z.instanceof(Class)
+5 Arrays & Tuples
+z.array( schema )
+  .min( count, { message } )
+  .max( count, { message } )
+  .nonempty({ message })
 
-9. Troubleshooting
-   - Cyclical object loops: detect or preprocess
-   - Promise schemas: .parse returns Promise; catch errors via .catch
-   - Boolean coercion caveat: truthy->true, falsy->false; use z.preprocess for custom logic
+z.tuple( [ schema1, schema2, ... ] )
+  .rest( schema )
 
+6 Unions & Intersections
+z.union( [ schemaA, schemaB ] )
+schemaA.or( schemaB )
+
+z.discriminatedUnion( "key", [objA, objB] )
+z.intersection( schemaA, schemaB )
+
+7 Refinements & Transforms
+schema.refine( fn(data)=>boolean, { message } )
+schema.superRefine( (data, ctx)=>void )
+schema.transform( fn(data)=>U )
+schema.preprocess( fn(input)=>any, schema )
+
+8 Parsing Methods
+schema.parse( input ) -> T
+schema.safeParse( input ) -> { success, data?, error? }
+schema.parseAsync( input ) -> Promise<T>
+schema.safeParseAsync( input ) -> Promise<result>
 
 
 ## Supplementary Details
-Type Inference:
-- z.infer<typeof Schema> extracts output type.
-- z.input<typeof EffectsSchema> and z.output<typeof EffectsSchema> for ZodEffects.
+Configuration
+- tsconfig.json: strict true
 
-TS Config:
-- strict:true required.
+Installation steps
+1 Ensure TypeScript>=4.5 installed
+2 Add zod via package manager
+3 Import from 'zod'
 
-Error Customization:
-- schema methods accept optional params: { message:string, path:(string|number)[] }.
-
-Catchall Config:
-- .catchall(zSchema) validates unknown keys against zSchema.
-
-Schema Unknown Key Policies:
-- Default: strip unknown.
-- .passthrough(): keep unknown.
-- .strict(): error on unknown.
-- .strip(): revert to strip.
-
-Function Schemas:
-- z.function(): base
-   .args(z.string(),z.number(),...)
-   .returns(z.boolean())
-   .implement((...args)=>output)
-
-Coercion Caveats:
-- Boolean: z.coerce.boolean() maps any truthy to true, any falsy to false.
-- Use z.preprocess for custom casts.
-
-Lazy & Recursive:
-- z.lazy(()=>schema) wrap self-referencing definitions.
-- Provide ZodType<Out,Def,In> when input/output differ.
-
+Implementation steps
+1 Define schemas using z.<type>()
+2 Chain validations and transforms
+3 Call parse or safeParse
+4 Use z.infer<typeof schema> for TypeScript types
 
 
 ## Reference Details
-### z.string([options])
-Signature: z.string(opts?: { required_error?: string; invalid_type_error?: string }) -> ZodString
-Methods:
-- min(min: number, ctx?: { message?: string; }): ZodString
-- max(max: number, ctx?: { message?: string; }): ZodString
-- length(len: number, ctx?: { message?: string; }): ZodString
-- email(ctx?: { message?: string; }): ZodString
-- url(ctx?: { message?: string; }): ZodString
-- regex(regex: RegExp, ctx?: { message?: string; }): ZodString
-- includes(substr: string, ctx?: { message?: string; }): ZodString
-- startsWith(substr: string, ctx?: { message?: string; }): ZodString
-- endsWith(substr: string, ctx?: { message?: string; }): ZodString
-- datetime(opts?: { offset?: boolean; local?: boolean; precision?: number; message?: string; }): ZodString
-- date(): ZodString  // YYYY-MM-DD
-- time(opts?: { precision?: number; message?: string; }): ZodString
-- ip(opts?: { version?: "v4"|"v6"; message?: string; }): ZodString
-- cidr(opts?: { version?: "v4"|"v6"; message?: string; }): ZodString
-- trim(): ZodString
-- toLowerCase(): ZodString
-- toUpperCase(): ZodString
-- brand<B extends string>(): ZodBranded<ZodString,B>
-- optional(): ZodOptional<ZodString>
-- nullable(): ZodNullable<ZodString>
-- array(): ZodArray<ZodString>
-- promise(): ZodPromise<ZodString>
-- or<Other>(other: ZodType<Other>): ZodUnion<[ZodString, ZodType<Other>]> 
-- and<Other>(other: ZodType<Other>): ZodIntersection<ZodString, ZodType<Other>>
+API Specifications
 
-Parsing:
-- .parse(data): string  // throws ZodError
-- .parseAsync(data): Promise<string>
-- .safeParse(data): { success:true; data:string } | { success:false; error:ZodError }
-- .safeParseAsync(data): Promise< same >
+z.string(): ZodString
+  methods:
+    min(min: number, params?: { message?: string }): ZodString
+    max(max: number, params?: { message?: string }): ZodString
+    email(params?: { message?: string }): ZodString
+    url(params?: { message?: string }): ZodString
+    regex(pattern: RegExp, params?: { message?: string }): ZodString
 
-Refinement & Transform:
-- .refine((val:string)=>boolean, { message?:string; path?: Path; }) -> ZodString
-- .superRefine((val:string, ctx)=>void) -> ZodString
-- .transform((val:string)=>U) -> ZodEffects<ZodString,U>
+z.number(): ZodNumber
+  methods:
+    min(min: number, params?: { message?: string }): ZodNumber
+    max(max: number, params?: { message?: string }): ZodNumber
+    int(): ZodNumber
+    positive(): ZodNumber
+    nonnegative(): ZodNumber
+    finite(): ZodNumber
+    safe(): ZodNumber
 
-### z.number([options])
-Signature: z.number(opts?: { required_error?: string; invalid_type_error?: string }) -> ZodNumber
-Methods:
-- min(min: number, ctx?: { message?: string; }): ZodNumber
-- max(max: number, ctx?: { message?: string; }): ZodNumber
-- int(): ZodNumber
-- positive(): ZodNumber
-- nonnegative(): ZodNumber
-- negative(): ZodNumber
-- nonpositive(): ZodNumber
-- multipleOf(factor: number): ZodNumber
-- finite(): ZodNumber
-- safe(): ZodNumber
+z.boolean(): ZodBoolean
+z.bigint(): ZodBigInt
+z.date(): ZodDate
 
-### z.object(shape)
-Signature: z.object<T extends ZodRawShape>(shape: T) -> ZodObject<T>
-Methods:
-- .extend<New extends ZodRawShape>(newShape: New): ZodObject<T & New>
-- .merge<U extends ZodRawShape>(other: ZodObject<U>): ZodObject<T & U>
-- .pick<Keys extends keyof T>(keys: Record<Keys, true>): ZodObject<Pick<T, Keys>>
-- .omit<Keys extends keyof T>(keys: Record<Keys, true>): ZodObject<Omit<T, Keys>>
-- .partial<Keys extends keyof T>(keys?: Record<Keys, true>): ZodObject<Partial<T>>
-- .deepPartial(): ZodObject<DeepPartial<T>>
-- .required<Keys extends keyof T>(keys?: Record<Keys, true>): ZodObject<Required<T>>
-- .strict(): ZodObject<T>  // error on unknown keys
-- .passthrough(): ZodObject<T>  // keep unknown keys
-- .strip(): ZodObject<T>  // strip unknown keys
-- .catchall<SChema>(schema: ZodType<SChema>): ZodObject<T>  // validate unknown keys
+z.literal(value: any): ZodLiteral
 
-### z.array(item)
-Signature: z.array<T extends ZodType>(schema: T) -> ZodArray<T>
-Methods:
-- .nonempty(ctx?: { message?: string }): ZodNonEmptyArray<T>
-- .min(min: number, ctx?: { message?: string }): ZodArray<T>
-- .max(max: number, ctx?: { message?: string }): ZodArray<T>
-- .length(len: number, ctx?: { message?: string }): ZodArray<T>
+z.array(item: ZodType): ZodArray
+  min(length: number, params?: { message?: string })
+  max(length: number, params?: { message?: string })
+  nonempty(params?: { message?: string })
 
-### z.union(schemas)
-Signature: z.union<T extends [ZodType,...ZodType[]]>(schemas: T) -> ZodUnion<T>
-Alternative: schema1.or(schema2)
+z.tuple(items: ZodType[]): ZodTuple
+  rest(item: ZodType): ZodTuple
 
-### z.discriminatedUnion(key: string, schemas: ZodObject[]): ZodDiscriminatedUnion
+z.object(shape: Record<string,ZodType>): ZodObject
+  extend(shape): ZodObject
+  merge(other: ZodObject): ZodObject
+  pick(keys: Record<string,true>): ZodObject
+  omit(keys: Record<string,true>): ZodObject
+  partial(keys?: Record<string,true>): ZodObject
+  required(keys?: Record<string,true>): ZodObject
+  strict(): ZodObject
+  passthrough(): ZodObject
+  catchall(schema: ZodType): ZodObject
 
-### z.tuple(schemas)
-Signature: z.tuple<T extends [ZodType,...ZodType[]]>(schemas: T) -> ZodTuple<T>
-Method: .rest(schema)
+z.union(options: ZodType[]): ZodUnion
+z.discriminatedUnion(key: string, options: ZodObject[]): ZodDiscriminatedUnion
+z.intersection(typeA: ZodType, typeB: ZodType): ZodIntersection
 
-### z.record(keySchema, valueSchema)
-z.map(keySchema, valueSchema)
-z.set(itemSchema)
+Refinement & Transform
+schema.refine(check: (data)=>boolean, params?: { message?: string }): ZodType
+schema.superRefine((data, ctx)=>void): ZodType
+schema.transform(fn: (data)=>U): ZodEffects
+schema.preprocess(fn: (input)=>any, schema: ZodType): ZodEffects
 
-### z.lazy(fn:()=>ZodType)
+Parsing
+schema.parse(input: unknown): T throws ZodError
+schema.safeParse(input: unknown): { success: true; data: T } | { success: false; error: ZodError }
+schema.parseAsync(input): Promise<T>
+schema.safeParseAsync(input): Promise<...>
 
-### z.function()
-Signature: z.function(): ZodFunction<[],unknown>
-Methods:
-- .args(...schemas)
-- .returns(schema)
-- .implement(fn)
-- .parameters() -> ZodTuple
-- .returnType() -> ZodType
+Best Practices
+- Always use strict mode in tsconfig
+- Use safeParse in user input contexts
+- Use discriminatedUnion for tagged unions
+- Use z.coerce for primitive coercion
 
-### z.instanceof(Class)
+Troubleshooting
+Command: schema.parse(value)
+Expected: returns typed value or throws ZodError
+If error.path incorrect, use refine or superRefine to customize issue.path
 
-### z.preprocess(fn, schema)
-### z.custom<T>(check?: (val:unknown)=>boolean, params?:{ message?:string })
-
-Troubleshooting Commands:
-- Detect cyclical: JSON.stringify(obj) throws "Converting circular structure to JSON"
-- Parse promise: await schema.parse(Promise.resolve(val)).catch(err=>console.error(err))
-- Validate date: z.coerce.date().safeParse("invalid").success === false
 
 ## Information Dense Extract
-TS>=4.5 strict; install zod via npm|yarn|pnpm|bun|deno; import {z}; core schemas: z.string(opts), z.number(opts), z.boolean(), z.bigint(), z.date(), z.any(), z.unknown(), z.never(), z.undefined(), z.null(), z.void(); coercion: z.coerce.[string|number|boolean|date]( ); composition: z.object(shape).extend/merge/pick/omit/partial/deepPartial/required/strict/passthrough/strip/catchall, z.array(item).nonempty/min/max/length, z.tuple([...]).rest(item), z.union([...])/.or, z.discriminatedUnion(key,opts), z.record(keySchema,valueSchema), z.map, z.set.min/max/size/nonempty, z.intersection(A,B)/and; parsing: .parse, .parseAsync, .safeParse, .safeParseAsync; refinements: .refine(predicate,{message,path}), .superRefine((val,ctx)=>ctx.addIssue), transforms: .transform(fn), .preprocess(fn,targetSchema), .pipe(schema); enums: z.enum(vals).enum/.options/.extract/.exclude, z.nativeEnum(obj); helpers: schema.optional(), schema.nullable(); advanced: z.lazy for recursion, ZodType<Out,Def,In>, z.function().args(...).returns(...).implement(fn), z.instanceof(Class), z.custom<T>(fn,msg); error messages via opts or method params; boolean coercion caveat: truthy->true; troubleshooting: detect cycles via JSON.stringify, catch promise parse errors with catch, validate date strings with z.coerce.date();
+TypeScript >=4.5 strict:true. npm install zod. import { z } from 'zod'. Primitives: z.string().min(n,msg).max(n,msg).email(msg).url(msg); z.number().min(n,msg).max(n,msg).int().positive().nonnegative().finite().safe(); z.boolean(); z.bigint(); z.date(); Literal: z.literal(val). Coercion: z.coerce.string(),number(),boolean(),date(),bigint(). Arrays: z.array(schema).min(n,msg).max(n,msg).nonempty(msg). element property holds item schema. Tuples: z.tuple([...]).rest(schema). Objects: z.object(shape).extend(shape).merge(obj).pick(keys).omit(keys).partial(keys).required(keys).strict().passthrough().catchall(schema). Unions: z.union([a,b]) or a.or(b); z.discriminatedUnion(key,opts). Intersection: z.intersection(a,b). Refinements: schema.refine(fn,msg).superRefine(fn). Transforms: schema.transform(fn).preprocess(fn,schema). Parsing: parse(input)->T throws ZodError; safeParse(input)->result; parseAsync and safeParseAsync. Type inference: z.infer<typeof schema>.
 
 ## Sanitised Extract
-Table of Contents:
-1. Installation
-2. Basic Usage
-3. Primitives & Coercion
-4. Parsing Methods
-5. Schema Composition
-6. Refinements & Transforms
-7. Enums & Helpers
-8. Advanced Patterns
-9. Troubleshooting
+Table of Contents
+1 Installation
+2 Basic Usage
+3 Primitives
+4 Objects
+5 Arrays & Tuples
+6 Unions & Intersections
+7 Refinements & Transforms
+8 Parsing Methods
 
-1. Installation
-   - Requirements: TypeScript>=4.5, tsconfig.json strict=true
-   - Commands: npm install zod | yarn add zod | pnpm add zod | bun add zod | deno add npm:zod
-   - Canary: install zod@canary
+1 Installation
+TypeScript >=4.5 with strict:true in tsconfig
+npm install zod
 
-2. Basic Usage
-   import { z } from 'zod'
-   z.string().parse('foo')           // returns 'foo'
-   z.string().safeParse(123)           // { success:false,... }
-   const User = z.object({ username:z.string() })
-   User.parse({ username:'alice' })  // returns object
-   type User = z.infer<typeof User>    // { username: string }
+2 Basic Usage
+import { z } from 'zod'
 
-3. Primitives & Coercion
-   z.string(opts?), z.number(opts?), z.bigint(), z.boolean(), z.date(), z.undefined(), z.null(), z.void(), z.any(), z.unknown(), z.never()
-   z.coerce.string() -> String(input)
-   z.coerce.number() -> Number(input)
-   z.coerce.boolean() -> Boolean(input)
-   z.coerce.date() -> new Date(input)
+3 Primitives
+z.string()
+  .min( length, { message } )
+  .max( length, { message } )
+  .email( { message } )
 
-4. Parsing Methods
-   .parse(data:unknown):T
-   .parseAsync(data:unknown):Promise<T>
-   .safeParse(data:unknown):{success:boolean;data?:T;error?:ZodError}
-   .safeParseAsync(data:unknown):Promise<same>
+z.number()
+  .min( value, { message } )
+  .max( value, { message } )
+  .int()
+  .positive()
 
-5. Schema Composition
-   Objects: z.object(shape)
-      .extend(fields), .merge(obj)
-      .pick(keys), .omit(keys)
-      .partial(keys?), .deepPartial()
-      .required(keys?)
-      .strict(), .passthrough(), .strip(), .catchall(schema)
-   Arrays: z.array(item)
-      .nonempty({message}), .min(n,{message}), .max(n), .length(n)
-   Tuples: z.tuple([schemas]).rest(schema)
-   Unions: z.union([schemas]), schema1.or(schema2)
-   Discriminated union: z.discriminatedUnion(key, options[])
-   Record: z.record(keySchema,valueSchema)
-   Map: z.map(keySchema,valueSchema)
-   Set: z.set(item).nonempty()/min()/max()/size()
-   Intersection: z.intersection(A,B) or A.and(B)
+z.boolean()
+z.bigint()
+z.date()
 
-6. Refinements & Transforms
-   .refine(validator,val=>boolean, {message?,path?})
-   .superRefine((val,ctx)=>ctx.addIssue({code,path,message}))
-   .transform(fn:val=>newVal)
-   .preprocess(fn:input=>converted, targetSchema)
-   .pipe(schema)
+Coercion: z.coerce.string(), z.coerce.number(), z.coerce.date(), z.coerce.boolean(), z.coerce.bigint()
 
-7. Enums & Helpers
-   z.enum(['A','B',...]) -> ZodEnum
-      .enum property, .options, .extract(vals), .exclude(vals)
-   z.nativeEnum(NativeEnumObj)
-   .optional(), .nullable()
+4 Objects
+z.object({ key: schema, ... })
+  .extend({ newKey: schema })
+  .merge( otherObject )
+  .pick({ key:true, ... })
+  .omit({ key:true, ... })
+  .partial({ key:true })
+  .required({ key:true })
+  .strict()
+  .passthrough()
+  .catchall( schema )
 
-8. Advanced Patterns
-   z.lazy(()=>schema) for recursion
-   const schema: ZodType<Output,Def,Input> = base.extend({})
-   z.function().args(...schemas).returns(schema).implement(fn)
-   z.instanceof(Class)
+5 Arrays & Tuples
+z.array( schema )
+  .min( count, { message } )
+  .max( count, { message } )
+  .nonempty({ message })
 
-9. Troubleshooting
-   - Cyclical object loops: detect or preprocess
-   - Promise schemas: .parse returns Promise; catch errors via .catch
-   - Boolean coercion caveat: truthy->true, falsy->false; use z.preprocess for custom logic
+z.tuple( [ schema1, schema2, ... ] )
+  .rest( schema )
+
+6 Unions & Intersections
+z.union( [ schemaA, schemaB ] )
+schemaA.or( schemaB )
+
+z.discriminatedUnion( 'key', [objA, objB] )
+z.intersection( schemaA, schemaB )
+
+7 Refinements & Transforms
+schema.refine( fn(data)=>boolean, { message } )
+schema.superRefine( (data, ctx)=>void )
+schema.transform( fn(data)=>U )
+schema.preprocess( fn(input)=>any, schema )
+
+8 Parsing Methods
+schema.parse( input ) -> T
+schema.safeParse( input ) -> { success, data?, error? }
+schema.parseAsync( input ) -> Promise<T>
+schema.safeParseAsync( input ) -> Promise<result>
 
 ## Original Source
 zod
@@ -4755,13 +4519,11 @@ https://github.com/colinhacks/zod
 
 ## Digest of ZOD_CORE
 
-# Zod Core Technical Summary
-Date Retrieved: 2024-06-10
+# Installation
 
-## Installation
+Requirements
 
-### Requirements
-TypeScript 4.5+ with strict mode enabled in tsconfig.json:
+TypeScript 4.5+ and tsconfig.json with strict mode enabled:
 
 {
   "compilerOptions": {
@@ -4769,1582 +4531,745 @@ TypeScript 4.5+ with strict mode enabled in tsconfig.json:
   }
 }
 
-### Package Installation
+Install from npm:
 
-- npm: npm install zod
-- yarn: yarn add zod
-- pnpm: pnpm add zod
-- bun: bun add zod
-- deno: deno add npm:zod
+npm install zod       # npm
+yarn add zod          # yarn
+pnpm add zod          # pnpm
+bun add zod           # bun
 
-Canary builds:
-- npm install zod@canary
+Alternate canary:
 
-## Basic Usage
+npm install zod@canary
+
+# Basic Usage
+
+Import and define schemas:
 
 import { z } from "zod";
 
-// String schema
-const s = z.string();
-s.parse("foo");           // returns "foo"
-s.safeParse(123);         // { success:false; error: ZodError }
+// Primitive schema
+const myString = z.string();
+myString.parse("text"); // returns string
+myString.safeParse(123);  // returns { success: false; error: ZodError }
 
 // Object schema
-const User = z.object({ username: z.string() });
-User.parse({ username: "alice" });
-type User = z.infer<typeof User>;  // { username: string }
+const User = z.object({
+  id: z.string(),
+  age: z.number().int().nonnegative()
+});
+type User = z.infer<typeof User>;
+User.parse({ id: "u1", age: 30 });
+
+# Schema Types and Methods
 
 ## Primitives
 
-- z.string(options?:{ required_error?: string; invalid_type_error?: string })
-- z.number(options?:{ required_error?: string; invalid_type_error?: string })
-- z.bigint()
-- z.boolean()
-- z.date()
-- z.undefined(), z.null(), z.void()
-- z.any(), z.unknown(), z.never()
+z.string()
+  .min(length: number, params?: { message?: string }): ZodString
+  .max(length: number, params?: { message?: string }): ZodString
+  .email(params?: { message?: string }): ZodString
+  .url(params?: { message?: string }): ZodString
 
-## Coercion for Primitives
+z.number()
+  .min(value: number, params?: { message?: string }): ZodNumber
+  .max(value: number, params?: { message?: string }): ZodNumber
+  .int(): ZodNumber
+  .positive(): ZodNumber
+  .nonnegative(): ZodNumber
 
-z.coerce.string(): applies String(input)
-z.coerce.number(): applies Number(input)
-z.coerce.boolean(): applies Boolean(input)
-z.coerce.date(): applies new Date(input)
+z.boolean(), z.bigint(), z.date()
 
-Example:
-const coercedNum = z.coerce.number().int().positive();
-coercedNum.parse("42");    // 42 (number)
+All primitives support coercion via z.coerce.method():
+  z.coerce.string(), z.coerce.number(), z.coerce.date(), z.coerce.boolean(), z.coerce.bigint()
 
-## Parsing Methods
+## Literal
 
-.parse(data: unknown): T  // throws ZodError on invalid
-.parseAsync(data: unknown): Promise<T>  // for async refinements
-.safeParse(data: unknown): { success:true; data:T } | { success:false; error:ZodError }
-.safeParseAsync(data: unknown): Promise< same shape >
+z.literal(value: string | number | boolean | symbol): ZodLiteral
 
-## Schema Composition
+## Arrays and Tuples
 
-- z.object(shape: Record<string, ZodType>)
-  • .extend(fields)
-  • .merge(other)
-  • .pick({ key:true })
-  • .omit({ key:true })
-  • .partial(keys?)
-  • .deepPartial()
-  • .required(keys?)
-  • .strict(), .passthrough(), .strip(), .catchall(zSchema)
+z.array(itemSchema)
+  .min(length: number, params?: { message?: string }): ZodArray
+  .max(length: number, params?: { message?: string }): ZodArray
+  .nonempty(params?: { message?: string }): ZodArray
 
-- z.array(itemSchema)
-  • .nonempty({ message?: string })
-  • .min(count, { message? })
-  • .max(count, { message? })
-  • .length(count, { message? })
+z.tuple([schema1, schema2, ...])
+  .rest(schema): ZodTuple
 
-- z.tuple([schemas...]).rest(schema)
-- z.union([schemas...]) / .or(otherSchema)
-- z.discriminatedUnion(key, options[])
-- z.record(keySchema, valueSchema)
-- z.map(keySchema, valueSchema)
-- z.set(itemSchema).nonempty()/min()/max()/size()
-- z.intersection(A, B) / A.and(B)
+## Objects
 
-## Refinements & Transforms
+z.object(shape: Record<string, ZodType>)
+  .extend(shapeExtension)
+  .merge(otherObject)
+  .pick(keys)
+  .omit(keys)
+  .partial(keys?)
+  .required(keys?)
+  .strict()
+  .passthrough()
+  .catchall(schema)
 
-.refine(validator: (val:T)=>boolean, params?:{ message?:string; path?: (string|number)[] })
-.transform(transformFn: (val:T)=>U)
-.superRefine((val, ctx)=>{ ctx.addIssue({...}) })
-.preprocess((input)=>any, targetSchema)
-.pipe(otherSchema)
+## Unions and Intersections
 
-## Enums
+z.union([schemaA, schemaB]) or schemaA.or(schemaB)
+z.discriminatedUnion(discriminatorKey: string, options: ZodObject[])
+z.intersection(schemaA, schemaB)
 
-- z.enum([value1,value2,...])  // returns ZodEnum
-- z.nativeEnum(NativeEnumObject)
-  • .enum property: mapping of keys to values
-  • .options: readonly array of allowed values
-  • .extract([...])/.exclude([...])
+## Refinements and Transforms
 
-## Type Helpers
+.refine(validator: (data)=>boolean, params?: { message?: string }): ZodType
+.superRefine((data, ctx)=>void)
+.transform(transformFn: (data)=>U): ZodEffects
+.preprocess(preprocessFn: (input)=>any, schema: ZodType)
 
-- z.optional(schema) or schema.optional()
-- z.nullable(schema) or schema.nullable()
+## Parsing
 
-## Advanced
-
-- z.lazy(() => schema) for recursive types
-- z.ZodType<Output,Def,Input> for effects with explicit input/output
-- z.function().args(...schemas).returns(schema).implement(fn)
-- z.instanceof(Class)
-
-
-## Troubleshooting
-
-- Circular data detection: must preprocess or guard against cycles
-- For promise schemas: parse returns Promise<T> and errors must be caught via .catch
-- For boolean coercion: z.coerce.boolean() treats any truthy as true, falsy as false; use preprocess for custom logic
-
-
-## Error Handling
-
-Custom error messages:
-
-z.string({ required_error:"Req", invalid_type_error:"Not string" })
-z.string().min(5, { message:"Min length 5" })
-
-.global config: none
+schema.parse(input: unknown): T throws ZodError
+schema.safeParse(input: unknown): { success: true; data: T } | { success: false; error: ZodError }
+schema.parseAsync(input): Promise<T>
+schema.safeParseAsync(input): Promise<...>
 
 
 ## Attribution
 - Source: zod
 - URL: https://github.com/colinhacks/zod
 - License: MIT License
-- Crawl Date: 2025-05-11T01:24:26.995Z
-- Data Size: 891173 bytes
-- Links Found: 6089
+- Crawl Date: 2025-05-11T03:35:35.354Z
+- Data Size: 800061 bytes
+- Links Found: 5356
 
 ## Retrieved
 2025-05-11
-library/ABORT_CONTROLLER.md
-# library/ABORT_CONTROLLER.md
-# ABORT_CONTROLLER
+library/SUPERTEST.md
+# library/SUPERTEST.md
+# SUPERTEST
 
 ## Crawl Summary
-Constructor: new AbortController():AbortController. Property: signal:AbortSignal (readonly). Method: abort():void sets signal.aborted=true and dispatches 'abort'. AbortSignal: aborted:boolean(false initial), onabort:event handler, addEventListener('abort',listener[,options]). Fetch integration: fetch(input,{signal}) returns Promise<Response> that rejects with DOMException name='AbortError', code=20 when aborted. After response is fulfilled, reading body (text(),json(),blob()) rejects with AbortError if aborted before reading. Compatibility: Chrome66+, Firefox57+, Safari14.1+, Edge16+, Web Workers support.
-
-## Normalised Extract
-Table of Contents:
-1. AbortController Constructor
-2. AbortSignal Properties
-3. abort() Method
-4. AbortError Exception
-5. Event Handling on AbortSignal
-6. Integration with Fetch API
-7. Browser Compatibility
-
-1. AbortController Constructor
-Signature: new AbortController(): AbortController
-Creates a controller instance with a read-only signal property.
-
-2. AbortSignal Properties
-  - aborted: boolean (readonly, initial false)
-  - reason: any (readonly)
-  - onabort: ((this:AbortSignal, ev:Event) => any) | null
-Inherited methods: addEventListener, removeEventListener, dispatchEvent
-
-3. abort() Method
-Signature: AbortController.abort(): void
-Sets signal.aborted=true, signal.reason=undefined, and enqueues an 'abort' event. Idempotent.
-
-4. AbortError Exception
-Thrown by fetch and body-consumption methods (`text()`, `json()`, `blob()`):
-  - name: 'AbortError'
-  - message: 'The operation was aborted.'
-  - code (legacy): 20
-
-5. Event Handling on AbortSignal
-  - Add listener: signal.addEventListener('abort', listener, options?)
-  - Remove listener: signal.removeEventListener('abort', listener, options?)
-  - Handler property: signal.onabort = (ev:Event) => void
-
-6. Integration with Fetch API
-Usage: `fetch(url, { signal: controller.signal })`
-Response consumption after abort triggers AbortError when reading body.
-
-7. Browser Compatibility
-  - Chrome 66+
-  - Firefox 57+
-  - Safari 14.1+
-  - Edge 16+
-  - Web Workers
-
-## Supplementary Details
-AbortSignal.reason: Provides optional user-defined cause. Event dispatch occurs as a microtask immediately after abort() call. abort() is synchronous and idempotent. To implement request timeouts: use setTimeout to call controller.abort(), then clearTimeout in finally. Always remove 'abort' listeners to prevent memory leaks: signal.removeEventListener('abort', handler). Check signal.aborted before starting long-running tasks. Default fetch has no timeout; AbortController is the recommended pattern for cancellation. In Node.js, Enable global fetch via --experimental-fetch in v17+ or import from 'node-fetch'.
-
-## Reference Details
-Interface AbortController {
-  constructor(): AbortController;
-  readonly signal: AbortSignal;
-  abort(): void;
-}
-
-Interface AbortSignal extends EventTarget {
-  readonly aborted: boolean;
-  readonly reason: any;
-  onabort: ((this: AbortSignal, ev: Event) => any) | null;
-  addEventListener(type: 'abort', listener: (this: AbortSignal, ev: Event) => any, options?: boolean | AddEventListenerOptions): void;
-  removeEventListener(type: 'abort', listener: (this: AbortSignal, ev: Event) => any, options?: boolean | EventListenerOptions): void;
-  dispatchEvent(event: Event): boolean;
-}
-
-DOMException on abort:
-  name: 'AbortError'
-  message: 'The operation was aborted.'
-  code: 20 (legacy)
-
-Full Code Examples:
-```js
-// Basic fetch with cancellation
-const controller = new AbortController();
-const { signal } = controller;
-fetch('https://example.com/data', { signal })
-  .then(res => res.json())
-  .then(data => console.log(data))
-  .catch(err => {
-    if (err.name === 'AbortError') {
-      console.warn('Request aborted');
-    } else {
-      console.error('Fetch failed:', err);
-    }
-  });
-
-// Cancel request:
-controller.abort();
-```
-```js
-// Fetch with timeout
-function fetchWithTimeout(url, timeoutMs) {
-  const controller = new AbortController();
-  const { signal } = controller;
-  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-
-  return fetch(url, { signal })
-    .finally(() => clearTimeout(timeoutId));
-}
-```
-
-Best Practices:
-- Use a new AbortController per operation.
-- Clear any timeouts and remove listeners in cleanup handlers.
-- Check `signal.aborted` to handle pre-aborted states.
-
-Troubleshooting:
-- If `fetch` doesn’t abort: verify `signal` passed correctly and controller is not garbage-collected.
-- In Node.js: enable `--experimental-fetch` or import `node-fetch`.
-- Debug abort by logging `signal.aborted` and `err.name`.
-
-Commands:
-```bash
-# Node REPL test
-node
-> const ctrl = new AbortController();
-> fetch('http://example.com', { signal: ctrl.signal }).catch(e => console.log(e.name));
-> ctrl.abort();
-```
-Expected output: AbortError
-
-## Information Dense Extract
-new AbortController():AbortController; signal:AbortSignal(aborted:boolean=false,reason:any,onabort:null); abort():void sets aborted=true, queues 'abort'. fetch(input,{signal})→Promise<Response>, rejects DOMException{name:'AbortError',message:'The operation was aborted.',code:20}. AbortSignal methods: addEventListener('abort',listener,options), removeEventListener, dispatchEvent. Properties: aborted, reason, onabort. Usage patterns: basic fetch cancellation, timeout wrapper with setTimeout and clearTimeout. Best practices: per-request controller, cleanup listeners/timeouts, check signal.aborted. Troubleshooting: confirm signal passed, monitor err.name, Node fetch experimental flag.
-
-## Sanitised Extract
-Table of Contents:
-1. AbortController Constructor
-2. AbortSignal Properties
-3. abort() Method
-4. AbortError Exception
-5. Event Handling on AbortSignal
-6. Integration with Fetch API
-7. Browser Compatibility
-
-1. AbortController Constructor
-Signature: new AbortController(): AbortController
-Creates a controller instance with a read-only signal property.
-
-2. AbortSignal Properties
-  - aborted: boolean (readonly, initial false)
-  - reason: any (readonly)
-  - onabort: ((this:AbortSignal, ev:Event) => any) | null
-Inherited methods: addEventListener, removeEventListener, dispatchEvent
-
-3. abort() Method
-Signature: AbortController.abort(): void
-Sets signal.aborted=true, signal.reason=undefined, and enqueues an 'abort' event. Idempotent.
-
-4. AbortError Exception
-Thrown by fetch and body-consumption methods ('text()', 'json()', 'blob()'):
-  - name: 'AbortError'
-  - message: 'The operation was aborted.'
-  - code (legacy): 20
-
-5. Event Handling on AbortSignal
-  - Add listener: signal.addEventListener('abort', listener, options?)
-  - Remove listener: signal.removeEventListener('abort', listener, options?)
-  - Handler property: signal.onabort = (ev:Event) => void
-
-6. Integration with Fetch API
-Usage: 'fetch(url, { signal: controller.signal })'
-Response consumption after abort triggers AbortError when reading body.
-
-7. Browser Compatibility
-  - Chrome 66+
-  - Firefox 57+
-  - Safari 14.1+
-  - Edge 16+
-  - Web Workers
-
-## Original Source
-Asynchronous Data Flow and Streaming Protocols
-https://developer.mozilla.org/docs/Web/API/AbortController
-
-## Digest of ABORT_CONTROLLER
-
-# AbortController
-
-## Constructor
-
-**Syntax**: `new AbortController()`
-
-Creates a new AbortController instance.
-
-## Properties
-
-**signal**: AbortSignal (readonly)
-
-Returns an AbortSignal object used to communicate abort notifications to asynchronous operations.
-
-## Methods
-
-**abort()**: void
-
-Immediately sets `signal.aborted` to `true` and dispatches an `'abort'` event on the associated AbortSignal.
-
-## Events
-
-AbortSignal implements EventTarget:
-- Event type: `'abort'`
-- Handlers via `signal.addEventListener('abort', listener)` or `signal.onabort`
-
-## Usage Examples
-
-Basic fetch abort:
-```js
-const controller = new AbortController();
-const signal = controller.signal;
-
-fetch('https://example.com/video.mp4', { signal })
-  .then(response => console.log('Download complete', response))
-  .catch(err => {
-    if (err.name === 'AbortError') console.log('Download aborted');
-    else console.error('Fetch error:', err);
-  });
-
-// To cancel:
-controller.abort();
-```
-
-Timeout wrapper:
-```js
-function fetchWithTimeout(url, timeoutMs) {
-  const controller = new AbortController();
-  const { signal } = controller;
-  const id = setTimeout(() => controller.abort(), timeoutMs);
-
-  return fetch(url, { signal })
-    .finally(() => clearTimeout(id));
-}
-```
-
-## Exception
-
-Operations using AbortSignal reject with a DOMException:
-- `name`: "AbortError"
-- `message`: "The operation was aborted."
-- `code` (legacy): 20
-
-## Browser Compatibility
-
-- Chrome 66+
-- Firefox 57+
-- Safari 14.1+
-- Edge 16+
-- Available in Web Workers
-
-## Specifications
-
-Defined in the WHATWG Fetch Standard and the DOM Standard.
-
-## Date Retrieved
-2024-07-29
-
-## Source Attribution
-MDN contributors, last modified Jul 26, 2024
-Data size: 1386842 bytes, Links found: 16090
-
-## Attribution
-- Source: Asynchronous Data Flow and Streaming Protocols
-- URL: https://developer.mozilla.org/docs/Web/API/AbortController
-- License: License: IETF Trust (RFCs), MIT (Node.js), CC BY-SA 2.5 (MDN)
-- Crawl Date: 2025-05-10T10:38:09.088Z
-- Data Size: 1386842 bytes
-- Links Found: 16090
-
-## Retrieved
-2025-05-10
-library/ASSERT.md
-# library/ASSERT.md
-# ASSERT
-
-## Crawl Summary
-Stability and import patterns for strict and legacy assertion modes; constructor signature and properties for AssertionError; deprecation and methods for CallTracker; complete list of assertion methods with exact parameter types and behaviors; environment variables for color control.
+request(input, opts?) binds to ephemeral port if not listening. opts.http2 boolean default false. `.agent(input, opts?)` for cookie persistence. Chainable methods: .get(path:string), .post(path:string), .put, .patch, .delete; .set(header:string, value:string); .auth(user:string, pass:string); .send(body:any); .field(name:string, value:any, options?:{contentType:string}); .attach(field:string, filePath:string). Assertions: .expect(status[, fn(err,res)]), .expect(status, body[, fn]), .expect(body[, fn]), .expect(header, value[, fn]), .expect(customFn). Order of .expect calls matters. Finalize with .end(fn(err,res)) or return promise or await. Promises via then(response). Async/Await supported. Use .expect(200, done) to combine status and callback. Custom assertion mutates res before assertions. Multipart support via superagent under the hood. HTTP errors (non-2XX) are passed as err if no status expectation. Compatible with any test framework.
 
 ## Normalised Extract
 Table of Contents
-1. Strict assertion mode import and environment flags
-2. Legacy assertion mode import and loose equality caveats
-3. AssertionError class constructor and properties
-4. CallTracker class methods and usage pattern
-5. Core assertion methods signatures and parameters
+1 Installation
+2 Initialization
+3 HTTP2 Support
+4 HTTP Methods
+5 Headers and Authentication
+6 Request Body
+7 Multipart Uploads
+8 Cookie Persistence
+9 Expectations and Assertions
+10 Promises and Async/Await
+11 Error Handling
+12 Agent vs. Standalone
 
-1. Strict assertion mode import and environment flags
-import { strict as assert } from 'node:assert'
-const assert = require('node:assert').strict
-Set NO_COLOR or NODE_DISABLE_COLORS to disable colorized diffs and REPL colors
+1 Installation
+  Install as dev dependency: npm install supertest --save-dev
 
-2. Legacy assertion mode import and loose equality caveats
-import assert from 'node:assert'
-const assert = require('node:assert')
-assert.deepEqual, equal, notDeepEqual, notEqual use == for comparisons and ignore prototypes
+2 Initialization
+  request(appOrUrl[, options]) binds to ephemeral port if app not listening
+  request.agent(appOrUrl[, options]) reuses cookies across requests
+  options.http2 boolean default false
 
-3. AssertionError class constructor and properties
-Constructor: new assert.AssertionError({ message:string, actual:any, expected:any, operator:string, stackStartFn:Function })
-Properties: name='AssertionError', code='ERR_ASSERTION', actual:any, expected:any, operator:string, generatedMessage:boolean
+3 HTTP2 Support
+  Pass { http2: true } to enable HTTP/2 protocol on request or agent
 
-4. CallTracker class methods and usage pattern
-const tracker = new assert.CallTracker()
-const callsFn = tracker.calls(fn:Function=()=>{}, exact:number=1)
-callsFn(...args)
-tracker.verify() throws if wrapperFn not called exact times
-Additional methods: tracker.getCalls(wrapperFn), tracker.report(), tracker.reset(wrapperFn?)
+4 HTTP Methods
+  get(path:string): Test
+  post(path:string): Test
+  put(path:string): Test
+  patch(path:string): Test
+  delete(path:string): Test
 
-5. Core assertion methods signatures and parameters
-assert(value:any, message?:string|Error)
-assert.deepEqual(actual:any, expected:any, message?:string|Error)
-assert.deepStrictEqual(actual:any, expected:any, message?:string|Error)
-assert.equal(actual:any, expected:any, message?:string|Error)
-assert.strictEqual(actual:any, expected:any, message?:string|Error)
-assert.throws(fn:Function, error?:RegExp|Function, message?:string|Error)
-assert.doesNotThrow(fn:Function, error?:RegExp|Function, message?:string|Error)
-assert.rejects(asyncFn:Function|Promise, error?:RegExp|Function, message?:string)
-assert.doesNotReject(asyncFn:Function|Promise, error?:RegExp|Function, message?:string)
-assert.match(string:string, regexp:RegExp, message?:string|Error)
-assert.doesNotMatch(string:string, regexp:RegExp, message?:string|Error)
+5 Headers and Authentication
+  set(header:string, value:string): Test
+  auth(username:string, password:string): Test  sends HTTP Basic auth header
 
+6 Request Body
+  send(body:any): Test  supports JSON and urlencoded
+
+7 Multipart Uploads
+  field(name:string, value:any[, options:{ contentType:string }] ): Test
+  attach(field:string, filePath:string): Test
+
+8 Cookie Persistence
+  agent = request.agent(appOrUrl)
+  agent.get(path).expect('set-cookie', cookieString)
+  agent.get(otherPath).expect(cookieValue)
+
+9 Expectations and Assertions
+  expect(status[, fn]): Test
+  expect(status, body[, fn]): Test
+  expect(body[, fn]): Test
+  expect(field, value[, fn]): Test
+  expect(fn(res)): Test  throw error in fn to fail
+  order of expect calls defines execution sequence
+
+10 Promises and Async/Await
+  return request(...).get(...).expect(...).then(response => {...})
+  const response = await request(...).get(...); expect on response
+
+11 Error Handling
+  Without status expect, non-2XX -> err in .end callback
+  .end((err, res) => { if (err) return done(err); done(); })
+  combine status and callback: .expect(200, done)
+
+12 Agent vs. Standalone
+  request() creates new Test each call
+  agent() maintains session cookies and can be reused without passing app/url every time
 
 ## Supplementary Details
-Node.js version support:
-• Strict mode exposed since v9.9.0
-• AssertionError since v0.1.21
-• CallTracker added v14.2.0, deprecated v20.1.0
-
-Environment variables:
-• NO_COLOR or NODE_DISABLE_COLORS (string) – boolean on existence – disables ANSI colors
-
-Import paths:
-• node:assert – stable import prefix
-• node:assert/strict – strict mode import path
-
-Error codes and names:
-• AssertionError instances have code 'ERR_ASSERTION'
-
-Usage patterns:
-• Wrap tracker.verify() inside process.on('exit') for test teardown
+- Ephemeral port binding: request() auto-binds if app not listening
+- Default timeout: inherited from superagent (no built-in timeout set)
+- Content-Length header auto-calculated from body
+- JSON bodies: Content-Type: application/json header set automatically
+- URL-encoded: send accepts object sets Content-Type: application/x-www-form-urlencoded
+- HTTP2 option enables TLS ALPN protocol negotiation automatically when supported
+- Cookie header array accepted: .set('Cookie', ['a=1;b=2'])
+- Custom assertion function receives full response object
+- Underlying superagent session used for low-level methods: .write(), .pipe()
+- Reassign request variable to a base URL: request = request('http://host:port')
+- Chaining: each call returns a new Test instance or the same agent
 
 
 ## Reference Details
-assert(value:any, message?:string|Error):void
-Throws ERR_ASSERTION if value is falsy.
+API Signatures
 
-assert.deepEqual(actual:any, expected:any, message?:string|Error):void
-Compares values using == for primitives and recurses through enumerable own properties; ignores prototypes; compares Error name/message/causes; supports circular refs; non-strict.
+function request(appOrUrl:string|http.Server|Function, options?:{ http2:boolean }): Test
+function request.agent(appOrUrl:string|http.Server|Function, options?:{ http2:boolean }): Agent
 
-assert.deepStrictEqual(actual:any, expected:any, message?:string|Error):void
-Compares using Object.is() for primitives, strict type tag matching, prototype using ===, recurses through own properties including Symbols, compares Map/Set unordered, fails on different WeakMap/WeakSet instances.
-
-assert.equal(actual:any, expected:any, message?:string|Error):void  alias of assert.ok(actual==expected)
-assert.strictEqual(actual:any, expected:any, message?:string|Error):void  alias of assert.ok(actual===expected)
-assert.notEqual, assert.notStrictEqual opposite behaviors.
-
-assert.throws(fn:Function, error?:RegExp|Function, message?:string|Error):void
-Invokes fn synchronously, expects it to throw; if error arg provided, checks instance or message match; returns thrown Error.
-
-assert.doesNotThrow(fn:Function, error?:RegExp|Function, message?:string|Error):void
-Invokes fn synchronously, expects no throw; returns result.
-
-assert.rejects(asyncFn:Function|Promise, error?:RegExp|Function, message?:string):Promise<void>
-Awaits returned promise, expects rejection; if error arg provided, checks instance or message match; rejects if promise resolves or throws unexpected
-
-assert.doesNotReject(asyncFn:Function|Promise, error?:RegExp|Function, message?:string):Promise<void>
-Awaits returned promise, expects resolution; rejects if promise rejects or invalid return.
-
-assert.match(string:string, regexp:RegExp, message?:string|Error):void
-assert.doesNotMatch(string:string, regexp:RegExp, message?:string|Error):void
-Throws ERR_INVALID_ARG_TYPE or ERR_ASSERTION on type mismatch or unexpected match.
-
-Class AssertionError extends Error {
-  constructor(options:{ message?:string, actual?:any, expected?:any, operator?:string, stackStartFn?:Function})
-  name: 'AssertionError'
-  code: 'ERR_ASSERTION'
-  actual: any
-  expected: any
-  operator: string
-  generatedMessage: boolean
+interface Test extends SuperAgentRequest {
+  get(path:string): Test
+  post(path:string): Test
+  put(path:string): Test
+  patch(path:string): Test
+  delete(path:string): Test
+  set(field:string, value:string): Test
+  auth(username:string, password:string, options?:{ type:'basic'|'auto' }): Test
+  send(body:any): Test
+  field(name:string, value:string, options?:{ contentType:string }): Test
+  attach(field:string, filePath:string): Test
+  expect(status:number, fn?: (err:Error, res:Response)=>void): Test
+  expect(status:number, body:any, fn?:(err:Error, res:Response)=>void): Test
+  expect(body:string|RegExp|object, fn?:(err:Error, res:Response)=>void): Test
+  expect(field:string, value:string|RegExp, fn?:(err:Error, res:Response)=>void): Test
+  expect(fn:(res:Response)=>void): Test
+  end(fn:(err:Error, res:Response)=>void): void
 }
 
-Class CallTracker {
-  new CallTracker(): CallTracker
-  calls(fn?:Function, exact?:number): Function
-  getCalls(wrapper:Function): Array<{ thisArg:any, arguments:Array<any> }>
-  report(): Array<{ message:string, actual:number, expected:number, operator:string, stack:Object }>
-  reset(fn?:Function): void
-  verify(): void
-}
-
-Best practices:
-• Use strict mode for deep comparisons in production
-• Avoid legacy deepEqual for type-sensitive checks
-• Use tracker.verify() in exit handler for test coverage
-
-Troubleshooting:
-Command: node --enable-source-maps test.js
-Expected: colorized diff output on AssertionError
-If no colors, set NO_COLOR=1 or export NODE_DISABLE_COLORS=1
-
-
-## Information Dense Extract
-ASSERT module: stable assert + strict import from node:assert or node:assert/strict. Env flags NO_COLOR|NODE_DISABLE_COLORS disable diff colors. AssertionError options:{message,actual,expected,operator,stackStartFn}, properties:name='AssertionError',code='ERR_ASSERTION',generatedMessage. Core methods with signatures:assert(value[,msg]),equal,notEqual,strictEqual,notStrictEqual,deepEqual (== recursion),deepStrictEqual (Object.is recursion),notDeepEqual,notDeepStrictEqual,throws(fn[,err][,msg]),doesNotThrow(fn[,err][,msg]),rejects(asyncFn[,err][,msg])→Promise,doesNotReject(asyncFn[,err][,msg])→Promise,match(string,RegExp[,msg]),doesNotMatch(string,RegExp[,msg]). CallTracker: new→calls(fn=()=>{},exact=1)→wrapper,verify() throws if miscalls, getCalls(wrapper),report(),reset(fn?).
-
-## Sanitised Extract
-Table of Contents
-1. Strict assertion mode import and environment flags
-2. Legacy assertion mode import and loose equality caveats
-3. AssertionError class constructor and properties
-4. CallTracker class methods and usage pattern
-5. Core assertion methods signatures and parameters
-
-1. Strict assertion mode import and environment flags
-import { strict as assert } from 'node:assert'
-const assert = require('node:assert').strict
-Set NO_COLOR or NODE_DISABLE_COLORS to disable colorized diffs and REPL colors
-
-2. Legacy assertion mode import and loose equality caveats
-import assert from 'node:assert'
-const assert = require('node:assert')
-assert.deepEqual, equal, notDeepEqual, notEqual use == for comparisons and ignore prototypes
-
-3. AssertionError class constructor and properties
-Constructor: new assert.AssertionError({ message:string, actual:any, expected:any, operator:string, stackStartFn:Function })
-Properties: name='AssertionError', code='ERR_ASSERTION', actual:any, expected:any, operator:string, generatedMessage:boolean
-
-4. CallTracker class methods and usage pattern
-const tracker = new assert.CallTracker()
-const callsFn = tracker.calls(fn:Function=()=>{}, exact:number=1)
-callsFn(...args)
-tracker.verify() throws if wrapperFn not called exact times
-Additional methods: tracker.getCalls(wrapperFn), tracker.report(), tracker.reset(wrapperFn?)
-
-5. Core assertion methods signatures and parameters
-assert(value:any, message?:string|Error)
-assert.deepEqual(actual:any, expected:any, message?:string|Error)
-assert.deepStrictEqual(actual:any, expected:any, message?:string|Error)
-assert.equal(actual:any, expected:any, message?:string|Error)
-assert.strictEqual(actual:any, expected:any, message?:string|Error)
-assert.throws(fn:Function, error?:RegExp|Function, message?:string|Error)
-assert.doesNotThrow(fn:Function, error?:RegExp|Function, message?:string|Error)
-assert.rejects(asyncFn:Function|Promise, error?:RegExp|Function, message?:string)
-assert.doesNotReject(asyncFn:Function|Promise, error?:RegExp|Function, message?:string)
-assert.match(string:string, regexp:RegExp, message?:string|Error)
-assert.doesNotMatch(string:string, regexp:RegExp, message?:string|Error)
-
-## Original Source
-Node.js Core API Reference
-https://nodejs.org/api/
-
-## Digest of ASSERT
-
-# Assert Module
-Retrieved: 2024-06-20
-
-Stability: 2 – Stable
-Source Code: lib/assert.js
-
-# Strict assertion mode
-In strict mode, non-strict methods behave like their corresponding strict methods and error diffs are emitted for deep comparisons.
-
-Import patterns:
-import { strict as assert } from 'node:assert';
-const assert = require('node:assert').strict;
-
-Environment configuration:
-Set NO_COLOR or NODE_DISABLE_COLORS to deactivate colors in error diffs and REPL output.
-
-# Legacy assertion mode
-Uses the == operator for deepEqual, equal, notDeepEqual, notEqual. May produce unexpected results due to loose equality.
-
-Import patterns:
-import assert from 'node:assert';
-const assert = require('node:assert');
-
-# Class:AssertionError
-Constructor signature:
-new assert.AssertionError(options)
-options:
-  message <string>         custom error message
-  actual <any>             assigned to error.actual
-  expected <any>           assigned to error.expected
-  operator <string>        assigned to error.operator
-  stackStartFn <Function>  trim stack before this function
-
-Instance properties:
-  name = 'AssertionError'
-  code = 'ERR_ASSERTION'
-  generatedMessage <boolean>
-
-# Class:CallTracker (Deprecated)
-new assert.CallTracker()
-
-Methods:
-  calls(fn:Function=()=>{}, exact:Number=1):Function
-    returns wrapper that must be called exact times before verify()
-  getCalls(wrapperFn:Function):Array<{ thisArg:any, arguments:Array }>
-  report():Array<{ message:string, actual:number, expected:number, operator:string, stack:object }>
-  reset(fn?:Function):void  reset counts for a single or all tracked functions
-  verify():void  throws if any wrapper not called expected times
-
-# Core assertion methods
-  assert(value:any, message?:string|Error):void    alias of assert.ok()
-  assert.ok(value:any, message?:string|Error):void
-  assert.equal(actual:any, expected:any, message?:string|Error):void
-  assert.notEqual(actual:any, expected:any, message?:string|Error):void
-  assert.deepEqual(actual:any, expected:any, message?:string|Error):void
-  assert.notDeepEqual(actual:any, expected:any, message?:string|Error):void
-  assert.deepStrictEqual(actual:any, expected:any, message?:string|Error):void
-  assert.notDeepStrictEqual(actual:any, expected:any, message?:string|Error):void
-  assert.strictEqual(actual:any, expected:any, message?:string|Error):void
-  assert.notStrictEqual(actual:any, expected:any, message?:string|Error):void
-  assert.throws(fn:Function, error?:RegExp|Function, message?:string|Error):void
-  assert.doesNotThrow(fn:Function, error?:RegExp|Function, message?:string|Error):void
-  assert.rejects(asyncFn:Function|Promise, error?:RegExp|Function, message?:string):Promise<void>
-  assert.doesNotReject(asyncFn:Function|Promise, error?:RegExp|Function, message?:string):Promise<void>
-  assert.match(string:string, regexp:RegExp, message?:string|Error):void
-  assert.doesNotMatch(string:string, regexp:RegExp, message?:string|Error):void
-
-
-
-## Attribution
-- Source: Node.js Core API Reference
-- URL: https://nodejs.org/api/
-- License: Node.js License
-- Crawl Date: 2025-05-11T00:42:39.248Z
-- Data Size: 4144456 bytes
-- Links Found: 3302
-
-## Retrieved
-2025-05-11
-library/JSYAML.md
-# library/JSYAML.md
-# JSYAML
-
-## Crawl Summary
-Installation via npm or global CLI. API methods load, loadAll, dump with full LoadOptions and DumpOptions definitions. Default values and schemas. YAML-JS type tag mapping. CLI usage flags.
-
-## Normalised Extract
-Table of Contents:
-1. Installation
-2. CLI Usage
-3. API Methods
-   3.1 load
-   3.2 loadAll
-   3.3 dump
-4. LoadOptions
-5. DumpOptions
-6. Schema Constants
-7. YAML Tag to JS Type Mapping
-8. Caveats
-
-1. Installation
-npm install js-yaml
-npm install -g js-yaml
-
-2. CLI Usage
-Command syntax: js-yaml [-h|--help] [-v|--version] [-c|--compact] [-t|--trace] <file>
-Flags:
-  -h, --help
-  -v, --version
-  -c, --compact
-  -t, --trace
-
-3. API Methods
-3.1 load(input: string, options?: LoadOptions): any
-  Parses single YAML document. Throws YAMLException. No multi-doc support.
-3.2 loadAll(input: string, iterator?: (doc: any) => void, options?: LoadOptions): any[] | void
-  Parses multi-document YAML. Invokes iterator per doc if provided; else returns array.
-3.3 dump(input: any, options?: DumpOptions): string
-  Serializes JS object to YAML string.
-
-4. LoadOptions
-filename: string (default null)
-onWarning: function(YAMLException) (default null)
-schema: FAILSAFE_SCHEMA | JSON_SCHEMA | CORE_SCHEMA | DEFAULT_SCHEMA (default DEFAULT_SCHEMA)
-json: boolean (default false)
-
-5. DumpOptions
-indent: number (default 2)
-noArrayIndent: boolean (default false)
-skipInvalid: boolean (default false)
-flowLevel: number (default -1)
-styles: { tag:string -> style:string }
-schema: (default DEFAULT_SCHEMA)
-sortKeys: boolean|function (default false)
-lineWidth: number (default 80)
-noRefs: boolean (default false)
-noCompatMode: boolean (default false)
-condenseFlow: boolean (default false)
-quotingType: '"'|'\'' (default '\'')
-forceQuotes: boolean (default false)
-replacer: function(key, value)
-
-6. Schema Constants
-FAILSAFE_SCHEMA
-JSON_SCHEMA
-CORE_SCHEMA
-DEFAULT_SCHEMA
-
-7. YAML Tag to JS Type Mapping
-!!null -> null
-!!bool -> boolean
-!!int -> number
-... etc.
-
-8. Caveats
-JS cannot use objects/arrays as map keys; they are stringified.
-Implicit block mapping keys with duplicate anchors not supported.
-
-
-## Supplementary Details
-Installation steps for Node.js and CLI. Exact CLI command flags and their effects. All LoadOptions with default values and types. All DumpOptions with types, defaults, and behaviors. Schema constants URLs. Mapping of YAML tags to JS types.
-
-## Reference Details
-// Load example
-const yaml = require('js-yaml');
-const fs = require('fs');
-try {
-  const doc = yaml.load(fs.readFileSync('example.yml', 'utf8'), {
-    filename: 'example.yml',
-    onWarning: (w) => console.warn('YAML Warning:', w.message),
-    schema: yaml.JSON_SCHEMA,
-    json: true
-  });
-  console.log(doc);
-} catch (e) {
-  console.error('YAML Load Error:', e.message);
-  process.exit(1);
-}
-
-// loadAll example
-yaml.loadAll(fs.readFileSync('multi.yml', 'utf8'), (doc) => {
-  console.log('Doc:', doc);
-}, { schema: yaml.DEFAULT_SCHEMA });
-
-// dump example
-const obj = { a: 1, b: [true, null], c: { d: 'text' } };
-const yamlStr = yaml.dump(obj, {
-  indent: 4,
-  noArrayIndent: true,
-  flowLevel: 2,
-  styles: { '!!null': 'canonical' },
-  sortKeys: (a, b) => a.localeCompare(b),
-  lineWidth: 120,
-  condenseFlow: true,
-  quotingType: '"',
-  forceQuotes: true,
-  replacer: (key, value) => (value === null ? '~' : value)
-});
-console.log(yamlStr);
-
-// Troubleshooting
-# Validate YAML file
-js-yaml -c example_invalid.yml
-# Show full error
-js-yaml -t example_invalid.yml
-Expect exit code 1 on parse failure, stdout empty, stderr with error details.
-
-
-## Information Dense Extract
-install: npm install js-yaml; global CLI: npm install -g js-yaml. CLI: js-yaml [-h|--help] [-v|--version] [-c|--compact] [-t|--trace] file. API: load(input:string, opts: {filename?,onWarning?,schema?,json?}): any; loadAll(input:string, iter?:fn, opts?): any[]|void; dump(obj:any, opts:{indent?,noArrayIndent?,skipInvalid?,flowLevel?,styles?,schema?,sortKeys?,lineWidth?,noRefs?,noCompatMode?,condenseFlow?,quotingType?,forceQuotes?,replacer?}): string. Schemas: FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA. YAML tag mapping: !!null->null, !!bool->boolean, !!int/!!float->number, !!binary->Buffer, !!timestamp->Date, !!omap/!!pairs->Array<[k,v]>, !!set->Object(k:null), !!str->string, !!seq->Array, !!map->Object. Caveats: object/array keys stringified, duplicate anchors unsupported. Troubleshoot: CLI flags -c for compact errors, -t for trace, exit code 1 on failure.
-
-## Sanitised Extract
-Table of Contents:
-1. Installation
-2. CLI Usage
-3. API Methods
-   3.1 load
-   3.2 loadAll
-   3.3 dump
-4. LoadOptions
-5. DumpOptions
-6. Schema Constants
-7. YAML Tag to JS Type Mapping
-8. Caveats
-
-1. Installation
-npm install js-yaml
-npm install -g js-yaml
-
-2. CLI Usage
-Command syntax: js-yaml [-h|--help] [-v|--version] [-c|--compact] [-t|--trace] <file>
-Flags:
-  -h, --help
-  -v, --version
-  -c, --compact
-  -t, --trace
-
-3. API Methods
-3.1 load(input: string, options?: LoadOptions): any
-  Parses single YAML document. Throws YAMLException. No multi-doc support.
-3.2 loadAll(input: string, iterator?: (doc: any) => void, options?: LoadOptions): any[] | void
-  Parses multi-document YAML. Invokes iterator per doc if provided; else returns array.
-3.3 dump(input: any, options?: DumpOptions): string
-  Serializes JS object to YAML string.
-
-4. LoadOptions
-filename: string (default null)
-onWarning: function(YAMLException) (default null)
-schema: FAILSAFE_SCHEMA | JSON_SCHEMA | CORE_SCHEMA | DEFAULT_SCHEMA (default DEFAULT_SCHEMA)
-json: boolean (default false)
-
-5. DumpOptions
-indent: number (default 2)
-noArrayIndent: boolean (default false)
-skipInvalid: boolean (default false)
-flowLevel: number (default -1)
-styles: { tag:string -> style:string }
-schema: (default DEFAULT_SCHEMA)
-sortKeys: boolean|function (default false)
-lineWidth: number (default 80)
-noRefs: boolean (default false)
-noCompatMode: boolean (default false)
-condenseFlow: boolean (default false)
-quotingType: '''|'''' (default '''')
-forceQuotes: boolean (default false)
-replacer: function(key, value)
-
-6. Schema Constants
-FAILSAFE_SCHEMA
-JSON_SCHEMA
-CORE_SCHEMA
-DEFAULT_SCHEMA
-
-7. YAML Tag to JS Type Mapping
-!!null -> null
-!!bool -> boolean
-!!int -> number
-... etc.
-
-8. Caveats
-JS cannot use objects/arrays as map keys; they are stringified.
-Implicit block mapping keys with duplicate anchors not supported.
-
-## Original Source
-js-yaml
-https://www.npmjs.com/package/js-yaml
-
-## Digest of JSYAML
-
-# JS-YAML Detailed Digest
-
-Date Retrieved: 2023-10-05
-Source Entry Index: 8
-Data Size: 733356 bytes
-
-## Installation
-
-npm install js-yaml
-npm install -g js-yaml  # for CLI executable
-
-## CLI Usage
-
-js-yaml [-h|--help] [-v|--version] [-c|--compact] [-t|--trace] file
-
-Flags:
-  -h, --help      Show help and exit
-  -v, --version   Show version and exit
-  -c, --compact   Compact error output
-  -t, --trace     Show full stack trace on error
-
-## API Methods
-
-### yaml.load(string, options)
-Signature:
-  load(input: string, options?: LoadOptions): any
-
-LoadOptions:
-  filename?: string (default: null)
-  onWarning?: (warning: YAMLException) => void (default: null)
-  schema?: Schema (DEFAULT_SCHEMA)
-  json?: boolean (default: false)
-
-Schemas:
-  FAILSAFE_SCHEMA
-  JSON_SCHEMA
-  CORE_SCHEMA
-  DEFAULT_SCHEMA
-
-Behavior:
-  Parses a single YAML document. Returns object|string|number|null|undefined. Throws YAMLException on error.
-  Does not support multi-document input.
-
-### yaml.loadAll(string, iterator?, options)
-Signature:
-  loadAll(input: string, iterator?: (doc: any) => void, options?: LoadOptions): any[] | void
-
-Behavior:
-  Parses multi-document YAML. If iterator provided, invokes for each document; otherwise returns array.
-
-### yaml.dump(object, options)
-Signature:
-  dump(input: any, options?: DumpOptions): string
-
-DumpOptions:
-  indent?: number (default: 2)
-  noArrayIndent?: boolean (default: false)
-  skipInvalid?: boolean (default: false)
-  flowLevel?: number (default: -1)
-  styles?: {[tag: string]: string}
-  schema?: Schema (DEFAULT_SCHEMA)
-  sortKeys?: boolean|((a: string, b: string) => number) (default: false)
-  lineWidth?: number (default: 80)
-  noRefs?: boolean (default: false)
-  noCompatMode?: boolean (default: false)
-  condenseFlow?: boolean (default: false)
-  quotingType?: '"'|'\'' (default: '\'')
-  forceQuotes?: boolean (default: false)
-  replacer?: (key: string, value: any) => any
-
-## YAML Type Mapping
-
-Tag       JS Type
-!!null    null
-!!bool    boolean
-!!int     number
-!!float   number
-!!binary  Buffer
-!!timestamp Date
-!!omap    [ [key, value], ... ]
-!!pairs   [ [key, value], ... ]
-!!set     {key: null, ...}
-!!str     string
-!!seq     any[]
-!!map     {[key: string]: any}
-
-## Caveats
-
-• Objects/arrays used as keys are stringified via toString().
-• Implicit block mapping keys cannot load duplicate anchor references.
-
-## Enterprise
-
-Commercial support via Tidelift subscription.
-
-
-## Attribution
-- Source: js-yaml
-- URL: https://www.npmjs.com/package/js-yaml
-- License: BSD-2-Clause
-- Crawl Date: 2025-05-10T15:26:57.450Z
-- Data Size: 733356 bytes
-- Links Found: 2902
-
-## Retrieved
-2025-05-10
-library/EJS_DOCS.md
-# library/EJS_DOCS.md
-# EJS_DOCS
-
-## Crawl Summary
-EJS core API methods ejs.render, ejs.compile, ejs.renderFile with signatures and parameter lists; Options object fields with defaults (delimiter, cache, async, filename, root, rmWhitespace, strict, compileDebug); template tags and include mechanism; caching behavior; async rendering pattern.
-
-## Normalised Extract
-Table of Contents:
-1. API Methods
-2. Template Compilation
-3. File Rendering
-4. Options
-5. Includes
-6. Delimiters
-7. Caching
-8. Async Rendering
-
-1. API Methods
-   ejs.render(template: string, data?: object, options?: Options): string
-   ejs.compile(template: string, options?: Options): (data?: object) => string
-   ejs.renderFile(filename: string, data?: object, options?: Options, callback: (err, str) => void): void
-
-2. Template Compilation
-   compile returns JS function; call with data object to get rendered output.
-
-3. File Rendering
-   renderFile reads file, compiles with provided options, invokes callback with error or HTML string.
-
-4. Options
-   delimiter: '%'
-   openDelimiter: '<'
-   closeDelimiter: '>'
-   async: false
-   cache: false
-   filename: string (required for cache/includes)
-   root: string|array (lookup path)
-   views: alias for root
-   rmWhitespace: false
-   strict: false
-   compileDebug: true
-
-5. Includes
-   Syntax: <%- include(path, data) %>
-   Path resolved against options.root or dirname(filename).
-   Child scope inherits parent variables; data parameter overrides.
-
-6. Delimiters
-   <% code %>  scriptlet
-   <%= escaped %>
-   <%- unescaped %>
-   <%# comment %>
-   <%% literal %>
-   options.delimiter can change '%' to custom char
-
-7. Caching
-   Set options.cache = true and filename. Uses LRU cache keyed by filename.
-
-8. Async Rendering
-   options.async = true enables await in templates.
-   compile returns async function: await fn(data).
-
-
-## Supplementary Details
-Options defaults and effects:
-- delimiter: '%' (character for tag delimiter; change affects all tag types)
-- openDelimiter/closeDelimiter: '<','>' (override tag wrappers)
-- async: false (if true, returned render/compile function is async)
-- cache: false (if true and filename set, caches compiled functions)
-- filename: undefined (string path for file resolution; required for includes and caching)
-- root: undefined (string or array; base path(s) for include resolution)
-- views: undefined alias for root; array supports multiple directories
-- rmWhitespace: false (if true, strips safe whitespace between tags)
-- strict: false (if true, uses strict JS mode in template functions)
-- compileDebug: true (if false, omits code comments and line numbers)
-
-Implementation steps:
-1. Install via npm: npm install ejs
-2. Require: const ejs = require('ejs')
-3. Call ejs.render or compile/template functions as needed
-4. For file templates, set options.filename to use relative includes
-5. Enable cache for high-throughput by setting options.cache = true
-6. Use async rendering for Promises: set options.async = true
-7. Customize delimiters for alternative syntax
-
-
-## Reference Details
-Full API Specifications:
-
-1. ejs.render(template, data, options)
-- template:string
-- data?:object = {}
-- options?:{
-    delimiter?:string       default '%'
-    openDelimiter?:string   default '<'
-    closeDelimiter?:string  default '>'
-    async?:boolean          default false
-    cache?:boolean          default false
-    filename?:string        default undefined
-    root?:string|string[]   default undefined
-    views?:string|string[]  default undefined
-    rmWhitespace?:boolean   default false
-    strict?:boolean         default false
-    compileDebug?:boolean   default true
-  }
-- returns string
-- throws SyntaxError
-
-Example:
-const html = ejs.render('<%= user.name %>', {user:{name:'Alice'}}, {rmWhitespace:true});
-
-2. ejs.compile(template, options)
-- template:string
-- options?:same as render
-- returns function(data?:object):string | Promise<string> if async
-
-Example:
-const fn = ejs.compile('Hello <%= name %>', {async:true});
-(async()=>{ console.log(await fn({name:'Bob'})) })();
-
-3. ejs.renderFile(filename, data, options, callback)
-- filename:string
-- data?:object = {}
-- options?:same as render
-- callback:(err:Error|null, str?:string)=>void
-- returns void
-
-Example:
-ejs.renderFile('views/index.ejs', {items}, {cache:true}, (err, str)=>{
-  if (err) console.error(err);
-  else console.log(str);
-});
-
-Configuration Patterns:
-- Enable global caching: ejs.cache = new LRU({max:500});
-- Custom file loader: ejs.fileLoader = (path) => fs.readFileSync(path, 'utf8');
-
-Best Practices:
-- Always set options.filename when using includes to get correct path resolution and cache key.
-- Disable compileDebug in production: {compileDebug:false} for smaller functions.
-- Use rmWhitespace to minimize HTML size when whitespace is non-significant.
-
-Troubleshooting:
-- SyntaxError: Unexpected token '%' → Check unmatched tags.
-- Include not found: ensure root or filename correct. Run:
-  console.log(path.resolve(options.root, 'partial.ejs'))
-- Async errors: "await is only valid in async function" → set options.async = true.
-
-Commands:
-- Validate template compile: node -e "console.log(require('ejs').compile("<% if(true){ %>OK<% } %>")());"
-- Inspect cache size: console.log(require('ejs').cache.keys());
-
-
-## Information Dense Extract
-ejs.render(str,data,opts)->string; opts:{delimiter:'%',openDelimiter:'<',closeDelimiter:'>',async:false,cache:false,filename,root|string[],views alias,rmWhitespace:false,strict:false,compileDebug:true}. ejs.compile(str,opts)->fn(data)->string|Promise. ejs.renderFile(file,data,opts,cb). Includes: <%- include(path,data)%> resolves via opts.root or dirname(opts.filename). Cache enabled if opts.cache&&opts.filename. Async templates require opts.async=true. Custom fileLoader & cache override via ejs.fileLoader & ejs.cache. Best: set filename for includes/cache, compileDebug:false in prod, rmWhitespace:true for minified HTML. Troubleshoot via tag matching, path.resolve for includes, ensure async flag for await usage.
-
-## Sanitised Extract
-Table of Contents:
-1. API Methods
-2. Template Compilation
-3. File Rendering
-4. Options
-5. Includes
-6. Delimiters
-7. Caching
-8. Async Rendering
-
-1. API Methods
-   ejs.render(template: string, data?: object, options?: Options): string
-   ejs.compile(template: string, options?: Options): (data?: object) => string
-   ejs.renderFile(filename: string, data?: object, options?: Options, callback: (err, str) => void): void
-
-2. Template Compilation
-   compile returns JS function; call with data object to get rendered output.
-
-3. File Rendering
-   renderFile reads file, compiles with provided options, invokes callback with error or HTML string.
-
-4. Options
-   delimiter: '%'
-   openDelimiter: '<'
-   closeDelimiter: '>'
-   async: false
-   cache: false
-   filename: string (required for cache/includes)
-   root: string|array (lookup path)
-   views: alias for root
-   rmWhitespace: false
-   strict: false
-   compileDebug: true
-
-5. Includes
-   Syntax: <%- include(path, data) %>
-   Path resolved against options.root or dirname(filename).
-   Child scope inherits parent variables; data parameter overrides.
-
-6. Delimiters
-   <% code %>  scriptlet
-   <%= escaped %>
-   <%- unescaped %>
-   <%# comment %>
-   <%% literal %>
-   options.delimiter can change '%' to custom char
-
-7. Caching
-   Set options.cache = true and filename. Uses LRU cache keyed by filename.
-
-8. Async Rendering
-   options.async = true enables await in templates.
-   compile returns async function: await fn(data).
-
-## Original Source
-EJS
-https://ejs.co/#docs
-
-## Digest of EJS_DOCS
-
-# EJS API Reference (retrieved 2024-06-30)
-
-## 1. ejs.render(template, data, options)
-
-Signature:
-```js
-ejs.render(template: string, data?: object, options?: Options): string
-```
-Parameters:
-- template: String containing EJS syntax.
-- data: Data object to bind to template (default: {}).
-- options: Options object (see Options section).
-Returns:
-- Rendered HTML string.
-Throws:
-- SyntaxError on template parse failure.
-
-## 2. ejs.compile(template, options)
-
-Signature:
-```js
-ejs.compile(template: string, options?: Options): (data?: object) => string
-```
-Parameters:
-- template: EJS template string.
-- options: Options object.
-Returns:
-- Reusable render function accepting a data object.
-
-## 3. ejs.renderFile(path, data, options, callback)
-
-Signature:
-```js
-ejs.renderFile(filename: string, data?: object, options?: Options, callback: (err: Error|null, str?: string) => void): void
-```
-Parameters:
-- filename: Path to .ejs file.
-- data: Data object (default: {}).
-- options: Options object.
-- callback: Function called with (err, renderedString).
-Throws:
-- Errors via callback.err if file I/O or render fails.
-
-## 4. Options
-
-Fields and Defaults:
-- delimiter: '%'
-- openDelimiter: '<'
-- closeDelimiter: '>'
-- async: false
-- cache: false
-- filename: undefined (required for cache and includes)
-- root: undefined or string|array (lookup path for include)
-- views: undefined or string|array (deprecation alias for root)
-- rmWhitespace: false (strip all safe-to-strip whitespace)
-- strict: false (enable strict mode)
-- compileDebug: true (includes line numbers in compiled source)
-
-## 5. Caching
-
-- Enable via options.cache = true and provide options.filename.
-- Caches compiled functions in internal LRU cache keyed by filename.
-
-## 6. Includes
-
-Syntax:
-```ejs
-<%- include('path/to/partial', {foo: 'bar'}) %>
-```
-- Resolves relative to options.root or path.dirname(options.filename).
-- Passes given data merged with parent scope.
-
-## 7. Delimiters
-
-- Default tags:
-  - Scriptlet: <% code %>
-  - Escaped: <%= value %>
-  - Unescaped: <%- value %>
-  - Comment: <%# comment %>
-  - Literal delimiter: <%% renders <% literal %>
-- Custom delimiter: set options.delimiter = '?' to use <? ?>
-
-## 8. Async Rendering
-
-- Set options.async = true.
-- Use await inside templates and call compiled function as async:
-```js
-const fn = ejs.compile(str, {async: true});
-await fn(data);
-```
-
----
-
-Attribution: Crawled from https://ejs.co/#docs on 2024-06-30, Data Size: 8029 bytes, Links Found: 26
-
-## Attribution
-- Source: EJS
-- URL: https://ejs.co/#docs
-- License: MIT License
-- Crawl Date: 2025-05-10T21:58:40.878Z
-- Data Size: 8029 bytes
-- Links Found: 26
-
-## Retrieved
-2025-05-10
-library/SERVER_SENT_EVENTS.md
-# library/SERVER_SENT_EVENTS.md
-# SERVER_SENT_EVENTS
-
-## Crawl Summary
-SSE messages use lines prefixed by data:, id:, event:, retry: and a blank line to dispatch. EventSource API: new EventSource(url, {withCredentials}), properties url, readyState, constants CONNECTING=0, OPEN=1, CLOSED=2, methods close(), addEventListener(), removeEventListener(), event handlers onopen, onmessage, onerror. Server must send headers Content-Type:text/event-stream; Cache-Control:no-cache; Connection:keep-alive. Default retry interval is 3000ms, override via retry field. Examples provided for PHP and JavaScript client.
-
-## Normalised Extract
-Table of Contents
-1 SSE Protocol Format
-2 EventSource Interface
-3 Server Headers
-4 Reconnection & Error Handling
-5 Code Examples
-
-1 SSE Protocol Format
- data: <string> append each line with '\n'; multi-line messages join lines
- id: <string> stored in lastEventId for resume
- event: <string> defines custom event type
- retry: <integer> ms before reconnect override default
- blank line separates and dispatches event
-
-2 EventSource Interface
- Signature: new EventSource(url: string, eventSourceInitDict?: {withCredentials?: boolean})
- Properties:
-  url                 string endpoint
-  withCredentials     boolean, defaults to false
-  readyState          number: 0 CONNECTING, 1 OPEN, 2 CLOSED
- Methods:
-  close(): void       terminates connection
-  addEventListener(type, listener, options?): void
-  removeEventListener(type, listener, options?): void
- Handlers:
-  onopen(e: Event)
-  onmessage(e: MessageEvent{data:string, lastEventId:string, origin:string})
-  onerror(e: Event)
-
-3 Server Headers
- Content-Type: text/event-stream; charset=utf-8
- Cache-Control: no-cache; no-transform
- Connection: keep-alive
- Prevent proxy buffering (e.g., upstream_buffering off)
-
-4 Reconnection & Error Handling
- Default retry = 3000ms
- Override via 'retry: <ms>' in stream
- onerror: if readyState==CLOSED then no reconnect
- Ensure HTTP status 200 and no Content-Length header for streaming
-
-5 Code Examples
- Client JavaScript:
-  var es = new EventSource('/events', {withCredentials:true});
-  es.addEventListener('message', e => console.log(e.data));
-  setTimeout(() => es.close(), 60000);
- Server Node.js (Express):
-  app.get('/events', (req,res) => {
-    res.writeHead(200, {'Content-Type':'text/event-stream','Cache-Control':'no-cache','Connection':'keep-alive'});
-    const send = () => res.write('data: '+new Date().toISOString()+'\n\n');
-    const interval = setInterval(send,1000);
-    req.on('close', () => clearInterval(interval));
-  });
-
-## Supplementary Details
-Server-Side Implementation
-- PHP: header('Content-Type: text/event-stream'); header('Cache-Control: no-cache'); header('Connection: keep-alive'); use ob_flush(); flush(); sleep(interval)
-- Node.js: res.writeHead(200, headers); res.write('id: '+id+'\n'); res.write('event: '+type+'\n'); res.write('data: '+payload+'\n\n')
-- Loop control: clear interval on client disconnect (req.on('close'))
-- Ensure no Content-Length header, use Transfer-Encoding: chunked
-
-Client-Side Configuration
-- eventSourceInitDict options: withCredentials:boolean
-- Use addEventListener for custom event types: es.addEventListener('update', handler)
-- Polyfill for Node: import 'eventsource'; new EventSource(url)
-- CORS: server must send Access-Control-Allow-Origin and credentials if needed
-
-Performance & Compatibility
-- SSE is unidirectional, suitable for low-frequency updates
-- Supported in modern browsers and Web Workers
-- Fallback to polling or WebSocket in unsupported environments
-
-## Reference Details
-API Specification
-EventSource(url: string, eventSourceInitDict?: EventSourceInit)
-interface EventSourceInit { withCredentials?: boolean; }
-
-Properties
-readonly url: string
-readonly withCredentials: boolean
-readonly readyState: number
-static CONNECTING: number = 0
-static OPEN: number       = 1
-static CLOSED: number     = 2
-
-Methods
-addEventListener(type: string, listener: (ev: any) => any, options?: boolean|AddEventListenerOptions): void
-removeEventListener(type: string, listener: (ev: any) => any, options?: boolean|EventListenerOptions): void
-close(): void
-
-Event Handlers
-onopen: (this: EventSource, ev: Event) => any
-onmessage: (this: EventSource, ev: MessageEvent) => any
-onerror: (this: EventSource, ev: Event) => any
-
-MessageEvent properties
- data: any
- lastEventId: string
- origin: string
-
-Full Client Example
-var es = new EventSource('/stream', {withCredentials:true});
-es.addEventListener('open', e => console.log('open'), false);
-es.addEventListener('message', e => console.log('data', e.data), false);
-es.addEventListener('error', e => {
-  if (es.readyState === EventSource.CLOSED) console.log('closed');
-}, false);
+Usage Patterns
+1 Standalone callback
+describe(...)
+  request(app).get('/path')
+    .set('Accept','application/json')
+    .expect('Content-Type',/json/)
+    .expect(200)
+    .end((err,res)=>{ if(err) throw err; })
+
+2 Combined status and callback
+request(app).get('/path').expect(200, done)
+
+3 Promises
+return request(app).get('/path')
+  .expect('Content-Type',/json/)
+  .expect(200)
+  .then(res=>{ expect(res.body.id).toBe(value); })
+
+4 Async/Await
+const res = await request(app).get('/path').set('Accept','application/json')
+expect(res.status).toBe(200)
+
+5 Multipart upload
+request(app).post('/')
+  .field('name','avatar')
+  .attach('avatar','test/fixtures/avatar.jpg')
+  .expect(200, done)
+
+6 Cookie persistence
+const agent = request.agent(app)
+agent.get('/').expect('set-cookie','cookie=hey; Path=/', done)
+agent.get('/return').expect('hey', done)
+
+Configuration Options
+- http2 boolean default false: enable HTTP/2 via superagent
+- contentType on field: default multipart/form-data; override with application/json
 
 Best Practices
-- Always include 'id' field to support resume
-- Control retry interval via 'retry' field
-- Monitor readyState before sending
-- Use HTTP headers to disable caching and buffering
+- Always include .expect(status) to catch non-2XX errors
+- Use .expect(status, done) to simplify callbacks
+- Chain .expect in definition order to inject custom assertions
+- For shared host tests reassign request base URL
 
 Troubleshooting
-1 Confirm headers: curl -i http://host/sse
-   Expect: HTTP/1.1 200 OK
-           Content-Type: text/event-stream
-           Cache-Control: no-cache
-           Connection: keep-alive
-2 Test no buffering: curl --no-buffer http://host/sse
-3 Check console for readyState values
-4 Ensure server loop handles client disconnect (req.on('close') or while(true) exit condition)
-5 Verify event format: data lines end with '\n\n'
+Command: npm test -- grep "SuperTest"
+Expected: no assertion errors; non-2XX without expect shows err in callback
+Issue: tests hang -> missing end() or return promise
+Solution: add .end(done) or return the request promise
+
+Detailed Steps to Reproduce Cookie Failure
+1 Remove .expect('set-cookie',...) from first agent call
+2 agent.get('/return').expect('hey', done) returns 400
+3 Add missing cookie header in agent or use same agent instance
 
 ## Information Dense Extract
-Protocol: data:,id:,event:,retry:,blank-line dispatch; EventSource API: new EventSource(url,init?); init.withCredentials:boolean; props url:string,withCredentials:boolean,readyState:0|1|2; constants CONNECTING0,OPEN1,CLOSED2; methods addEventListener,removeEventListener,close; handlers onopen, onmessage(MessageEvent.data:string,lastEventId:string), onerror; Server headers: Content-Type:text/event-stream;Cache-Control:no-cache;Connection:keep-alive; no Content-Length; default retry 3000ms, override via retry field; PHP: header, echo 'data:...\n\n', flush; Node: res.writeHead, res.write loop, clear on close; Best: id for resume, custom retry, polyfill; Troubleshoot: curl -i and --no-buffer
+request(appOrUrl[, {http2:boolean=false}])→Test; request.agent(...)→Agent; Methods: get(path), post(path), put(path), patch(path), delete(path), set(header,value), auth(user,pass), send(body), field(name,value[,options:{contentType}]), attach(field,filePath), expect(status[,fn]), expect(status,body[,fn]), expect(body[,fn]), expect(header,value[,fn]), expect(fn(res)), end(fn(err,res)); Order of expect defines execution; use .expect(200,done) or .end; supports callbacks, Promises, async/await; HTTP2 via opts.http2; auto-binds ephemeral port; JSON bodies auto content-type; urlencoded via send(object); multipart via field/attach; persistent cookies via agent; reassign baseURL: request='url'; troubleshooting: missing end() or return hangs; always include status expect to catch errors
 
 ## Sanitised Extract
 Table of Contents
-1 SSE Protocol Format
-2 EventSource Interface
-3 Server Headers
-4 Reconnection & Error Handling
-5 Code Examples
+1 Installation
+2 Initialization
+3 HTTP2 Support
+4 HTTP Methods
+5 Headers and Authentication
+6 Request Body
+7 Multipart Uploads
+8 Cookie Persistence
+9 Expectations and Assertions
+10 Promises and Async/Await
+11 Error Handling
+12 Agent vs. Standalone
 
-1 SSE Protocol Format
- data: <string> append each line with ''n'; multi-line messages join lines
- id: <string> stored in lastEventId for resume
- event: <string> defines custom event type
- retry: <integer> ms before reconnect override default
- blank line separates and dispatches event
+1 Installation
+  Install as dev dependency: npm install supertest --save-dev
 
-2 EventSource Interface
- Signature: new EventSource(url: string, eventSourceInitDict?: {withCredentials?: boolean})
- Properties:
-  url                 string endpoint
-  withCredentials     boolean, defaults to false
-  readyState          number: 0 CONNECTING, 1 OPEN, 2 CLOSED
- Methods:
-  close(): void       terminates connection
-  addEventListener(type, listener, options?): void
-  removeEventListener(type, listener, options?): void
- Handlers:
-  onopen(e: Event)
-  onmessage(e: MessageEvent{data:string, lastEventId:string, origin:string})
-  onerror(e: Event)
+2 Initialization
+  request(appOrUrl[, options]) binds to ephemeral port if app not listening
+  request.agent(appOrUrl[, options]) reuses cookies across requests
+  options.http2 boolean default false
 
-3 Server Headers
- Content-Type: text/event-stream; charset=utf-8
- Cache-Control: no-cache; no-transform
- Connection: keep-alive
- Prevent proxy buffering (e.g., upstream_buffering off)
+3 HTTP2 Support
+  Pass { http2: true } to enable HTTP/2 protocol on request or agent
 
-4 Reconnection & Error Handling
- Default retry = 3000ms
- Override via 'retry: <ms>' in stream
- onerror: if readyState==CLOSED then no reconnect
- Ensure HTTP status 200 and no Content-Length header for streaming
+4 HTTP Methods
+  get(path:string): Test
+  post(path:string): Test
+  put(path:string): Test
+  patch(path:string): Test
+  delete(path:string): Test
 
-5 Code Examples
- Client JavaScript:
-  var es = new EventSource('/events', {withCredentials:true});
-  es.addEventListener('message', e => console.log(e.data));
-  setTimeout(() => es.close(), 60000);
- Server Node.js (Express):
-  app.get('/events', (req,res) => {
-    res.writeHead(200, {'Content-Type':'text/event-stream','Cache-Control':'no-cache','Connection':'keep-alive'});
-    const send = () => res.write('data: '+new Date().toISOString()+''n'n');
-    const interval = setInterval(send,1000);
-    req.on('close', () => clearInterval(interval));
-  });
+5 Headers and Authentication
+  set(header:string, value:string): Test
+  auth(username:string, password:string): Test  sends HTTP Basic auth header
+
+6 Request Body
+  send(body:any): Test  supports JSON and urlencoded
+
+7 Multipart Uploads
+  field(name:string, value:any[, options:{ contentType:string }] ): Test
+  attach(field:string, filePath:string): Test
+
+8 Cookie Persistence
+  agent = request.agent(appOrUrl)
+  agent.get(path).expect('set-cookie', cookieString)
+  agent.get(otherPath).expect(cookieValue)
+
+9 Expectations and Assertions
+  expect(status[, fn]): Test
+  expect(status, body[, fn]): Test
+  expect(body[, fn]): Test
+  expect(field, value[, fn]): Test
+  expect(fn(res)): Test  throw error in fn to fail
+  order of expect calls defines execution sequence
+
+10 Promises and Async/Await
+  return request(...).get(...).expect(...).then(response => {...})
+  const response = await request(...).get(...); expect on response
+
+11 Error Handling
+  Without status expect, non-2XX -> err in .end callback
+  .end((err, res) => { if (err) return done(err); done(); })
+  combine status and callback: .expect(200, done)
+
+12 Agent vs. Standalone
+  request() creates new Test each call
+  agent() maintains session cookies and can be reused without passing app/url every time
 
 ## Original Source
-Server-Sent Events (SSE)
-https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+Testing Tools: Vitest & SuperTest
+https://github.com/visionmedia/supertest
 
-## Digest of SERVER_SENT_EVENTS
+## Digest of SUPERTEST
 
-# Server-Sent Events (SSE)
+# SuperTest Detailed Digest
+Date Retrieved: 2024-06-20
+Data Size: 581946 bytes
+Links Found: 4709
+Error: None
 
-# Protocol Format
-Lines prefixed by a field name and colon
-data: <text>         can span multiple lines, concatenated with "\n"
-id: <string>         sets lastEventId for reconnection
-event: <string>      custom event type dispatched
-retry: <integer>     sets reconnection delay in milliseconds
-blank line           dispatches the event to the client
+# Installation
+```bash
+npm install supertest --save-dev
+```  
 
-# EventSource Interface
-Constructor
-new EventSource(url: string, eventSourceInitDict?: { withCredentials?: boolean })
+# Basic Usage
+```js
+const request = require('supertest');
+const express = require('express');
+const app = express();
+app.get('/user', (req, res) => res.status(200).json({ name: 'john' }));
+request(app)
+  .get('/user')
+  .expect('Content-Type', /json/)
+  .expect('Content-Length', '15')
+  .expect(200)
+  .end((err, res) => { if (err) throw err; });
+```  
 
-Properties
-url: string
-eventSourceInitDict.withCredentials?: boolean
-readyState: number
+# HTTP2 Support
+Append `{ http2: true }` to `request()` or `request.agent()`:  
+```js
+request(app, { http2: true }).get('/user')...  
+```  
 
-Static Constants
-EventSource.CONNECTING = 0
-EventSource.OPEN       = 1
-EventSource.CLOSED     = 2
+# Test Framework Integration
+- Callback style: pass `done` to `.expect()`  
+- Promises: return `request(app).get(...).expect(...).then(response => {...})`  
+- Async/Await: `const response = await request(app).get(...);`
 
-Methods
-close(): void
-addEventListener(type: string, listener: (ev: any) => any, options?: any): void
-removeEventListener(type: string, listener: (ev: any) => any, options?: any): void
+# Authentication
+`.auth(username, password)` sends HTTP basic auth header.  
 
-Event Handlers
-onopen(e: Event): any
-onmessage(e: MessageEvent): any
-onerror(e: Event): any
+# Error Handling
+- Without `.expect(status)` any non-2XX triggers error in callback.  
+- `.end((err, res) => { if (err) return done(err); done(); })`
 
-# Server Configuration Headers
-Content-Type: text/event-stream; charset=utf-8
-Cache-Control: no-cache; no-transform
-Connection: keep-alive
+# Assertions and Order
+- `.expect(status[, fn])`  
+- `.expect(status, body[, fn])`  
+- `.expect(body[, fn])`  
+- `.expect(field, value[, fn])`  
+- `.expect(fn(res))` (custom assertion)  
+- Assertions run sequentially in definition order.
 
-# Simple Server Example (PHP)
-header('Content-Type: text/event-stream');
-header('Cache-Control: no-cache');
-while (true) {
-  $data = date('H:i:s');
-  echo "data: $data\n\n";
-  ob_flush();
-  flush();
-  sleep(1);
-}
+# Multipart and File Uploads
+`.field(name, value[, options])` and `.attach(field, path)` for multipart.  
 
-# Simple Client Example (JavaScript)
-var es = new EventSource('/sse');
-es.onopen = function(e) {
-  console.log('Connection opened');
-};
-es.onmessage = function(e) {
-  console.log('Message:', e.data);
-};
-es.onerror = function(e) {
-  if (es.readyState === EventSource.CLOSED) {
-    console.log('Connection closed by server');
-  }
-};
+# Agent and Cookie Persistence
+```js
+const agent = request.agent(app);
+agent.get('/').expect('set-cookie','cookie=hey; Path=/', done);
+agent.get('/return').expect('hey', done);
+```
+
+# API Reference Summary
+- `request(appOrUrl[, options])` returns `Test`  
+- `request.agent(appOrUrl[, options])` returns `Agent`  
+- Methods on `Test`: `.get(path)`, `.post(path)`, `.set(field, value)`, `.send(body)`, `.auth(user, pass)`, `.field()`, `.attach()`, `.expect()`, `.end()`
+
+# License
+MIT
 
 ## Attribution
-- Source: Server-Sent Events (SSE)
-- URL: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-- License: CC BY-SA 2.5
-- Crawl Date: 2025-05-10T21:25:23.360Z
-- Data Size: 2471267 bytes
-- Links Found: 28823
+- Source: Testing Tools: Vitest & SuperTest
+- URL: https://github.com/visionmedia/supertest
+- License: MIT License
+- Crawl Date: 2025-05-11T10:33:51.286Z
+- Data Size: 581946 bytes
+- Links Found: 4709
 
 ## Retrieved
-2025-05-10
+2025-05-11
+library/OPENAPI_SPEC.md
+# library/OPENAPI_SPEC.md
+# OPENAPI_SPEC
+
+## Crawl Summary
+openapi:string required format major.minor.patch; $schema: URI default value; info:title,version required; servers:url template syntax, default [/]; paths:key pattern '/', values PathItem or $ref; components: reusable maps for schemas,responses,parameters,...; securitySchemes:type enum, parameters conditional on type; versioning: major.minor defines feature set, patch ignored; JSON/YAML representations interchangeable; keys case-sensitive; patterned fields with regex; YAML 1.2 constraints.
+
+## Normalised Extract
+Table of Contents:
+1. OpenAPI Object
+2. Info Object
+3. Server Object
+4. Paths Object
+5. Components Object
+6. Security Scheme Object
+
+1. OpenAPI Object
+ Fields:
+  openapi: string (required), format /^\d+\.\d+\.\d+$/, value = "3.1.0" or compatible 3.1.*
+  $schema: string (URI), default = https://spec.openapis.org/oas/3.1/schema/2021-02-16
+  info: Info Object (see section 2)
+  servers: array<Server Object>, default = [{ url: "/" }]
+  paths: map<string, PathItemObject | ReferenceObject> (keys begin with "/", at least one of paths/components/webhooks present)
+  components: Components Object (see section 5)
+  security: array<SecurityRequirementObject>
+  tags: array<TagObject>
+  externalDocs: ExternalDocumentationObject
+
+2. Info Object
+ Fields:
+  title: string (required)
+  version: string (required)
+  description: string
+  termsOfService: string (URL)
+  contact: { name: string; url: string (URL); email: string (email) }
+  license: { name: string; url: string (URL) | identifier: string (SPDX) }
+
+3. Server Object
+ Fields:
+  url: string (required), may include variables {name}
+  description: string
+  variables: map<string, { enum?: string[]; default: string; description?: string }>
+
+4. Paths Object
+ Key pattern: /^\/.+/  Value: PathItemObject | ReferenceObject
+
+5. Components Object
+ Fields (all optional):
+  schemas: map<string, SchemaObject | ReferenceObject>
+  responses: map<string, ResponseObject | ReferenceObject>
+  parameters: map<string, ParameterObject | ReferenceObject>
+  examples, requestBodies, headers, securitySchemes, links, callbacks, pathItems: similar maps
+
+6. Security Scheme Object
+ Fields:
+  type: enum ["apiKey","http","oauth2","openIdConnect"] (required)
+  name: string (required if apiKey)
+  in: enum ["query","header","cookie"] (required if apiKey)
+  scheme: string (required if http)
+  bearerFormat: string (optional if http)
+  flows: OAuthFlowsObject (required if oauth2)
+  openIdConnectUrl: string (URL, required if openIdConnect)
+
+
+## Supplementary Details
+Versioning:
+- major.minor designates feature set (3.1). patch addresses clarifications. Tooling should ignore patch.
+Format:
+- JSON or YAML 1.2 (YAML tags limited to JSON Failsafe; keys scalar strings). CommonMark 0.27 for descriptions.
+Case Sensitivity:
+- Field names case-sensitive except map keys when noted.
+Patterned Fields:
+- keys matching regex ^[a-zA-Z0-9.\-_]+$ for components fields; /^\/.+/ for paths.
+Relative References (URIs):
+- resolved per RFC3986 Section 5.2 using document URI base; JSON-Pointer for fragments (RFC6901).
+Relative References (URLs):
+- resolved against Server Object url per RFC3986 Section 5.2.
+Schema Dialects:
+- JSON Schema Draft 2020-12. format property optional for primitives (e.g. int64, date-time).
+Rich Text:
+- description fields support CommonMark syntax.
+Defaults:
+- allowEmptyValue for query parameters default false; explode default based on style; reserved by RFC3986.
+
+
+## Reference Details
+1. Minimal JSON Example:
+{
+  "openapi": "3.1.0",
+  "info": { "title": "My API", "version": "1.0.0" },
+  "servers": [ { "url": "https://api.example.com/v1" } ],
+  "paths": {
+    "/items/{itemId}": {
+      "get": {
+        "operationId": "getItem",
+        "parameters": [ { "name": "itemId", "in": "path", "required": true, "schema": { "type": "string" } } ],
+        "responses": { "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Item" } } } } }
+      }
+    }
+  },
+  "components": {
+    "schemas": { "Item": { "type": "object", "properties": { "id": { "type": "string" }, "name": { "type": "string" } }, "required": ["id","name"] } }
+  }
+}
+
+2. Minimal YAML Example:
+openapi: 3.1.0
+info:
+  title: My API
+  version: "1.0.0"
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /items/{itemId}:
+    get:
+      operationId: getItem
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required: [id, name]
+
+3. CLI Validation (swagger-cli):
+npm install -g @apidevtools/swagger-cli
+swagger-cli validate openapi.yaml
+# Expected: "openapi.yaml is valid OpenAPI 3.1 definition"
+# On error: "Error: reference not found: #/components/schemas/XYZ"
+
+4. Programmatic Validation (Node.js):
+const $RefParser = require("@apidevtools/swagger-parser");
+async function validate(file) {
+  try {
+    const api = await $RefParser.validate(file);
+    console.log("API validated: %s, version %s", api.info.title, api.info.version);
+  } catch (err) {
+    console.error("Validation error:", err.message);
+    process.exit(1);
+  }
+}
+validate("openapi.yaml");
+
+5. Best Practices:
+- Always include server variables enum when finite set.
+- Use explicit operationId values following camelCase.
+- Group reusable schemas under components.schemas and reference via $ref.
+- Use JSON Schema Draft 2020-12 features: oneOf, anyOf, dependentRequired.
+
+6. Troubleshooting:
+Command: swagger-cli bundle --dereference openapi.yaml -o bundled.json
+Expected output: prints warnings for circular refs, produces single file.
+If circular reference error: inspect $ref loops, apply one-way references or break cycles with allOf.
+
+
+## Information Dense Extract
+openapi:string required format x.y.z; info:{title:string,version:string}+optional {description,termsOfService(URL),contact(name,url,email),license(name,identifier|url)}; servers:[] default[{url:"/"}], url template {var}, variables:{enum[],default,description}; paths:{"/path":PathItem|$ref}; PathItem: ops(get,post,...),parameters[],servers[],summary,description,$ref; components:{schemas,responses,parameters,examples,requestBodies,headers,securitySchemes,links,callbacks,pathItems} as maps; SecurityScheme:type(apiKey[name,in],http[scheme,bearerFormat],oauth2[flows],openIdConnect[url]); JSON/YAML interchangeable, YAML1.2 failsafe, keys case-sensitive, patterned fields regex, $ref resolution per RFC3986/RFC6901, versioning ignores patch, Schema uses draft2020-12 formats e.g. int64,date-time.
+
+## Sanitised Extract
+Table of Contents:
+1. OpenAPI Object
+2. Info Object
+3. Server Object
+4. Paths Object
+5. Components Object
+6. Security Scheme Object
+
+1. OpenAPI Object
+ Fields:
+  openapi: string (required), format /^'d+'.'d+'.'d+$/, value = '3.1.0' or compatible 3.1.*
+  $schema: string (URI), default = https://spec.openapis.org/oas/3.1/schema/2021-02-16
+  info: Info Object (see section 2)
+  servers: array<Server Object>, default = [{ url: '/' }]
+  paths: map<string, PathItemObject | ReferenceObject> (keys begin with '/', at least one of paths/components/webhooks present)
+  components: Components Object (see section 5)
+  security: array<SecurityRequirementObject>
+  tags: array<TagObject>
+  externalDocs: ExternalDocumentationObject
+
+2. Info Object
+ Fields:
+  title: string (required)
+  version: string (required)
+  description: string
+  termsOfService: string (URL)
+  contact: { name: string; url: string (URL); email: string (email) }
+  license: { name: string; url: string (URL) | identifier: string (SPDX) }
+
+3. Server Object
+ Fields:
+  url: string (required), may include variables {name}
+  description: string
+  variables: map<string, { enum?: string[]; default: string; description?: string }>
+
+4. Paths Object
+ Key pattern: /^'/.+/  Value: PathItemObject | ReferenceObject
+
+5. Components Object
+ Fields (all optional):
+  schemas: map<string, SchemaObject | ReferenceObject>
+  responses: map<string, ResponseObject | ReferenceObject>
+  parameters: map<string, ParameterObject | ReferenceObject>
+  examples, requestBodies, headers, securitySchemes, links, callbacks, pathItems: similar maps
+
+6. Security Scheme Object
+ Fields:
+  type: enum ['apiKey','http','oauth2','openIdConnect'] (required)
+  name: string (required if apiKey)
+  in: enum ['query','header','cookie'] (required if apiKey)
+  scheme: string (required if http)
+  bearerFormat: string (optional if http)
+  flows: OAuthFlowsObject (required if oauth2)
+  openIdConnectUrl: string (URL, required if openIdConnect)
+
+## Original Source
+OpenAPI Specification (OAS)
+https://spec.openapis.org/oas/v3.1.0
+
+## Digest of OPENAPI_SPEC
+
+# OpenAPI Specification v3.1.0 (Retrieved 2024-06-21)
+
+# OpenAPI Object
+- openapi (string, required): MUST be version number in format major.minor.patch (e.g. "3.1.0").
+- $schema (string, optional): URI of meta-schema. Default: https://spec.openapis.org/oas/3.1/schema/2021-02-16.
+- info (Info Object, required)
+- servers (array of Server Object): default single entry with url "/".
+- paths (map[string, Path Item Object | Reference Object]): at least one field required across paths/components/webhooks.
+- components (Components Object)
+- security (array of Security Requirement Object)
+- tags (array of Tag Object)
+- externalDocs (External Documentation Object)
+
+# Info Object
+- title (string, required)
+- version (string, required)
+- description (string)
+- termsOfService (URL string)
+- contact (Contact Object)
+- license (License Object)
+
+# Server Object
+- url (string, required): supports variable substitutions in {brackets}.
+- description (string)
+- variables (map[string, Server Variable Object])
+
+# Paths Object
+- Keys: string starting with "/".
+- Values: Path Item Object or Reference Object.
+
+# Path Item Object
+- $ref (string)
+- summary (string)
+- description (string)
+- get, put, post, delete, options, head, patch, trace (Operation Object)
+- servers (override array of Server Object)
+- parameters (array of Parameter Object | Reference Object)
+
+# Components Object
+- schemas (map[string, Schema Object | Reference Object])
+- responses, parameters, examples, requestBodies, headers, securitySchemes, links, callbacks, pathItems (maps)
+
+# Security Scheme Object
+- type (string, required): one of apiKey, http, oauth2, openIdConnect.
+- name (string): required if type=apiKey.
+- in (string): "query" | "header" | "cookie", required if type=apiKey.
+- scheme (string): required if type=http.
+- bearerFormat (string): optional if type=http and scheme=bearer.
+- flows (OAuth Flows Object): required if type=oauth2.
+- openIdConnectUrl (URL string): required if type=openIdConnect.
+
+---
+**Attribution**: Copyright © 2021 the Linux Foundation
+Data Size: 19111465 bytes
+Links Found: 59233
+Error: None
+
+
+## Attribution
+- Source: OpenAPI Specification (OAS)
+- URL: https://spec.openapis.org/oas/v3.1.0
+- License: CC0 1.0 Universal
+- Crawl Date: 2025-05-11T06:36:56.041Z
+- Data Size: 19111465 bytes
+- Links Found: 59233
+
+## Retrieved
+2025-05-11
