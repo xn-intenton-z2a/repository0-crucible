@@ -16,6 +16,8 @@ This tool calculates π using different algorithms.
 - `--diagnostics`         Outputs a JSON object with execution diagnostics (algorithm, parameters, durationMs, iterations/samplesUsed, and result)
 - `--benchmark`           Runs all supported algorithms and outputs a consolidated JSON benchmark report
 - `--validate-features`   Validates that all feature specification files reference `MISSION.md`; exits with code 0 on success or 1 with missing file list
+- `--convergence-data <filepath>`  File path where convergence data JSON is saved
+- `--chart <filepath>`     File path where convergence chart PNG is saved
 
 ## Examples
 
@@ -70,9 +72,22 @@ node src/lib/main.js --benchmark
 ]
 ```
 
-### Validate feature specs
+### Convergence Data Export
 
 ```bash
-node src/lib/main.js --validate-features
-# Outputs: All features reference MISSION.md
+node src/lib/main.js --digits 5 --convergence-data data.json
+# Creates data.json with convergence data
+```
+
+### Chart Generation
+
+```bash
+node src/lib/main.js --digits 5 --chart chart.png
+# Creates chart.png with convergence chart
+```
+
+### Combined Export
+
+```bash
+node src/lib/main.js --digits 5 --convergence-data data.json --chart chart.png
 ```

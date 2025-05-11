@@ -182,3 +182,33 @@ describe("CLI Validate Features", () => {
     expect(exitSpy).toHaveBeenCalledWith(1);
   });
 });
+
+// New convergence-data and chart tests
+describe("Convergence Data and Chart", () => {
+  test("writes convergence data JSON file", () => {
+    const spy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
+    main(["--digits", "3", "--convergence-data", "data.json"]);
+    expect(spy).toHaveBeenCalledTimes(1);
+    const [path, data] = spy.mock.calls[0];
+    expect(path).toBe("data.json");
+    const arr = JSON.parse(data);
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr[0]).toEqual({
+      index: expect.any(Number),
+      approximation: expect.any(Number),
+      error: expect.any(Number),
+    });
+    spy.mockRestore();
+  });
+
+  test("writes PNG chart file", () => {
+    const spy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
+    const fakeCanvas = { toBuffer: () => Buffer.from([0x89, 0x50, 0x4e, 0x47]) };
+    vi.spyOn(mainModule, "createCanvas").mockReturnValue(fakeCanvas);
+    vi.spyOn(mainModule, "Chart").mockImplementation(() => {});
+    main(["--digits", "3", "--chart", "chart.png"]);
+    expect(spy).toHaveBeenCalledWith("chart.png", expect.any(Buffer));
+    spy.mockRestore();
+    vi.restoreAllMocks();
+  });
+});
