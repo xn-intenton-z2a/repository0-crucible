@@ -19,13 +19,30 @@ export function calculatePiLeibniz(digits) {
 }
 
 /**
+ * Calculate π using Monte Carlo sampling.
+ * @param {number} samples - Number of random samples.
+ * @returns {number} π approximated using sampling.
+ */
+export function calculatePiMonteCarlo(samples) {
+  let inside = 0;
+  for (let i = 0; i < samples; i++) {
+    const x = Math.random();
+    const y = Math.random();
+    if (x * x + y * y <= 1) {
+      inside++;
+    }
+  }
+  return (inside / samples) * 4;
+}
+
+/**
  * Main CLI entrypoint.
  * @param {string[]} args - Command-line arguments.
  */
 export function main(args = process.argv.slice(2)) {
   const options = minimist(args, {
     string: ["algorithm"],
-    default: { digits: 5, algorithm: "leibniz" },
+    default: { digits: 5, algorithm: "leibniz", samples: 100000 },
   });
   const digits = Number(options.digits);
   const algorithm = options.algorithm.toLowerCase();
@@ -33,6 +50,9 @@ export function main(args = process.argv.slice(2)) {
   let piValue;
   if (algorithm === "leibniz") {
     piValue = calculatePiLeibniz(digits);
+  } else if (algorithm === "montecarlo") {
+    const samples = Number(options.samples);
+    piValue = calculatePiMonteCarlo(samples);
   } else {
     console.error(`Unsupported algorithm: ${options.algorithm}`);
     process.exit(1);
