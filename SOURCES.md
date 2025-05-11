@@ -15,7 +15,12 @@ Client library documentation for quickchart-js, detailing programmatic chart gen
 
 # Express.js Documentation
 ## https://expressjs.com/en/4x/api.html
-Comprehensive reference for Express 4.x, covering routing, middleware integration, request parsing, response streaming, and error handling. Essential for defining REST endpoints (/pi, /benchmark, /metrics, /pi/analysis, /ui, /pi/stream), integrating CORS, and mounting GraphQL or Swagger UI middleware. Updated regularly by the Express.js Core Team.
+Comprehensive reference for Express 4.x API, covering application setup, routing, middleware patterns, request parsing (json, urlencoded), response streaming, error handling, and integration points. Essential for implementing REST endpoints (/pi, /benchmark, /pi/analysis, /ui, /pi/stream), applying CORS, configuring chunked transfer for streaming, integrating rate limiting middleware, and mounting GraphQL or Swagger UI interfaces. Updated regularly by the Express.js Core Team.
+## MIT License
+
+# express-rate-limit
+## https://github.com/nfriedly/express-rate-limit#readme
+Library documentation for express-rate-limit middleware. Describes usage patterns, configuration options for windowMs and max, header settings, and error handling. Essential for implementing API rate limiting to protect CPU-intensive π endpoints using options like --rate-limit-window-ms and --rate-limit-max. Last updated 2024; maintained by the community.
 ## MIT License
 
 # SuperTest
@@ -30,7 +35,7 @@ Comprehensive documentation for Vitest, a Vite-native test framework. Covers con
 
 # Commander.js
 ## https://github.com/tj/commander.js
-Minimalist command-line interface library documentation, detailing declarative command and option definitions, argument parsing, validation, and auto-generated help. Ideal for implementing flags like --digits, --cache, --benchmark, --serve, --graphql, --stream, --analyze, --diagnostics, and --progress. De-facto standard for Node.js CLI tooling.
+Minimalist command-line interface library documentation, detailing declarative command and option definitions, argument parsing, validation, and auto-generated help. Ideal for implementing flags like --digits, --cache, --benchmark, --serve, --graphql, --stream, --analyze, --diagnostics, and --progress in a structured CLI. De-facto standard for Node.js CLI tooling.
 ## MIT License
 
 # Node.js Core and Streams APIs
@@ -43,14 +48,15 @@ Central reference for Node.js built-in modules, including fs/promises, path, url
 TypeScript-first schema validation library documentation, covering synchronous and asynchronous parsing, refinements, and error handling. Critical for validating CLI inputs and HTTP/GraphQL query and mutation parameters to ensure robust, type-safe argument handling. Last updated 2024.
 ## MIT License
 
+# Configuration File and Environment Variables Libraries
+## https://github.com/motdotla/dotenv#readme
+## https://github.com/nodeca/js-yaml#readme
+Documentation for dotenv and js-yaml libraries to load environment variables and parse configuration files. Covers dotenv usage for loading .env files into process.env, variable substitution, and parsing YAML with js-yaml including schema validation, error handling, and load options. Crucial for implementing features to load .env and .pi-config.yaml files, merge defaults, env vars, and CLI flags, ensuring robust configuration management. Last updated 2024; widely adopted.
+## MIT License
+
 # EJS
 ## https://ejs.co/#docs
 Embedded JavaScript templating engine documentation, describing template syntax, partials, includes, and custom helper functions. Used for generating interactive HTML reports and dashboards (/ui), embedding π values, analysis tables, and chart images via base64 URIs. Last updated 2024.
-## MIT License
-
-# prom-client
-## https://github.com/siimon/prom-client
-Prometheus client library documentation for Node.js, covering Counter, Gauge, Histogram, and Summary metric types, registry configuration, and exposition formats. Crucial for instrumenting HTTP endpoints and exposing /metrics for monitoring π service performance and latency. Last updated 2024.
 ## MIT License
 
 # OpenAPI and Swagger UI
@@ -69,15 +75,11 @@ Documentation for cli-progress, a terminal progress bar library for Node.js. Des
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 Comprehensive guide to JavaScript BigInt primitive—creation, arithmetic operations, type coercion, and performance considerations. Essential for high-precision integer arithmetic in π computation algorithms.
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
-Detailed description of the Chudnovsky series for π, including the mathematical formula, convergence properties, and strategies for parallel term computation. Vital for implementing and validating the chudnovsky algorithm with worker threads.
+Detailed description of the Chudnovsky series for π, including the mathematical formula, convergence properties, and strategies for parallel term computation. Vital for implementing and validating the Chudnovsky algorithm with worker threads.
 ## CC BY-SA
 
-# GraphQL Specification
+# GraphQL API Documentation
 ## https://graphql.org/learn/
-Official GraphQL Learn documentation covering schema definition language (SDL), query and mutation syntax, type system, resolvers, and introspection. Provides foundational knowledge for building a GraphQL API layer that unifies π computation, analysis, and benchmarking.
-## CC0 1.0 Universal
-
-# express-graphql Documentation
 ## https://github.com/graphql/express-graphql
-Guide to integrating GraphQL into Express applications using express-graphql middleware. Covers schema mounting, GraphiQL IDE options, error handling, and performance tuning. Essential for exposing /graphql endpoints backed by core computation logic.
-## MIT License
+Official GraphQL learn guide and express-graphql middleware docs. Covers SDL schema definitions, queries, mutations, resolvers, introspection, error handling, and mounting GraphQL endpoints in Express with GraphiQL integration and performance tuning. Fundamental for exposing π computation, analysis, and benchmarking via a flexible GraphQL /graphql endpoint. Last updated 2024; spec is CC0 1.0 Universal, middleware is MIT License.
+## CC0 1.0 Universal / MIT License
