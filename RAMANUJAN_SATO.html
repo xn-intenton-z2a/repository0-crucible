@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="ramanujan_sato" href="#ramanujan_sato"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RAMANUJAN_SATO</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Defines two integer sequences for Level 1 Ramanujan–Sato: s1A(k)=C(2k,k)·C(3k,k)·C(6k,3k), s1B(k)=Σ_{j=0..k} C(2j,j)·C(3j,j)·C(6j,3j)·C(k+j,k−j)·(−432)^{k−j}. Provides formulas for 1/π: 12i Σ s1A(k)·(163·3344418k+13591409)/(−640320³)^{k+1/2}, and 24i Σ s1B(k)·(−3669+320√645 (k+1/2))/(−432 U645³)^{k+1/2}, with constants C and fundamental unit U645=(127+5√645)/2. Implementation requires high-precision arithmetic, terminate when term &lt; tolerance.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Sequence Definitions
+2 π Series Formulas
+3 Constants
+4 Implementation Details</p>
+<p class="md-github">1 Sequence Definitions
+s1A(k) = binomial(2k,k) · binomial(3k,k) · binomial(6k,3k)
+s1B(k) = Σ_{j=0..k} binomial(2j,j)·binomial(3j,j)·binomial(6j,3j)·binomial(k+j,k−j)·(−432)^{k−j}</p>
+<p class="md-github">2 π Series Formulas
+Level 1A: 1/π = 12i Σ_{k=0..∞} s1A(k) (163·3344418·k + 13591409)/(−640320³)^{k+1/2}
+Level 1B: 1/π = 24i Σ_{k=0..∞} s1B(k) (−3669+320√645 (k+1/2))/(C1B)^{k+1/2}</p>
+<p class="md-github">3 Constants
+C1A = −640320³ = −262537412640768000
+U645 = (127+5√645)/2 ; C1B = −432·U645³</p>
+<p class="md-github">4 Implementation Details</p>
+<ul class="md-github">
+<li class="md-github">Use BigInt for binomial exactness on k≤10</li>
+<li class="md-github">Use Decimal.js with precision ≥200 for series</li>
+<li class="md-github">Termination when |term| &lt; errorTolerance or k≥maxIterations</li>
+<li class="md-github">Manage complex factor i separately or convert to real arithmetic by squaring</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Parameter Values:
+precision: default 200 digits
+maxIterations: default 20
+errorTolerance: default 1e-100
+Implementation Steps:
+1 Initialize Decimal.set({ precision })
+2 Loop k from 0 to maxIterations
+3 Compute binomial via multiplicative BigInt formula
+4 Compute s sequence per level
+5 Compute numerator and denominator with Decimal
+6 Accumulate sum, break when term &lt; errorTolerance
+7 Multiply by constant factor (12i or 24i)
+Configuration Options:</p>
+<ul class="md-github">
+<li class="md-github">level: &quot;1A&quot; or &quot;1B&quot;</li>
+<li class="md-github">precision: integer</li>
+<li class="md-github">maxIterations: integer</li>
+<li class="md-github">errorTolerance: small Decimal string</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API: computePi(options) -&gt; Promise&lt;{ piEstimate: Decimal, iterations: number }&gt;
+Parameters:
+options.level: string (&quot;1A&quot;|&quot;1B&quot;)
+options.precision: number
+options.maxIterations: number
+options.errorTolerance: string
+Return:
+piEstimate: Decimal
+iterations: number
+Examples:
+// Level 1A
+import { computePi } from './ramanujanSato';
+const { piEstimate, iterations } = await computePi({ level: '1A', precision: 300, maxIterations: 15, errorTolerance: '1e-140' });
+console.log(piEstimate.toString(), iterations);
+Implementation Pattern:
+export async function computePi({ level, precision, maxIterations, errorTolerance }) {
+import Decimal from 'decimal.js';
+Decimal.set({ precision });
+const { sFunc, Acoef, Bcoef, Cbase } = level === '1A'
+? { sFunc: s1A, Acoef: 163*3344418, Bcoef: 13591409, Cbase: Decimal(-640320).pow(3) }
+: { sFunc: s1B, Acoef: -3669, Bcoef: 320, Cbase: Decimal(-432).mul(U645.pow(3)) };
+let sum = new Decimal(0);
+let k = 0;
+for (; k &lt; maxIterations; k++) {
+const sVal = new Decimal(sFunc(BigInt(k)).toString());
+const numerator = level==='1A'
+? new Decimal(Acoef).mul(k).plus(Bcoef)
+: new Decimal(Acoef).plus(new Decimal(Bcoef).mul(U645).mul(k + 0.5));
+const denom = Cbase.pow(k + 0.5);
+const term = sVal.mul(numerator).div(denom);
+sum = sum.plus(term);
+if (term.abs().lt(errorTolerance)) break;
+}
+const factor = level==='1A' ? new Decimal(12).mul(new Decimal(0).plus('i')) : new Decimal(24).mul(new Decimal(0).plus('i'));
+return { piEstimate: factor.mul(sum), iterations: k+1 };
+}
+Configuration Effects:
+Increasing precision reduces round-off error
+Larger maxIterations improves convergence
+Smaller errorTolerance yields more accurate pi
+Best Practices:
+Pre-compute binomial table for k≤20 to speed sFunc
+Use real arithmetic by squaring series to avoid complex i handling
+Troubleshooting:
+Error: term is NaN -&gt; increase precision
+Convergence slow -&gt; increase maxIterations or adjust Cbase calculation
+Overflow in binomial -&gt; use BigInt or split into factors
+Exact commands:
+npx babel-node scripts/computePi.js --level=1A --precision=250 --maxIterations=12
+Expected output: pi digits starting 3.14159265358979…, iterations: 9</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">s1A(k)=C(2k,k)C(3k,k)C(6k,3k); s1B(k)=Σ_{j=0..k}C(2j,j)C(3j,j)C(6j,3j)C(k+j,k−j)(−432)^{k−j}; 1/π(1A)=12iΣ s1A(k)(163·3344418k+13591409)/(−640320³)^{k+1/2}; 1/π(1B)=24iΣ s1B(k)(−3669+320√645(k+1/2))/(−432U645³)^{k+1/2}; binomial via BigInt multiplicative; Decimal.js precision≥200; terminate when |term|&lt;1e-100; computePi({level,precision,maxIterations,errorTolerance})→{piEstimate,iterations}. U645=(127+5√645)/2.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Sequence Definitions
+2  Series Formulas
+3 Constants
+4 Implementation Details</p>
+<p class="md-github">1 Sequence Definitions
+s1A(k) = binomial(2k,k)  binomial(3k,k)  binomial(6k,3k)
+s1B(k) = _{j=0..k} binomial(2j,j)binomial(3j,j)binomial(6j,3j)binomial(k+j,kj)(432)^{kj}</p>
+<p class="md-github">2  Series Formulas
+Level 1A: 1/ = 12i _{k=0..} s1A(k) (1633344418k + 13591409)/(640320)^{k+1/2}
+Level 1B: 1/ = 24i _{k=0..} s1B(k) (3669+320645 (k+1/2))/(C1B)^{k+1/2}</p>
+<p class="md-github">3 Constants
+C1A = 640320 = 262537412640768000
+U645 = (127+5645)/2 ; C1B = 432U645</p>
+<p class="md-github">4 Implementation Details</p>
+<ul class="md-github">
+<li class="md-github">Use BigInt for binomial exactness on k10</li>
+<li class="md-github">Use Decimal.js with precision 200 for series</li>
+<li class="md-github">Termination when |term| &lt; errorTolerance or kmaxIterations</li>
+<li class="md-github">Manage complex factor i separately or convert to real arithmetic by squaring</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">BigInt and Pi Algorithms Reference
+https://en.wikipedia.org/wiki/Ramanujan%E2%80%93Sato_series</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-ramanujan_sato" href="#digest-of-ramanujan_sato"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of RAMANUJAN_SATO</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="ramanujansato-series-for-1π-retrieved-2024-06-xx" href="#ramanujansato-series-for-1π-retrieved-2024-06-xx"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ramanujan–Sato Series for 1/π (Retrieved 2024-06-xx)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="level-1a-sequence-definition" href="#level-1a-sequence-definition"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Level 1A Sequence Definition</h2>
+<p class="md-github">s1A(k) = binomial(2k,k) · binomial(3k,k) · binomial(6k,3k)
+Values:  s1A(0)=1, s1A(1)=120, s1A(2)=83160, s1A(3)=81681600</p>
+<h2 class="md-github"><a class="md-github__anchor" name="level-1a-π-formula" href="#level-1a-π-formula"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Level 1A π Formula</h2>
+<p class="md-github">1/π = 12·i · Σ_{k=0..∞} s1A(k) · (163·3344418·k + 13591409) / (−640320^3)^{k+1/2}
+Constant:  C = −640320³ = −262537412640768000</p>
+<h2 class="md-github"><a class="md-github__anchor" name="level-1b-sequence-definition" href="#level-1b-sequence-definition"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Level 1B Sequence Definition</h2>
+<p class="md-github">s1B(k) = Σ_{j=0..k} binomial(2j,j)·binomial(3j,j)·binomial(6j,3j)·binomial(k+j,k−j)·(−432)^{k−j}
+Values: s1B(0)=1, s1B(1)=−312, s1B(2)=114264, s1B(3)=−44196288</p>
+<h2 class="md-github"><a class="md-github__anchor" name="level-1b-π-formula" href="#level-1b-π-formula"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Level 1B π Formula</h2>
+<p class="md-github">1/π = 24·i · Σ_{k=0..∞} s1B(k) · (−3669 + 320·√645 ·(k+1/2)) / (−432·U645³)^{k+1/2}
+Constants: U645 = (127+5√645)/2 ;  C = −432·U645³</p>
+<h2 class="md-github"><a class="md-github__anchor" name="javascript-implementation-patterns" href="#javascript-implementation-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JavaScript Implementation Patterns</h2>
+<ul class="md-github">
+<li class="md-github">computeBinomial(n,k) using multiplicative formula with BigInt</li>
+<li class="md-github">computeSequence1A(k) and computeSequence1B(k)</li>
+<li class="md-github">computePiSeries(level, options) with Decimal.js or native BigInt+Number for moderate k</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="configuration" href="#configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h2>
+<p class="md-github">precision: 100 decimal places
+maxIterations: 10
+errorTolerance: 1e-80</p>
+<h2 class="md-github"><a class="md-github__anchor" name="troubleshooting" href="#troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h2>
+<ul class="md-github">
+<li class="md-github">Increase precision if final error &gt; tolerance</li>
+<li class="md-github">Ensure k loop terminates when term &lt; tolerance or k &gt;= maxIterations</li>
+<li class="md-github">Watch for overflow in intermediate factorials; use BigInt or arbitrary precision</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="example-code-snippet-level-1a" href="#example-code-snippet-level-1a"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example Code Snippet (Level 1A)</h2>
+<pre class="md-github"><code class="md-github language-javascript">import Decimal from 'decimal.js';
+Decimal.set({ precision: 200 });
+
+function binomial(n,k) {
+  let res = 1n;
+  for (let i=1n; i&lt;=k; i++) {
+    res = res * (n - k + i) / i;
+  }
+  return res;
+}
+
+function s1A(k) {
+  return binomial(2n*k, k) * binomial(3n*k, k) * binomial(6n*k, 3n*k);
+}
+
+function computePiLevel1A(maxIter) {
+  const C = Decimal(-640320).pow(3);
+  let sum = new Decimal(0);
+  for (let k=0; k&lt;maxIter; k++) {
+    const term = new Decimal(s1A(BigInt(k))).mul(
+      new Decimal(163).mul(3344418).mul(k).plus(13591409)
+    ).div(C.pow(k + 0.5));
+    sum = sum.plus(term);
+    if (term.abs().lt('1e-100')) break;
+  }
+  return Decimal(12).mul(Decimal.i || new Decimal(0)); // handle i separately
+}
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: BigInt and Pi Algorithms Reference</li>
+<li class="md-github">URL: https://en.wikipedia.org/wiki/Ramanujan%E2%80%93Sato_series</li>
+<li class="md-github">License: CC BY-SA 4.0</li>
+<li class="md-github">Crawl Date: 2025-05-11T21:25:22.913Z</li>
+<li class="md-github">Data Size: 20311032 bytes</li>
+<li class="md-github">Links Found: 20256</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-11</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-12T10:40:48.599Z</p>
+  </footer>
+</body>
+</html>

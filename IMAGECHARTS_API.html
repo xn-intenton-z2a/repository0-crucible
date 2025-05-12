@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="imagecharts_api" href="#imagecharts_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>IMAGECHARTS_API</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">GET /chart returns binary image. Required params: cht (type), chd (data). Optional sizing (chs), colors (chco), labels (chl), axes (chxt, chxr), scaling (chds), legends (chdl, chdlp), styling (chls, chbh), margins (chma), fills (chf), grids (chg), title (chtt), markers (chm), cache control (icac), quality (icq), interlacing (ici). Data encodings: text, simple, extended. Supports GET and POST. Errors: 414 for long URLs, 400 for bad format. Rate limit 1000 rpm.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1  HTTP Endpoint
+2  Required Parameters
+3  Optional Parameters
+4  Data Encoding Modes
+5  Response Handling
+6  Error Codes</p>
+<p class="md-github">1  HTTP Endpoint
+Base URL: https://image-charts.com/chart
+Method: GET or POST (application/x-www-form-urlencoded)</p>
+<p class="md-github">2  Required Parameters
+cht: string; Chart type codes: lc, ls, bhs, bvs, p, p3, t, v, r
+chd: string; Data encoding prefix (t,s,e) + encoded series</p>
+<p class="md-github">3  Optional Parameters
+chs: string; widthxheight px; default 300x200
+chco: string; hex or named colors
+chl: string; comma-separated labels
+chxt: string; axes list x,y,x,y,r
+chxr: string; axisIndex,start,end[,interval]
+chds: string; scale ranges per series
+chdl: string; legend entries
+chdlp: string; t,b,l,r placement
+chls: string; width,seg,space
+chbh: string; barWidth[,groupWidth][,anchor]
+chma: string; margins L,T,R,B
+chf: string; fill definitions type,options
+chg: string; grid x_step,y_step[,x_offset,y_offset]
+chtt: string; title text
+chm: string; marker definitions type,seriesIndex,dataIndex,color,size[,priority]
+icac: boolean; auto-clear cache; default false
+icq: int; JPEG quality 0-100; default 80
+ici: boolean; interlaced GIF; default 0</p>
+<p class="md-github">4  Data Encoding Modes
+Prefix t: text; s: simple (0–61); e: extended (0–4095)
+Separator comma values, pipe between series</p>
+<p class="md-github">5  Response Handling
+200 OK + image/png (or image/jpeg,image/gif)
+Handle binary stream</p>
+<p class="md-github">6  Error Codes
+414 URI Too Long → switch to POST
+400 Bad Request → fix parameter formatting</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Caching: URL fingerprint md5; store response for identical URLs with icac=true. Use HTTP headers ETag.
+URL limits: GET URLs max 2048 bytes. Use POST for larger payloads.
+Encoding: apply encodeURIComponent to parameter values. For extended mode, map each 12-bit value to two chars via charset 'A-Za-z0-9-._'.
+POST example: POST https://image-charts.com/chart-0 with body cht=lc&amp;chd=s:1,2,3&amp;chs=400x300</p>
+<p class="md-github">Client libraries: Node.js fetch or axios. Set responseType 'arraybuffer'.
+Timeout: set 30000ms.</p>
+<p class="md-github">Security: TLS 1.2+, validate certs, no redirects.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Node.js SDK
+interface ChartOptions {
+type: 'lc'|'ls'|'bhs'|'bvs'|'p'|'p3'|'t'|'v'|'r';
+data: number[]|number[][];
+size?: { width: number; height: number };
+colors?: string[];
+labels?: string[];
+axes?: { axes: string[]; ranges?: Array&lt;[number,number,number?]&gt; };
+scale?: Array&lt;[number,number]&gt;;
+legend?: { entries: string[]; position?: 't'|'b'|'l'|'r' };
+style?: { line?: [number,number,number]; bar?: [number,string?,string?]; margins?: [number,number,number,number]; markers?: Array&lt;{type:string;series:number;index:number;color:string;size:number;priority?:number}&gt; };
+fill?: string[];
+grid?: [number,number,number?,number?];
+title?: string;
+cache?: boolean;
+quality?: number;
+interlace?: boolean;
+format?: 'png'|'jpg'|'gif';
+}</p>
+<p class="md-github">function generateChart(options: ChartOptions): Promise<Buffer></p>
+<p class="md-github">Implementation Pattern:
+1  Serialize data: if 2D array use pipe join, else comma join; prefix with encoding mode 't'.
+2  Build params object mapping to API names.
+3  URLSearchParams + encode.
+4  Send request via axios({ method:'GET', url:<code class="md-github">https://image-charts.com/chart?${params}</code> , responseType:'arraybuffer', timeout:30000 });
+5  Return Buffer.</p>
+<p class="md-github">Example:
+import axios from 'axios';
+async function generateChart(opts) {
+const params = new URLSearchParams();
+params.append('cht', opts.type);
+const dataStr = 't:' + opts.data.flat().join(',');
+params.append('chd', dataStr);
+params.append('chs', <code class="md-github">${opts.size?.width||300}x${opts.size?.height||200}</code>);
+if (opts.title) params.append('chtt', opts.title);
+const res = await axios.get('https://image-charts.com/chart', { params, responseType:'arraybuffer', timeout:30000 });
+return Buffer.from(res.data);
+}</p>
+<p class="md-github">Best Practices:
+• Use POST for payloads over 2KB
+• Cache identical requests if icac=true
+• Sanitize labels to avoid separator collisions</p>
+<p class="md-github">Troubleshooting:
+Command: curl -v &quot;https://image-charts.com/chart?cht=lc&amp;chd=t:1,2,3&amp;chs=300x200&quot;
+Expected: HTTP/2 200; Content-Type: image/png; Body binary length&gt;0
+Error 414: switch to POST
+Error 400: check parameter names and encoding</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">GET https://image-charts.com/chart?cht={type}&amp;chd={encoding}:{series}[|series](&amp;optional params)
+Required type: lc,ls,bhs,bvs,p,p3,t,v,r; data: t(text),s(simple),e(ext) modes; sep comma and pipe
+Optional chs(wxh default300x200),chco(colors),chl(labels),chxt(chrt axes),chxr(ranges),chds(scales),chdl(legend),chdlp(pos),chls(line style),chbh(bar),chma(margins),chf(fill),chg(grid),chtt(title),chm(markers),icac(cache false),icq(quality80),ici(interlace0)
+HTTP 200 OK Content-Type image/png/jpg/gif; errors 414(URL too long→POST),400(bad format)
+Node.js generateChart(opts):Promise<Buffer>; axios GET with responseType arraybuffer, timeout30s; use POST for &gt;2KB; cache via icac; encodeURIComponent params</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1  HTTP Endpoint
+2  Required Parameters
+3  Optional Parameters
+4  Data Encoding Modes
+5  Response Handling
+6  Error Codes</p>
+<p class="md-github">1  HTTP Endpoint
+Base URL: https://image-charts.com/chart
+Method: GET or POST (application/x-www-form-urlencoded)</p>
+<p class="md-github">2  Required Parameters
+cht: string; Chart type codes: lc, ls, bhs, bvs, p, p3, t, v, r
+chd: string; Data encoding prefix (t,s,e) + encoded series</p>
+<p class="md-github">3  Optional Parameters
+chs: string; widthxheight px; default 300x200
+chco: string; hex or named colors
+chl: string; comma-separated labels
+chxt: string; axes list x,y,x,y,r
+chxr: string; axisIndex,start,end[,interval]
+chds: string; scale ranges per series
+chdl: string; legend entries
+chdlp: string; t,b,l,r placement
+chls: string; width,seg,space
+chbh: string; barWidth[,groupWidth][,anchor]
+chma: string; margins L,T,R,B
+chf: string; fill definitions type,options
+chg: string; grid x_step,y_step[,x_offset,y_offset]
+chtt: string; title text
+chm: string; marker definitions type,seriesIndex,dataIndex,color,size[,priority]
+icac: boolean; auto-clear cache; default false
+icq: int; JPEG quality 0-100; default 80
+ici: boolean; interlaced GIF; default 0</p>
+<p class="md-github">4  Data Encoding Modes
+Prefix t: text; s: simple (061); e: extended (04095)
+Separator comma values, pipe between series</p>
+<p class="md-github">5  Response Handling
+200 OK + image/png (or image/jpeg,image/gif)
+Handle binary stream</p>
+<p class="md-github">6  Error Codes
+414 URI Too Long  switch to POST
+400 Bad Request  fix parameter formatting</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Chart Rendering APIs
+https://documentation.image-charts.com/en</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-imagecharts_api" href="#digest-of-imagecharts_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of IMAGECHARTS_API</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="chart-rendering-api" href="#chart-rendering-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chart Rendering API</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="endpoint" href="#endpoint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Endpoint</h2>
+<p class="md-github"><code class="md-github">GET https://image-charts.com/chart</code></p>
+<p class="md-github">Returns image/png. Supports HTTP GET and POST (application/x-www-form-urlencoded).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="required-parameters" href="#required-parameters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Required Parameters</h2>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">cht</code> (string): Chart type. One of <code class="md-github">lc</code>,<code class="md-github">ls</code>,<code class="md-github">bhs</code>,<code class="md-github">bvs</code>,<code class="md-github">p</code>,<code class="md-github">p3</code>,<code class="md-github">t</code>,<code class="md-github">v</code>,<code class="md-github">r</code>. No default.</li>
+<li class="md-github"><code class="md-github">chd</code> (string): Data encoding. Format <code class="md-github">t:</code>, <code class="md-github">s:</code>, <code class="md-github">e:</code> prefixed series. Comma-delimited values or pipe-separated series.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="optional-parameters" href="#optional-parameters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Optional Parameters</h2>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">chs</code> (string): Size in pixels <code class="md-github">widthxheight</code>. Default <code class="md-github">300x200</code></li>
+<li class="md-github"><code class="md-github">chco</code> (string): Comma-separated hex color codes or named colors.</li>
+<li class="md-github"><code class="md-github">chl</code> (string): Comma-separated labels.</li>
+<li class="md-github"><code class="md-github">chxt</code> (string): Axes to display, e.g. <code class="md-github">x</code>,<code class="md-github">y</code>,<code class="md-github">x,y</code>.</li>
+<li class="md-github"><code class="md-github">chxr</code> (string): Axis ranges <code class="md-github">axisIndex,start,end[,interval]</code>.</li>
+<li class="md-github"><code class="md-github">chds</code> (string): Data scale <code class="md-github">min,max</code> or <code class="md-github">min1,max1,min2,max2...</code>.</li>
+<li class="md-github"><code class="md-github">chdl</code> (string): Legend entries, comma-separated.</li>
+<li class="md-github"><code class="md-github">chdlp</code> (string): Legend placement: <code class="md-github">t</code>,<code class="md-github">b</code>,<code class="md-github">l</code>,<code class="md-github">r</code>.</li>
+<li class="md-github"><code class="md-github">chls</code> (string): Line style <code class="md-github">width,segmentLength,spaceLength</code>.</li>
+<li class="md-github"><code class="md-github">chbh</code> (string): Bar width/style <code class="md-github">barWidth[,groupWidth][,anchor]</code>.</li>
+<li class="md-github"><code class="md-github">chma</code> (string): Margins <code class="md-github">left,top,right,bottom</code>.</li>
+<li class="md-github"><code class="md-github">chf</code> (string): Fill types. Format <code class="md-github">type,options|...</code>.</li>
+<li class="md-github"><code class="md-github">chg</code> (string): Grid lines <code class="md-github">x_step,y_step[,x_offset,y_offset]</code>.</li>
+<li class="md-github"><code class="md-github">chtt</code> (string): Chart title.</li>
+<li class="md-github"><code class="md-github">chm</code> (string): Markers. Format <code class="md-github">type,seriesIndex,dataPointIndex,color,size[,priority]</code>.</li>
+<li class="md-github"><code class="md-github">icac</code> (string): Auto-clear cache. <code class="md-github">true</code> or <code class="md-github">false</code>. Default <code class="md-github">false</code>.</li>
+<li class="md-github"><code class="md-github">icq</code> (string): Quality for JPEG. <code class="md-github">0–100</code>. Default <code class="md-github">80</code>.</li>
+<li class="md-github"><code class="md-github">ici</code> (string): Interlacing for GIF. <code class="md-github">1</code> for interlaced; <code class="md-github">0</code> for no. Default <code class="md-github">0</code>.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="data-encoding-modes" href="#data-encoding-modes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Encoding Modes</h2>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">t:</code> text encoding, comma-separated values.</li>
+<li class="md-github"><code class="md-github">s:</code> simple encoding (0–61).</li>
+<li class="md-github"><code class="md-github">e:</code> extended encoding (0–4095, two-character pairs).</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="response" href="#response"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Response</h2>
+<ul class="md-github">
+<li class="md-github">Status: <code class="md-github">200 OK</code> or <code class="md-github">4xx</code>/<code class="md-github">5xx</code> on error</li>
+<li class="md-github">Headers: <code class="md-github">Content-Type: image/png</code> (or image/jpeg, image/gif)</li>
+<li class="md-github">Body: Binary image data</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="error-codes" href="#error-codes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error Codes</h2>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">414 URI Too Long</code>: URL exceeds 2048 bytes. Use POST.</li>
+<li class="md-github"><code class="md-github">400 Bad Request</code>: Invalid parameter formatting.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="rate-limits" href="#rate-limits"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rate Limits</h2>
+<ul class="md-github">
+<li class="md-github">1000 requests per minute per IP.</li>
+</ul>
+<p class="md-github"><em class="md-github">Retrieved: 2024-07-19</em></p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Chart Rendering APIs</li>
+<li class="md-github">URL: https://documentation.image-charts.com/en</li>
+<li class="md-github">License: CC0 1.0 Universal / Proprietary (free tier)</li>
+<li class="md-github">Crawl Date: 2025-05-12T06:29:06.730Z</li>
+<li class="md-github">Data Size: 0 bytes</li>
+<li class="md-github">Links Found: 0</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-12</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-12T10:40:48.400Z</p>
+  </footer>
+</body>
+</html>
