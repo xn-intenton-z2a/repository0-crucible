@@ -56,7 +56,7 @@ Documentation for Embedded JavaScript templating engine syntax, partials, includ
 ## https://github.com/graphql/express-graphql
 ## https://github.com/websockets/ws#readme
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-Consolidated reference for defining and interacting with REST, GraphQL, WebSocket, and SSE endpoints. Includes OpenAPI 3.1 spec for HTTP schemas, Swagger UI for interactive docs, express-graphql middleware, ws library for WebSockets, and MDN guide to Server-Sent Events. Essential for documentating and implementing /pi, /benchmark, /graphql, /ws/pi, /pi/sse, and related endpoints. CC0 1.0 / Apache-2.0 / MIT License.
+Consolidated reference for defining and interacting with REST, GraphQL, WebSocket, and SSE endpoints. Includes OpenAPI 3.1 spec for HTTP schemas, Swagger UI for interactive docs, express-graphql middleware, ws library for WebSockets, and MDN guide to Server-Sent Events. Essential for documentating and implementing /pi, /benchmark, /graphql, /ws/pi, /pi/sse, and related endpoints. CC0 1.0 Universal / Apache-2.0 / MIT License.
 ## CC0 1.0 Universal / Apache-2.0 / MIT License
 
 # BigInt and π Algorithms Reference
@@ -81,4 +81,14 @@ Guide to arbitrary-precision decimal arithmetic with detailed API methods for pr
 # minimist - Argument Parsing
 ## https://www.npmjs.com/package/minimist
 Official npm readme for minimist, detailing boolean flags, string coercion, default values, aliases, and error handling. Essential for robust CLI parsing of options (--digits, --algorithm, --samples, --benchmark, --error, etc.). MIT License.
+## MIT License
+
+# Node-Canvas Documentation
+## https://github.com/Automattic/node-canvas#readme
+Installation and Canvas API usage for server-side rendering of images and graphics in Node.js. Covers Canvas creation, drawing APIs, handling fonts, and exporting to buffers or streams. Essential for manual canvas manipulations and supporting chart generation pipelines. Last updated 2024; highly active repository with community contributions.
+## MIT License
+
+# CLI-Progress
+## https://github.com/cli-progress/cli-progress#readme
+Detailed guide to using cli-progress for terminal progress bars in Node.js CLI apps. Covers multi-bar support, formatting options, custom payloads, and controlling bar updates for long-running tasks. Essential for implementing --progress live feedback in π calculations. Last updated 2024; MIT License.
 ## MIT License
