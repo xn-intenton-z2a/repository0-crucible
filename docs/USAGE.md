@@ -97,3 +97,22 @@ curl "http://localhost:3000/pi/data?digits=2&algorithm=leibniz"
 ```bash
 curl "http://localhost:3000/pi/chart?digits=2&algorithm=leibniz" --output chart.png
 ```
+
+## Input Validation Errors
+
+### CLI
+
+```bash
+$ node src/lib/main.js --digits -1
+Error: {"errors":[{"path":["digits"],"message":"Number must be greater than or equal to 0"}]}
+# exit code 1
+```
+
+### HTTP API
+
+```http
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{"errors":[{"path":["digits"],"message":"Number must be greater than or equal to 0"}]}
+```

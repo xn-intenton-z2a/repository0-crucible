@@ -29,7 +29,9 @@ describe("HTTP API Server", () => {
   test("GET /pi with invalid digits returns 400", async () => {
     const res = await request(app).get("/pi?digits=-1");
     expect(res.status).toBe(400);
-    expect(res.body).toHaveProperty("error");
+    expect(res.body).toHaveProperty("errors");
+    expect(Array.isArray(res.body.errors)).toBe(true);
+    expect(res.body.errors[0]).toEqual({ path: ["digits"], message: expect.any(String) });
   });
 
   test("GET /pi/data returns array of data points", async () => {
