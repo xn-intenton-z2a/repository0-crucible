@@ -1,10 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](nhttps://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
-
-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+`@xn-intenton-z2a/repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) and also provides a CLI tool and JavaScript library for calculating π to a specified precision using different algorithms. It supports diagnostics, benchmarking, convergence data export, chart generation, feature specification validation, and an HTTP API server mode.
 
 ## Repository Template
 
@@ -18,54 +14,73 @@ The repository is intended as a template that includes:
 Install via npm:
 
 ```bash
-npm install repository0-crucible
+npm install @xn-intenton-z2a/repository0-crucible
 ```
 
 ## Features
 
-* π Calculation: Calculate π to a specified number of decimal places using the Leibniz series algorithm.
-  - `--digits <number>`: Number of decimal places (default: 5).
-  - `--algorithm <string>`: Calculation method (default: "leibniz").
-  - `--diagnostics`: Outputs a JSON object with execution diagnostics (algorithm, parameters, durationMs, iterations/samplesUsed, and result).
-* Feature specification validation: Check that feature specification files under `features/` reference the project mission (`MISSION.md`) using the `--validate-features` option.
-* HTTP API Server: Start server with `--serve <port>` to provide REST API endpoints (`/pi`, `/pi/data`, `/pi/chart`) for programmatic π calculation.
+* π Calculation  
+  - `--digits <number>`: Number of decimal places (default: 5).  
+  - `--algorithm <string>`: Calculation method (`leibniz`, `montecarlo`, `chudnovsky`).  
+  - `--diagnostics`: Outputs a JSON object with execution diagnostics (algorithm, parameters, result, durationMs, iterations/samplesUsed).
 
-## Usage
+* Benchmark  
+  - `--benchmark`: Runs all supported algorithms and outputs a consolidated JSON benchmark report including result, durationMs, and error.
 
-To run the CLI tool and see help instructions:
+* Convergence Data Export  
+  - `--convergence-data <filepath>`: Saves raw convergence data (approximation and error at each step) to the specified JSON file.
+
+* Chart Generation  
+  - `--chart <filepath>`: Saves a convergence chart (error vs. iteration/sample index) as a PNG file.
+
+* Feature Specification Validation  
+  - `--validate-features`: Validates that all feature spec files under `features/` reference `MISSION.md`; exits with code 0 on success or 1 with a list of missing references.
+
+* HTTP API Server  
+  - `--serve <port>`: Starts an Express HTTP server exposing `/pi`, `/pi/data`, and `/pi/chart` endpoints for programmatic access.
+
+## CLI Usage Examples
 
 ```bash
-node src/lib/main.js --help
-```
-
-### π Calculation
-
-Calculate π to 10 decimal places:
-
-```bash
+# Leibniz method: 10 decimal places
 node src/lib/main.js --digits 10
-# Outputs: 3.1415926536
+
+# Monte Carlo sampling with diagnostics
+node src/lib/main.js --algorithm montecarlo --samples 100000 --diagnostics
+
+# Benchmark all algorithms with 5-digit precision
+node src/lib/main.js --benchmark --digits 5
+
+# Export convergence data to JSON
+node src/lib/main.js --digits 5 --convergence-data data.json
+
+# Generate PNG convergence chart
+node src/lib/main.js --digits 5 --chart chart.png
+
+# Validate feature specifications
+node src/lib/main.js --validate-features
 ```
 
-Specify the algorithm (currently supports "leibniz"):
-
-```bash
-node src/lib/main.js --digits 5 --algorithm leibniz
-# Outputs: 3.14159
-```
-
-### HTTP API Server
+## HTTP API Server
 
 Start the server on port 3000:
 
 ```bash
 node src/lib/main.js --serve 3000
-# Logs: Listening on port 3000
 ```
 
-Access the endpoints:
+Example REST calls:
 
 ```bash
+# Basic π calculation
 curl http://localhost:3000/pi
+
+# Monte Carlo with diagnostics
 curl "http://localhost:3000/pi?digits=3&algorithm=montecarlo&samples=1000&diagnostics=true"
+
+# Convergence data JSON
+curl "http://localhost:3000/pi/data?digits=2&algorithm=leibniz"
+
+# Convergence chart PNG
+curl "http://localhost:3000/pi/chart?digits=2&algorithm=leibniz" --output chart.png
 ```
