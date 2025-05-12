@@ -1,40 +1,45 @@
 # Overview
 
-Unify all π calculation algorithms under a single feature. Provide users with iterative methods (Leibniz series, Monte Carlo sampling) and high-precision methods (Chudnovsky, Gauss-Legendre, Ramanujan–Sato) through a consistent CLI and HTTP API interface.
+Enhance the unified π Algorithms feature by implementing full high-precision methods using decimal.js and exposing new algorithm options for both CLI and HTTP API. Users gain access to Chudnovsky, Gauss-Legendre, and Ramanujan–Sato algorithms for accurate and efficient π calculations.
 
 # Implementation
 
 1. Dependencies
-   • Add decimal.js@^10.4.3 for high-precision algorithms.
-   • No new dependencies for iterative methods beyond existing imports.
+   • Add decimal.js@^10.4.3 to package.json dependencies.
 
 2. Precision Helper
-   • In src/lib/main.js import Decimal and create withPrecision(digits, fn) to set precision ≈ digits×3.32+10.
+   • Import Decimal from 'decimal.js'
+   • Configure precision: compute bits = Math.ceil(digits * 3.32) + 10 and call Decimal.set({ precision: bits })
 
 3. Algorithm Functions
-   • calculatePiLeibniz(digits): existing iterative series implementation.  
-   • calculatePiMonteCarlo(samples): existing sampling implementation.  
-   • calculatePiChudnovsky(digits): implement full Chudnovsky series until term < 10^(−digits).  
-   • calculatePiGaussLegendre(digits): implement Gauss-Legendre loop until |a−b|<10^(−digits).  
-   • calculatePiRamanujanSato(digits, options): implement Ramanujan–Sato series with level, maxIterations, errorTolerance.  
-   • Expose calculatePi(digits, samples, algorithm, options) that dispatches to the appropriate function.
+   • calculatePiChudnovsky(digits): implement full Chudnovsky series using Decimal until term < 10^(-digits).
+   • calculatePiGaussLegendre(digits): implement the Gauss-Legendre iterative algorithm, stopping when |a − b| < 10^(−digits).
+   • calculatePiRamanujanSato(digits, options): implement Ramanujan–Sato series using BigInt and Decimal, supporting level, maxIterations, and errorTolerance parameters.
+   • Refactor calculatePi(digits, samples, algorithm, options) to dispatch to all supported methods by name.
 
 4. CLI Integration
-   • Extend CLIOptionsSchema to accept method enum { leibniz, montecarlo, chudnovsky, gauss-legendre, ramanujan-sato } and options for high-precision flags.  
-   • In main(), call calculatePi based on selected algorithm and parameters.  
-   • Preserve diagnostics, benchmark, convergence-data, chart, and serve options.
+   • Extend algorithm enum in CLIOptionsSchema to include chudnovsky, gauss-legendre, ramanujan-sato.
+   • In main(), parse additional flags: --level, --max-iterations, --error-tolerance.
+   • Dispatch to new functions and preserve diagnostics, benchmark, convergence-data, and chart outputs.
 
 5. HTTP API Integration
-   • Extend ApiParamsSchema to accept new algorithm names and options.  
-   • In /pi, /pi/data, /pi/chart handlers, branch on all supported algorithms and return JSON or PNG output.  
+   • Update ApiParamsSchema to accept new algorithm values and corresponding parameters.
+   • In /pi, /pi/data, /pi/chart handlers, branch on gauss-legendre and ramanujan-sato, parsing query params for level, maxIterations, and errorTolerance.
 
 # Testing
 
-• Unit tests for each calculatePiX function in tests/unit/main.test.js, verifying accuracy against known references.  
-• CLI tests for invoking each algorithm via main() with and without diagnostics.  
-• HTTP tests in tests/unit/server.test.js for GET /pi, /pi/data, /pi/chart with all algorithm values.
+1. Unit Tests
+   • Add tests in tests/unit/main.test.js for each new function, verifying accuracy against Math.PI to within tolerance for small digits.
+   • Test calculatePi dispatcher selects the correct algorithm and applies options.
+
+2. CLI and HTTP Tests
+   • Extend CLI diagnostics and benchmark tests to include the new algorithm names and options.
+   • Add server tests in tests/unit/server.test.js for GET /pi?algorithm=gauss-legendre and /pi?algorithm=ramanujan-sato and verify JSON response structure and values.
 
 # Documentation
 
-• Update docs/USAGE.md under Algorithms to list all five methods with their options and examples.  
-• Update README.md under Features to describe unified π Algorithms feature and sample invocations for CLI and HTTP.
+1. docs/USAGE.md
+   • Document new algorithm options (--algorithm gauss-legendre, ramanujan-sato and flags --level, --max-iterations, --error-tolerance) with CLI and HTTP examples.
+
+2. README.md
+   • Under Features, update π Calculation section to list all supported methods including Chudnovsky, Gauss-Legendre, and Ramanujan–Sato with sample invocations.
