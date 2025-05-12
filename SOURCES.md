@@ -1,20 +1,20 @@
 # Chart Rendering APIs
 ## https://quickchart.io/documentation
 ## https://documentation.image-charts.com/en
-Detailed guide to generating charts via REST APIs using QuickChart.io and Image-Charts. Covers JSON schema for chart definitions, URL parameter conventions (chart types, colors, labels, theming), parameter limits, and HTTP endpoints. Provides practical examples for on-demand PNG rendering, customization, and fallback strategies. Essential for designing URL-based chart generation features such as /pi/chart and CLI --chart output. Last updated 2024; authoritative and widely used by developers.
+Detailed guide to generating charts via RESTful APIs using QuickChart.io and Image-Charts. Covers JSON schema for chart definitions, URL parameter conventions (chart types, colors, labels, theming), parameter limits, and HTTP endpoints. Provides practical examples for on-demand PNG rendering, customization, and fallback strategies. Essential for designing URL-based chart generation features such as `/pi/chart` and CLI `--chart` output. Last updated 2024; authoritative and widely adopted by developers.
 ## CC0 1.0 Universal / Proprietary (free tier)
 
 # Chart.js & Node-Canvas Integration
 ## https://www.chartjs.org/docs/latest/
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
-Official Chart.js documentation combined with ChartjsNodeCanvas integration guide. Covers core chart types (bar, line, pie, etc.), dataset and scale configuration, animation options, plugin architecture, and setting up ChartJSNodeCanvas with node-canvas for server-side rendering. Includes code examples for instantiating charts in a Canvas context and rendering to buffers or streams. Crucial for CLI and HTTP chart endpoints with actionable implementation details. Last updated 2024; maintained by Chart.js Core Team and community contributors.
+Detailed documentation for integrating Chart.js with Node-Canvas for server-side rendering. Covers core chart types (bar, line, pie), dataset and scale configuration, animation options, plugin architecture, and creating a Canvas context via `canvas` or `node-canvas`. Includes code examples for instantiating charts in Node.js, rendering to PNG buffers or streams, and customizing appearance. Crucial for both HTTP API endpoints and CLI `--chart` and `--benchmark-chart` features. Last updated 2024; maintained by the Chart.js Core Team.
 ## MIT License
 
 # Express.js and Middleware
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
-Comprehensive reference for Express 4.x API setup, routing, middleware patterns, request parsing, error handling, and integration points. Includes CORS configuration and rate limiting strategies (windowMs, max requests). Essential for building REST, analysis, streaming, and WebSocket upgrade endpoints in the π HTTP server. Last updated 2024; maintained by the Express.js team.
+Comprehensive reference for Express 4.x API setup, routing, middleware patterns, request parsing, error handling, and integration points. Includes CORS configuration and rate-limiting strategies (windowMs, max requests). Essential for building REST, analysis, streaming, and WebSocket upgrade endpoints in the π HTTP server. Last updated 2024; maintained by the Express.js team.
 ## MIT License
 
 # Testing Tools: Vitest & SuperTest
@@ -26,12 +26,12 @@ Documentation for Vitest (configuration, mocking, snapshot testing, performance 
 # Node.js Core APIs
 ## https://nodejs.org/api/
 ## https://nodejs.org/api/perf_hooks.html
-Central reference for Node.js built-in modules including fs/promises, path, url, worker_threads, and the streams API (Readable, Writable, Duplex, Transform), alongside the Performance Hooks API (performance.now(), PerformanceObserver, mark/measure). Essential for file I/O, parallel computation, streaming, and accurate performance measurement in π calculations and server operations. Node.js License.
+Central reference for Node.js built-in modules including fs/promises, path, url, worker_threads, and the streams API (Readable, Writable, Duplex, Transform), alongside the Performance Hooks API (performance.now(), PerformanceObserver, mark/measure). Essential for file I/O, parallel computation, streaming, and accurate performance measurement in π calculations and server operations. Last updated 2024; maintained by the Node.js core team.
 ## Node.js License
 
 # Node.js Worker Threads
 ## https://nodejs.org/api/worker_threads.html
-Detailed guide to the Worker Threads API in Node.js. Covers Worker creation, workerData transfers, parentPort communication, MessageChannel, performance considerations, and error handling. Vital for implementing --workers parallel Monte Carlo sampling feature to leverage multi-core CPUs. Last updated 2024; maintained by Node.js core team.
+Detailed guide to the Worker Threads API in Node.js. Covers Worker creation, workerData transfers, parentPort communication, MessageChannel, performance considerations, and error handling. Vital for implementing `--workers` parallel Monte Carlo sampling feature to leverage multi-core CPUs. Last updated 2024; maintained by Node.js core team.
 ## Node.js License
 
 # Zod Schema Validation
@@ -42,7 +42,17 @@ TypeScript-first schema validation library covering synchronous/asynchronous par
 # Configuration and Environment Variables
 ## https://github.com/motdotla/dotenv#readme
 ## https://github.com/nodeca/js-yaml#readme
-Guides for loading environment variables with dotenv and parsing YAML with js-yaml, including schema validation and error handling. Important for managing .env, .pi-config.yaml, and merging defaults with CLI flags across environments. Last updated 2024; MIT License.
+Guides for loading environment variables with dotenv and parsing YAML with js-yaml, including schema validation and error handling. Important for managing `.env`, `.pi-config.yaml`, and merging defaults with CLI flags across environments. Last updated 2024; MIT License.
+## MIT License
+
+# Configuration Explorer (Cosmiconfig)
+## https://github.com/cosmiconfig/cosmiconfig#readme
+Comprehensive guide to using Cosmiconfig for hierarchical configuration file loading in Node.js. Covers search strategies for JSON, YAML, and `package.json` properties, synchronous and asynchronous explorers, custom loaders, and merging defaults. Essential for implementing robust CLI configuration file support (`.pirc`, `pi.config.json`, `package.json`) and merging with environment variables and CLI flags. Last updated 2024; MIT License.
+## MIT License
+
+# Seeded Randomness with Seedrandom
+## https://github.com/davidbau/seedrandom
+Documentation for creating reproducible pseudorandom generators in JavaScript using the Seedrandom library. Covers seeding for deterministic Monte Carlo sampling, generator APIs (Alea, ARC4, MT19937), state serialization, and integration patterns. Critical for implementing `--seed` option and ensuring reproducible results across CLI and HTTP API modes. Last updated 2023; MIT License.
 ## MIT License
 
 # EJS Templating Engine
@@ -57,7 +67,7 @@ Documentation for Embedded JavaScript templating engine syntax, partials, includ
 ## https://github.com/graphql/express-graphql
 ## https://github.com/websockets/ws#readme
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-Consolidated reference for defining and interacting with REST, GraphQL, WebSocket, and SSE endpoints. Includes OpenAPI 3.1 spec for HTTP schemas, Swagger UI for interactive docs, express-graphql middleware, ws library for WebSockets, and MDN guide to Server-Sent Events. Essential for documenting and implementing /pi, /benchmark, /graphql, /ws/pi, /pi/sse, and related endpoints. CC0 1.0 Universal / Apache-2.0 / MIT License.
+Consolidated reference for defining and interacting with REST, GraphQL, WebSocket, and SSE endpoints. Includes OpenAPI 3.1 spec for HTTP schemas, Swagger UI for interactive docs, express-graphql middleware, ws library for WebSockets, and MDN guide to Server-Sent Events. Essential for documenting and implementing `/pi`, `/pi/data`, `/pi/chart`, and related endpoints. Last updated 2024; CC0 1.0 Universal / Apache-2.0 / MIT License.
 ## CC0 1.0 Universal / Apache-2.0 / MIT License
 
 # BigInt and π Algorithms Reference
@@ -70,7 +80,7 @@ Comprehensive guide to JavaScript BigInt and in-depth descriptions of Chudnovsky
 # Observability: Logging & Metrics
 ## https://github.com/siimon/prom-client#readme
 ## https://github.com/pinojs/pino
-Documentation for prom-client and Pino to instrument Node.js apps. prom-client covers metrics registration (Counter, Gauge, Histogram, Summary) and Express middleware; Pino details structured JSON logging, serializers, and transports. Essential for /metrics endpoint and capturing performance data. Last updated 2024; MIT License.
+Documentation for prom-client and Pino to instrument Node.js apps. prom-client covers metrics registration (Counter, Gauge, Histogram, Summary) and Express middleware; Pino details structured JSON logging, serializers, and transports. Essential for `/metrics` endpoint and capturing performance data. Last updated 2024; MIT License.
 ## MIT License
 
 # Decimal.js
@@ -81,15 +91,5 @@ Guide to arbitrary-precision decimal arithmetic with detailed API methods for pr
 
 # minimist - Argument Parsing
 ## https://www.npmjs.com/package/minimist
-Official npm readme for minimist, detailing boolean flags, string coercion, default values, aliases, and error handling. Essential for robust CLI parsing of options (--digits, --algorithm, --samples, --benchmark, --error, etc.). MIT License.
-## MIT License
-
-# Node-Canvas Documentation
-## https://github.com/Automattic/node-canvas#readme
-Installation and Canvas API usage for server-side rendering of images and graphics in Node.js. Covers Canvas creation, drawing APIs, handling fonts, and exporting to buffers or streams. Essential for manual canvas manipulations and supporting chart generation pipelines. Last updated 2024; highly active repository with community contributions.
-## MIT License
-
-# CLI-Progress
-## https://github.com/cli-progress/cli-progress#readme
-Detailed guide to using cli-progress for terminal progress bars in Node.js CLI apps. Covers multi-bar support, formatting options, custom payloads, and controlling bar updates for long-running tasks. Essential for implementing --progress live feedback in π calculations. Last updated 2024; MIT License.
+Official npm readme for minimist, detailing boolean flags, string coercion, default values, aliases, and error handling. Essential for robust CLI parsing of options (`--digits`, `--algorithm`, `--samples`, `--benchmark`, `--error`, etc.). MIT License.
 ## MIT License
