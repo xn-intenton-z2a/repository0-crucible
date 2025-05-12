@@ -11,13 +11,13 @@ Comprehensive guide combining external RESTful chart generation services (QuickC
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
-Authoritative reference for Express 4.x core APIs, routing, middleware patterns, request parsing, and error handling, augmented with CORS and rate-limiting middleware. Provides best practices for secure, performant REST endpoints and integration with CLI-driven HTTP servers (`--serve`) and `/pi` routes. Includes configuration examples and middleware chaining for production readiness. Last updated 2024; maintained by the Express.js team.
+Authoritative reference for Express 4.x core APIs, routing, middleware patterns, request parsing, and error handling, augmented with CORS and rate-limiting middleware. Provides best practices for secure, performant REST endpoints and integration with CLI-driven HTTP servers (`--serve`) and `/pi`, `/pi/data`, `/pi/chart`, and `/pi/stream` routes. Includes configuration examples and middleware chaining for production readiness. Last updated 2024; maintained by the Express.js team.
 ## MIT
 
 # Testing Tools: Vitest & SuperTest
 ## https://vitest.dev/
 ## https://github.com/visionmedia/supertest
-Detailed guides for modern testing in Node.js: Vitest’s fast test runner, mocking, snapshot testing, and performance metrics, alongside SuperTest’s HTTP assertion utilities for Express endpoints. Essential for unit, integration, and end-to-end tests of CLI behavior and server handlers. Includes configuration tips, parallel test execution, and coverage integration. Last updated 2024; widely adopted in the Node.js ecosystem.
+Detailed guides for modern testing in Node.js: Vitest’s fast test runner, mocking, snapshot testing, and performance metrics, alongside SuperTest’s HTTP assertion utilities for Express endpoints. Essential for unit, integration, and end-to-end tests of CLI behavior, streaming, and server handlers. Includes configuration tips, parallel test execution, and coverage integration. Last updated 2024; widely adopted in the Node.js ecosystem.
 ## MIT
 
 # Zod Schema Validation
@@ -25,11 +25,12 @@ Detailed guides for modern testing in Node.js: Vitest’s fast test runner, mock
 Comprehensive TypeScript-first schema validation library for both CLI arguments and HTTP query parameters. Covers synchronous/asynchronous parsing, refinements, custom error formatting, and schema composition. Crucial for enforcing robust input validation with clear error messages and safe defaults in both CLI and Express modes. Last updated 2024.
 ## MIT
 
-# Configuration Management
+# Configuration Management & Argument Parsing
 ## https://github.com/motdotla/dotenv#readme
 ## https://github.com/nodeca/js-yaml#readme
 ## https://github.com/cosmiconfig/cosmiconfig#readme
-Complete strategies for environment and configuration file loading: reading `.env` via dotenv, parsing YAML with js-yaml, and hierarchical discovery/merging of JSON/YAML in `package.json` using cosmiconfig. Demonstrates layered overrides of CLI flags, environment variables, and file-based defaults with code examples. Last updated 2024.
+## https://www.npmjs.com/package/minimist
+Combine environment variable loading (`.env`), YAML parsing, hierarchical discovery/merging of JSON/YAML config via cosmiconfig, and basic CLI argument parsing with minimist. Demonstrates layered overrides of CLI flags, environment variables, and file-based defaults, along with aliasing, default values, and error handling. Includes code examples for merging defaults before validation. Last updated 2024.
 ## MIT
 
 # Seeded Randomness with seedrandom
@@ -39,14 +40,15 @@ Official documentation for creating reproducible pseudorandom generators in Java
 
 # EJS Templating Engine
 ## https://ejs.co/#docs
-Official guide to Embedded JavaScript templating: syntax for includes, partials, filters, and helper functions. Enables dynamic HTML report and dashboard generation embedding π values, convergence tables, and charts. Includes performance tips for large templates and caching strategies. Last updated 2024.
+Official guide to Embedded JavaScript templating: syntax for includes, partials, filters, and helper functions. Enables dynamic HTML report and dashboard generation embedding π values, convergence tables, and charts. Includes performance tips for large templates and caching strategies in web UI dashboards. Last updated 2024.
 ## MIT
 
 # API Specifications & Documentation
 ## https://spec.openapis.org/oas/v3.1.0
 ## https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/
-OpenAPI 3.1.0 specification for defining RESTful schemas with precise typing and parameter definitions, plus Swagger UI for interactive API documentation and client code generation. Essential for standardizing `/pi`, `/pi/data`, and `/pi/chart` endpoints, generating live docs, and validating request/response contracts. Last updated 2024.
-## CC0 1.0 Universal / Apache-2.0
+## https://github.com/scottie1984/swagger-ui-express#readme
+OpenAPI 3.1.0 specification for defining RESTful schemas with precise typing and parameter definitions, plus Swagger UI for interactive API documentation and client code generation. Includes middleware setup for hosting Swagger UI via swagger-ui-express, enabling live docs at `/docs` with custom themes and OAuth2 flows. Essential for standardizing `/pi`, `/pi/data`, `/pi/chart`, and `/pi/stream` endpoints and validating request/response contracts. Last updated 2024.
+## CC0 1.0 Universal / Apache-2.0 / MIT
 
 # BigInt & π Algorithms Reference
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
@@ -60,18 +62,13 @@ Authoritative references for JavaScript `BigInt` precision handling and advanced
 ## https://github.com/siimon/prom-client#readme
 ## https://github.com/pinojs/pino
 ## https://github.com/pinojs/pino-pretty
-Guides for instrumenting Node.js applications with Prometheus metrics (`prom-client` for counters, gauges, histograms) and structured logging via `pino` plus human-friendly output through `pino-pretty`. Essential for implementing a `/metrics` endpoint, runtime diagnostics, and log-driven insights in both CLI and server modes. Includes best practices for metric naming and log contexts. Last updated 2024.
+Guides for instrumenting Node.js applications with Prometheus metrics (`prom-client` for counters, gauges, histograms) and structured logging via `pino` plus human-friendly output through `pino-pretty`. Essential for implementing a `/metrics` endpoint, runtime diagnostics, and log-driven insights in both CLI and server modes. Includes best practices for metric naming, log contexts, and pretty-printing. Last updated 2024.
 ## MIT
 
 # Decimal.js for Arbitrary-Precision Arithmetic
 ## https://mikemcl.github.io/decimal.js/
 ## https://github.com/MikeMcl/decimal.js
 Detailed API reference for `decimal.js`, enabling configurable high-precision decimal arithmetic with support for rounding modes, precision control, and performance tuning. Crucial for implementing series algorithms where `BigInt` is insufficient, such as Gauss–Legendre and Ramanujan–Sato methods beyond native integer capabilities. Last release v10.4.3; MIT License.
-## MIT
-
-# minimist Argument Parsing
-## https://www.npmjs.com/package/minimist
-Official documentation for `minimist`, detailing positional arguments, boolean flags, string coercion, default values, aliases, and error handling. Central to robust CLI parsing of options (`--digits`, `--algorithm`, `--samples`, `--convergence-data`, etc.). Includes usage patterns for nested commands and custom coercion. Last updated 2024.
 ## MIT
 
 # CLI Progress Indicators with cli-progress
@@ -88,13 +85,18 @@ Documentation for `cli-progress`, covering multi-bar support, custom renderers, 
 ## https://nodejs.org/api/readline.html
 ## https://nodejs.org/api/fs.html
 ## https://nodejs.org/api/path.html
-Comprehensive coverage of Node.js built-in modules and advanced APIs, including filesystem operations, path utilities, streams (Readable/Writable/Transform), worker_threads for parallelism, performance hooks for high-resolution timing, and readline for interactive REPL. Critical for CLI I/O, parallel Monte Carlo sampling (`--workers`), REPL mode (`--repl`), and performance measurement. Last updated 2024; maintained by the Node.js core team.
+Comprehensive coverage of Node.js built-in modules and advanced APIs, including filesystem operations, path utilities, streams (Readable/Writable/Transform), `worker_threads` for parallelism, `perf_hooks` for high-resolution timing, and `readline` for interactive REPL. Critical for CLI I/O, parallel Monte Carlo sampling (`--workers`), REPL mode, and performance measurement. Last updated 2024; maintained by the Node.js core team.
 ## Node.js License
 
-# Swagger UI Express
-## https://github.com/scottie1984/swagger-ui-express
-Middleware for integrating Swagger UI into Express applications, enabling hosting of interactive API documentation directly from OpenAPI specifications. Provides setup examples, customization options (themes, OAuth2), and static asset serving. Essential for embedding live docs at `/docs`. Last updated 2023; widely adopted in Express ecosystems.
+# HTTP Client Libraries: Axios
+## https://axios-http.com/docs/intro
+Axios documentation covering a promise-based HTTP client for Node.js and browsers. Discusses request and response interceptors, error handling, timeout and cancellation, concurrent requests, and binary response types for PNG buffer retrieval. Crucial for external chart service integration (Image-Charts API) and other HTTP client tasks. Last updated 2024.
 ## MIT
+
+# Server-Sent Events (SSE)
+## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+Detailed overview of Server-Sent Events (SSE) protocol including EventSource API, HTTP headers (`Content-Type: text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`), reconnection behavior, data encoding, and event formatting. Essential for implementing real-time streaming convergence endpoint (`/pi/stream`) and CLI JSON lines output. Last updated 2024; MDN content licensed under CC BY-SA 2.5.
+## CC BY-SA 2.5
 
 # OpenTelemetry JavaScript
 ## https://opentelemetry.io/docs/js/
