@@ -1,10 +1,10 @@
 # Pi HTTP API Server
 
-Provide an HTTP API layer on top of the existing π calculation functionality, enabling programmatic access to single-run calculations, convergence data, and chart generation through RESTful endpoints.
+Provide an HTTP API layer on top of π calculation functionality, enabling programmatic access to single-run calculations, convergence data export, and chart generation through RESTful endpoints.
 
 # CLI Options
 
---serve <port>   Start an Express HTTP server listening on the specified port. When provided, the tool bypasses all other CLI modes and enters server mode until terminated.
+--serve <port>   Start an Express HTTP server on the specified port; bypasses all other CLI modes and runs until terminated.
 
 # Endpoints
 
@@ -14,47 +14,47 @@ Query parameters:
   algorithm (string)     Calculation method: leibniz, montecarlo, chudnovsky, ramanujan-sato
   samples (number)       Number of samples for montecarlo (optional)
   error (number)         Absolute error threshold for error tolerance mode (optional)
-  maxIterations (number) Maximum iterations or samples when using error mode (optional)
+  maxIterations (number) Maximum limit when using error mode (optional)
   batchSize (number)     Batch size for montecarlo error mode (optional)
-  diagnostics (boolean)  Include diagnostic fields in the JSON response (optional)
+  diagnostics (boolean)  Include diagnostics fields in the JSON response (optional)
 Response: application/json
-  On success: JSON object with result and optional diagnostics fields
-  On error: HTTP 400 with JSON error message
+  On success: JSON object { result, ...diagnostics }
+  On error: HTTP 400 with JSON { error: message }
 
 GET /pi/data
-Query parameters: same as /pi
-Response: application/json array of { index, approximation, error } representing convergence data
+Query parameters: same as GET /pi
+Response: application/json array of { index, approximation, error }
 
 GET /pi/chart
-Query parameters: same as /pi
-Response: image/png showing a line chart of error versus iteration or sample index
+Query parameters: same as GET /pi
+Response: image/png line chart of error vs. iteration or sample index
 
 # Implementation
 
-1. Add express to the project dependencies in package.json.
-2. In src/lib/main.js, import express and define a new string option "serve" in minimist configuration.
-3. In main(), detect options.serve:
-   a. Initialize an Express application and register necessary middleware (e.g., JSON parsing).
-   b. Register Chart.js components and create reusable calculation and data-collection logic.
-   c. Define handlers for GET /pi, /pi/data, and /pi/chart:
-      - Validate and parse query parameters, returning HTTP 400 on invalid input.
-      - Invoke existing calculation functions or convergence routines based on parameters.
-      - For /pi, return JSON { result, ...diagnostics } with status 200.
-      - For /pi/data, return the dataPoints array as JSON with status 200.
-      - For /pi/chart, generate a Canvas chart using node-canvas and Chart.js, then send the PNG buffer with content-type image/png.
-   d. Start the server on the specified port and log a startup message. Do not exit the process.
+1. Add express to dependencies in package.json.
+2. In src/lib/main.js import express and add "serve" as a string option in minimist configuration.
+3. In main(), before other modes, detect options.serve:
+   a. Initialize an Express app and JSON middleware.
+   b. Register Chart.js components and node-canvas for chart generation.
+   c. Define handlers:
+      - /pi: validate inputs; invoke existing calculate or convergence routines; return JSON with result and optional diagnostics.
+      - /pi/data: generate dataPoints using convergence logic; return JSON array.
+      - /pi/chart: generate a PNG line chart of error vs. index and return with content-type image/png.
+   d. Start the server on the given port and log a startup message.
+4. Ensure errors yield HTTP 400 and do not block other endpoints.
+5. Do not exit process when server is running.
 
 # Testing
 
-1. In tests/unit/server.test.js (or extend main.test.js), use supertest to test server endpoints:
-   - Invoke main(["--serve","0"]) to start on an ephemeral port and capture the server instance.
-   - Test GET /pi with minimal parameters, asserting status 200, content-type application/json, and expected result fields.
-   - Test GET /pi/data for a small digit or sample count, asserting the JSON array shape and first element structure.
-   - Test GET /pi/chart, asserting status 200, content-type image/png, and that the response body is a Buffer of PNG data.
-   - Test error cases (e.g., missing required parameters or invalid algorithm) assert HTTP 400 and error JSON.
-   - After tests, close the server to free the port.
+1. In tests/unit/server.test.js, use supertest:
+   - Start server with main(["--serve","0"]) and capture the instance.
+   - Test GET /pi with valid parameters: expect 200, JSON response with result field.
+   - Test GET /pi/data for small digits or samples: expect 200, JSON array of data points.
+   - Test GET /pi/chart: expect 200, content-type image/png, response body is a PNG buffer.
+   - Test invalid parameters: expect 400 and JSON error message.
+   - Close server after tests.
 
 # Documentation
 
-1. Update docs/USAGE.md to document the --serve option and describe the HTTP endpoints with example curl commands and sample responses.
-2. Update README.md under Features to describe the HTTP API server usage, including CLI invocation and example HTTP requests.
+1. Update docs/USAGE.md to document --serve option and describe HTTP endpoints with example curl commands and sample responses.
+2. Update README.md under Features to include Pi HTTP API Server usage: starting the server and example HTTP requests to /pi, /pi/data, and /pi/chart.
