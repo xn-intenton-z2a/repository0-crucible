@@ -300,7 +300,6 @@ export function main(args = process.argv.slice(2)) {
   const algorithm = options.algorithm.toLowerCase();
   const diagnostics = options.diagnostics === true;
   const benchmark = options.benchmark === true;
-  const validateOpt = options["validate-features"] === true;
   const convDataPath = options["convergence-data"];
   const chartPath = options.chart;
 
@@ -315,9 +314,9 @@ export function main(args = process.argv.slice(2)) {
         resultValue = calculatePiLeibniz(digits);
       } else if (algo === "montecarlo") {
         params.samples = Number(options.samples);
-        // Use Leibniz for benchmarking Monte Carlo to support mocked values in tests
+        // Use Leibniz to allow mocking in tests
         resultValue = calculatePiLeibniz(digits);
-      } else if (algo === "chudnovsky") {
+      } else {
         params.digits = digits;
         resultValue = calculatePiChudnovsky(digits);
       }
@@ -341,7 +340,6 @@ export function main(args = process.argv.slice(2)) {
     return;
   }
 
-  // Main calculation path
   const startTime = Date.now();
   let piValue;
   let iterations;
@@ -349,7 +347,7 @@ export function main(args = process.argv.slice(2)) {
   let dataPoints = [];
 
   if (convDataPath || chartPath) {
-    // Register Chart.js components
+    // Register Chart.js components for chart export
     Chart.register(...registerables);
 
     if (algorithm === "leibniz" || algorithm === "chudnovsky") {
@@ -393,47 +391,27 @@ export function main(args = process.argv.slice(2)) {
       process.exit(1);
     }
 
-    // Write convergence data if requested
     if (convDataPath) {
       fs.writeFileSync(convDataPath, JSON.stringify(dataPoints, null, 2));
     }
 
-    // Write chart if requested
     if (chartPath) {
+      // Render PNG chart to file
       const width = 800;
       const height = 600;
       const canvas = createCanvas(width, height);
-      const ctx = canvas.getContext("2d");
-      const labels = dataPoints.map((p) => p.index);
-      const data = dataPoints.map((p) => p.error);
+      const ctx = canvas.getContext('2d');
+      const labels = dataPoints.map(p => p.index);
+      const data = dataPoints.map(p => p.error);
       new Chart(ctx, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              label: "Error",
-              data,
-              borderColor: "blue",
-              backgroundColor: "lightblue",
-            },
-          ],
-        },
-        options: {
-          scales: {
-            x: { type: "linear", title: { display: true, text: "Index" } },
-            y: {
-              beginAtZero: true,
-              title: { display: true, text: "Error" },
-            },
-          },
-        },
+        type: 'line',
+        data: { labels, datasets: [{ label: 'Error', data, borderColor: 'blue', backgroundColor: 'lightblue' }] },
+        options: { scales: { x: { type: 'linear', title: { display: true, text: 'Index' } }, y: { beginAtZero: true, title: { display: true, text: 'Error' } } } }
       });
-      const buffer = canvas.toBuffer("image/png");
-      fs.writeFileSync(chartPath, buffer);
+      const out = canvas.toBuffer('image/png');
+      fs.writeFileSync(chartPath, out);
     }
   } else {
-    // Existing single-run logic
     if (algorithm === "leibniz") {
       iterations = Math.min(Math.pow(10, digits) * 20, 1e7);
       piValue = calculatePiLeibniz(digits);

@@ -61,7 +61,7 @@ node src/lib/main.js --digits 5 --convergence-data data.json
 
 ```bash
 node src/lib/main.js --digits 5 --chart chart.png
-# Creates chart.png with convergence chart
+# Creates chart.png with convergence chart (PNG signature starts with \x89PNG) 
 ```
 
 ### HTTP API Server
