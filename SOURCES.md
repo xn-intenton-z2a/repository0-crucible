@@ -87,3 +87,13 @@ Official documentation for `minimist`, detailing positional arguments, boolean f
 ## https://github.com/AndiDittrich/Node.CLI-Progress
 Documentation for adding dynamic progress bars in terminal applications. Covers multi-bar support, custom renderers, and performance considerations for long-running tasks like iterative π computation and parallel Monte Carlo sampling (`--workers`). Improves user feedback with live progress and ETA. Last updated 2024.
 ## MIT
+
+# Node.js Readline API
+## https://nodejs.org/api/readline.html
+Official documentation for the Node.js `readline` module, which provides an interface for reading data from a Readable stream (such as `process.stdin`) one line at a time. Crucial for implementing the interactive REPL mode (`--repl`), including prompt configuration, line-by-line command parsing, and asynchronous event handling for a persistent shell. Last updated 2024; maintained by the Node.js core team.
+## Node.js License
+
+# Node.js File System API
+## https://nodejs.org/api/fs.html
+Authoritative reference for the Node.js `fs` module, detailing synchronous and asynchronous file operations (`readFileSync`, `writeFileSync`, `unlinkSync`), file descriptors, and JSON I/O utilities. Essential for features like configuration loading, result caching (`--cache-file`), template handling, and convergence data exports (`--convergence-data`). Last updated 2024; maintained by the Node.js core team.
+## Node.js License
