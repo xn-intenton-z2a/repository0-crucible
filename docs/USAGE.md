@@ -15,7 +15,7 @@ This tool calculates π using different algorithms and can also start an HTTP AP
 - `--samples <number>`    Number of samples for `montecarlo` (default: 100000)
 - `--diagnostics`         Outputs a JSON object with execution diagnostics (algorithm, parameters, durationMs, iterations/samplesUsed, and result)
 - `--benchmark`           Runs all supported algorithms and outputs a consolidated JSON benchmark report
-- `--validate-features`   Validates that all feature specification files reference `MISSION.md`; exits with code 0 on success or 1 with missing file list
+- `--validate-features`   Validates that all feature specification files reference `MISSION.md`, auto-appends missing references, logs each patch, and exits with status 0
 - `--convergence-data <filepath>`  File path where convergence data JSON is saved
 - `--chart <filepath>`     File path where convergence chart PNG is saved
 - `--serve <port>`         Starts an HTTP API server on the specified port and exposes REST endpoints
