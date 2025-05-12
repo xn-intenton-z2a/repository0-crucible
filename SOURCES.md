@@ -3,14 +3,15 @@
 ## https://documentation.image-charts.com/en
 ## https://www.chartjs.org/docs/latest/
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
-Comprehensive guide combining external RESTful chart generation (QuickChart.io, Image-Charts) with server-side rendering using Chart.js and Node-Canvas. Covers JSON schema for chart definitions, URL parameter conventions, theming, and HTTP endpoints alongside Chart.js plugin architecture, Canvas context creation, and rendering pipelines. Provides actionable examples for on-demand PNG output in CLI `--chart` mode and HTTP `/pi/chart` endpoint. Last updated 2024; QuickChart is CC0 1.0 and Chart.js/Node-Canvas are MIT licensed and widely adopted by developers.
+## https://github.com/Automattic/node-canvas#readme
+Comprehensive guide combining external RESTful chart generation (QuickChart.io, Image-Charts) with server-side rendering using Chart.js and node-canvas. Covers JSON schema for chart definitions, URL parameter conventions, theming, HTTP endpoints, Canvas context creation, drawing pipelines, and PNG export. Provides actionable examples for CLI and Express `/pi/chart` mode. Last updated 2024; QuickChart is CC0 1.0; Chart.js, ChartjsNodeCanvas, and node-canvas are MIT licensed.
 ## CC0 1.0 Universal / MIT
 
 # Express.js & Middleware
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
-Authoritative reference for Express 4.x core APIs, routing, middleware patterns, request parsing, error handling, plus essential middleware for CORS and rate limiting. Provides best practices for secure, performant REST endpoints and fits directly into implementing CLI-driven HTTP servers and the `/pi` suite of routes. Last updated 2024; maintained by the Express.js team.
+Authoritative reference for Express 4.x core APIs, routing, middleware patterns, request parsing, and error handling, plus essential middleware for CORS and rate limiting. Provides best practices for secure, performant REST endpoints and integration with CLI-driven HTTP servers (`--serve`) and the `/pi` suite of routes. Last updated 2024; maintained by the Express.js team.
 ## MIT
 
 # Testing Tools: Vitest & SuperTest
@@ -24,7 +25,7 @@ Covers modern testing with Vitest, including configuration, mocking, snapshot te
 ## https://nodejs.org/api/worker_threads.html
 ## https://nodejs.org/api/perf_hooks.html
 ## https://nodejs.org/api/stream.html
-Central documentation for Node.js built-ins, including file system, path, URL utilities, streams API (Readable, Writable, Transform), worker_threads for multi-core parallelism, and performance hooks for high-resolution timing. Critical for implementing file I/O, parallel Monte Carlo sampling (`--workers`), streaming convergence data, and accurate performance measurement. Last updated 2024; maintained by Node.js core team.
+Central documentation for Node.js built-ins, including file system, path, URL utilities, streams API (Readable, Writable, Transform), worker_threads for multi-core parallelism, and performance hooks for high-resolution timing. Critical for file I/O, parallel Monte Carlo sampling (`--workers`), streaming convergence data, and performance measurement. Last updated 2024; maintained by Node.js core team.
 ## Node.js License
 
 # Zod Schema Validation
