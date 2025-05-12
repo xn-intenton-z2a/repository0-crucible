@@ -1,30 +1,26 @@
 # Chart Rendering APIs
 ## https://quickchart.io/documentation
 ## https://documentation.image-charts.com/en
-Detailed guide to generating charts via REST APIs using QuickChart.io and Image-Charts. Covers JSON schema for chart definitions, URL parameter conventions (chart types, colors, labels, theming), parameter limits, and HTTP endpoints. Provides practical examples for on-demand PNG rendering, customization, and fallback strategies. Essential for designing URL-based chart generation features such as /pi/chart and CLI --chart output.
+Detailed guide to generating charts via REST APIs using QuickChart.io and Image-Charts. Covers JSON schema for chart definitions, URL parameter conventions (chart types, colors, labels, theming), parameter limits, and HTTP endpoints. Provides practical examples for on-demand PNG rendering, customization, and fallback strategies. Essential for designing URL-based chart generation features such as /pi/chart and CLI --chart output. Last updated 2024; authoritative and widely used by developers.
 ## CC0 1.0 Universal / Proprietary (free tier)
 
-# Chart.js Documentation
+# Chart.js & Node-Canvas Integration
 ## https://www.chartjs.org/docs/latest/
-Official Chart.js documentation covering core chart types (bar, line, pie, etc.), dataset and scale configuration, animation options, and plugin architecture. Crucial for understanding configuration schemas when using Chart.js programmatically or in node-canvas for server-side rendering. Last updated 2024; maintained by Chart.js Core Team.
-## MIT License
-
-# Chart.js Node Canvas Integration
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
-Provides Node.js integration for server-side rendering of Chart.js charts using node-canvas. Covers setup of ChartJSNodeCanvas, chart dimension configuration, font registration, and usage of renderToBuffer/renderToStream for PNG outputs. Vital for implementing CLI and HTTP chart endpoints with actionable code examples. Last updated 2024; MIT License.
+Official Chart.js documentation combined with ChartjsNodeCanvas integration guide. Covers core chart types (bar, line, pie, etc.), dataset and scale configuration, animation options, plugin architecture, and setting up ChartJSNodeCanvas with node-canvas for server-side rendering. Includes code examples for instantiating charts in a Canvas context and rendering to buffers or streams. Crucial for CLI and HTTP chart endpoints with actionable implementation details. Last updated 2024; maintained by Chart.js Core Team and community contributors.
 ## MIT License
 
 # Express.js and Middleware
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
-Comprehensive reference for Express 4.x API setup, routing, middleware patterns, request parsing, error handling, and integration points. Includes CORS configuration and rate limiting strategies (windowMs, max requests). Essential for building REST, analysis, streaming, and WebSocket upgrade endpoints in the π HTTP server. MIT License.
+Comprehensive reference for Express 4.x API setup, routing, middleware patterns, request parsing, error handling, and integration points. Includes CORS configuration and rate limiting strategies (windowMs, max requests). Essential for building REST, analysis, streaming, and WebSocket upgrade endpoints in the π HTTP server. Last updated 2024; maintained by the Express.js team.
 ## MIT License
 
 # Testing Tools: Vitest & SuperTest
 ## https://vitest.dev/
 ## https://github.com/visionmedia/supertest
-Documentation for Vitest (configuration, mocking, snapshot testing, performance metrics) paired with SuperTest’s HTTP assertion and integration testing guides. Crucial for unit, end-to-end, and integration tests of CLI and HTTP/GraphQL server behavior. MIT License.
+Documentation for Vitest (configuration, mocking, snapshot testing, performance metrics) paired with SuperTest’s HTTP assertion and integration testing guides. Crucial for unit, end-to-end, and integration tests of CLI and HTTP/GraphQL server behavior. Provides examples for mocking fs, console, and worker threads. Last updated 2024; widely adopted in modern Node.js projects.
 ## MIT License
 
 # Node.js Core APIs
@@ -33,15 +29,20 @@ Documentation for Vitest (configuration, mocking, snapshot testing, performance 
 Central reference for Node.js built-in modules including fs/promises, path, url, worker_threads, and the streams API (Readable, Writable, Duplex, Transform), alongside the Performance Hooks API (performance.now(), PerformanceObserver, mark/measure). Essential for file I/O, parallel computation, streaming, and accurate performance measurement in π calculations and server operations. Node.js License.
 ## Node.js License
 
+# Node.js Worker Threads
+## https://nodejs.org/api/worker_threads.html
+Detailed guide to the Worker Threads API in Node.js. Covers Worker creation, workerData transfers, parentPort communication, MessageChannel, performance considerations, and error handling. Vital for implementing --workers parallel Monte Carlo sampling feature to leverage multi-core CPUs. Last updated 2024; maintained by Node.js core team.
+## Node.js License
+
 # Zod Schema Validation
 ## https://github.com/colinhacks/zod
-TypeScript-first schema validation library covering synchronous/asynchronous parsing, refinements, and error handling. Critical for validating CLI inputs and HTTP/GraphQL parameters to ensure robust, type-safe user interactions. Last updated 2024; MIT License.
+TypeScript-first schema validation library covering synchronous/asynchronous parsing, refinements, and error handling. Critical for validating CLI inputs and HTTP/GraphQL parameters to ensure robust, type-safe user interactions. Includes detailed examples for crafting complex schemas and error formatting. Last updated 2024; MIT License.
 ## MIT License
 
 # Configuration and Environment Variables
 ## https://github.com/motdotla/dotenv#readme
 ## https://github.com/nodeca/js-yaml#readme
-Guides for loading environment variables with dotenv and parsing YAML with js-yaml, including schema validation and error handling. Important for managing .env, .pi-config.yaml, and merging defaults with CLI flags across environments. MIT License.
+Guides for loading environment variables with dotenv and parsing YAML with js-yaml, including schema validation and error handling. Important for managing .env, .pi-config.yaml, and merging defaults with CLI flags across environments. Last updated 2024; MIT License.
 ## MIT License
 
 # EJS Templating Engine
@@ -56,14 +57,14 @@ Documentation for Embedded JavaScript templating engine syntax, partials, includ
 ## https://github.com/graphql/express-graphql
 ## https://github.com/websockets/ws#readme
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-Consolidated reference for defining and interacting with REST, GraphQL, WebSocket, and SSE endpoints. Includes OpenAPI 3.1 spec for HTTP schemas, Swagger UI for interactive docs, express-graphql middleware, ws library for WebSockets, and MDN guide to Server-Sent Events. Essential for documentating and implementing /pi, /benchmark, /graphql, /ws/pi, /pi/sse, and related endpoints. CC0 1.0 Universal / Apache-2.0 / MIT License.
+Consolidated reference for defining and interacting with REST, GraphQL, WebSocket, and SSE endpoints. Includes OpenAPI 3.1 spec for HTTP schemas, Swagger UI for interactive docs, express-graphql middleware, ws library for WebSockets, and MDN guide to Server-Sent Events. Essential for documenting and implementing /pi, /benchmark, /graphql, /ws/pi, /pi/sse, and related endpoints. CC0 1.0 Universal / Apache-2.0 / MIT License.
 ## CC0 1.0 Universal / Apache-2.0 / MIT License
 
 # BigInt and π Algorithms Reference
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
 ## https://en.wikipedia.org/wiki/Ramanujan%E2%80%93Sato_series
-Comprehensive guide to JavaScript BigInt and in-depth descriptions of Chudnovsky and Ramanujan–Sato series. Covers mathematical formulas, convergence properties, and parallel term computation strategies. Vital for implementing high-precision π calculations. Last updated 2024; authoritative and widely cited. CC BY-SA 4.0.
+Comprehensive guide to JavaScript BigInt and in-depth descriptions of Chudnovsky and Ramanujan–Sato series. Covers mathematical formulas, convergence properties, and parallel term computation strategies. Vital for implementing high-precision π calculations. Authoritative and widely cited; last updated 2024. CC BY-SA 4.0.
 ## CC BY-SA 4.0
 
 # Observability: Logging & Metrics
