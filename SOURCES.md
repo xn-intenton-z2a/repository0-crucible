@@ -1,50 +1,52 @@
-# QuickChart API Documentation
+# Chart Rendering APIs
 ## https://quickchart.io/documentation
-Detailed guide to the QuickChart.io REST API for generating charts as images. Includes full JSON schema for chart definitions, URL parameter conventions, and HTTP endpoints for synchronous and asynchronous rendering. Provides practical usage examples for customizing chart types, colors, labels, and export options—vital for on-demand PNG chart generation in both HTTP API and CLI analysis features. Continuously updated and maintained by QuickChart.io.
-## CC0 1.0 Universal
+## https://documentation.image-charts.com/en
+Detailed guide to generating charts via REST APIs using QuickChart.io and Image-Charts. Covers JSON schema for chart definitions, URL parameter conventions (chart types, colors, labels, theming), parameter limits, and HTTP endpoints. Provides practical examples for on-demand PNG rendering, customization, and fallback strategies. Essential for designing URL-based chart generation features such as /pi/chart and CLI --chart output.
+## CC0 1.0 Universal / Proprietary (free tier)
 
 # Chart.js Documentation
 ## https://www.chartjs.org/docs/latest/
-Official Chart.js documentation covering chart types (bar, line, pie, etc.), dataset and scale configuration, animation options, and plugin architecture. Important for understanding core chart options and customizing appearance when building QuickChart configurations programmatically or rendering via node-canvas. Last updated 2024; maintained by the Chart.js Core Team.
+Official Chart.js documentation covering core chart types (bar, line, pie, etc.), dataset and scale configuration, animation options, and plugin architecture. Crucial for understanding configuration schemas when using Chart.js programmatically or in node-canvas for server-side rendering. Last updated 2024; maintained by Chart.js Core Team.
 ## MIT License
 
 # Chart.js Node Canvas Integration
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
-Provides a Node.js integration for server-side rendering of Chart.js charts using node-canvas. Covers setup of ChartJSNodeCanvas, configuration of chart dimensions, registration of fonts, and usage of renderToBuffer and renderToStream methods to produce PNG outputs. Crucial for implementing the --chart CLI option and the /pi/chart HTTP endpoint with actionable examples for rendering line charts of π convergence. Last updated 2024; maintained under MIT License on GitHub.
+Provides Node.js integration for server-side rendering of Chart.js charts using node-canvas. Covers setup of ChartJSNodeCanvas, chart dimension configuration, font registration, and usage of renderToBuffer/renderToStream for PNG outputs. Vital for implementing CLI and HTTP chart endpoints with actionable code examples. Last updated 2024; MIT License.
 ## MIT License
 
 # Express.js and Middleware
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
-Comprehensive reference for Express 4.x API, covering application setup, routing, middleware patterns, request parsing, response streaming, error handling, and integration points. Includes detailed guides on configuring CORS for cross-origin requests and implementing rate limiting with express-rate-limit (windowMs, max requests, standard headers). Essential for REST, analysis, streaming, and WebSocket upgrade endpoints in the π HTTP API server.
+Comprehensive reference for Express 4.x API setup, routing, middleware patterns, request parsing, error handling, and integration points. Includes CORS configuration and rate limiting strategies (windowMs, max requests). Essential for building REST, analysis, streaming, and WebSocket upgrade endpoints in the π HTTP server. MIT License.
 ## MIT License
 
 # Testing Tools: Vitest & SuperTest
 ## https://vitest.dev/
 ## https://github.com/visionmedia/supertest
-Comprehensive documentation for Vitest, a Vite-native test framework covering configuration, mocking, snapshot testing, performance metrics, and CLI runner usage. Paired with SuperTest’s HTTP assertion and integration testing guides for Express applications, describing request chaining, expectations, and hooks for test runners. Critical for unit, E2E, and GraphQL tests of both CLI and HTTP/GraphQL server behavior.
+Documentation for Vitest (configuration, mocking, snapshot testing, performance metrics) paired with SuperTest’s HTTP assertion and integration testing guides. Crucial for unit, end-to-end, and integration tests of CLI and HTTP/GraphQL server behavior. MIT License.
 ## MIT License
 
-# Node.js Core and Streams APIs
+# Node.js Core APIs
 ## https://nodejs.org/api/
-Central reference for Node.js built-in modules, including fs/promises, path, url, worker_threads, perf_hooks, and the streams API (Readable, Writable, Duplex, Transform). Essential for file I/O, parallel computation, performance measurement, HTTP chunked transfer for streaming, real-time WebSocket integration, and module URL resolution. Covers Node.js v20+ features and best practices.
+## https://nodejs.org/api/perf_hooks.html
+Central reference for Node.js built-in modules including fs/promises, path, url, worker_threads, and the streams API (Readable, Writable, Duplex, Transform), alongside the Performance Hooks API (performance.now(), PerformanceObserver, mark/measure). Essential for file I/O, parallel computation, streaming, and accurate performance measurement in π calculations and server operations. Node.js License.
 ## Node.js License
 
 # Zod Schema Validation
 ## https://github.com/colinhacks/zod
-TypeScript-first schema validation library documentation, covering synchronous and asynchronous parsing, refinements, and error handling. Critical for validating CLI inputs and HTTP/GraphQL query and mutation parameters to ensure robust, type-safe argument handling in both CLI and server modes. Last updated 2024.
+TypeScript-first schema validation library covering synchronous/asynchronous parsing, refinements, and error handling. Critical for validating CLI inputs and HTTP/GraphQL parameters to ensure robust, type-safe user interactions. Last updated 2024; MIT License.
 ## MIT License
 
 # Configuration and Environment Variables
 ## https://github.com/motdotla/dotenv#readme
 ## https://github.com/nodeca/js-yaml#readme
-Documentation for dotenv and js-yaml libraries to load environment variables and parse configuration files. Covers dotenv usage for loading .env files into process.env, environment variable substitution, and parsing YAML with js-yaml including schema validation and error handling. Crucial for .pi-config.yaml, .env, and merging defaults with CLI flags across environments.
+Guides for loading environment variables with dotenv and parsing YAML with js-yaml, including schema validation and error handling. Important for managing .env, .pi-config.yaml, and merging defaults with CLI flags across environments. MIT License.
 ## MIT License
 
 # EJS Templating Engine
 ## https://ejs.co/#docs
-Embedded JavaScript templating engine documentation, describing template syntax, partials, includes, and custom helper functions. Used for generating interactive HTML reports and dashboards (/ui), embedding π values, analysis tables, and chart images via base64 URIs. Last updated 2024.
+Documentation for Embedded JavaScript templating engine syntax, partials, includes, and helper functions. Used for generating interactive HTML reports and dashboards embedding π values, charts, and tables. Last updated 2024; MIT License.
 ## MIT License
 
 # API Specifications and Protocols
@@ -54,39 +56,29 @@ Embedded JavaScript templating engine documentation, describing template syntax,
 ## https://github.com/graphql/express-graphql
 ## https://github.com/websockets/ws#readme
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-Consolidated reference for API schema definitions, documentation, and protocol implementations across REST, GraphQL, and real-time streaming interfaces. Includes the OpenAPI 3.1 specification for defining HTTP endpoints and components, Swagger UI integration for interactive API exploration, the official GraphQL Learn guide and express-graphql middleware for GraphQL server setup, the ws library for WebSocket communications, and MDN’s Server-Sent Events guide for unidirectional event streaming. Essential for designing and documenting /pi, /benchmark, /graphql, /ws/pi, /pi/sse, and other protocol-based endpoints.
+Consolidated reference for defining and interacting with REST, GraphQL, WebSocket, and SSE endpoints. Includes OpenAPI 3.1 spec for HTTP schemas, Swagger UI for interactive docs, express-graphql middleware, ws library for WebSockets, and MDN guide to Server-Sent Events. Essential for documentating and implementing /pi, /benchmark, /graphql, /ws/pi, /pi/sse, and related endpoints. CC0 1.0 / Apache-2.0 / MIT License.
 ## CC0 1.0 Universal / Apache-2.0 / MIT License
 
-# BigInt and Pi Algorithms Reference
+# BigInt and π Algorithms Reference
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
 ## https://en.wikipedia.org/wiki/Ramanujan%E2%80%93Sato_series
-Comprehensive guide to JavaScript BigInt primitive—creation, arithmetic operations, type coercion, and performance considerations—from MDN, paired with in-depth descriptions of the Chudnovsky and Ramanujan series from Wikipedia. Includes mathematical formulas, convergence properties, and strategies for parallel term computation—vital for implementing algorithm selection and high-precision π calculation. Last updated 2024; authoritative and widely cited.
+Comprehensive guide to JavaScript BigInt and in-depth descriptions of Chudnovsky and Ramanujan–Sato series. Covers mathematical formulas, convergence properties, and parallel term computation strategies. Vital for implementing high-precision π calculations. Last updated 2024; authoritative and widely cited. CC BY-SA 4.0.
 ## CC BY-SA 4.0
 
 # Observability: Logging & Metrics
 ## https://github.com/siimon/prom-client#readme
 ## https://github.com/pinojs/pino
-Detailed documentation for prom-client and Pino libraries to instrument Node.js applications. prom-client covers default metrics, custom Counter, Gauge, Histogram, and Summary metrics, registry management, and Express middleware integration to expose Prometheus endpoints. Pino provides high-performance structured JSON logging, covering configuration, serializers, transports, and best practices for log management and redaction. Essential for exposing /metrics and capturing operational and performance data across CLI and HTTP modes. Last updated 2024.
+Documentation for prom-client and Pino to instrument Node.js apps. prom-client covers metrics registration (Counter, Gauge, Histogram, Summary) and Express middleware; Pino details structured JSON logging, serializers, and transports. Essential for /metrics endpoint and capturing performance data. Last updated 2024; MIT License.
 ## MIT License
 
 # Decimal.js
 ## https://mikemcl.github.io/decimal.js/
 ## https://github.com/MikeMcl/decimal.js
-Comprehensive documentation for decimal.js library, detailing arbitrary-precision decimal arithmetic capabilities. Covers API methods for construction, arithmetic operations, configuration of precision and rounding modes, and performance considerations. Essential for implementing the Gauss-Legendre and Chudnovsky algorithms for π calculation with Decimal objects. Last release v10.4.3; maintained on GitHub.
+Guide to arbitrary-precision decimal arithmetic with detailed API methods for precision and rounding configurations. Critical for implementing Gauss-Legendre, Chudnovsky, and Ramanujan-Sato algorithms with Decimal objects. Last release v10.4.3; MIT License.
 ## MIT License
-
-# Node.js Performance Hooks API
-## https://nodejs.org/api/perf_hooks.html
-Documentation for Node.js Performance Hooks, including high-resolution timers (performance.now()), PerformanceObserver, mark and measure functions, and performance entry types. Provides best practices for measuring execution duration with minimal overhead—critical for implementing accurate benchmarking of π calculation algorithms. Last updated 2024.
-## Node.js License
 
 # minimist - Argument Parsing
 ## https://www.npmjs.com/package/minimist
-Official npm page and readme for minimist, a minimalist CLI argument parser. Covers options for boolean flags, string coercion, default values, aliasing, and error handling. Essential for robust parsing of --digits, --algorithm, --samples, --benchmark, and --error flags in the CLI entry point. Maintained under MIT License.
+Official npm readme for minimist, detailing boolean flags, string coercion, default values, aliases, and error handling. Essential for robust CLI parsing of options (--digits, --algorithm, --samples, --benchmark, --error, etc.). MIT License.
 ## MIT License
-
-# Image-Charts API Documentation
-## https://documentation.image-charts.com/en
-Comprehensive guide to the Image-Charts REST API for generating charts via URL parameters. Includes supported chart types, URL encoding practices, parameter limits, theming options, and real-world examples. Useful as an alternative or fallback to QuickChart for understanding URL-based chart configurations and query parameter design. Continuously updated by Image-Charts.
-## Proprietary (free tier)
