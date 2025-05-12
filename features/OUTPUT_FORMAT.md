@@ -1,39 +1,30 @@
 # Multi-format Result Export
 
-Allow users to specify the output format for calculation results, supporting plain text, JSON, CSV, or XML. This enhances data interoperability and aligns with the mission to generate results in versatile text-based formats.
+Enable users to format calculation results as plain text, JSON, CSV, or XML and optionally write output to a file, providing flexible interoperability and persistent storage.
 
 # CLI Options
 
---format <format>      Output format for results. Supported values:
-  • text: plain numeric output (default)
-  • json: JSON object or array output
-  • csv: comma-separated values with header row
-  • xml: simple XML representation
-
-When combined with --output <filepath>, the tool writes the formatted output to the specified file instead of printing to standard output.
+• --format <format>   Select output format: text (default), json, csv, xml
+• --output <filepath> Write the formatted output to the specified file instead of standard output
 
 # Implementation
 
-1. Extend minimist configuration and CLIOptionsSchema in src/lib/main.js to recognize format as a string option with default "text".
-2. After computing the result or diagnostics object in main(), branch on opts.format:
-   a. text: use existing behavior to output raw numbers or diagnostics object.
-   b. json: serialize output using JSON.stringify(output, null, 2).
-   c. csv: implement a helper that takes an object or array of objects, emits a header row of keys then each row of values joined by commas. For single-number results, emit a header "result" and the value.
-   d. xml: implement a helper that wraps result fields in XML tags. For object output, wrap each key-value pair in a tag; for arrays, wrap entries in a parent tag.
-3. Add helper functions formatToCSV(data) and formatToXML(data) in src/lib/main.js.
-4. In main(), after formatting, route output either to console.log or fs.writeFileSync if options.output is set.
+1. Extend minimist configuration in src/lib/main.js to recognize a string option format with default text and an output option for file path
+2. After obtaining the calculation result or diagnostics object:
+   a. If format is json, serialize output with structured indentation
+   b. If csv, for single values emit a header result and the value; for objects or arrays emit header row and comma separated values per record
+   c. If xml, wrap each field in tags, enclosing arrays in a parent element
+   d. If text, preserve existing console output of numbers or diagnostics JSON
+3. Route final string: if output file path is provided write file via fs.writeFileSync, otherwise console.log the formatted string
 
 # Testing
 
-1. In tests/unit/main.test.js, add new tests:
-   • text format: invoke main(["--digits","3","--format","text"]) and expect console.log to be called with 3.142.
-   • json format: invoke main(["--digits","3","--format","json"]) and expect console.log to receive a JSON string like "{\n  \"result\":3.142\n}".
-   • csv format: invoke main(["--digits","3","--format","csv"]) and expect console.log to be called with "result\n3.142".
-   • xml format: invoke main(["--digits","3","--format","xml"]) and expect console.log to be called with "<result>3.142</result>".
-2. Test file output scenarios:
-   • main(["--digits","2","--format","csv","--output","out.csv"]) should call fs.writeFileSync("out.csv", "result\n3.14").
+Add unit tests in tests/unit/main.test.js to:
+• Invoke main with each format option and verify console.log or fs.writeFileSync receives correctly formatted data
+• For csv and xml ensure header and tags appear without escape sequences
+• Test that --output writes to file and suppresses console output
 
 # Documentation
 
-1. Update docs/USAGE.md to document the --format option with examples for each supported format.
-2. Update README.md under Features to describe Multi-format Result Export and provide sample CLI commands for text, JSON, CSV, and XML exports.
+Update docs/USAGE.md under Options to describe --format and --output behavior with examples for each format
+Update README.md under Features to list Multi-format Result Export and show sample commands for text, json, csv, and xml
