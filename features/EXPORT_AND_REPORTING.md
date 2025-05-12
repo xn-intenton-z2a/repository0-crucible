@@ -1,32 +1,45 @@
-# Overview
+# Unified Export and Reporting
 
-Provide a unified export and reporting capability that consolidates multiple output modes into a single feature. Users can format π calculation results in plain text, JSON, CSV, or XML; generate convergence data files; render convergence charts; and apply custom report templates for HTML or Markdown outputs.
+## Overview
+Provide a single, consistent framework for exporting π calculation results across CLI and HTTP API modes.  Support multiple output formats, raw data dumps, graphical charts, benchmarking reports, batch tasks, and custom templated exports.
 
-# Implementation
+## CLI Options
+• --format <format>         Select result format: text, json, csv, xml, table
+• --output <filepath>       Write formatted result to file instead of stdout
+• --convergence-data <path> Export raw convergence data (error and approximation per index) as JSON
+• --chart <path>            Render a PNG chart (error vs index) and write to file
+• --benchmark-report <path> Generate a consolidated benchmark report for selected algorithms in JSON or CSV
+• --batch <path>            Process a JSON file with an array of tasks and output an array of results
+• --template <path>         Path to an EJS template for custom report generation
+• --template-data <path>    JSON file with additional context for templates
+• --template-output <path>  File path for rendered custom report
 
-1. Extend CLI options in src/lib/main.js to recognize:
-   • --format <format>        : Choose output format (text, json, csv, xml).
-   • --output <filepath>      : Write formatted result to file.
-   • --convergence-data <path>: Export raw convergence data JSON.
-   • --chart <path>           : Render a PNG convergence chart (error vs. index).
-   • --template <path>        : Path to an EJS template for custom reports.
-   • --template-data <path>   : JSON file with additional context for templates.
-   • --template-output <path> : File path for the rendered report.
-2. After computing π and optional diagnostics:
-   a. If --format or --output is used, serialize or format the result accordingly and write or log.
-   b. If --convergence-data is provided, collect intermediate data points during calculation and write JSON to file.
-   c. If --chart is provided, register Chart.js components, use node-canvas to plot error vs. index, then write PNG to file.
-   d. If --template is set, read the EJS template and any extra data, build a context { result, options, data }, render with EJS, and write to --template-output or stdout.
+## HTTP Endpoints
+• GET /pi                     Return result in JSON or other negotiated formats
+• GET /pi/data                Return raw convergence data in JSON array
+• GET /pi/chart               Return PNG chart of convergence (error vs index)
+• POST /pi/batch              Accept JSON array of tasks, return array of results in requested format via Accept header or query parameter
 
-# Testing
+## Implementation
+1. Extend minimist CLI schema to recognize all new export options.  Merge defaults, CLI args, and config file values.
+2. After computation, pass result and any diagnostics or dataPoints into an export pipeline:
+   a. Serialize or format result based on --format, writing to stdout or --output file
+   b. If --convergence-data is set, write JSON dataPoints to given path
+   c. If --chart is set, register Chart.js and node-canvas, generate error vs index plot, save PNG
+   d. If --benchmark-report is set, run specified algorithms, collect durations and errors, format as JSON or CSV, save to file
+   e. If --batch is set, read tasks array from file, execute each task through same pipeline, produce combined output array
+   f. If --template is set, load EJS template and optional --template-data, render report and write to --template-output or stdout
+3. In Express createApp(), refactor handlers to delegate to common export functions:
+   a. Inspect Accept header or ?format= parameter to choose JSON, csv, xml, or image
+   b. For /pi/batch, accept tasks array, process each request object, and return formatted array
+4. Aim for minimal duplication by centralizing export logic in src/lib/exporter.js and invoking from main() and createApp().
 
-1. Unit tests for each export mode in tests/unit/main.test.js:
-   • Spy on console.log and fs.writeFileSync to verify correct formatting and file writes for text, json, csv, xml.
-   • Mock Chart and createCanvas to confirm chart PNG buffer is generated and written when --chart is used.
-   • Mock ejs.renderFile and fs to verify template rendering with and without --template-data, and file writes or console output.
-2. Validate that combining options (e.g., --chart and --convergence-data) triggers both export paths.
+## Testing
+1. CLI: mock fs.writeFileSync, console.log and file reads for templates; verify correct calls and file outputs for each option.
+2. HTTP: use supertest to request endpoints with ?format=csv or Accept: text/csv; verify status, content-type, and payload.
+3. Batch modes: test CLI --batch and POST /pi/batch return combined formatted arrays
+4. Template rendering: mock ejs.renderFile; confirm rendered content and file writes
 
-# Documentation
-
-1. Update docs/USAGE.md to describe new options under **Export & Reporting** with examples demonstrating each mode.
-2. Update README.md under **Features** to list **Export and Reporting** with sample commands and expected outputs.
+## Documentation
+1. Update docs/USAGE.md under **Export and Reporting** with examples for each mode
+2. Update README.md **Features** list to describe unified export capabilities
