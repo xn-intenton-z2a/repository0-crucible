@@ -28,6 +28,7 @@ npm install repository0-crucible
   - `--algorithm <string>`: Calculation method (default: "leibniz").
   - `--diagnostics`: Outputs a JSON object with execution diagnostics (algorithm, parameters, durationMs, iterations/samplesUsed, and result).
 * Feature specification validation: Check that feature specification files under `features/` reference the project mission (`MISSION.md`) using the `--validate-features` option.
+* HTTP API Server: Start server with `--serve <port>` to provide REST API endpoints (`/pi`, `/pi/data`, `/pi/chart`) for programmatic π calculation.
 
 ## Usage
 
@@ -53,30 +54,18 @@ node src/lib/main.js --digits 5 --algorithm leibniz
 # Outputs: 3.14159
 ```
 
-### Example Commands
+### HTTP API Server
 
-- **Default Demo Output:**
-
-  ```bash
-  npm run start
-  # Outputs: 3.14159
-  ```
-
-### Diagnostics
+Start the server on port 3000:
 
 ```bash
-node src/lib/main.js --digits 5 --diagnostics
-# Outputs: { algorithm: 'leibniz', digits: 5, result: 3.14159, durationMs: 12, iterations: 200000 }
+node src/lib/main.js --serve 3000
+# Logs: Listening on port 3000
 ```
 
-## Incremental Changes Plan
+Access the endpoints:
 
-TODO: Add forthcoming changes here.
-
-## Contributing
-
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
-
-## License
-
-Released under the MIT License (see [LICENSE](./LICENSE)).
+```bash
+curl http://localhost:3000/pi
+curl "http://localhost:3000/pi?digits=3&algorithm=montecarlo&samples=1000&diagnostics=true"
+```

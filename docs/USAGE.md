@@ -1,6 +1,6 @@
 # CLI Usage
 
-This tool calculates π using different algorithms.
+This tool calculates π using different algorithms and can also start an HTTP API server.
 
 ## Algorithms
 
@@ -18,8 +18,9 @@ This tool calculates π using different algorithms.
 - `--validate-features`   Validates that all feature specification files reference `MISSION.md`; exits with code 0 on success or 1 with missing file list
 - `--convergence-data <filepath>`  File path where convergence data JSON is saved
 - `--chart <filepath>`     File path where convergence chart PNG is saved
+- `--serve <port>`         Starts an HTTP API server on the specified port and exposes REST endpoints
 
-## Examples
+## CLI Examples
 
 ### Leibniz method
 
@@ -46,30 +47,7 @@ node src/lib/main.js --digits 5 --diagnostics
 
 ```bash
 node src/lib/main.js --benchmark
-# Outputs:
-[
-  {
-    "algorithm": "leibniz",
-    "digits": 5,
-    "result": 3.14159,
-    "durationMs": 10,
-    "error": 0.00000
-  },
-  {
-    "algorithm": "montecarlo",
-    "samples": 100000,
-    "result": 3.14200,
-    "durationMs": 50,
-    "error": 0.00041
-  },
-  {
-    "algorithm": "chudnovsky",
-    "digits": 5,
-    "result": 3.14159,
-    "durationMs": 5,
-    "error": 0.00000
-  }
-]
+# Outputs a JSON array of benchmark results
 ```
 
 ### Convergence Data Export
@@ -86,8 +64,36 @@ node src/lib/main.js --digits 5 --chart chart.png
 # Creates chart.png with convergence chart
 ```
 
-### Combined Export
+### HTTP API Server
 
 ```bash
-node src/lib/main.js --digits 5 --convergence-data data.json --chart chart.png
+node src/lib/main.js --serve 3000
+# Logs: Listening on port 3000
+```
+
+#### REST Endpoints
+
+##### GET /pi
+
+```bash
+curl http://localhost:3000/pi
+# { "result": 3.14159 }
+```
+
+With query parameters:
+
+```bash
+curl "http://localhost:3000/pi?digits=3&algorithm=montecarlo&samples=1000&diagnostics=true"
+```
+
+##### GET /pi/data
+
+```bash
+curl "http://localhost:3000/pi/data?digits=2&algorithm=leibniz"
+```
+
+##### GET /pi/chart
+
+```bash
+curl "http://localhost:3000/pi/chart?digits=2&algorithm=leibniz" --output chart.png
 ```
