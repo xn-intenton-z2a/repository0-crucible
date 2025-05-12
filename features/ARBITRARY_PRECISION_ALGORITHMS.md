@@ -1,68 +1,49 @@
 # Overview
 
-Enable true arbitrary-precision π calculation using Decimal.js by fully implementing three high-precision algorithms: Chudnovsky, Gauss-Legendre, and Ramanujan–Sato under a unified interface.
+Replace the placeholder fallback Chudnovsky implementation with full high-precision algorithms powered by decimal.js. Users gain access to three true arbitrary-precision methods—Chudnovsky, Gauss-Legendre, and Ramanujan–Sato—via unified CLI and HTTP interfaces.
 
 # Implementation
 
-1. Ensure dependency:
-   • decimal.js@^10.4.3
+1. Dependency
+   • Add decimal.js@^10.4.3 to package.json dependencies.
 
-2. In src/lib/main.js before existing algorithm functions:
-   a. Import Decimal:
-      import Decimal from 'decimal.js';
-   b. Create a precision helper:
-      function withPrecision(digits, fn) {
-        const precision = digits * 3.32 + 10;
-        const DecimalClone = Decimal.clone({ precision: Math.ceil(precision) });
-        return fn(DecimalClone);
-      }
+2. Precision Helper
+   • In src/lib/main.js, import Decimal and create withPrecision(digits, fn) that clones Decimal with precision ≈ digits × 3.32 + 10.
 
-3. Implement algorithm functions:
-   a. calculateChudnovsky(digits):
-      • Use withPrecision to set Decimal precision.
-      • Compute π via the Chudnovsky series with iterative term accumulation until term < 10^(−digits).
-      • Use factorial caching via Decimal for performance.
+3. Algorithm Functions
+   • calculatePiChudnovsky(digits): implement series until term < 10^(−digits).
+   • calculatePiGaussLegendre(digits): use iterative a,b,t,p loop until |a−b| < 10^(−digits).
+   • calculatePiRamanujanSato(digits, options): support level, maxIterations, errorTolerance, accumulate series until |term| < errorTolerance or maxIterations.
+   • Export calculatePiHighPrecision(digits, method, options) dispatching to the above.
 
-   b. calculateGaussLegendre(digits):
-      • Use withPrecision to set Decimal precision.
-      • Initialize a=1, b=1/√2, t=1/4, p=1.
-      • Iterate a=(a+b)/2, b=√(a·b), t=t−p·(a_new−a)^2, p=2p until |a−b| < 10^(−digits).
-      • Return π=(a+b)^2/(4t).
-
-   c. calculateRamanujanSato(digits, options):
-      • Use withPrecision to set Decimal precision.
-      • Default options: { level: 1, maxIterations: 10, errorTolerance: 10^(−digits) }.
-      • Implement series per library docs, accumulate terms until |term| < errorTolerance or iterations reach maxIterations.
-      • Return the last π estimate.
-
-4. Dispatcher and export:
-   • Define calculatePiHighPrecision(digits, method, options) that selects one of the three methods based on method enum.
-   • Extend existing CLIOptionsSchema and ApiParamsSchema to include algorithm enum values: chudnovsky, gauss-legendre, ramanujan-sato.
-   • In CLI main() and createApp() handlers for /pi, /pi/data, /pi/chart, detect these algorithm strings and call calculatePiHighPrecision accordingly.
+4. Integrate into CLI and HTTP
+   • Extend CLIOptionsSchema and ApiParamsSchema to accept method enum { chudnovsky, gauss-legendre, ramanujan-sato } plus level, maxIterations, errorTolerance flags.
+   • In main(), invoke calculatePiHighPrecision when algorithm matches high-precision methods; print diagnostics or raw result.
+   • In createApp handlers (/pi, /pi/data, /pi/chart), branch on high-precision algorithms: call calculatePiHighPrecision for /pi and generate empty dataPoints or disable chart for these methods (or optionally sample intermediate sums).
 
 # Testing
 
-1. Unit tests in tests/unit/main.test.js:
-   • verify calculateChudnovsky(10).toFixed(10) matches a known reference.
-   • verify calculateGaussLegendre(8).toFixed(8) matches expected.
-   • verify calculateRamanujanSato(5, { level: 1 }).toFixed(5) matches expected within tolerance.
+1. Unit Tests (tests/unit/main.test.js)
+   • Verify calculatePiChudnovsky(10).toFixed(10) matches known reference.
+   • Verify calculatePiGaussLegendre(8) and calculatePiRamanujanSato(5) meet tolerance.
+   • Mock and spy on Decimal.clone to ensure precision is set correctly.
 
-2. CLI tests:
-   • main(["--algorithm","chudnovsky","--digits","5"]) logs correct string.
-   • main(["--algorithm","gauss-legendre","--digits","6"]) works properly.
-   • main(["--algorithm","ramanujan-sato","--digits","4","--level","2"]) finishes within maxIterations.
+2. CLI Tests
+   • main(["--algorithm","chudnovsky","--digits","6"]); expect console.log output matches high-precision string.
+   • Test level, maxIterations, errorTolerance flags produce consistent behavior.
 
-3. HTTP tests in tests/unit/server.test.js:
-   • GET /pi?algorithm=chudnovsky&digits=4 returns JSON { result: string }.
-   • GET /pi/data?algorithm=ramanujan-sato&digits=3 returns array of data points.
-   • GET /pi/chart?algorithm=gauss-legendre&digits=3 returns valid PNG with correct header.
+3. HTTP Tests (tests/unit/server.test.js)
+   • GET /pi?algorithm=gauss-legendre&digits=4 returns JSON { result: string } with correct precision.
+   • GET /pi/data for chudnovsky and ramanujan endpoints returns empty or minimal structure without errors.
 
 # Documentation
 
-1. Update docs/USAGE.md under **Algorithms**:
-   • Document parameters for high-precision: methods, level, maxIterations, errorTolerance.
-   • Provide example usage for each method in CLI and HTTP.
+1. docs/USAGE.md
+   • Under **Algorithms**, document new methods: chudnovsky, gauss-legendre, ramanujan-sato and their options.
+   • Provide CLI and HTTP examples for each.
 
-2. Update README.md Features list:
-   • Replace existing entry with **Arbitrary-Precision Algorithms** summary.
-   • Show example CLI calls and HTTP endpoints for new algorithm options.
+2. README.md
+   • Update **Features** list: describe **Arbitrary-Precision Algorithms** with three methods and example commands.
+
+3. package.json
+   • Add decimal.js dependency.
