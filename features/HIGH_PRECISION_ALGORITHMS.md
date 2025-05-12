@@ -1,42 +1,43 @@
 # High Precision π Algorithms
 
-Provide true arbitrary precision π computation using the Chudnovsky and Ramanujan-Sato series with decimal.js and BigInt support.
-
-# Dependencies
-
-Add the following dependency to package.json:
-- decimal.js: arbitrary-precision decimal arithmetic
+Provide true arbitrary precision π computation using the Chudnovsky and Ramanujan-Sato series with robust decimal arithmetic and BigInt support.
 
 # Implementation
 
-1. In src/lib/main.js import Decimal from decimal.js.
-2. Implement calculatePiChudnovsky(digits):
-   - Configure Decimal precision to digits plus guard digits.
-   - Compute series terms using BigInt factorial and Decimal arithmetic until term magnitude falls below threshold for target digits.
-   - Accumulate sum and compute π = constant over sum, rounded to specified digits.
-3. Implement calculatePiRamanujan(level, digits):
-   - Configure Decimal precision to digits plus guard digits.
-   - Compute Ramanujan-Sato series terms using BigInt binomial coefficients C(n,k) and Decimal for summation up to given level.
-   - Compute π estimate from series sum and round to specified digits.
-4. In main():
-   - Recognize algorithm names "chudnovsky" and "ramanujan-sato".
-   - Parse options.digits and options.level for ramanujan-sato.
-   - Invoke appropriate high-precision function, measure durationMs, and handle diagnostics flag.
-   - Print numeric result or diagnostics JSON.
+1. Add dependency:
+   • decimal.js: npm install decimal.js@^10.4.3
+2. In src/lib/main.js import Decimal from 'decimal.js' and ensure high precision context:
+   • Configure Decimal precision to digits plus guard digits.
+3. Implement calculatePiChudnovsky(digits):
+   • Use the standard Chudnovsky series summation with Decimal and BigInt factorials until term magnitude falls below 10^(−(digits+1)).
+   • Accumulate series and compute π = C(426880√10005) / seriesSum, rounding to specified digits.
+4. Implement calculatePiRamanujan({ level, digits }):
+   • Use Ramanujan-Sato series from library document: compute terms up to specified level.
+   • Employ BigInt for binomial coefficients and Decimal for summation.
+   • Terminate when reaching level or error tolerance; compute π estimate as reciprocal of series sum.
+5. Extend main():
+   • Recognize algorithm names "chudnovsky" and "ramanujan-sato".
+   • Parse new option --level (integer) for ramanujan-sato, default level 1.
+   • Invoke appropriate calculatePiChudnovsky or calculatePiRamanujan and measure durationMs and, if diagnostics, include level.
+6. Extend createApp() HTTP handlers to support ramanujan-sato in /pi, /pi/data, /pi/chart, accepting query parameter level.
 
 # Testing
 
-1. In tests/unit/main.test.js add unit tests for calculatePiChudnovsky and calculatePiRamanujan:
-   - For small digits and levels, verify output matches known approximations (e.g., digits 3 or 5).
-   - Mock Decimal and BigInt factorial functions to force predictable outputs and error paths.
-2. Add CLI tests:
-   - Invoke main(["--algorithm","chudnovsky","--digits","3"]) and verify console.log outputs correct string.
-   - Invoke main(["--algorithm","ramanujan-sato","--level","1","--digits","3"]) and verify correct output or diagnostics JSON.
+1. In tests/unit/main.test.js add unit tests:
+   • calculatePiChudnovsky with small digits (2, 3) yields known approximations (3.14, 3.142).
+   • calculatePiRamanujan level 1, digits 3 yields expected result (3.142).
+   • Mock Decimal and BigInt factorials for edge cases and performance.
+2. CLI tests:
+   • main(["--algorithm","chudnovsky","--digits","3"]) logs 3.142.
+   • main(["--algorithm","ramanujan-sato","--level","1","--digits","3"]) logs correct output or diagnostics JSON when --diagnostics.
+3. HTTP API tests in tests/unit/server.test.js:
+   • GET /pi?algorithm=ramanujan-sato&digits=2&level=1 returns { result: 3.14 }.
+   • GET /pi/data and /pi/chart support level parameter and yield proper JSON array or PNG.
 
 # Documentation
 
-1. Update docs/USAGE.md to document new algorithm options:
-   - --algorithm chudnovsky with --digits
-   - --algorithm ramanujan-sato with --level and --digits
-   - Provide example commands and sample outputs.
-2. Update README.md under Features to describe high-precision algorithms and usage examples.
+1. Update docs/USAGE.md:
+   • Document --algorithm chudnovsky and --algorithm ramanujan-sato with --digits and --level options.
+   • Show CLI examples and expected outputs.
+2. Update README.md under Features:
+   • Describe high-precision algorithms and usage (Chudnovsky and Ramanujan-Sato).
