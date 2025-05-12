@@ -1,159 +1,158 @@
 # GAUSS_LEGENDRE
 
 ## Crawl Summary
-Initialise a=1, b=1/√2, t=1/4, p=1. Iterate: a→(a+b)/2, b→√(a·b), t→t−p·(a−new_a)^2, p→2·p. Repeat until |a−b|<ε or N iterations. Compute π≈(a+b)^2/(4t). Quadratic convergence, digits double per iteration.
+Initial values a0=1, b0=1/√2, t0=1/4, p0=1. Iterate: a=(a+b)/2, b=√(a·b), t=t−p·(a_new−a)², p=2p. Stop when |a−b|<tol. Compute π ≈(a+b)²/(4t). Quadratic convergence doubles correct digits each iteration.
 
 ## Normalised Extract
-Table of Contents
+Table of Contents:
+ 1. Initial Setup
+ 2. Iteration Loop
+ 3. Convergence Criterion
+ 4. π Approximation
+ 5. Precision Management
 
-1. Initialisation Values
-2. Iteration Formulas
+1. Initial Setup
+  a0 = 1
+  b0 = 1/√2
+  t0 = 1/4
+  p0 = 1
+
+2. Iteration Loop
+  For n from 0 to maxIterations:
+    a_next = (a + b) / 2
+    b_next = sqrt(a * b)
+    delta = a_next − a
+    t = t − p * delta * delta
+    p = 2 * p
+    a = a_next
+    b = b_next
+    If abs(a − b) < tolerance, break.
+
 3. Convergence Criterion
-4. Pi Approximation
+  tolerance = 10^(−digits) or user-specified; iteration count ≤ 25 for ~45M digits.
 
-1. Initialisation Values
-   a0 = 1
-   b0 = 1/√2
-   t0 = 1/4
-   p0 = 1
+4. π Approximation
+  π = (a + b)² / (4 * t)
 
-2. Iteration Formulas
-   a_{n+1} = (a_n + b_n) / 2
-   b_{n+1} = √(a_n * b_n)
-   t_{n+1} = t_n − p_n * (a_n − a_{n+1})^2
-   p_{n+1} = 2 * p_n
+5. Precision Management
+  Use arbitrary-precision library; set precisionBits ≥ targetDigits × 3.32; round after each operation.
 
-3. Convergence Criterion
-   Evaluate |a_{n+1} − b_{n+1}| < ε
-   ε default = 10^(−precision)
-   Fallback: n ≥ maxIterations
-
-4. Pi Approximation
-   π ≈ (a_{n+1} + b_{n+1})^2 / (4 * t_{n+1})
 
 ## Supplementary Details
-Parameter Defaults
-- precision: number of decimal places, default 1000
-- maxIterations: default 10
-- epsilon: 1e−precision
+Parameter values:
+  tolerance: default = 1e-20
+  maxIterations: default = 50
+  precisionBits: default = digits*3.5
 
-Implementation Steps
-1. Set library precision to config.precision
-2. Initialise a, b, t, p
-3. Loop i in [0, maxIterations):
-   a. nextA = (a + b) / 2
-   b. nextB = sqrt(a * b)
-   c. t = t − p * (a − nextA)^2
-   d. p = 2 * p
-   e. a = nextA, b = nextB
-   f. Break if |a − b| < ε
-4. Compute pi = (a + b)^2 / (4 * t)
-5. Return pi
+Implementation steps:
+  1. Initialize precision in Decimal or BigDecimal.
+  2. Set a,b,p,t in high precision.
+  3. Loop applying iteration formulas.
+  4. After break, compute pi.
 
-Precision Management
-- Use arbitrary-precision library (Decimal.js or BigInt rational arithmetic)
-- Set rounding mode to ROUND_HALF_EVEN
+Data types:
+  a,b,t,p: Decimal or BigFloat
+  sqrt: library-provided high-precision method
 
-Memory Considerations
-- Store only four variables per iteration
-- Release previous iteration values by reassigning
-
-Error Bounds
-- After n iterations, correct digits ≈ 2^n
-- Choose n ≈ log2(desired digits)
+Performance tips:
+  Cache sqrt(a*b) calls.
+  Preallocate objects to avoid GC.
+  Increase working precision by +10 bits during iterations.
 
 
 ## Reference Details
-Full API Signature
+JavaScript implementation using decimal.js:
 
-type GLConfig = {
-  precision: number;    // target decimal places
-  maxIterations: number;// maximum iteration count
-  epsilon: Decimal;     // convergence threshold
-};
+Function signature:
+  /**
+   * computePiGaussLegendre
+   * @param {Object} options
+   * @param {number} options.digits target decimal digits
+   * @param {number} [options.maxIterations=50]
+   * @param {number} [options.tolerance=1e-20]
+   * @returns {Decimal} π approximation
+   */
+  function computePiGaussLegendre({ digits, maxIterations = 50, tolerance = 1e-20 })
 
-function computePi(config: GLConfig): Decimal
+Code example:
+  import Decimal from 'decimal.js'
+  Decimal.set({ precision: digits * 3.5, rounding: Decimal.ROUND_HALF_UP })
 
-Parameters:
-- config.precision: integer > 0, sets Decimal precision, default=1000
-- config.maxIterations: integer ≥1, default=log2(desiredDigits)
-- config.epsilon: Decimal, default=Decimal('1e-'+precision)
+  let a = new Decimal(1)
+  let b = Decimal.sqrt(new Decimal(0.5))
+  let t = new Decimal(0.25)
+  let p = new Decimal(1)
 
-Return Type:
-- Decimal: approximation of π to config.precision digits
+  for (let i = 0; i < maxIterations; i++) {
+    const a_next = a.plus(b).dividedBy(2)
+    const b_next = Decimal.sqrt(a.times(b))
+    const delta = a_next.minus(a)
+    t = t.minus(p.times(delta.times(delta)))
+    p = p.times(2)
+    a = a_next
+    b = b_next
+    if (a.minus(b).abs().lt(tolerance)) break
+  }
 
-Throws:
-- Error if precision not integer or maxIterations <1
+  return a.plus(b).pow(2).dividedBy(t.times(4))
 
-Usage Example
-```ts
-import Decimal from 'decimal.js';
+Configuration options:
+  digits: number of decimal places
+  maxIterations: upper bound iterations
+  tolerance: stopping threshold
 
-const config: GLConfig = {
-  precision: 2000,
-  maxIterations: 12,
-  epsilon: new Decimal('1e-2000')
-};
-const piApprox = computePi(config);
-console.log(piApprox.toString());
-```
+Best practices:
+  - Use library with configurable precision
+  - Increase precision before loop start
+  - Reuse Decimal instances via variables
+  - Validate inputs: digits > 0, tolerance > 0
 
-Configuration Options
-- precision: controls Decimal.js precision
-- maxIterations: safety cap to avoid infinite loop
-- epsilon: convergence threshold for |a−b|
+Troubleshooting:
+  Issue: result stagnates or yields NaN
+    Command: console.log(a, b, t, p)
+    Expected: a≈b after final iteration, t>0
+    Fix: Increase precisionBits via Decimal.set
+  Issue: performance slow
+    Command: measure loop time with console.time
+    Fix: lower maxIterations, preallocate variables, use faster sqrt
 
-Implementation Pattern
-1. Set Decimal.set({ precision, rounding: Decimal.ROUND_HALF_EVEN })
-2. Initialise a, b, t, p
-3. Perform iterative update
-4. On convergence or maxIterations, compute π
-
-Best Practices
-- Pre-calculate maxIterations = ceil(log2(targetDigits))
-- Use memory pooling for Decimal objects to reduce GC pressure
-- Validate inputs: ensure epsilon < 1
-
-Troubleshooting
-Command:
-  node computePi.js --precision=10000 --maxIterations=14
-Expected Output Start:
-  3.1415926535...
-Common Issues:
-- "Decimal Error: Too few precision" → increase precision before math operations
-- Slow execution → lower precision or reduce iterations
-- High memory usage → switch to streaming big-int arithmetic
 
 ## Information Dense Extract
-a0=1,b0=1/√2,t0=1/4,p0=1; iterate a=(a+b)/2,b=√(a·b),t=t−p·(a−a_next)^2,p=2p; stop when |a−b|<ε or n=maxIterations; π=(a+b)^2/(4t); digits double per iteration; choose n≈log2(digits); use Decimal.js set precision and rounding; GLConfig{precision,maxIterations,epsilon}; computePi returns Decimal π; validate inputs; set ε=10^(−precision); best practice: memory reuse; troubleshoot: increase precision on error, adjust iterations.
+a0=1; b0=1/√2; t0=1/4; p0=1; iterate: a=(a+b)/2; b=√(a·b); t=t−p·(a_new−a)^2; p=2p; stop when |a−b|<tol; π=(a+b)^2/(4t); quadratic convergence doubles digits; precisionBits≥digits×3.32; default maxIterations=50; tolerance=1e-20; implement in decimal.js with Decimal.set({precision,digits}); reuse variables; troubleshoot by inspecting intermediate a,b,t,p; adjust precision on NaN or slow convergence.
 
 ## Sanitised Extract
-Table of Contents
+Table of Contents:
+ 1. Initial Setup
+ 2. Iteration Loop
+ 3. Convergence Criterion
+ 4.  Approximation
+ 5. Precision Management
 
-1. Initialisation Values
-2. Iteration Formulas
+1. Initial Setup
+  a0 = 1
+  b0 = 1/2
+  t0 = 1/4
+  p0 = 1
+
+2. Iteration Loop
+  For n from 0 to maxIterations:
+    a_next = (a + b) / 2
+    b_next = sqrt(a * b)
+    delta = a_next  a
+    t = t  p * delta * delta
+    p = 2 * p
+    a = a_next
+    b = b_next
+    If abs(a  b) < tolerance, break.
+
 3. Convergence Criterion
-4. Pi Approximation
+  tolerance = 10^(digits) or user-specified; iteration count  25 for ~45M digits.
 
-1. Initialisation Values
-   a0 = 1
-   b0 = 1/2
-   t0 = 1/4
-   p0 = 1
+4.  Approximation
+   = (a + b) / (4 * t)
 
-2. Iteration Formulas
-   a_{n+1} = (a_n + b_n) / 2
-   b_{n+1} = (a_n * b_n)
-   t_{n+1} = t_n  p_n * (a_n  a_{n+1})^2
-   p_{n+1} = 2 * p_n
-
-3. Convergence Criterion
-   Evaluate |a_{n+1}  b_{n+1}| < 
-    default = 10^(precision)
-   Fallback: n  maxIterations
-
-4. Pi Approximation
-     (a_{n+1} + b_{n+1})^2 / (4 * t_{n+1})
+5. Precision Management
+  Use arbitrary-precision library; set precisionBits  targetDigits  3.32; round after each operation.
 
 ## Original Source
 BigInt & π Algorithms Reference
@@ -161,78 +160,46 @@ https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm
 
 ## Digest of GAUSS_LEGENDRE
 
-# Gauss–Legendre Algorithm Details
+# Gauss–Legendre Algorithm
+
+Date retrieved: 2024-06-25
 
 ## Initial Values
-- a0 = 1
-- b0 = 1/√2
-- t0 = 1/4
-- p0 = 1
+
+  a₀ = 1
+  b₀ = 1/√2
+  t₀ = 1/4
+  p₀ = 1
 
 ## Iteration Formulas
-- a_{n+1} = (a_n + b_n) / 2
-- b_{n+1} = √(a_n * b_n)
-- t_{n+1} = t_n − p_n * (a_n − a_{n+1})^2
-- p_{n+1} = 2 * p_n
 
-## Convergence Criterion
-- Stop when |a_{n+1} − b_{n+1}| < ε or after N iterations
+  aₙ₊₁ = (aₙ + bₙ) / 2
+  bₙ₊₁ = √(aₙ · bₙ)
+  tₙ₊₁ = tₙ − pₙ · (aₙ₊₁ − aₙ)²
+  pₙ₊₁ = 2 · pₙ
 
-## Pi Approximation
-π ≈ (a_{n+1} + b_{n+1})^2 / (4 * t_{n+1})
+Repeat until |aₙ₊₁ − bₙ₊₁| < tolerance or maxIterations reached.
 
-## Complexity
-- Quadratic convergence: digits double each iteration.
-- Memory intensive: intermediate precision storage.
+## π Approximation
 
-# Reference Implementation (TypeScript)
-```ts
-import Decimal from 'decimal.js';
+  π ≈ (aₙ₊₁ + bₙ₊₁)² / (4 · tₙ₊₁)
 
-interface GLConfig {
-  precision: number;        // decimal places
-  maxIterations: number;    // fallback limit
-  epsilon: Decimal;         // convergence threshold
-}
+## Convergence
 
-function computePi(config: GLConfig): Decimal {
-  Decimal.set({ precision: config.precision });
+  Quadratic: correct digits double each iteration.
 
-  let a = new Decimal(1);
-  let b = Decimal.sqrt(new Decimal(1).dividedBy(2));
-  let t = new Decimal(0.25);
-  let p = new Decimal(1);
+## Memory & Precision
 
-  for (let i = 0; i < config.maxIterations; i++) {
-    const nextA = a.plus(b).dividedBy(2);
-    const nextB = Decimal.sqrt(a.times(b));
-    const diff = a.minus(nextA).pow(2).times(p);
-    const nextT = t.minus(diff);
-    const nextP = p.times(2);
+  Requires arbitrary-precision arithmetic; intermediate √ and multiplications at precisionBits+10 bits.
 
-    a = nextA;
-    b = nextB;
-    t = nextT;
-    p = nextP;
-
-    if (a.minus(b).abs().lessThan(config.epsilon)) break;
-  }
-
-  return a.plus(b).pow(2).dividedBy(t.times(4));
-}
-
-// Usage example
-const pi = computePi({ precision: 1000, maxIterations: 10, epsilon: new Decimal('1e-1000') });
-console.log(pi.toString());
-```
 
 ## Attribution
 - Source: BigInt & π Algorithms Reference
 - URL: https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm
 - License: CC BY-SA 4.0
-- Crawl Date: 2025-05-12T09:28:15.829Z
-- Data Size: 4197174 bytes
-- Links Found: 20455
+- Crawl Date: 2025-05-12T15:28:29.542Z
+- Data Size: 4978184 bytes
+- Links Found: 25981
 
 ## Retrieved
 2025-05-12
