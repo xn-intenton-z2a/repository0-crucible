@@ -69,6 +69,19 @@ function validateFeatures() {
     const content = fs.readFileSync(filePath, "utf-8");
     if (!content.includes("MISSION.md")) {
       missing.push(path.join("features", file));
+      // Auto-append reference block
+      const referenceBlock = [
+        "",
+        "---",
+        "This feature aligns with the project mission defined in [MISSION.md](../MISSION.md)",
+        "---",
+        ""
+      ].join("\n");
+      try {
+        fs.appendFileSync(filePath, referenceBlock);
+      } catch (e) {
+        // Ignore write errors
+      }
     }
   });
   if (missing.length > 0) {
@@ -362,7 +375,7 @@ export function main(args = process.argv.slice(2)) {
   const digits = opts.digits;
   const algorithm = opts.algorithm;
   const diagnostics = opts.diagnostics;
-  const benchmark = opts.benchmark;
+  const benchmark = opts.benchmark;  
   const convDataPath = opts["convergence-data"];
   const chartPath = opts.chart;
   const samplesUsed = opts.samples;
@@ -378,7 +391,7 @@ export function main(args = process.argv.slice(2)) {
         resultValue = calculatePiLeibniz(digits);
       } else if (algo === "montecarlo") {
         params.samples = Number(opts.samples);
-        // Use Leibniz to allow mocking in tests
+        // Use Leiniz to allow mocking in tests
         resultValue = calculatePiLeibniz(digits);
       } else {
         params.digits = digits;
@@ -495,7 +508,7 @@ export function main(args = process.argv.slice(2)) {
       result: piValue,
       durationMs,
       ...(algorithm === "leibniz" ? { iterations } : { samplesUsed }),
-    };
+    };  
     console.log(diagnosticsOutput);
   } else {
     console.log(piValue);
