@@ -5,14 +5,14 @@
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
 ## https://github.com/Automattic/node-canvas#readme
 ## https://axios-http.com/docs/intro
-Comprehensive guide combining hosted RESTful chart generation (QuickChart, Image-Charts) with in-process rendering via Chart.js and node-canvas. Covers chart JSON schema, URL parameter conventions, theming, canvas context setup, drawing pipelines, PNG export, and HTTP client integration (Axios). Includes performance tuning, payload sizing, and fallback strategies for local vs. remote rendering in both CLI (`--chart`) and Express modes (`/pi/chart`). Last updated 2024; QuickChart and Image-Charts docs are CC0; Chart.js, ChartjsNodeCanvas, node-canvas, and Axios are MIT licensed.
+Comprehensive guide combining hosted RESTful chart generation (QuickChart, Image-Charts) with in-process rendering via Chart.js and node-canvas. Covers chart JSON schema, URL parameter conventions, theming, canvas setup, drawing pipelines, and PNG export. Includes HTTP client integration (Axios), performance tuning, payload sizing, and fallback strategies between local and remote rendering for CLI (`--chart`) and Express endpoints (`/pi/chart`). Last updated 2024; QuickChart and Image-Charts docs are CC0; Chart.js, ChartjsNodeCanvas, node-canvas, and Axios are MIT licensed.
 ## CC0 1.0 Universal / MIT
 
 # Express.js & Middleware
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
-Authoritative reference for Express 4.x core APIs, routing, middleware patterns, request parsing, and error handling, alongside CORS and rate-limiting modules. Demonstrates secure, performant REST endpoint construction, middleware chaining, and production deployment best practices, directly supporting CLI-driven servers (`--serve`) and key routes (`/pi`, `/pi/data`, `/pi/chart`, `/pi/stream`). Last updated 2024; MIT licensed.
+Authoritative reference for Express 4.x core APIs, routing, middleware patterns, request parsing, and error handling. Covers CORS and rate-limiting modules demonstrating secure, performant REST endpoint construction and middleware chaining. Directly supports CLI-driven serve mode (`--serve`) and key routes (`/pi`, `/pi/data`, `/pi/chart`, `/pi/stream`). Last updated 2024; MIT licensed.
 ## MIT
 
 # Testing & Benchmarking Tools
@@ -21,7 +21,7 @@ Authoritative reference for Express 4.x core APIs, routing, middleware patterns,
 ## https://github.com/sindresorhus/execa
 ## https://benchmarkjs.com/
 ## https://github.com/bestiejs/benchmark.js
-Integrated reference for unit, integration, E2E, and performance testing in Node.js. Covers Vitest’s fast runner, mocking, snapshot and coverage features; SuperTest’s HTTP assertions; Execa’s child-process control for CLI flows; and Benchmark.js’s statistical micro-benchmark suite. Essential for validating algorithm correctness, API behavior, and runtime performance in both CLI and server contexts. Last updated 2024; all MIT licensed.
+Integrated reference for unit, integration, end-to-end, and performance testing in Node.js. Covers Vitest’s fast runner, mocking, snapshot and coverage features; SuperTest’s HTTP assertions; Execa’s child-process control for CLI workflows; and Benchmark.js’s statistical micro-benchmark suite. Essential for validating algorithm correctness, API behavior, and runtime performance in both CLI and server contexts. Last updated 2024; MIT licensed.
 ## MIT
 
 # Zod Schema Validation
@@ -34,7 +34,7 @@ Comprehensive TypeScript-first runtime schema validation library. Details synchr
 ## https://github.com/nodeca/js-yaml#readme
 ## https://github.com/cosmiconfig/cosmiconfig#readme
 ## https://www.npmjs.com/package/minimist
-Demonstrates layered configuration through environment variables (`.env`), YAML files, hierarchical discovery (cosmiconfig), and CLI parsing (minimist). Shows merging strategies, default overrides, aliasing, and error handling for both CLI and Express server modes, enabling flexible user defaults. Last updated 2024; MIT licensed.
+Demonstrates layered configuration through environment variables (`.env`), YAML files, hierarchical discovery (cosmiconfig), and CLI parsing (minimist). Shows merging strategies, default overrides, aliasing, and error handling for both CLI and Express server modes to enable flexible user defaults. Last updated 2024; MIT licensed.
 ## MIT
 
 # Seeded Randomness with seedrandom
@@ -58,8 +58,9 @@ OpenAPI 3.1 specification and Swagger UI integration for interactive REST API do
 ## https://github.com/siimon/prom-client#readme
 ## https://github.com/pinojs/pino
 ## https://github.com/pinojs/pino-pretty
+## https://github.com/pinojs/pino-http#readme
 ## https://opentelemetry.io/docs/js/
-Guides for Prometheus metrics (`prom-client`), structured logging with Pino (and `pino-pretty`), and OpenTelemetry instrumentation for Node.js/Express. Covers SDK configuration, exporter setup (OTLP, Prometheus), tracing, metrics pipelines, and human-friendly log formatting. Enables end-to-end observability in both CLI and server contexts. Last updated 2024; MIT / Apache-2.0.
+Guides for Prometheus metrics (`prom-client`), structured logging with Pino (and `pino-pretty`), HTTP middleware integration via `pino-http`, and OpenTelemetry instrumentation for Node.js/Express. Covers SDK configuration, exporter setup (OTLP, Prometheus), tracing, metrics pipelines, request/response logging, and human-friendly log formatting. Enables end-to-end observability in both CLI and server contexts. Last updated 2024; MIT / Apache-2.0.
 ## MIT / Apache-2.0
 
 # Node.js Core & Advanced APIs
@@ -75,7 +76,7 @@ Comprehensive reference for built-in Node.js modules and advanced APIs (worker t
 
 # Server-Sent Events (SSE)
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-Detailed overview of SSE protocol: EventSource API, HTTP headers (`text/event-stream`), reconnection, data encoding, and event formatting. Crucial for real-time `/pi/stream` endpoint and CLI JSON-lines streaming. Last updated 2024; CC BY-SA 2.5.
+Detailed overview of the SSE protocol: EventSource API, HTTP headers (`text/event-stream`), reconnection, data encoding, and event formatting. Crucial for real-time `/pi/stream` endpoint and CLI JSON-lines streaming. Last updated 2024; CC BY-SA 2.5.
 ## CC BY-SA 2.5
 
 # Numerical Computing & Arbitrary-Precision Arithmetic
@@ -85,7 +86,7 @@ Detailed overview of SSE protocol: EventSource API, HTTP headers (`text/event-st
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
 ## https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm
 ## https://en.wikipedia.org/wiki/Ramanujan%E2%80%93Sato_series
-Authoritative resources for JavaScript `BigInt` precision, Decimal.js arbitrary-precision arithmetic, and advanced π algorithms (Chudnovsky, Gauss-Legendre, Ramanujan–Sato). Explains mathematical derivations, convergence rates, performance trade-offs, guard digits, and error management for high-precision computations. Last updated 2024; CC BY-SA 4.0 / MIT.
+Authoritative resources for JavaScript `BigInt` precision, Decimal.js arbitrary-precision arithmetic, and advanced π algorithms (Chudnovsky, Gauss–Legendre, Ramanujan–Sato). Explains mathematical derivations, convergence rates, performance trade-offs, guard digits, and error management for high-precision computations. Last updated 2024; CC BY-SA 4.0 / MIT.
 ## CC BY-SA 4.0 / MIT
 
 # NDJSON Specification
