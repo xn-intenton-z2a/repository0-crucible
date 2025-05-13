@@ -6,6 +6,7 @@ import {
   calculatePiMonteCarlo,
   calculatePiChudnovsky,
   calculatePiRamanujanSato,
+  calculatePiGaussLegendre,
 } from "@src/lib/main.js";
 import fs from "fs";
 
@@ -65,6 +66,17 @@ describe("calculatePiRamanujanSato", () => {
   });
 });
 
+describe("calculatePiGaussLegendre", () => {
+  test.each([{ digits: 2 }, { digits: 3 }])(
+    "precision %i yields within tolerance",
+    ({ digits }) => {
+      const approx = calculatePiGaussLegendre(digits);
+      const actual = Number(Math.PI.toFixed(digits));
+      expect(Math.abs(approx - actual)).toBeLessThan(Math.pow(10, -digits));
+    }
+  );
+});
+
 describe("CLI Output", () => {
   test("logs correct π for --digits option", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -97,6 +109,13 @@ describe("CLI Output", () => {
     expect(spy).toHaveBeenCalledWith(3.142);
     spy.mockRestore();
   });
+
+  test("logs correct π for gauss-legendre algorithm", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--algorithm", "gauss-legendre", "--digits", "2"]);
+    expect(spy).toHaveBeenCalledWith(3.14);
+    spy.mockRestore();
+  });
 });
 
 describe("CLI Diagnostics", () => {
@@ -115,7 +134,15 @@ describe("CLI Diagnostics", () => {
 
   test("logs diagnostics when --diagnostics is used for ramanujan-sato", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--algorithm", "ramanujan-sato", "--level", "1", "--digits", "3", "--diagnostics"]);
+    main([
+      "--algorithm",
+      "ramanujan-sato",
+      "--level",
+      "1",
+      "--digits",
+      "3",
+      "--diagnostics",
+    ]);
     expect(spy).toHaveBeenCalled();
     const callArg = spy.mock.calls[0][0];
     expect(callArg).toHaveProperty("algorithm", "ramanujan-sato");

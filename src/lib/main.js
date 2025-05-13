@@ -96,6 +96,40 @@ export function calculatePiRamanujanSato({ level = 1, digits, errorTolerance, ma
 }
 
 /**
+ * Calculate π using the Gauss–Legendre algorithm to the specified number of decimal places.
+ * @param {number} digits - Number of decimal places.
+ * @returns {number} π approximated to the given precision.
+ */
+export function calculatePiGaussLegendre(digits) {
+  // Set precision bits based on desired digits
+  const precisionBits = Math.ceil(digits * 3.32) + 10;
+  Decimal.set({ precision: precisionBits });
+  const one = new Decimal(1);
+  let a = new Decimal(1);
+  let b = one.div(new Decimal(2).sqrt());
+  let t = one.div(new Decimal(4));
+  let p = new Decimal(1);
+  const tol = new Decimal(10).pow(-digits);
+  let iter = 0;
+  const maxIter = 50;
+  while (iter < maxIter) {
+    const aNext = a.plus(b).div(2);
+    const bNext = a.times(b).sqrt();
+    const diff = a.minus(aNext);
+    t = t.minus(p.times(diff.times(diff)));
+    p = p.times(2);
+    a = aNext;
+    b = bNext;
+    if (a.minus(b).abs().lte(tol)) {
+      break;
+    }
+    iter++;
+  }
+  const pi = a.plus(b).pow(2).div(t.times(4));
+  return Number(pi.toFixed(digits));
+}
+
+/**
  * Validate that all feature spec files reference the project mission.
  */
 function validateFeatures() {
@@ -161,7 +195,7 @@ export function createApp() {
       algorithm: z
         .preprocess(
           (val) => (typeof val === "string" ? val.toLowerCase() : val),
-          z.enum(["leibniz", "montecarlo", "chudnovsky", "ramanujan-sato"])
+          z.enum(["leibniz", "montecarlo", "chudnovsky", "ramanujan-sato", "gauss-legendre"])
         )
         .optional()
         .default("leibniz"),
@@ -230,6 +264,8 @@ export function createApp() {
     } else if (algorithm === "ramanujan-sato") {
       const tol = errorTolerance != null ? errorTolerance : Math.pow(10, -digits);
       piValue = calculatePiRamanujanSato({ level, digits, errorTolerance: tol, maxIterations });
+    } else if (algorithm === "gauss-legendre") {
+      piValue = calculatePiGaussLegendre(digits);
     }
     const durationMs = Date.now() - start;
     if (diagnostics) {
@@ -245,6 +281,8 @@ export function createApp() {
       } else if (algorithm === "ramanujan-sato") {
         output.digits = digits;
         output.level = level;
+      } else if (algorithm === "gauss-legendre") {
+        output.digits = digits;
       }
       return res.json(output);
     }
@@ -399,6 +437,7 @@ export function createApp() {
         <option value="montecarlo">montecarlo</option>
         <option value="chudnovsky">chudnovsky</option>
         <option value="ramanujan-sato">ramanujan-sato</option>
+        <option value="gauss-legendre">gauss-legendre</option>
       </select>
     </label>
     <label>Samples: <input type="number" name="samples" value="100000" min="1"/></label>
@@ -480,7 +519,7 @@ export function main(args = process.argv.slice(2)) {
       algorithm: z
         .string()
         .transform((val) => val.toLowerCase())
-        .pipe(z.enum(["leibniz", "montecarlo", "chudnovsky", "ramanujan-sato"])),
+        .pipe(z.enum(["leibniz", "montecarlo", "chudnovsky", "ramanujan-sato", "gauss-legendre"])),
       samples: z.number().int().positive(),
       diagnostics: z.boolean().optional().default(false),
       benchmark: z.boolean().optional().default(false),
@@ -534,7 +573,7 @@ export function main(args = process.argv.slice(2)) {
   const errorTolerance = opts["error-tolerance"];
 
   if (benchmark) {
-    const algorithmsToBenchmark = ["leibniz", "montecarlo", "chudnovsky", "ramanujan-sato"];
+    const algorithmsToBenchmark = ["leibniz", "montecarlo", "chudnovsky", "ramanujan-sato", "gauss-legendre"];
     const results = algorithmsToBenchmark.map((algo) => {
       const params = {};
       let resultValue;
@@ -548,10 +587,13 @@ export function main(args = process.argv.slice(2)) {
       } else if (algo === "chudnovsky") {
         params.digits = digits;
         resultValue = calculatePiChudnovsky(digits);
-      } else {
+      } else if (algo === "ramanujan-sato") {
         params.digits = digits;
         params.level = level;
         resultValue = calculatePiRamanujanSato({ level, digits, errorTolerance, maxIterations });
+      } else if (algo === "gauss-legendre") {
+        params.digits = digits;
+        resultValue = calculatePiGaussLegendre(digits);
       }
       const durationMs = Date.now() - start;
       let errorValue;
@@ -621,6 +663,8 @@ export function main(args = process.argv.slice(2)) {
     } else if (algorithm === "ramanujan-sato") {
       const tol = errorTolerance != null ? errorTolerance : Math.pow(10, -digits);
       piValue = calculatePiRamanujanSato({ level, digits, errorTolerance: tol, maxIterations });
+    } else if (algorithm === "gauss-legendre") {
+      piValue = calculatePiGaussLegendre(digits);
     }
 
     if (convDataPath) {
@@ -637,7 +681,7 @@ export function main(args = process.argv.slice(2)) {
       new Chart(ctx, {
         type: 'line',
         data: { labels, datasets: [{ label: 'Error', data, borderColor: 'blue', backgroundColor: 'lightblue' }] },
-        options: { scales: { x: { type: 'linear', title: { display: true, text: 'Index' } }, y: { beginAtZero: true, title: { display: true, text: 'Error' } } } }
+        options: { scales: { x: { type: "linear", title: { display: true, text: "Index" } }, y: { beginAtZero: true, title: { display: true, text: "Error" } } } }
       });
       const out = createCanvas(width, height).toBuffer('image/png');
       fs.writeFileSync(chartPath, out);
@@ -653,6 +697,8 @@ export function main(args = process.argv.slice(2)) {
     } else if (algorithm === "ramanujan-sato") {
       const tol = errorTolerance != null ? errorTolerance : Math.pow(10, -digits);
       piValue = calculatePiRamanujanSato({ level, digits, errorTolerance: tol, maxIterations });
+    } else if (algorithm === "gauss-legendre") {
+      piValue = calculatePiGaussLegendre(digits);
     } else {
       console.error(`Unsupported algorithm: ${algorithm}`);
       process.exit(1);
@@ -671,6 +717,7 @@ export function main(args = process.argv.slice(2)) {
     } else if (algorithm === "montecarlo") {
       diagnosticsOutput = { algorithm, samples: samplesUsed, result: piValue, durationMs, samplesUsed };
     } else {
+      // covers chudnovsky and gauss-legendre
       diagnosticsOutput = { algorithm, digits, result: piValue, durationMs };
     }
     console.log(diagnosticsOutput);

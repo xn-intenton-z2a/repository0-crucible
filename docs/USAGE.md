@@ -8,11 +8,12 @@ This tool calculates π using different algorithms and can also start an HTTP AP
 - `montecarlo`: Monte Carlo sampling method
 - `chudnovsky`: Chudnovsky algorithm for rapid convergence
 - `ramanujan-sato`: Ramanujan–Sato level-1 series for high-precision
+- `gauss-legendre`: Gauss–Legendre algorithm for rapid convergence
 
 ## Options
 
-- `--algorithm <string>`  Algorithm to use (`leibniz`, `montecarlo`, `chudnovsky`, `ramanujan-sato`)
-- `--digits <number>`     Number of decimal places for `leibniz`, `chudnovsky`, and `ramanujan-sato` (default: 5)
+- `--algorithm <string>`  Algorithm to use (`leibniz`, `montecarlo`, `chudnovsky`, `ramanujan-sato`, `gauss-legendre`)
+- `--digits <number>`     Number of decimal places for `leibniz`, `chudnovsky`, `ramanujan-sato`, and `gauss-legendre` (default: 5)
 - `--samples <number>`    Number of samples for `montecarlo` (default: 100000)
 - `--level <number>`      Level for `ramanujan-sato` algorithm (default: 1)
 - `--max-iterations <number>`  Maximum iterations for high-precision series (default: 50)
@@ -52,6 +53,13 @@ node src/lib/main.js --algorithm chudnovsky --digits 3
 
 ```bash
 node src/lib/main.js --algorithm ramanujan-sato --level 1 --digits 3
+# Outputs: 3.142
+```
+
+### Gauss–Legendre method
+
+```bash
+node src/lib/main.js --algorithm gauss-legendre --digits 3
 # Outputs: 3.142
 ```
 
@@ -107,6 +115,9 @@ curl "http://localhost:3000/pi?algorithm=chudnovsky&digits=2"
 
 curl "http://localhost:3000/pi?algorithm=ramanujan-sato&digits=3&level=1&diagnostics=true"
 # { "algorithm": "ramanujan-sato", "digits": 3, "level": 1, "result": 3.142, "durationMs": 10 }
+
+curl "http://localhost:3000/pi?algorithm=gauss-legendre&digits=2&diagnostics=true"
+# { "algorithm": "gauss-legendre", "digits": 2, "result": 3.14, "durationMs": 10 }
 ```
 
 ##### GET /pi/data
