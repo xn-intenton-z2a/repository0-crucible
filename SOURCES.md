@@ -5,19 +5,15 @@
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
 ## https://github.com/Automattic/node-canvas#readme
 ## https://axios-http.com/docs/intro
-Comprehensive guide for both hosted RESTful and in-process chart generation. QuickChart and Image-Charts offer URL-based rendering with extensive theming and export options. Chart.js, ChartjsNodeCanvas, and node-canvas cover server-side canvas setup, Docker-compatible PNG pipelines, performance tuning, and payload optimization. Axios integration details HTTP client usage for remote rendering, error handling, and fallback strategies. Critical for CLI (`--chart`) and Express (`/pi/chart`) PNG exports across diverse environments. Last updated 2024; QuickChart and Image-Charts docs CC0; Chart.js, ChartjsNodeCanvas, node-canvas, and Axios MIT licensed.
+Comprehensive guide for both hosted RESTful and in-process chart generation. QuickChart and Image-Charts offer URL-based rendering with theming, export formats, and rate limits. Chart.js, ChartjsNodeCanvas, and node-canvas demonstrate server-side canvas setup, Docker-compatible PNG pipelines, performance tuning, and payload optimization. Axios integration covers HTTP client usage for remote rendering, error handling, and fallback strategies. Essential for CLI (`--chart`) and Express (`/pi/chart`) PNG exports across environments. Last updated 2024; QuickChart and Image-Charts docs CC0; Chart.js, ChartjsNodeCanvas, node-canvas, and Axios MIT licensed.
 ## License: CC0 1.0 Universal / MIT
 
-# Express.js & Middleware
+# Express.js & Security Middleware
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
-Authoritative reference for building robust Express 4.x applications. Covers core APIs, routing conventions, middleware patterns, CORS security, and rate-limiting strategies. Essential for implementing `/pi`, `/pi/data`, `/pi/chart`, `/metrics`, and `/dashboard` endpoints with performance, security, and reliability best practices. Last updated 2024; MIT licensed.
-## License: MIT
-
-# Helmet: Express Security Middleware
 ## https://helmetjs.github.io/
-Helmet secures Express apps by setting HTTP headers such as Content-Security-Policy, X-Frame-Options, Strict-Transport-Security, and others. Provides plug-and-play middleware to mitigate common web vulnerabilities like cross-site scripting and clickjacking. Vital for hardening API and interactive dashboard endpoints in production environments. Last updated 2024; MIT licensed.
+Authoritative reference for building secure and performant Express 4.x applications. Covers core APIs, routing conventions, JSON and CORS middleware, IP-based rate limiting, and HTTP header protections (CSP, HSTS, X-Frame-Options) with Helmet. Guides application of best practices for endpoints like `/pi`, `/metrics`, and `/dashboard`, balancing security and performance. Last updated 2024; MIT licensed.
 ## License: MIT
 
 # Testing & Benchmarking Tools
@@ -25,12 +21,12 @@ Helmet secures Express apps by setting HTTP headers such as Content-Security-Pol
 ## https://github.com/visionmedia/supertest
 ## https://github.com/sindresorhus/execa
 ## https://benchmarkjs.com
-Integrated reference for fast unit, integration, and performance testing in Node.js. Vitest supports mocks, snapshots, and coverage reporting. SuperTest enables HTTP assertions for API endpoints. Execa drives CLI process testing. Benchmark.js facilitates micro-benchmark suites with statistical analysis for runtime efficiency. Crucial for validating correctness, API flows, and benchmarking CLI/HTTP performance. Last updated 2024; MIT licensed.
+Integrated reference for fast unit, integration, and performance testing in Node.js. Vitest supports mocks, snapshots, and coverage reporting; SuperTest enables HTTP assertions for API endpoints; Execa drives CLI process testing; Benchmark.js facilitates micro-benchmarks with statistical analysis for runtime efficiency. Crucial for validating correctness, API flows, and benchmarking CLI/HTTP performance. Last updated 2024; MIT licensed.
 ## License: MIT
 
 # Schema Validation with Zod
 ## https://github.com/colinhacks/zod
-In-depth TypeScript-first runtime schema validation. Explains synchronous/asynchronous parsing, refinements, custom error reporting, schema composition, and `.passthrough()`. Vital for reliable CLI and HTTP argument validation (`ApiParamsSchema`, `CLIOptionsSchema`). Last updated 2024; MIT licensed.
+In-depth TypeScript-first runtime schema validation. Explains synchronous/asynchronous parsing, refinements, custom error reporting, schema composition, and passthrough modes. Vital for reliable CLI and HTTP argument validation (`ApiParamsSchema`, `CLIOptionsSchema`). Last updated 2024; MIT licensed.
 ## License: MIT
 
 # Configuration Management & Argument Parsing
@@ -73,7 +69,7 @@ Guides Prometheus metrics (`prom-client`), structured JSON logging with Pino (`p
 ## https://nodejs.org/api/perf_hooks.html
 ## https://nodejs.org/api/stream.html
 ## https://nodejs.org/api/fs.html
-Comprehensive reference for built-in Node.js modules and advanced APIs including Worker Threads, Performance Hooks, Streams, ESM module loading, and File System promises. Fundamental for CLI I/O, parallel π computations, performance measurement, and interactive HTTP modes. Last updated 2024; Node.js Foundation.
+Comprehensive reference for built-in Node.js modules and advanced APIs including Worker Threads, Performance Hooks, Streams, ESM module loading, and File System promises. Fundamental for CLI I/O, parallel π computations planning, performance measurement, and interactive HTTP modes. Last updated 2024; Node.js Foundation.
 ## License: Node.js license
 
 # Server-Sent Events (SSE)
@@ -86,13 +82,13 @@ In-depth MDN documentation on the SSE protocol. Explains EventSource usage, `tex
 ## https://mikemcl.github.io/decimal.js/
 ## https://github.com/MikeMcl/decimal.js
 ## https://github.com/trekhleb/javascript-algorithms/blob/master/src/algorithms/numerical/pi/pi.md
-Comprehensive resources for BigInt and Decimal.js high-precision arithmetic. MDN BigInt docs describe native large-integer support; Decimal.js covers precision configuration and operations. JavaScript Algorithms details Chudnovsky, Gauss-Legendre, and Ramanujan–Sato methods with convergence analysis. Essential for implementing accurate π algorithms. Last updated 2024; CC0 / MIT licensed.
+Comprehensive resources for BigInt and Decimal.js high-precision arithmetic. MDN BigInt docs describe native large-integer support; Decimal.js covers precision configuration and operations. JavaScript Algorithms details Chudnovsky, Gauss–Legendre, and Ramanujan–Sato methods with convergence analysis. Essential for implementing accurate π algorithms. Last updated 2024; CC0 / MIT licensed.
 ## License: CC0 / MIT
 
 # ESLint & Code Quality
 ## https://eslint.org/docs/latest/user-guide/configuring
 ## https://github.com/google/eslint-config-google
-Official ESLint configuration guide and Google preset. Details rule configuration, plugin usage, performance tuning, and automated fixes in CI pipelines. Helps maintain consistent code standards and prevent regressions across the repository. Last updated 2024; MIT licensed.
+Official ESLint configuration guide and Google preset. Details rule configuration, plugin usage, performance tuning, and automated fixes in CI pipelines. Helps maintain consistent code standards and prevent regressions. Last updated 2024; MIT licensed.
 ## License: MIT
 
 # Prettier Code Formatter
@@ -104,3 +100,7 @@ Comprehensive reference for Prettier formatting. Covers language support, CLI us
 ## https://github.com/npm/write-file-atomic
 Provides atomic file write operations for Node.js, ensuring safe updates to cache files (e.g., `.pi_cache.json`) by avoiding partial writes, handling temporary files, and robust error recovery. Essential for reliable result caching under concurrent execution. Last updated 2023; MIT licensed.
 ## License: MIT
+
+# Node.js Best Practices
+## https://github.com/goldbergyoni/nodebestpractices
+Curated repository of high-value Node.js best practices covering performance optimization, scalability, security, error handling, testing, and code structure. Includes guidance on CPU-bound offloading (Worker Threads, child processes), event loop management, memory leaks, and production deployment patterns. Community-maintained and updated 2024; CC BY-SA 4.0 licensed.
