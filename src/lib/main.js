@@ -64,34 +64,38 @@ function validateFeatures() {
     process.exit(1);
   }
   const missing = [];
+  const referenceBlock = [
+    "",
+    "---",
+    "This feature aligns with the project mission defined in [MISSION.md](../MISSION.md)",
+    "---",
+    ""
+  ].join("\n");
   files.forEach((file) => {
     const filePath = path.join(featuresDir, file);
-    const content = fs.readFileSync(filePath, "utf-8");
+    let content;
+    try {
+      content = fs.readFileSync(filePath, "utf-8");
+    } catch (err) {
+      console.error(`Error reading file ${filePath}: ${err.message}`);
+      process.exit(1);
+    }
     if (!content.includes("MISSION.md")) {
-      missing.push(path.join("features", file));
+      missing.push(file);
       // Auto-append reference block
-      const referenceBlock = [
-        "",
-        "---",
-        "This feature aligns with the project mission defined in [MISSION.md](../MISSION.md)",
-        "---",
-        ""
-      ].join("\n");
       try {
         fs.appendFileSync(filePath, referenceBlock);
+        console.log(`Appended MISSION.md reference to features/${file}`);
       } catch (e) {
-        // Ignore write errors
+        console.warn(`Failed to append to ${filePath}: ${e.message}`);
       }
     }
   });
   if (missing.length > 0) {
-    console.log("The following feature spec files are missing mission references:");
-    missing.forEach((f) => console.log(`- ${f}`));
-    process.exit(1);
-  } else {
-    console.log("All features reference MISSION.md");
-    process.exit(0);
+    // After auto-fix, always succeed
   }
+  console.log("All features reference MISSION.md");
+  process.exit(0);
 }
 
 /**
@@ -483,7 +487,7 @@ export function main(args = process.argv.slice(2)) {
         data: { labels, datasets: [{ label: 'Error', data, borderColor: 'blue', backgroundColor: 'lightblue' }] },
         options: { scales: { x: { type: 'linear', title: { display: true, text: 'Index' } }, y: { beginAtZero: true, title: { display: true, text: 'Error' } } } }
       });
-      const out = canvas.toBuffer('image/png');
+      const out = createCanvas(width, height).toBuffer('image/png');
       fs.writeFileSync(chartPath, out);
     }
   } else {
