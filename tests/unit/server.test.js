@@ -59,4 +59,16 @@ describe("HTTP API Server", () => {
     expect(buf[2]).toBe(0x4e);
     expect(buf[3]).toBe(0x47);
   });
+
+  // Tests for the interactive dashboard
+  describe("Dashboard", () => {
+    test("GET /dashboard returns HTML with form, canvas, Chart.js script", async () => {
+      const res = await request(app).get("/dashboard");
+      expect(res.status).toBe(200);
+      expect(res.headers["content-type"]).toMatch(/text\/html/);
+      expect(res.text).toContain("<form");
+      expect(res.text).toContain("<canvas id=\"chart\"");
+      expect(res.text).toContain("https://cdn.jsdelivr.net/npm/chart.js");
+    });
+  });
 });
