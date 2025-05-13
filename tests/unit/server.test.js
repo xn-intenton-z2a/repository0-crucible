@@ -71,4 +71,31 @@ describe("HTTP API Server", () => {
       expect(res.text).toContain("https://cdn.jsdelivr.net/npm/chart.js");
     });
   });
+
+  // New tests for high precision algorithms
+  test("GET /pi?algorithm=chudnovsky&digits=2 returns result 3.14", async () => {
+    const res = await request(app).get("/pi?algorithm=chudnovsky&digits=2");
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ result: 3.14 });
+  });
+
+  test("GET /pi?algorithm=ramanujan-sato&digits=3&level=1 returns result 3.142", async () => {
+    const res = await request(app).get(
+      "/pi?algorithm=ramanujan-sato&digits=3&level=1"
+    );
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ result: 3.142 });
+  });
+
+  test("GET /pi?algorithm=ramanujan-sato&digits=3&level=1&diagnostics=true returns diagnostics", async () => {
+    const res = await request(app).get(
+      "/pi?algorithm=ramanujan-sato&digits=3&level=1&diagnostics=true"
+    );
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("algorithm", "ramanujan-sato");
+    expect(res.body).toHaveProperty("digits", 3);
+    expect(res.body).toHaveProperty("level", 1);
+    expect(res.body).toHaveProperty("result");
+    expect(res.body).toHaveProperty("durationMs");
+  });
 });
