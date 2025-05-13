@@ -1,6 +1,6 @@
 # repository0-crucible
 
-`@xn-intenton-z2a/repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) and also provides a CLI tool and JavaScript library for calculating π to a specified precision using different algorithms. It supports diagnostics, benchmarking, convergence data export, chart generation, feature specification validation, and an HTTP API server mode.
+`@xn-intenton-z2a/repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) and also provides a CLI tool and JavaScript library for calculating π to a specified precision using different algorithms. It supports diagnostics, benchmarking, convergence data export, chart generation, feature specification validation, an HTTP API server mode, and an interactive web dashboard.
 
 ## Repository Template
 
@@ -34,10 +34,13 @@ npm install @xn-intenton-z2a/repository0-crucible
   - `--chart <filepath>`: Saves a convergence chart (error vs. iteration/sample index) as a PNG file.
 
 * Feature Specification Validation  
-  - `--validate-features`: Validates that all feature spec files under `features/` reference `MISSION.md`; exits with code 0 on success or 1 with a list of missing references.
+  - `--validate-features`: Validates that all feature spec files under `features/` reference `MISSION.md`; exits with code 0 on success.
 
 * HTTP API Server  
   - `--serve <port>`: Starts an Express HTTP server exposing `/pi`, `/pi/data`, and `/pi/chart` endpoints for programmatic access.
+
+* Interactive Dashboard  
+  - Access the web dashboard at `/dashboard` for a browser-based UI to configure π calculation parameters and view live results and an error chart.
 
 ## CLI Usage Examples
 
@@ -83,4 +86,7 @@ curl "http://localhost:3000/pi/data?digits=2&algorithm=leibniz"
 
 # Convergence chart PNG
 curl "http://localhost:3000/pi/chart?digits=2&algorithm=leibniz" --output chart.png
+
+# Interactive Dashboard
+curl http://localhost:3000/dashboard
 ```
