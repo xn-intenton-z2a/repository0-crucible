@@ -13,7 +13,8 @@ Comprehensive guide for both hosted RESTful and in-process chart generation. Qui
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
 ## https://helmetjs.github.io/
-Authoritative reference for building secure and performant Express 4.x applications. Covers core APIs, routing conventions, JSON and CORS middleware, IP-based rate limiting, and HTTP header protections (CSP, HSTS, X-Frame-Options) with Helmet. Guides best practices for endpoints like `/pi`, `/metrics`, and `/dashboard`, balancing security and performance.
+## https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Authoritative reference for building secure and performant Express 4.x applications. Covers core APIs, routing conventions, JSON and CORS middleware, IP-based rate limiting (`express-rate-limit`), HTTP header protections (CSP, HSTS, X-Frame-Options) with Helmet, and standardized 429 Too Many Requests responses. Guides best practices for endpoints like `/pi`, `/metrics`, and `/dashboard`, balancing security, usability, and performance.
 ## License: MIT
 
 # Testing & Benchmarking Tools
@@ -39,7 +40,8 @@ Demonstrates layered configuration: environment variables via dotenv, hierarchic
 # Data Serialization & Templating
 ## https://github.com/nodeca/js-yaml#readme
 ## https://ejs.co/#docs
-Combined guide to YAML parsing/dumping (`load`, `safeLoad`, `dump`), custom schemas, and Embedded JavaScript Templates (EJS) for HTML report and dashboard generation. Explains YAML type definitions, security considerations, EJS syntax, partials, filters, caching, and compile-time options. Supports multi-format output and dynamic HTML assembly.
+## https://tools.ietf.org/html/rfc4180
+Combined guide to YAML parsing/dumping (`load`, `safeLoad`, `dump`), Embedded JavaScript Templates (EJS) for dynamic HTML assembly, and the CSV standard (RFC 4180) for reliable CSV export. Explains YAML type definitions, security considerations, EJS syntax (partials, filters, caching), and CSV formatting guidelines (escaping, line breaks, header rows). Supports multi-format output to fuel both HTTP CSV endpoints and CLI CSV export features.
 ## License: MIT
 
 # OpenAPI & API Documentation
@@ -55,7 +57,8 @@ Defines the OpenAPI 3.1 specification and interactive Swagger UI integration. Gu
 ## https://github.com/pinojs/pino-pretty
 ## https://github.com/pinojs/pino-http#readme
 ## https://opentelemetry.io/docs/js/
-Guides Prometheus metrics (`prom-client`), structured JSON logging with Pino (`pino`, `pino-pretty`, `pino-http`), and OpenTelemetry instrumentation in Node.js/Express. Covers SDK setup, exporters (OTLP, Prometheus), tracing, metrics pipelines, and developer-friendly log formatting. Essential for end-to-end observability in both CLI and server contexts.
+## https://prometheus.io/docs/instrumenting/exposition_formats/
+Guides Prometheus metrics (`prom-client`), structured JSON logging with Pino (`pino`, `pino-pretty`, `pino-http`), and OpenTelemetry instrumentation in Node.js/Express. Covers SDK setup, exporters (OTLP, Prometheus), tracing, metrics pipelines, exposition format details for scraping, and developer-friendly log formatting. Essential for end-to-end observability in both CLI and server contexts.
 ## License: MIT / Apache-2.0
 
 # Server-Sent Events (SSE)
@@ -88,7 +91,8 @@ Authoritative MDN references for Fetch, URLSearchParams, and FormData. Explains 
 ## https://nodejs.org/api/
 ## https://nodejs.dev/learn/nodejs-streams
 ## https://nodejs.org/api/esm.html
-Comprehensive reference for built-in Node.js modules including Streams (Readable, Writable, Transform), pipeline patterns, Worker Threads, Performance Hooks, and ESM module loading. Covers asynchronous file system promises, error handling, backpressure management, and module import/export semantics. Foundational for CLI I/O, caching, parallel computations, and server bundling.
+## https://nodejs.org/api/worker_threads.html
+Comprehensive reference for built-in Node.js modules including Streams (Readable, Writable, Transform), Worker Threads for offloading CPU-intensive tasks, Performance Hooks, and ESM module loading. Covers asynchronous file system promises, error handling, backpressure management, and module import/export semantics. Foundational for CLI I/O, caching, parallel computations, and server bundling.
 ## License: Node.js license / CC BY 4.0
 
 # Atomic File Writes & File Operations
