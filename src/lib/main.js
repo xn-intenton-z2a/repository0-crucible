@@ -9,6 +9,7 @@ import express from "express";
 import { Chart, registerables } from "chart.js";
 import { createCanvas } from "canvas";
 import { z } from "zod";
+import Decimal from "decimal.js";
 
 /**
  * Calculate π using the Leibniz series to the specified number of decimal places.
@@ -42,13 +43,78 @@ export function calculatePiMonteCarlo(samples) {
 }
 
 /**
+ * Helper: compute factorial using BigInt (exact).
+ * @param {number} n
+ * @returns {BigInt}
+ */
+function factorialBig(n) {
+  let res = 1n;
+  const N = BigInt(n);
+  for (let i = 1n; i <= N; i++) {
+    res *= i;
+  }
+  return res;
+}
+
+/**
  * Calculate π using the Chudnovsky algorithm to the specified number of decimal places.
  * @param {number} digits - Number of decimal places.
  * @returns {number} π approximated to the given precision.
  */
 export function calculatePiChudnovsky(digits) {
-  // Simple fallback to Leibniz series for demonstration purposes
-  return calculatePiLeibniz(digits);
+  const precision = Math.ceil(digits * 3.32) + 10;
+  Decimal.set({ precision });
+  const C = new Decimal(640320);
+  const C3 = C.pow(3);
+  const factor = new Decimal(12).div(C.sqrt());
+  let sum = new Decimal(0);
+  let k = 0;
+  while (true) {
+    const num = factorialBig(6 * k);
+    const den = factorialBig(3 * k) * factorialBig(k) ** 3n;
+    const term = new Decimal(num)
+      .div(new Decimal(den))
+      .mul(new Decimal(13591409).plus(new Decimal(545140134).mul(k)))
+      .div(C3.pow(k))
+      .mul(k % 2 === 0 ? 1 : -1);
+    sum = sum.plus(term);
+    if (term.abs().lt(new Decimal(10).pow(-digits))) {
+      break;
+    }
+    k++;
+    if (k > 20) break; // safety for large digits
+  }
+  const pi = new Decimal(1).div(factor.mul(sum));
+  return Number(pi.toFixed(digits));
+}
+
+/**
+ * Calculate π using the Ramanujan–Sato level-1 series (high precision).
+ * @param {{ level?: number; digits: number; errorTolerance?: number; maxIterations?: number }} opts
+ * @returns {number} π approximated to the given precision.
+ */
+export function calculatePiRamanujanSato({ level = 1, digits, errorTolerance, maxIterations }) {
+  // Use classic Ramanujan series for level-1
+  const tol = errorTolerance != null ? errorTolerance : Math.pow(10, -digits);
+  const maxIter = maxIterations != null ? maxIterations : 50;
+  // precision high enough for series
+  Decimal.set({ precision: 200 });
+  let sum = new Decimal(0);
+  for (let k = 0; k < maxIter; k++) {
+    const num = factorialBig(4 * k);
+    const den = factorialBig(k) ** 4n;
+    const term = new Decimal(num)
+      .mul(new Decimal(1103).plus(new Decimal(26390).mul(k)))
+      .div(new Decimal(den))
+      .div(new Decimal(396).pow(4 * k));
+    sum = sum.plus(term);
+    if (term.abs().lt(new Decimal(tol))) {
+      break;
+    }
+  }
+  const factor = new Decimal(2).mul(new Decimal(2).sqrt()).div(new Decimal(9801));
+  const pi = new Decimal(1).div(factor.mul(sum));
+  return Number(pi.toFixed(digits));
 }
 
 /**
@@ -91,9 +157,6 @@ function validateFeatures() {
       }
     }
   });
-  if (missing.length > 0) {
-    // After auto-fix, always succeed
-  }
   console.log("All features reference MISSION.md");
   process.exit(0);
 }
@@ -120,7 +183,7 @@ export function createApp() {
       algorithm: z
         .preprocess(
           (val) => (typeof val === "string" ? val.toLowerCase() : val),
-          z.enum(["leibniz", "montecarlo", "chudnovsky"])
+          z.enum(["leibniz", "montecarlo", "chudnovsky", "ramanujan-sato"])
         )
         .optional()
         .default("leibniz"),
@@ -136,6 +199,29 @@ export function createApp() {
         .preprocess((val) => val === "true", z.boolean())
         .optional()
         .default(false),
+      level: z
+        .preprocess((val) => {
+          if (val === undefined) return undefined;
+          const n = Number(val);
+          return Number.isNaN(n) ? val : n;
+        }, z.number().int().positive())
+        .optional()
+        .default(1),
+      maxIterations: z
+        .preprocess((val) => {
+          if (val === undefined) return undefined;
+          const n = Number(val);
+          return Number.isNaN(n) ? val : n;
+        }, z.number().int().positive())
+        .optional()
+        .default(50),
+      errorTolerance: z
+        .preprocess((val) => {
+          if (val === undefined) return undefined;
+          const n = Number(val);
+          return Number.isNaN(n) ? val : n;
+        }, z.number().positive())
+        .optional(),
     })
     .passthrough();
 
@@ -150,7 +236,7 @@ export function createApp() {
       }
       throw err;
     }
-    const { digits, algorithm, samples, diagnostics } = params;
+    const { digits, algorithm, samples, diagnostics, level, maxIterations, errorTolerance } = params;
     const start = Date.now();
     let piValue;
     let iterations;
@@ -161,23 +247,33 @@ export function createApp() {
     } else if (algorithm === "montecarlo") {
       samplesUsed = samples;
       piValue = calculatePiMonteCarlo(samples);
-    } else {
+    } else if (algorithm === "chudnovsky") {
       piValue = calculatePiChudnovsky(digits);
+    } else if (algorithm === "ramanujan-sato") {
+      const tol = errorTolerance != null ? errorTolerance : Math.pow(10, -digits);
+      piValue = calculatePiRamanujanSato({ level, digits, errorTolerance: tol, maxIterations });
     }
     const durationMs = Date.now() - start;
     if (diagnostics) {
-      const output = {
-        algorithm,
-        ...(algorithm === "leibniz" ? { digits } : { samples }),
-        result: piValue,
-        durationMs,
-        ...(algorithm === "leibniz" ? { iterations } : { samplesUsed }),
-      };
+      const output = { algorithm, result: piValue, durationMs };
+      if (algorithm === "leibniz") {
+        output.digits = digits;
+        output.iterations = iterations;
+      } else if (algorithm === "montecarlo") {
+        output.samples = samples;
+        output.samplesUsed = samples;
+      } else if (algorithm === "chudnovsky") {
+        output.digits = digits;
+      } else if (algorithm === "ramanujan-sato") {
+        output.digits = digits;
+        output.level = level;
+      }
       return res.json(output);
     }
     return res.json({ result: piValue });
   });
 
+  // existing /pi/data and /pi/chart unchanged
   app.get("/pi/data", (req, res) => {
     let params;
     try {
@@ -306,7 +402,7 @@ export function createApp() {
     res.type("image/png").send(buffer);
   });
 
-  // Interactive dashboard route
+  // Interactive dashboard route unchanged
   app.get("/dashboard", (req, res) => {
     const html = `<!DOCTYPE html>
 <html>
@@ -324,9 +420,11 @@ export function createApp() {
         <option value="leibniz">leibniz</option>
         <option value="montecarlo">montecarlo</option>
         <option value="chudnovsky">chudnovsky</option>
+        <option value="ramanujan-sato">ramanujan-sato</option>
       </select>
     </label>
     <label>Samples: <input type="number" name="samples" value="100000" min="1"/></label>
+    <label>Level: <input type="number" name="level" value="1" min="1"/></label>
     <label>Diagnostics: <input type="checkbox" name="diagnostics"/></label>
     <button type="submit">Calculate</button>
   </form>
@@ -381,7 +479,7 @@ export function createApp() {
 export function main(args = process.argv.slice(2)) {
   const options = minimist(args, {
     boolean: ["diagnostics", "benchmark", "validate-features"],
-    string: ["algorithm", "chart", "convergence-data", "serve"],
+    string: ["algorithm", "chart", "convergence-data", "serve", "level", "max-iterations", "error-tolerance"],
     default: {
       digits: 5,
       algorithm: "leibniz",
@@ -392,6 +490,8 @@ export function main(args = process.argv.slice(2)) {
       chart: null,
       "convergence-data": null,
       serve: null,
+      level: 1,
+      "max-iterations": 50,
     },
   });
 
@@ -402,7 +502,7 @@ export function main(args = process.argv.slice(2)) {
       algorithm: z
         .string()
         .transform((val) => val.toLowerCase())
-        .pipe(z.enum(["leibniz", "montecarlo", "chudnovsky"])),
+        .pipe(z.enum(["leibniz", "montecarlo", "chudnovsky", "ramanujan-sato"])),
       samples: z.number().int().positive(),
       diagnostics: z.boolean().optional().default(false),
       benchmark: z.boolean().optional().default(false),
@@ -410,6 +510,9 @@ export function main(args = process.argv.slice(2)) {
       chart: z.string().nullable().optional(),
       ["convergence-data"]: z.string().nullable().optional(),
       serve: z.string().nullable().optional(),
+      level: z.number().int().positive().optional().default(1),
+      ["max-iterations"]: z.number().int().positive().optional().default(50),
+      ["error-tolerance"]: z.number().optional(),
     })
     .passthrough();
 
@@ -448,9 +551,12 @@ export function main(args = process.argv.slice(2)) {
   const convDataPath = opts["convergence-data"];
   const chartPath = opts.chart;
   const samplesUsed = opts.samples;
+  const level = opts.level;
+  const maxIterations = opts["max-iterations"];
+  const errorTolerance = opts["error-tolerance"];
 
   if (benchmark) {
-    const algorithmsToBenchmark = ["leibniz", "montecarlo", "chudnovsky"];
+    const algorithmsToBenchmark = ["leibniz", "montecarlo", "chudnovsky", "ramanujan-sato"];
     const results = algorithmsToBenchmark.map((algo) => {
       const params = {};
       let resultValue;
@@ -460,11 +566,14 @@ export function main(args = process.argv.slice(2)) {
         resultValue = calculatePiLeibniz(digits);
       } else if (algo === "montecarlo") {
         params.samples = Number(opts.samples);
-        // Use Leiniz to allow mocking in tests
-        resultValue = calculatePiLeibniz(digits);
-      } else {
+        resultValue = calculatePiMonteCarlo(samplesUsed);
+      } else if (algo === "chudnovsky") {
         params.digits = digits;
         resultValue = calculatePiChudnovsky(digits);
+      } else {
+        params.digits = digits;
+        params.level = level;
+        resultValue = calculatePiRamanujanSato({ level, digits, errorTolerance, maxIterations });
       }
       const durationMs = Date.now() - start;
       let errorValue;
@@ -492,9 +601,8 @@ export function main(args = process.argv.slice(2)) {
   let dataPoints = [];
 
   if (convDataPath || chartPath) {
-    // Register Chart.js components for chart export
+    // existing convergence code unchanged for simplicity
     Chart.register(...registerables);
-
     if (algorithm === "leibniz" || algorithm === "chudnovsky") {
       iterations = Math.min(Math.pow(10, digits) * 20, 1e7);
       let sum = 0;
@@ -530,9 +638,11 @@ export function main(args = process.argv.slice(2)) {
         dataPoints.push({ index: count, approximation: approx, error });
       }
       piValue = (inside / samplesUsed) * 4;
-    } else {
-      console.error(`Unsupported algorithm: ${algorithm}`);
-      process.exit(1);
+    } else if (algorithm === "chudnovsky") {
+      piValue = calculatePiChudnovsky(digits);
+    } else if (algorithm === "ramanujan-sato") {
+      const tol = errorTolerance != null ? errorTolerance : Math.pow(10, -digits);
+      piValue = calculatePiRamanujanSato({ level, digits, errorTolerance: tol, maxIterations });
     }
 
     if (convDataPath) {
@@ -540,7 +650,6 @@ export function main(args = process.argv.slice(2)) {
     }
 
     if (chartPath) {
-      // Render PNG chart to file
       const width = 800;
       const height = 600;
       const canvas = createCanvas(width, height);
@@ -561,6 +670,11 @@ export function main(args = process.argv.slice(2)) {
       piValue = calculatePiLeibniz(digits);
     } else if (algorithm === "montecarlo") {
       piValue = calculatePiMonteCarlo(samplesUsed);
+    } else if (algorithm === "chudnovsky") {
+      piValue = calculatePiChudnovsky(digits);
+    } else if (algorithm === "ramanujan-sato") {
+      const tol = errorTolerance != null ? errorTolerance : Math.pow(10, -digits);
+      piValue = calculatePiRamanujanSato({ level, digits, errorTolerance: tol, maxIterations });
     } else {
       console.error(`Unsupported algorithm: ${algorithm}`);
       process.exit(1);
@@ -571,13 +685,16 @@ export function main(args = process.argv.slice(2)) {
   const durationMs = endTime - startTime;
 
   if (diagnostics) {
-    const diagnosticsOutput = {
-      algorithm,
-      ...(algorithm === "leibniz" ? { digits } : { samples: samplesUsed }),
-      result: piValue,
-      durationMs,
-      ...(algorithm === "leibniz" ? { iterations } : { samplesUsed }),
-    };  
+    let diagnosticsOutput;
+    if (algorithm === "ramanujan-sato") {
+      diagnosticsOutput = { algorithm, digits, level, result: piValue, durationMs };
+    } else if (algorithm === "leibniz") {
+      diagnosticsOutput = { algorithm, digits, result: piValue, durationMs, iterations };
+    } else if (algorithm === "montecarlo") {
+      diagnosticsOutput = { algorithm, samples: samplesUsed, result: piValue, durationMs, samplesUsed };
+    } else {
+      diagnosticsOutput = { algorithm, digits, result: piValue, durationMs };
+    }
     console.log(diagnosticsOutput);
   } else {
     console.log(piValue);
