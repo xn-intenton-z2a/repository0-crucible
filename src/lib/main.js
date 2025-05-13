@@ -306,6 +306,71 @@ export function createApp() {
     res.type("image/png").send(buffer);
   });
 
+  // Interactive dashboard route
+  app.get("/dashboard", (req, res) => {
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>π Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>π Calculation Dashboard</h1>
+  <form id="pi-form">
+    <label>Digits: <input type="number" name="digits" value="5" min="0"/></label>
+    <label>Algorithm:
+      <select name="algorithm">
+        <option value="leibniz">leibniz</option>
+        <option value="montecarlo">montecarlo</option>
+        <option value="chudnovsky">chudnovsky</option>
+      </select>
+    </label>
+    <label>Samples: <input type="number" name="samples" value="100000" min="1"/></label>
+    <label>Diagnostics: <input type="checkbox" name="diagnostics"/></label>
+    <button type="submit">Calculate</button>
+  </form>
+  <div id="result"></div>
+  <canvas id="chart"></canvas>
+  <script>
+    (function(){
+      const form = document.getElementById('pi-form');
+      const resultDiv = document.getElementById('result');
+      const ctx = document.getElementById('chart').getContext('2d');
+      let chart;
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const params = new URLSearchParams();
+        for (const [key,value] of formData.entries()){
+          if(key==='diagnostics'){
+            if(formData.get('diagnostics')) params.append(key,'true');
+          } else {
+            params.append(key,value);
+          }
+        }
+        const res = await fetch('/pi?'+params.toString());
+        const data = await res.json();
+        resultDiv.textContent = JSON.stringify(data);
+        const dataRes = await fetch('/pi/data?'+params.toString());
+        const dataPoints = await dataRes.json();
+        const labels = dataPoints.map(p=>p.index);
+        const errors = dataPoints.map(p=>p.error);
+        if(chart){
+          chart.data.labels=labels;
+          chart.data.datasets[0].data=errors;
+          chart.update();
+        } else {
+          chart = new Chart(ctx,{ type:'line', data:{ labels, datasets:[{ label:'Error', data:errors, borderColor:'blue', backgroundColor:'lightblue' }]}, options:{ scales:{ x:{ type:'linear', title:{display:true,text:'Index'}}, y:{ beginAtZero:true, title:{display:true,text:'Error'} } } } });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>`;
+    res.type("html").send(html);
+  });
+
   return app;
 }
 

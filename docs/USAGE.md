@@ -1,6 +1,6 @@
 # CLI Usage
 
-This tool calculates π using different algorithms and can also start an HTTP API server.
+This tool calculates π using different algorithms and can also start an HTTP API server or serve an interactive dashboard.
 
 ## Algorithms
 
@@ -19,6 +19,7 @@ This tool calculates π using different algorithms and can also start an HTTP AP
 - `--convergence-data <filepath>`  File path where convergence data JSON is saved
 - `--chart <filepath>`     File path where convergence chart PNG is saved
 - `--serve <port>`         Starts an HTTP API server on the specified port and exposes REST endpoints
+- `--dashboard`            Serves an interactive web dashboard at `/dashboard`
 
 ## CLI Examples
 
@@ -80,12 +81,6 @@ curl http://localhost:3000/pi
 # { "result": 3.14159 }
 ```
 
-With query parameters:
-
-```bash
-curl "http://localhost:3000/pi?digits=3&algorithm=montecarlo&samples=1000&diagnostics=true"
-```
-
 ##### GET /pi/data
 
 ```bash
@@ -96,6 +91,14 @@ curl "http://localhost:3000/pi/data?digits=2&algorithm=leibniz"
 
 ```bash
 curl "http://localhost:3000/pi/chart?digits=2&algorithm=leibniz" --output chart.png
+```
+
+##### GET /dashboard
+
+Returns an interactive HTML dashboard page allowing users to input π calculation parameters and view live results and error chart.
+
+```bash
+curl http://localhost:3000/dashboard
 ```
 
 ## Input Validation Errors
