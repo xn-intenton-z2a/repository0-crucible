@@ -62,5 +62,17 @@ describe("CLI Output", () => {
   });
 });
 
-// New diagnostics tests
-...
+describe("CLI Diagnostics", () => {
+  test("logs diagnostics when --diagnostics is used", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--digits", "5", "--diagnostics"]);
+    expect(spy).toHaveBeenCalled();
+    const callArg = spy.mock.calls[0][0];
+    expect(callArg).toHaveProperty("algorithm", "leibniz");
+    expect(callArg).toHaveProperty("digits", 5);
+    expect(callArg).toHaveProperty("result", 3.14159);
+    expect(callArg).toHaveProperty("iterations", expect.any(Number));
+    expect(callArg).toHaveProperty("durationMs", expect.any(Number));
+    spy.mockRestore();
+  });
+});
