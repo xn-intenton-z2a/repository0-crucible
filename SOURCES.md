@@ -100,3 +100,8 @@ Documented utilities for safe and atomic saving of files, preventing data corrup
 ## https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 Official reference for GitHub Actions workflow syntax, events, jobs, and steps. Details reusable workflows, secrets management, environment variables, cache strategies, and matrix builds. Essential for CI/CD automation and integrating external workflows like agentic-lib in GitHub repository templates.
 ## License: CC BY-SA 4.0
+
+# Node.js Performance & Profiling
+## https://nodejs.org/en/docs/guides/simple-profiling/
+Guide on profiling and performance tuning in Node.js. Covers the built-in inspector, CPU and heap profiling, flamegraphs, diagnosing bottlenecks, and memory leak detection. Provides actionable steps to optimize π calculation loops, server request handling, and canvas rendering by identifying hotspots and tuning V8 settings.
+## License: CC BY-SA 3.0
