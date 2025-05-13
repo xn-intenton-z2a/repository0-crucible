@@ -20,12 +20,16 @@ npm install @xn-intenton-z2a/repository0-crucible
 ## Features
 
 * π Calculation  
-  - `--digits <number>`: Number of decimal places (default: 5).  
-  - `--algorithm <string>`: Calculation method (`leibniz`, `montecarlo`, `chudnovsky`).  
-  - `--diagnostics`: Outputs a JSON object with execution diagnostics (algorithm, parameters, result, durationMs, iterations/samplesUsed).
+  - `--algorithm <string>`: Calculation method (`leibniz`, `montecarlo`, `chudnovsky`, `ramanujan-sato`, `gauss-legendre`) (default: `leibniz`).  
+  - `--digits <number>`: Number of decimal places (for digit-based algorithms) (default: `5`).  
+  - `--samples <number>`: Number of random samples (for Monte Carlo) (default: `100000`).  
+  - `--level <number>`: Level for Ramanujan–Sato series (default: `1`).  
+  - `--max-iterations <number>`: Maximum iterations for high-precision series (default: `50`).  
+  - `--error-tolerance <number>`: Error tolerance threshold for series termination.  
+  - `--diagnostics`: Outputs a JSON object with execution diagnostics (`algorithm`, parameters, `result`, `durationMs`, `iterations`/`samplesUsed`).
 
 * Benchmark  
-  - `--benchmark`: Runs all supported algorithms and outputs a consolidated JSON benchmark report including result, durationMs, and error.
+  - `--benchmark`: Runs all supported algorithms and outputs a consolidated JSON benchmark report including algorithm, input parameters, result, durationMs, and error.
 
 * Convergence Data Export  
   - `--convergence-data <filepath>`: Saves raw convergence data (approximation and error at each step) to the specified JSON file.
@@ -34,13 +38,13 @@ npm install @xn-intenton-z2a/repository0-crucible
   - `--chart <filepath>`: Saves a convergence chart (error vs. iteration/sample index) as a PNG file.
 
 * Feature Specification Validation  
-  - `--validate-features`: Validates that all feature spec files under `features/` reference `MISSION.md`; exits with code 0 on success.
+  - `--validate-features`: Validates that all feature spec files under `features/` reference `MISSION.md` and exits with status 0.
 
 * HTTP API Server  
-  - `--serve <port>`: Starts an Express HTTP server exposing `/pi`, `/pi/data`, and `/pi/chart` endpoints for programmatic access.
+  - `--serve <port>`: Starts an Express HTTP server exposing `/pi`, `/pi/data`, `/pi/chart`, and `/dashboard` endpoints for programmatic and interactive use.
 
 * Interactive Dashboard  
-  - Access the web dashboard at `/dashboard` for a browser-based UI to configure π calculation parameters and view live results and an error chart.
+  - Access the web dashboard at `http://localhost:<port>/dashboard` for a browser-based UI to configure π calculation parameters and view live results and an error chart.
 
 ## CLI Usage Examples
 
@@ -50,6 +54,12 @@ node src/lib/main.js --digits 10
 
 # Monte Carlo sampling with diagnostics
 node src/lib/main.js --algorithm montecarlo --samples 100000 --diagnostics
+
+# Ramanujan–Sato series: level 1, 3 digits
+node src/lib/main.js --algorithm ramanujan-sato --level 1 --digits 3
+
+# Gauss–Legendre algorithm: 4 digits
+node src/lib/main.js --algorithm gauss-legendre --digits 4
 
 # Benchmark all algorithms with 5-digit precision
 node src/lib/main.js --benchmark --digits 5
@@ -62,7 +72,7 @@ node src/lib/main.js --digits 5 --chart chart.png
 
 # Validate feature specifications
 node src/lib/main.js --validate-features
-```
+``` 
 
 ## HTTP API Server
 
@@ -77,6 +87,15 @@ Example REST calls:
 ```bash
 # Basic π calculation
 curl http://localhost:3000/pi
+
+# Chudnovsky for 2 digits
+curl "http://localhost:3000/pi?algorithm=chudnovsky&digits=2"
+
+# Ramanujan–Sato with diagnostics
+curl "http://localhost:3000/pi?algorithm=ramanujan-sato&digits=3&level=1&diagnostics=true"
+
+# Gauss–Legendre for 2 digits
+curl "http://localhost:3000/pi?algorithm=gauss-legendre&digits=2"
 
 # Monte Carlo with diagnostics
 curl "http://localhost:3000/pi?digits=3&algorithm=montecarlo&samples=1000&diagnostics=true"
