@@ -98,4 +98,22 @@ describe("HTTP API Server", () => {
     expect(res.body).toHaveProperty("result");
     expect(res.body).toHaveProperty("durationMs");
   });
+
+  // New tests for Gauss-Legendre algorithm
+  test("GET /pi?algorithm=gauss-legendre&digits=2 returns result 3.14", async () => {
+    const res = await request(app).get("/pi?algorithm=gauss-legendre&digits=2");
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ result: 3.14 });
+  });
+
+  test("GET /pi?algorithm=gauss-legendre&digits=3&diagnostics=true returns diagnostics", async () => {
+    const res = await request(app).get(
+      "/pi?algorithm=gauss-legendre&digits=3&diagnostics=true"
+    );
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("algorithm", "gauss-legendre");
+    expect(res.body).toHaveProperty("digits", 3);
+    expect(res.body).toHaveProperty("result");
+    expect(res.body).toHaveProperty("durationMs");
+  });
 });
