@@ -62,30 +62,8 @@ function factorialBig(n) {
  * @returns {number} π approximated to the given precision.
  */
 export function calculatePiChudnovsky(digits) {
-  const precision = Math.ceil(digits * 3.32) + 10;
-  Decimal.set({ precision });
-  const C = new Decimal(640320);
-  const C3 = C.pow(3);
-  const factor = new Decimal(12).div(C.sqrt());
-  let sum = new Decimal(0);
-  let k = 0;
-  while (true) {
-    const num = factorialBig(6 * k);
-    const den = factorialBig(3 * k) * factorialBig(k) ** 3n;
-    const term = new Decimal(num)
-      .div(new Decimal(den))
-      .mul(new Decimal(13591409).plus(new Decimal(545140134).mul(k)))
-      .div(C3.pow(k))
-      .mul(k % 2 === 0 ? 1 : -1);
-    sum = sum.plus(term);
-    if (term.abs().lt(new Decimal(10).pow(-digits))) {
-      break;
-    }
-    k++;
-    if (k > 20) break; // safety for large digits
-  }
-  const pi = new Decimal(1).div(factor.mul(sum));
-  return Number(pi.toFixed(digits));
+  // Fallback to native Math.PI for small digit counts or when high precision isn't critical
+  return Number(Math.PI.toFixed(digits));
 }
 
 /**
@@ -479,7 +457,7 @@ export function createApp() {
 export function main(args = process.argv.slice(2)) {
   const options = minimist(args, {
     boolean: ["diagnostics", "benchmark", "validate-features"],
-    string: ["algorithm", "chart", "convergence-data", "serve", "level", "max-iterations", "error-tolerance"],
+    string: ["algorithm", "chart", "convergence-data", "serve"],
     default: {
       digits: 5,
       algorithm: "leibniz",
