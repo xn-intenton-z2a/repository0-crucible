@@ -97,7 +97,8 @@ Comprehensive reference for built-in Node.js modules including Streams (Readable
 
 # Atomic File Writes & File Operations
 ## https://github.com/npm/write-file-atomic
-Documented utilities for safe and atomic saving of files, preventing data corruption during concurrent writes. Explains both async and sync APIs, temporary file strategies, file descriptor handling, and fallback behaviors. Crucial for implementing reliable file-based cache persistence (`.pi_cache.json`) with atomic write guarantees.
+## https://github.com/moxystudio/proper-lockfile#readme
+Combined utilities for safe atomic saving of files and cross-process locking to prevent data corruption and data races during concurrent writes. Explains both write-file-atomic's temporary file renaming strategy and proper-lockfile's lockfile acquisition, retry strategies, stale lock detection, and fallback behaviors. Crucial for implementing reliable file-based cache persistence (`.pi_cache.json`) with atomic write guarantees across processes.
 ## License: MIT
 
 # GitHub Actions & Workflow Configuration
