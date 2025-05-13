@@ -1,43 +1,34 @@
 # Overview
 
-Provide an interactive Swagger UI and a machine-readable OpenAPI specification for all HTTP API endpoints. Developers and users can explore supported routes, parameters, responses, and example payloads. This feature improves discoverability and integration with tooling for both CLI server mode and third-party clients.
+Enhance the OpenAPI documentation feature to include a new server-sent events streaming endpoint `/pi/stream`. Clients can subscribe to real-time approximation updates and error metrics as SSE events, improving integration and live visualizations without polling.
 
 # Implementation
 
 1. Dependencies
-   • Add swagger-ui-express and swagger-jsdoc to package.json dependencies.  
+   • No new dependencies; reuse Express and existing calculation functions.
 
-2. OpenAPI Definition
-   • Create a JSDoc or inline JavaScript object defining OpenAPI info: title, version, description, servers.  
-   • Define paths for GET /pi, GET /pi/data, GET /pi/chart, GET /dashboard, GET /benchmark, GET /pi/stream.  
-   • For each operation specify parameters, schemas for request and response, content types, and examples.  
+2. OpenAPI Specification
+   • Add a new path `/pi/stream` with `get` operation.
+   • Define `text/event-stream` as response content type.
+   • Schema for each event: `{ index: number, approximation: number, error: number }`.
+   • Include examples of SSE frames: `data: {...}\n\n`.
 
-3. Middleware Setup in createApp()
-   • Import swaggerUi from swagger-ui-express and swaggerJsdoc from swagger-jsdoc.  
-   • Configure swaggerJsdoc with options pointing at source file comments or an inline spec object.  
-   • Generate the OpenAPI specification object at server startup.  
-   • Mount a JSON endpoint: app.get('/openapi.json', (req,res) => res.json(openapiSpec)).  
-   • Mount Swagger UI: app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec)).  
+3. Middleware Setup in `createApp()`
+   • Register `app.get('/pi/stream', handler)` before other routes.
+   • In handler:
+     - Set `res.setHeader('Content-Type','text/event-stream')` and `res.setHeader('Cache-Control','no-cache')`.
+     - Parse query params via `ApiParamsSchema`.
+     - For iteration-based algorithms (`leibniz`, `chudnovsky`): stream data points at calculated interval of iterations up to max points.
+     - For sampling (`montecarlo`): process in batches and stream after each batch.
+     - Compute approximation and error and send SSE event: `res.write(`data: ${JSON.stringify(event)}\n\n`)`.
+     - Close connection with `res.write('event: end\n\n')` then `res.end()`.
 
-4. Error Handling
-   • On spec generation errors log a warning and fall back to a minimal spec.  
-   • Serve 404 if /docs or /openapi.json requests fail for any reason.
+4. Testing
+   • Unit test in `tests/unit/server.test.js`:
+     - Mock SSE response by inspecting `res.write` calls.
+     - Send GET `/pi/stream?digits=2&algorithm=leibniz&samples=1000` and assert status 200, headers, and streamed JSON events.
+   • Integration test with `supertest`: consume stream and accumulate chunks, parse SSE messages, and verify at least one event with `approximation` and `error` fields.
 
-# Testing
-
-1. Unit Tests (tests/unit/server.test.js)
-   • GET /openapi.json returns status 200, content-type application/json, and top-level property openapi equal to "3.0.0".  
-   • The JSON body has a paths object containing keys for /pi and /benchmark.  
-   • GET /docs responds with status 301 or 200 and serves HTML containing swagger-ui assets.  
-
-2. Integration Tests (optional)
-   • Use supertest to GET /docs and assert presence of <title>Swagger UI and a script tag for swagger-ui-bundle.  
-
-# Documentation
-
-1. docs/USAGE.md
-   • Under REST Endpoints add entries for **GET /openapi.json** and **GET /docs** with examples.  
-
-2. README.md
-   • Under Features add **API Documentation** describing automatic OpenAPI generation, JSON spec endpoint, and interactive Swagger UI.  
-
+5. Documentation
+   • docs/USAGE.md: under **REST Endpoints**, add **GET /pi/stream** with description, usage example, and sample SSE output.
+   • README.md: under **Features** add **Server-Sent Events Streaming** describing real-time SSE support and how to subscribe (e.g., using `curl --no-buffer`).
