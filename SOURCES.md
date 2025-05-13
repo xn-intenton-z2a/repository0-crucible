@@ -5,14 +5,14 @@
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
 ## https://github.com/Automattic/node-canvas#readme
 ## https://axios-http.com/docs/intro
-Comprehensive guide combining external RESTful chart generation services (QuickChart.io, Image-Charts) with on-server rendering through Chart.js and node-canvas. Covers JSON schema for chart definitions, URL-based parameter conventions, theming, HTTP endpoints, Canvas context setup, drawing pipelines, PNG export, and HTTP client patterns (Axios) for remote chart fetch. Practical examples demonstrate CLI `--chart` and Express `/pi/chart` modes, optimizing image size, performance, and fallback strategies between local and external rendering. Last updated 2024; QuickChart and Image-Charts docs are CC0 1.0; Chart.js, ChartjsNodeCanvas, node-canvas, and Axios are MIT licensed.
+Comprehensive guide combining hosted RESTful chart generation (QuickChart, Image-Charts) with in-process rendering via Chart.js and node-canvas. Covers chart JSON schema, URL parameter conventions, theming, canvas context setup, drawing pipelines, PNG export, and HTTP client integration (Axios). Includes performance tuning, payload sizing, and fallback strategies for local vs. remote rendering in both CLI (`--chart`) and Express modes (`/pi/chart`). Last updated 2024; QuickChart and Image-Charts docs are CC0; Chart.js, ChartjsNodeCanvas, node-canvas, and Axios are MIT licensed.
 ## CC0 1.0 Universal / MIT
 
 # Express.js & Middleware
 ## https://expressjs.com/en/4x/api.html
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
-Authoritative reference for Express 4.x core APIs, routing, middleware patterns, request parsing, and error handling, augmented with CORS and rate-limiting middleware. Provides best practices for secure, performant REST endpoints and integration with CLI-driven HTTP servers (`--serve`) and `/pi`, `/pi/data`, `/pi/chart`, and `/pi/stream` routes. Includes configuration examples, middleware chaining, and production deployment considerations. Last updated 2024; maintained by the Express.js team.
+Authoritative reference for Express 4.x core APIs, routing, middleware patterns, request parsing, and error handling, alongside CORS and rate-limiting modules. Demonstrates secure, performant REST endpoint construction, middleware chaining, and production deployment best practices, directly supporting CLI-driven servers (`--serve`) and key routes (`/pi`, `/pi/data`, `/pi/chart`, `/pi/stream`). Last updated 2024; MIT licensed.
 ## MIT
 
 # Testing & Benchmarking Tools
@@ -21,12 +21,12 @@ Authoritative reference for Express 4.x core APIs, routing, middleware patterns,
 ## https://github.com/sindresorhus/execa
 ## https://benchmarkjs.com/
 ## https://github.com/bestiejs/benchmark.js
-Integrated reference for testing, process execution, and performance measurement in Node.js. Describes Vitest’s fast test runner, mocking, snapshot testing, and coverage integration; SuperTest’s HTTP assertion utilities for Express endpoints; Execa’s promise-based child process control for robust CLI E2E tests; and Benchmark.js’s microbenchmarking suite for statistically sound performance analysis. Essential for unit, integration, end-to-end, and benchmark tests, including streaming and chart modes. Last updated 2024; all listed tools are MIT licensed.
+Integrated reference for unit, integration, E2E, and performance testing in Node.js. Covers Vitest’s fast runner, mocking, snapshot and coverage features; SuperTest’s HTTP assertions; Execa’s child-process control for CLI flows; and Benchmark.js’s statistical micro-benchmark suite. Essential for validating algorithm correctness, API behavior, and runtime performance in both CLI and server contexts. Last updated 2024; all MIT licensed.
 ## MIT
 
 # Zod Schema Validation
 ## https://github.com/colinhacks/zod
-Comprehensive TypeScript-first schema validation library for both CLI arguments and HTTP query parameters. Covers synchronous/asynchronous parsing, refinements, custom error formatting, and schema composition. Crucial for enforcing robust input validation with clear error messages and safe defaults in both CLI and Express modes. Last updated 2024.
+Comprehensive TypeScript-first runtime schema validation library. Details synchronous/asynchronous parsing, refinements, custom error formatting, and schema composition, crucial for robust CLI argument and HTTP query validation. Includes clear error messages, safe defaults, and hygienic `.passthrough()` semantics for extensible APIs. Last updated 2024; MIT licensed.
 ## MIT
 
 # Configuration Management & Argument Parsing
@@ -34,24 +34,24 @@ Comprehensive TypeScript-first schema validation library for both CLI arguments 
 ## https://github.com/nodeca/js-yaml#readme
 ## https://github.com/cosmiconfig/cosmiconfig#readme
 ## https://www.npmjs.com/package/minimist
-Combine environment variable loading (`.env`), YAML parsing, hierarchical discovery/merging via cosmiconfig, and basic CLI argument parsing with minimist. Demonstrates layered overrides of CLI flags, environment variables, and file-based defaults, along with aliasing and error handling. Includes examples for config-first defaults merged before validation. Last updated 2024.
+Demonstrates layered configuration through environment variables (`.env`), YAML files, hierarchical discovery (cosmiconfig), and CLI parsing (minimist). Shows merging strategies, default overrides, aliasing, and error handling for both CLI and Express server modes, enabling flexible user defaults. Last updated 2024; MIT licensed.
 ## MIT
 
 # Seeded Randomness with seedrandom
 ## https://github.com/davidbau/seedrandom
-Official documentation for reproducible pseudorandom generators in JavaScript, including seeding strategies, state serialization, and algorithm selection (Alea, ARC4, MT19937). Vital for deterministic Monte Carlo sampling (`--seed`) in CLI and HTTP API modes, ensuring consistent results across runs and tests. Last updated 2023.
+Official guide to reproducible pseudorandom number generation in JavaScript. Covers seeding strategies, state serialization, algorithm options (Alea, ARC4, MT19937), and entropy considerations. Vital for deterministic Monte Carlo sampling (`--seed`) in CLI and HTTP modes, ensuring repeatable results and test stability. Last updated 2023; MIT licensed.
 ## MIT
 
 # EJS Templating Engine
 ## https://ejs.co/#docs
-Official guide to Embedded JavaScript templating: syntax for includes, partials, filters, and helper functions. Enables dynamic HTML report and dashboard generation embedding π values, convergence tables, and charts, with performance tips for large templates and caching strategies in web UI dashboards. Last updated 2024.
+Official documentation for Embedded JavaScript templating: syntax for includes, partials, filters, and helper functions. Explains performance optimizations (caching, compile options) and use cases for dynamic HTML report/dashboard generation embedding π values, convergence tables, and charts. Last updated 2024; MIT licensed.
 ## MIT
 
 # API Specifications & Documentation
 ## https://spec.openapis.org/oas/v3.1.0
 ## https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/
 ## https://github.com/scottie1984/swagger-ui-express#readme
-OpenAPI 3.1.0 specification for defining RESTful schemas with precise typing and parameter definitions, plus Swagger UI for interactive API documentation and client code generation. Includes middleware setup for hosting Swagger UI via swagger-ui-express, enabling live docs at `/docs` with custom themes and OAuth2 flows. Essential for standardizing `/pi`, `/pi/data`, `/pi/chart`, and `/pi/stream` endpoints and validating request/response contracts. Last updated 2024.
+OpenAPI 3.1 specification and Swagger UI integration for interactive REST API docs, client-code generation, and request/response validation. Includes setup via swagger-ui-express, custom theming, and OAuth2 flows, powering live docs at `/docs` and machine-readable spec at `/openapi.json`. Last updated 2024; CC0 / Apache-2.0 / MIT.
 ## CC0 1.0 Universal / Apache-2.0 / MIT
 
 # Observability & Telemetry
@@ -59,7 +59,7 @@ OpenAPI 3.1.0 specification for defining RESTful schemas with precise typing and
 ## https://github.com/pinojs/pino
 ## https://github.com/pinojs/pino-pretty
 ## https://opentelemetry.io/docs/js/
-Guides for instrumenting Node.js applications with Prometheus metrics (`prom-client` counters, gauges, histograms), structured logging via `pino` plus human-friendly output with `pino-pretty`, and OpenTelemetry auto-instrumentation for HTTP/Express. Covers SDK configuration, exporter setups (OTLP, Prometheus), tracing, and metrics pipelines. Enables comprehensive runtime diagnostics and end-to-end observability for both CLI and server modes. Last updated 2024; MIT / Apache-2.0 licenses.
+Guides for Prometheus metrics (`prom-client`), structured logging with Pino (and `pino-pretty`), and OpenTelemetry instrumentation for Node.js/Express. Covers SDK configuration, exporter setup (OTLP, Prometheus), tracing, metrics pipelines, and human-friendly log formatting. Enables end-to-end observability in both CLI and server contexts. Last updated 2024; MIT / Apache-2.0.
 ## MIT / Apache-2.0
 
 # Node.js Core & Advanced APIs
@@ -70,12 +70,12 @@ Guides for instrumenting Node.js applications with Prometheus metrics (`prom-cli
 ## https://nodejs.org/api/readline.html
 ## https://nodejs.org/api/fs.html
 ## https://nodejs.org/api/path.html
-Comprehensive coverage of Node.js built-in modules and advanced APIs, including filesystem operations, path utilities, streams, `worker_threads` for parallelism, `perf_hooks` for high-resolution timing, and `readline` for interactive REPL. Critical for CLI I/O, parallel Monte Carlo sampling, REPL mode, and performance measurement. Last updated 2024; maintained by the Node.js core team.
+Comprehensive reference for built-in Node.js modules and advanced APIs (worker threads, performance hooks, streams, REPL). Essential for CLI I/O, parallel Monte Carlo sampling, performance measurement, and interactive modes. Last updated 2024; Node.js Foundation.
 ## Node.js License
 
 # Server-Sent Events (SSE)
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-Detailed overview of Server-Sent Events (SSE) protocol including EventSource API, HTTP headers (`Content-Type: text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`), reconnection behavior, data encoding, and event formatting. Essential for implementing real-time streaming convergence endpoint (`/pi/stream`) and CLI JSON lines output. Last updated 2024; MDN content licensed under CC BY-SA 2.5.
+Detailed overview of SSE protocol: EventSource API, HTTP headers (`text/event-stream`), reconnection, data encoding, and event formatting. Crucial for real-time `/pi/stream` endpoint and CLI JSON-lines streaming. Last updated 2024; CC BY-SA 2.5.
 ## CC BY-SA 2.5
 
 # Numerical Computing & Arbitrary-Precision Arithmetic
@@ -83,23 +83,28 @@ Detailed overview of Server-Sent Events (SSE) protocol including EventSource API
 ## https://mikemcl.github.io/decimal.js/
 ## https://github.com/MikeMcl/decimal.js
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
-## https://en.wikipedia.org/wiki/Ramanujan%E2%80%93Sato_series
 ## https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm
-Authoritative references for JavaScript `BigInt` precision handling and advanced π calculation algorithms (Chudnovsky, Ramanujan–Sato, Gauss–Legendre) combined with Decimal.js arbitrary-precision decimal arithmetic. Covers mathematical derivations, convergence rates, guard digits, performance trade-offs, and safe error thresholds. Crucial for implementing high-precision series and iterative methods beyond native limits. Last updated 2024; Wikipedia content under CC BY-SA 4.0 and Decimal.js is MIT licensed.
+## https://en.wikipedia.org/wiki/Ramanujan%E2%80%93Sato_series
+Authoritative resources for JavaScript `BigInt` precision, Decimal.js arbitrary-precision arithmetic, and advanced π algorithms (Chudnovsky, Gauss-Legendre, Ramanujan–Sato). Explains mathematical derivations, convergence rates, performance trade-offs, guard digits, and error management for high-precision computations. Last updated 2024; CC BY-SA 4.0 / MIT.
 ## CC BY-SA 4.0 / MIT
 
 # NDJSON Specification
 ## https://github.com/ndjson/ndjson-spec
-The NDJSON (newline-delimited JSON) specification defines a simple format for streaming JSON objects as text lines. It provides guidance on formatting, parsing, and handling backpressure for CLI `--stream` output and SSE JSON streams. Last updated 2023; spec licensed under CC0 1.0 Universal.
+Defines newline-delimited JSON for streaming objects with backpressure handling. Describes formatting, parsing, and best practices for CLI (`--stream`) and SSE JSON streams. Last updated 2023; CC0 licensed.
 ## CC0 1.0 Universal
 
 # ESLint Configuration
 ## https://eslint.org/docs/latest/user-guide/configuring
 ## https://github.com/google/eslint-config-google
-Authoritative guide to configuring ESLint for code quality and style consistency. Covers rule hierarchies, plugin integration (e.g., eslint-plugin-import, eslint-plugin-security), extending style guides (Google), and automated fixing. Includes examples of sustained lint workflows in CI, JSON configuration formats, and performance optimizations. Last updated 2024; ESLint and eslint-config-google are MIT licensed.
+Official guide to ESLint configuration, rule hierarchies, plugin integration, and extending style guides (Google). Covers automated fixing in CI, JSON/YAML config formats, and performance tuning. Last updated 2024; MIT licensed.
 ## MIT
 
 # Prettier Code Formatter
 ## https://prettier.io/docs/en/index.html
-Comprehensive reference for Prettier code formatting, covering supported languages, configuration options (`.prettierrc`, Editor integrations), CLI usage, and caching strategies. Emphasizes automating code style enforcement in pre-commit hooks and CI pipelines. Last updated 2024; Prettier is MIT licensed.
+Comprehensive reference for Prettier formatting: supported languages, config options (`.prettierrc`), CLI usage, editor integrations, and caching strategies. Shows pre-commit/CI integration for consistent code style enforcement. Last updated 2024; MIT licensed.
+## MIT
+
+# Dependency Management Automation
+## https://github.com/raineorshine/npm-check-updates
+A CLI utility for scanning and updating package.json dependencies. Explains version range filtering (major, minor, patch), interactive and CI-friendly modes, and configuration via `.ncurc`. Essential for keeping dependencies current without manual checks. Last updated 2024; maintained by raineorshine; MIT licensed.
 ## MIT
