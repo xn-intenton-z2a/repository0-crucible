@@ -24,272 +24,217 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="gauss_legendre" href="#gauss_legendre"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GAUSS_LEGENDRE</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">Initialise a=1, b=1/√2, t=1/4, p=1. Iterate: a→(a+b)/2, b→√(a·b), t→t−p·(a−new_a)^2, p→2·p. Repeat until |a−b|&lt;ε or N iterations. Compute π≈(a+b)^2/(4t). Quadratic convergence, digits double per iteration.</p>
+<p class="md-github">Initial values a0=1, b0=1/√2, t0=1/4, p0=1. Iterate: a=(a+b)/2, b=√(a·b), t=t−p·(a_new−a)², p=2p. Stop when |a−b|&lt;tol. Compute π ≈(a+b)²/(4t). Quadratic convergence doubles correct digits each iteration.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
-<p class="md-github">Table of Contents</p>
+<p class="md-github">Table of Contents:</p>
 <ol class="md-github">
 <li class="md-github">
-<p class="md-github">Initialisation Values</p>
+<p class="md-github">Initial Setup</p>
 </li>
 <li class="md-github">
-<p class="md-github">Iteration Formulas</p>
+<p class="md-github">Iteration Loop</p>
 </li>
 <li class="md-github">
 <p class="md-github">Convergence Criterion</p>
 </li>
 <li class="md-github">
-<p class="md-github">Pi Approximation</p>
+<p class="md-github">π Approximation</p>
 </li>
 <li class="md-github">
-<p class="md-github">Initialisation Values
+<p class="md-github">Precision Management</p>
+</li>
+<li class="md-github">
+<p class="md-github">Initial Setup
 a0 = 1
 b0 = 1/√2
 t0 = 1/4
 p0 = 1</p>
 </li>
 <li class="md-github">
-<p class="md-github">Iteration Formulas
-a_{n+1} = (a_n + b_n) / 2
-b_{n+1} = √(a_n * b_n)
-t_{n+1} = t_n − p_n * (a_n − a_{n+1})^2
-p_{n+1} = 2 * p_n</p>
+<p class="md-github">Iteration Loop
+For n from 0 to maxIterations:
+a_next = (a + b) / 2
+b_next = sqrt(a * b)
+delta = a_next − a
+t = t − p * delta * delta
+p = 2 * p
+a = a_next
+b = b_next
+If abs(a − b) &lt; tolerance, break.</p>
 </li>
 <li class="md-github">
 <p class="md-github">Convergence Criterion
-Evaluate |a_{n+1} − b_{n+1}| &lt; ε
-ε default = 10^(−precision)
-Fallback: n ≥ maxIterations</p>
+tolerance = 10^(−digits) or user-specified; iteration count ≤ 25 for ~45M digits.</p>
 </li>
 <li class="md-github">
-<p class="md-github">Pi Approximation
-π ≈ (a_{n+1} + b_{n+1})^2 / (4 * t_{n+1})</p>
+<p class="md-github">π Approximation
+π = (a + b)² / (4 * t)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Precision Management
+Use arbitrary-precision library; set precisionBits ≥ targetDigits × 3.32; round after each operation.</p>
 </li>
 </ol>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">Parameter Defaults</p>
-<ul class="md-github">
-<li class="md-github">precision: number of decimal places, default 1000</li>
-<li class="md-github">maxIterations: default 10</li>
-<li class="md-github">epsilon: 1e−precision</li>
-</ul>
-<p class="md-github">Implementation Steps</p>
+<p class="md-github">Parameter values:
+tolerance: default = 1e-20
+maxIterations: default = 50
+precisionBits: default = digits*3.5</p>
+<p class="md-github">Implementation steps:</p>
 <ol class="md-github">
-<li class="md-github">Set library precision to config.precision</li>
-<li class="md-github">Initialise a, b, t, p</li>
-<li class="md-github">Loop i in [0, maxIterations):
-a. nextA = (a + b) / 2
-b. nextB = sqrt(a * b)
-c. t = t − p * (a − nextA)^2
-d. p = 2 * p
-e. a = nextA, b = nextB
-f. Break if |a − b| &lt; ε</li>
-<li class="md-github">Compute pi = (a + b)^2 / (4 * t)</li>
-<li class="md-github">Return pi</li>
+<li class="md-github">Initialize precision in Decimal or BigDecimal.</li>
+<li class="md-github">Set a,b,p,t in high precision.</li>
+<li class="md-github">Loop applying iteration formulas.</li>
+<li class="md-github">After break, compute pi.</li>
 </ol>
-<p class="md-github">Precision Management</p>
-<ul class="md-github">
-<li class="md-github">Use arbitrary-precision library (Decimal.js or BigInt rational arithmetic)</li>
-<li class="md-github">Set rounding mode to ROUND_HALF_EVEN</li>
-</ul>
-<p class="md-github">Memory Considerations</p>
-<ul class="md-github">
-<li class="md-github">Store only four variables per iteration</li>
-<li class="md-github">Release previous iteration values by reassigning</li>
-</ul>
-<p class="md-github">Error Bounds</p>
-<ul class="md-github">
-<li class="md-github">After n iterations, correct digits ≈ 2^n</li>
-<li class="md-github">Choose n ≈ log2(desired digits)</li>
-</ul>
+<p class="md-github">Data types:
+a,b,t,p: Decimal or BigFloat
+sqrt: library-provided high-precision method</p>
+<p class="md-github">Performance tips:
+Cache sqrt(a*b) calls.
+Preallocate objects to avoid GC.
+Increase working precision by +10 bits during iterations.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<p class="md-github">Full API Signature</p>
-<p class="md-github">type GLConfig = {
-precision: number;    // target decimal places
-maxIterations: number;// maximum iteration count
-epsilon: Decimal;     // convergence threshold
-};</p>
-<p class="md-github">function computePi(config: GLConfig): Decimal</p>
-<p class="md-github">Parameters:</p>
+<p class="md-github">JavaScript implementation using decimal.js:</p>
+<p class="md-github">Function signature:
+/**</p>
 <ul class="md-github">
-<li class="md-github">config.precision: integer &gt; 0, sets Decimal precision, default=1000</li>
-<li class="md-github">config.maxIterations: integer ≥1, default=log2(desiredDigits)</li>
-<li class="md-github">config.epsilon: Decimal, default=Decimal('1e-'+precision)</li>
+<li class="md-github">computePiGaussLegendre</li>
+<li class="md-github">@param {Object} options</li>
+<li class="md-github">@param {number} options.digits target decimal digits</li>
+<li class="md-github">@param {number} [options.maxIterations=50]</li>
+<li class="md-github">@param {number} [options.tolerance=1e-20]</li>
+<li class="md-github">@returns {Decimal} π approximation
+*/
+function computePiGaussLegendre({ digits, maxIterations = 50, tolerance = 1e-20 })</li>
 </ul>
-<p class="md-github">Return Type:</p>
+<p class="md-github">Code example:
+import Decimal from 'decimal.js'
+Decimal.set({ precision: digits * 3.5, rounding: Decimal.ROUND_HALF_UP })</p>
+<p class="md-github">let a = new Decimal(1)
+let b = Decimal.sqrt(new Decimal(0.5))
+let t = new Decimal(0.25)
+let p = new Decimal(1)</p>
+<p class="md-github">for (let i = 0; i &lt; maxIterations; i++) {
+const a_next = a.plus(b).dividedBy(2)
+const b_next = Decimal.sqrt(a.times(b))
+const delta = a_next.minus(a)
+t = t.minus(p.times(delta.times(delta)))
+p = p.times(2)
+a = a_next
+b = b_next
+if (a.minus(b).abs().lt(tolerance)) break
+}</p>
+<p class="md-github">return a.plus(b).pow(2).dividedBy(t.times(4))</p>
+<p class="md-github">Configuration options:
+digits: number of decimal places
+maxIterations: upper bound iterations
+tolerance: stopping threshold</p>
+<p class="md-github">Best practices:</p>
 <ul class="md-github">
-<li class="md-github">Decimal: approximation of π to config.precision digits</li>
+<li class="md-github">Use library with configurable precision</li>
+<li class="md-github">Increase precision before loop start</li>
+<li class="md-github">Reuse Decimal instances via variables</li>
+<li class="md-github">Validate inputs: digits &gt; 0, tolerance &gt; 0</li>
 </ul>
-<p class="md-github">Throws:</p>
-<ul class="md-github">
-<li class="md-github">Error if precision not integer or maxIterations &lt;1</li>
-</ul>
-<p class="md-github">Usage Example</p>
-<pre class="md-github"><code class="md-github language-ts">import Decimal from 'decimal.js';
-
-const config: GLConfig = {
-  precision: 2000,
-  maxIterations: 12,
-  epsilon: new Decimal('1e-2000')
-};
-const piApprox = computePi(config);
-console.log(piApprox.toString());
-</code></pre>
-<p class="md-github">Configuration Options</p>
-<ul class="md-github">
-<li class="md-github">precision: controls Decimal.js precision</li>
-<li class="md-github">maxIterations: safety cap to avoid infinite loop</li>
-<li class="md-github">epsilon: convergence threshold for |a−b|</li>
-</ul>
-<p class="md-github">Implementation Pattern</p>
-<ol class="md-github">
-<li class="md-github">Set Decimal.set({ precision, rounding: Decimal.ROUND_HALF_EVEN })</li>
-<li class="md-github">Initialise a, b, t, p</li>
-<li class="md-github">Perform iterative update</li>
-<li class="md-github">On convergence or maxIterations, compute π</li>
-</ol>
-<p class="md-github">Best Practices</p>
-<ul class="md-github">
-<li class="md-github">Pre-calculate maxIterations = ceil(log2(targetDigits))</li>
-<li class="md-github">Use memory pooling for Decimal objects to reduce GC pressure</li>
-<li class="md-github">Validate inputs: ensure epsilon &lt; 1</li>
-</ul>
-<p class="md-github">Troubleshooting
-Command:
-node computePi.js --precision=10000 --maxIterations=14
-Expected Output Start:
-3.1415926535...
-Common Issues:</p>
-<ul class="md-github">
-<li class="md-github">&quot;Decimal Error: Too few precision&quot; → increase precision before math operations</li>
-<li class="md-github">Slow execution → lower precision or reduce iterations</li>
-<li class="md-github">High memory usage → switch to streaming big-int arithmetic</li>
-</ul>
+<p class="md-github">Troubleshooting:
+Issue: result stagnates or yields NaN
+Command: console.log(a, b, t, p)
+Expected: a≈b after final iteration, t&gt;0
+Fix: Increase precisionBits via Decimal.set
+Issue: performance slow
+Command: measure loop time with console.time
+Fix: lower maxIterations, preallocate variables, use faster sqrt</p>
 <h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">a0=1,b0=1/√2,t0=1/4,p0=1; iterate a=(a+b)/2,b=√(a·b),t=t−p·(a−a_next)^2,p=2p; stop when |a−b|&lt;ε or n=maxIterations; π=(a+b)^2/(4t); digits double per iteration; choose n≈log2(digits); use Decimal.js set precision and rounding; GLConfig{precision,maxIterations,epsilon}; computePi returns Decimal π; validate inputs; set ε=10^(−precision); best practice: memory reuse; troubleshoot: increase precision on error, adjust iterations.</p>
+<p class="md-github">a0=1; b0=1/√2; t0=1/4; p0=1; iterate: a=(a+b)/2; b=√(a·b); t=t−p·(a_new−a)^2; p=2p; stop when |a−b|&lt;tol; π=(a+b)^2/(4t); quadratic convergence doubles digits; precisionBits≥digits×3.32; default maxIterations=50; tolerance=1e-20; implement in decimal.js with Decimal.set({precision,digits}); reuse variables; troubleshoot by inspecting intermediate a,b,t,p; adjust precision on NaN or slow convergence.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
-<p class="md-github">Table of Contents</p>
+<p class="md-github">Table of Contents:</p>
 <ol class="md-github">
 <li class="md-github">
-<p class="md-github">Initialisation Values</p>
+<p class="md-github">Initial Setup</p>
 </li>
 <li class="md-github">
-<p class="md-github">Iteration Formulas</p>
+<p class="md-github">Iteration Loop</p>
 </li>
 <li class="md-github">
 <p class="md-github">Convergence Criterion</p>
 </li>
 <li class="md-github">
-<p class="md-github">Pi Approximation</p>
+<p class="md-github">Approximation</p>
 </li>
 <li class="md-github">
-<p class="md-github">Initialisation Values
+<p class="md-github">Precision Management</p>
+</li>
+<li class="md-github">
+<p class="md-github">Initial Setup
 a0 = 1
 b0 = 1/2
 t0 = 1/4
 p0 = 1</p>
 </li>
 <li class="md-github">
-<p class="md-github">Iteration Formulas
-a_{n+1} = (a_n + b_n) / 2
-b_{n+1} = (a_n * b_n)
-t_{n+1} = t_n  p_n * (a_n  a_{n+1})^2
-p_{n+1} = 2 * p_n</p>
+<p class="md-github">Iteration Loop
+For n from 0 to maxIterations:
+a_next = (a + b) / 2
+b_next = sqrt(a * b)
+delta = a_next  a
+t = t  p * delta * delta
+p = 2 * p
+a = a_next
+b = b_next
+If abs(a  b) &lt; tolerance, break.</p>
 </li>
 <li class="md-github">
 <p class="md-github">Convergence Criterion
-Evaluate |a_{n+1}  b_{n+1}| &lt;
-default = 10^(precision)
-Fallback: n  maxIterations</p>
+tolerance = 10^(digits) or user-specified; iteration count  25 for ~45M digits.</p>
 </li>
 <li class="md-github">
-<p class="md-github">Pi Approximation
-(a_{n+1} + b_{n+1})^2 / (4 * t_{n+1})</p>
+<p class="md-github">Approximation
+= (a + b) / (4 * t)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Precision Management
+Use arbitrary-precision library; set precisionBits  targetDigits  3.32; round after each operation.</p>
 </li>
 </ol>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
 <p class="md-github">BigInt &amp; π Algorithms Reference
 https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-gauss_legendre" href="#digest-of-gauss_legendre"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of GAUSS_LEGENDRE</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="gausslegendre-algorithm-details" href="#gausslegendre-algorithm-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Gauss–Legendre Algorithm Details</h1>
+<h1 class="md-github"><a class="md-github__anchor" name="gausslegendre-algorithm" href="#gausslegendre-algorithm"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Gauss–Legendre Algorithm</h1>
+<p class="md-github">Date retrieved: 2024-06-25</p>
 <h2 class="md-github"><a class="md-github__anchor" name="initial-values" href="#initial-values"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Initial Values</h2>
-<ul class="md-github">
-<li class="md-github">a0 = 1</li>
-<li class="md-github">b0 = 1/√2</li>
-<li class="md-github">t0 = 1/4</li>
-<li class="md-github">p0 = 1</li>
-</ul>
+<p class="md-github">a₀ = 1
+b₀ = 1/√2
+t₀ = 1/4
+p₀ = 1</p>
 <h2 class="md-github"><a class="md-github__anchor" name="iteration-formulas" href="#iteration-formulas"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Iteration Formulas</h2>
-<ul class="md-github">
-<li class="md-github">a_{n+1} = (a_n + b_n) / 2</li>
-<li class="md-github">b_{n+1} = √(a_n * b_n)</li>
-<li class="md-github">t_{n+1} = t_n − p_n * (a_n − a_{n+1})^2</li>
-<li class="md-github">p_{n+1} = 2 * p_n</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="convergence-criterion" href="#convergence-criterion"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Convergence Criterion</h2>
-<ul class="md-github">
-<li class="md-github">Stop when |a_{n+1} − b_{n+1}| &lt; ε or after N iterations</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="pi-approximation" href="#pi-approximation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pi Approximation</h2>
-<p class="md-github">π ≈ (a_{n+1} + b_{n+1})^2 / (4 * t_{n+1})</p>
-<h2 class="md-github"><a class="md-github__anchor" name="complexity" href="#complexity"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Complexity</h2>
-<ul class="md-github">
-<li class="md-github">Quadratic convergence: digits double each iteration.</li>
-<li class="md-github">Memory intensive: intermediate precision storage.</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="reference-implementation-typescript" href="#reference-implementation-typescript"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Implementation (TypeScript)</h1>
-<pre class="md-github"><code class="md-github language-ts">import Decimal from 'decimal.js';
-
-interface GLConfig {
-  precision: number;        // decimal places
-  maxIterations: number;    // fallback limit
-  epsilon: Decimal;         // convergence threshold
-}
-
-function computePi(config: GLConfig): Decimal {
-  Decimal.set({ precision: config.precision });
-
-  let a = new Decimal(1);
-  let b = Decimal.sqrt(new Decimal(1).dividedBy(2));
-  let t = new Decimal(0.25);
-  let p = new Decimal(1);
-
-  for (let i = 0; i &lt; config.maxIterations; i++) {
-    const nextA = a.plus(b).dividedBy(2);
-    const nextB = Decimal.sqrt(a.times(b));
-    const diff = a.minus(nextA).pow(2).times(p);
-    const nextT = t.minus(diff);
-    const nextP = p.times(2);
-
-    a = nextA;
-    b = nextB;
-    t = nextT;
-    p = nextP;
-
-    if (a.minus(b).abs().lessThan(config.epsilon)) break;
-  }
-
-  return a.plus(b).pow(2).dividedBy(t.times(4));
-}
-
-// Usage example
-const pi = computePi({ precision: 1000, maxIterations: 10, epsilon: new Decimal('1e-1000') });
-console.log(pi.toString());
-</code></pre>
+<p class="md-github">aₙ₊₁ = (aₙ + bₙ) / 2
+bₙ₊₁ = √(aₙ · bₙ)
+tₙ₊₁ = tₙ − pₙ · (aₙ₊₁ − aₙ)²
+pₙ₊₁ = 2 · pₙ</p>
+<p class="md-github">Repeat until |aₙ₊₁ − bₙ₊₁| &lt; tolerance or maxIterations reached.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="π-approximation" href="#π-approximation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>π Approximation</h2>
+<p class="md-github">π ≈ (aₙ₊₁ + bₙ₊₁)² / (4 · tₙ₊₁)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="convergence" href="#convergence"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Convergence</h2>
+<p class="md-github">Quadratic: correct digits double each iteration.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="memory--precision" href="#memory--precision"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Memory &amp; Precision</h2>
+<p class="md-github">Requires arbitrary-precision arithmetic; intermediate √ and multiplications at precisionBits+10 bits.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
 <li class="md-github">Source: BigInt &amp; π Algorithms Reference</li>
 <li class="md-github">URL: https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm</li>
 <li class="md-github">License: CC BY-SA 4.0</li>
-<li class="md-github">Crawl Date: 2025-05-12T09:28:15.829Z</li>
-<li class="md-github">Data Size: 4197174 bytes</li>
-<li class="md-github">Links Found: 20455</li>
+<li class="md-github">Crawl Date: 2025-05-12T15:28:29.542Z</li>
+<li class="md-github">Data Size: 4978184 bytes</li>
+<li class="md-github">Links Found: 25981</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
 <p class="md-github">2025-05-12</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-12T10:40:48.262Z</p>
+    <p>Generated on 2025-05-13T10:40:54.128Z</p>
   </footer>
 </body>
 </html>

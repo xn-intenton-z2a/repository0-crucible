@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="path_module" href="#path_module"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PATH_MODULE</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">path.basename(path: string, suffix?: string): string - Returns last segment, ignores trailing separators. Throws TypeError.
+path.delimiter: string - Platform delimiter (';' on Windows, ':' on POSIX).
+path.dirname(path: string): string - Returns directory part. Throws TypeError.
+path.extname(path: string): string - Returns extension with leading '.'. Throws TypeError.
+path.format(obj): string - Constructs path from object with dir/base or root/name/ext.
+path.matchesGlob(path: string, pattern: string): boolean - Experimental: globs match.
+path.isAbsolute(path: string): boolean - Tests absolute path. Throws TypeError.
+path.join(...paths: string[]): string - Joins and normalizes. Throws TypeError.
+path.normalize(path: string): string - Resolves ., .., duplicates. Throws TypeError.
+path.parse(path: string): {root,dir,base,ext,name} - Returns path components. Throws TypeError.
+path.relative(from: string, to: string): string - Returns relative path. Throws TypeError.
+path.resolve(...paths: string[]): string - Resolves to absolute. Throws TypeError.
+path.sep: string - Platform-specific separator.
+path.toNamespacedPath(path: string): string - Windows namespace prefix.
+path.posix, path.win32: object - Platform-specific API.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Import Syntax
+2 Windows vs POSIX Behavior
+3 Methods
+3.1 basename
+3.2 delimiter
+3.3 dirname
+3.4 extname
+3.5 format
+3.6 matchesGlob
+3.7 isAbsolute
+3.8 join
+3.9 normalize
+3.10 parse
+3.11 relative
+3.12 resolve
+3.13 sep
+3.14 toNamespacedPath
+3.15 posix and win32</p>
+<p class="md-github">1 Import Syntax
+const path = require('node:path');
+import path from 'node:path';</p>
+<p class="md-github">2 Windows vs POSIX Behavior
+Use path.win32.method for Windows semantics; path.posix.method for POSIX semantics.</p>
+<p class="md-github">3 Methods
+3.1 basename
+Signature: path.basename(path: string, suffix?: string): string
+Behavior: Returns last path component, removes trailing separators, removes optional suffix.
+Exceptions: Throws if args not strings.
+Example: path.basename('C:\temp\file.html', '.html') =&gt; 'file'</p>
+<p class="md-github">3.2 delimiter
+Type: string
+Values: ';' on Windows, ':' on POSIX
+Usage: process.env.PATH.split(path.delimiter)</p>
+<p class="md-github">3.3 dirname
+Signature: path.dirname(path: string): string
+Behavior: Up to last separator. Example: path.dirname('/a/b/c') =&gt; '/a/b'</p>
+<p class="md-github">3.4 extname
+Signature: path.extname(path: string): string
+Behavior: From last '.' in basename. Example: path.extname('foo.bar.js') =&gt; '.js'</p>
+<p class="md-github">3.5 format
+Signature: path.format({dir?, root?, base?, name?, ext?}): string
+Priority: dir+base &gt; root+base &gt; root+name+ext
+Example: path.format({root:'/', name:'f', ext:'txt'}) =&gt; '/f.txt'</p>
+<p class="md-github">3.6 matchesGlob (Experimental)
+Signature: path.matchesGlob(path: string, pattern: string): boolean
+Behavior: True if path matches pattern.</p>
+<p class="md-github">3.7 isAbsolute
+Signature: path.isAbsolute(path: string): boolean
+Behavior: Tests literal absolute path, not safe against traversal.</p>
+<p class="md-github">3.8 join
+Signature: path.join(...paths: string[]): string
+Behavior: Joins with sep, normalizes, returns '.' if empty.</p>
+<p class="md-github">3.9 normalize
+Signature: path.normalize(path: string): string
+Behavior: Resolves ., .., multiple separators.</p>
+<p class="md-github">3.10 parse
+Signature: path.parse(path: string): {root, dir, base, ext, name}
+Behavior: Splits into components.</p>
+<p class="md-github">3.11 relative
+Signature: path.relative(from: string, to: string): string
+Behavior: Relative path between two locations.</p>
+<p class="md-github">3.12 resolve
+Signature: path.resolve(...paths: string[]): string
+Behavior: Right-to-left absolute resolution, normalize.</p>
+<p class="md-github">3.13 sep
+Type: string
+Values: '\' on Windows, '/' on POSIX</p>
+<p class="md-github">3.14 toNamespacedPath
+Signature: path.toNamespacedPath(path: string): string
+Behavior: Windows namespace prefix, identity on POSIX.</p>
+<p class="md-github">3.15 posix and win32
+Objects exposing POSIX-only or Windows-only implementations of above methods.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">OS-Specific Behavior
+• Windows per-drive working directory: path.resolve('C:') may differ from path.resolve('C:\').
+• Windows methods accept both '/' and '\' and output '\'.</p>
+<p class="md-github">Module Access
+• require('node:path') or require('path') for core module.
+• require('path/posix') and require('path/win32') for platform-specific only.</p>
+<p class="md-github">Version History Highlights
+• basename: throws on non-string since v6.0.0.
+• format: dot auto-added to ext since v19.0.0.
+• matchesGlob: experimental since v20.17.0.</p>
+<p class="md-github">Integration Steps
+1 Install Node.js v14+.
+2 Import with import or require.
+3 Use path.posix or path.win32 when cross-platform consistency needed.
+4 Validate inputs: non-strings throw TypeError.
+5 For CLI tools, split PATH env using path.delimiter.</p>
+<p class="md-github">Performance Notes
+• All methods are synchronous and CPU-bound string operations.
+• Avoid heavy use in tight loops; cache results.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications</p>
+<p class="md-github">path.basename(path: string, suffix?: string): string</p>
+<ul class="md-github">
+<li class="md-github">path: string (throws TypeError if not string)</li>
+<li class="md-github">suffix: string optional (throws if not string)
+Returns: last path segment without trailing separators or optional suffix.</li>
+</ul>
+<p class="md-github">path.delimiter: string</p>
+<ul class="md-github">
+<li class="md-github">Value: ';' on Windows, ':' on POSIX</li>
+</ul>
+<p class="md-github">path.dirname(path: string): string</p>
+<ul class="md-github">
+<li class="md-github">path: string
+Returns: directory portion without trailing separator</li>
+</ul>
+<p class="md-github">path.extname(path: string): string</p>
+<ul class="md-github">
+<li class="md-github">path: string
+Returns: extension from last '.' or '' if none</li>
+</ul>
+<p class="md-github">path.format(pathObject: { root?: string, dir?: string, base?: string, name?: string, ext?: string }): string</p>
+<ul class="md-github">
+<li class="md-github">pathObject.base &gt; name+ext</li>
+<li class="md-github">pathObject.dir &gt; root</li>
+<li class="md-github">ext auto-prefixed with '.' if missing</li>
+</ul>
+<p class="md-github">path.matchesGlob(path: string, pattern: string): boolean  // Experimental</p>
+<p class="md-github">path.isAbsolute(path: string): boolean</p>
+<p class="md-github">path.join(...paths: string[]): string</p>
+<p class="md-github">path.normalize(path: string): string</p>
+<p class="md-github">path.parse(path: string): { root: string, dir: string, base: string, ext: string, name: string }</p>
+<p class="md-github">path.relative(from: string, to: string): string</p>
+<p class="md-github">path.resolve(...paths: string[]): string</p>
+<p class="md-github">path.sep: string</p>
+<p class="md-github">path.toNamespacedPath(path: string): string</p>
+<p class="md-github">path.posix: { <all above methods> }
+path.win32: { <all above methods> }</p>
+<p class="md-github">Full Code Examples</p>
+<pre class="md-github"><code class="md-github language-js">import { join, resolve, parse, format } from 'node:path';
+// join + resolve pattern
+const p = resolve(join(__dirname, '../src'), 'index.js');
+// parse and reformat
+const parts = parse(p);
+const newPath = format({ dir: parts.dir, name: parts.name + '.min', ext: parts.ext });
+</code></pre>
+<p class="md-github">Best Practices
+• Use path.posix for URLs, Unix-style paths.
+• Use path.win32 for Windows drive-letter paths.
+• Validate user input: wrap calls in try/catch to handle TypeError.
+• Normalize user-supplied paths before combining to prevent traversal.</p>
+<p class="md-github">Troubleshooting
+1 TypeError: Path must be a string. Received XXX</p>
+<ul class="md-github">
+<li class="md-github">Ensure all arguments are strings. Use String(value) if necessary.
+2 Unexpected relative path</li>
+<li class="md-github">Verify use of resolve vs join; resolve applies cwd.
+3 Mixed separators</li>
+<li class="md-github">After operations, call path.normalize() to unify separators.
+Commands:</li>
+</ul>
+<blockquote class="md-github">
+<p class="md-github">node -e &quot;console.log(require('node:path').delimiter)&quot;
+node -e &quot;console.log(require('node:path').sep)&quot;</p>
+</blockquote>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">basename(path:string,suffix?:string)=&gt;string throws TypeError; delimiter=&gt;string; dirname(path:string)=&gt;string throws TypeError; extname(path:string)=&gt;string; format({root?,dir?,base?,name?,ext?})=&gt;string; matchesGlob(path:string,pattern:string)=&gt;boolean; isAbsolute(path:string)=&gt;boolean; join(...paths:string[])=&gt;string; normalize(path:string)=&gt;string; parse(path:string)=&gt;{root,dir,base,ext,name}; relative(from:string,to:string)=&gt;string; resolve(...paths:string[])=&gt;string; sep=&gt;string; toNamespacedPath(path:string)=&gt;string; posix,win32 objects with above methods; use path.win32 for Windows paths cross-platform; path.delimiter for PATH splits; ext auto-prefixed; dir&gt;root; base&gt;name/ext; join ignores empty; resolve uses CWD if needed; parse yields five components.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Import Syntax
+2 Windows vs POSIX Behavior
+3 Methods
+3.1 basename
+3.2 delimiter
+3.3 dirname
+3.4 extname
+3.5 format
+3.6 matchesGlob
+3.7 isAbsolute
+3.8 join
+3.9 normalize
+3.10 parse
+3.11 relative
+3.12 resolve
+3.13 sep
+3.14 toNamespacedPath
+3.15 posix and win32</p>
+<p class="md-github">1 Import Syntax
+const path = require('node:path');
+import path from 'node:path';</p>
+<p class="md-github">2 Windows vs POSIX Behavior
+Use path.win32.method for Windows semantics; path.posix.method for POSIX semantics.</p>
+<p class="md-github">3 Methods
+3.1 basename
+Signature: path.basename(path: string, suffix?: string): string
+Behavior: Returns last path component, removes trailing separators, removes optional suffix.
+Exceptions: Throws if args not strings.
+Example: path.basename('C:''temp''file.html', '.html') =&gt; 'file'</p>
+<p class="md-github">3.2 delimiter
+Type: string
+Values: ';' on Windows, ':' on POSIX
+Usage: process.env.PATH.split(path.delimiter)</p>
+<p class="md-github">3.3 dirname
+Signature: path.dirname(path: string): string
+Behavior: Up to last separator. Example: path.dirname('/a/b/c') =&gt; '/a/b'</p>
+<p class="md-github">3.4 extname
+Signature: path.extname(path: string): string
+Behavior: From last '.' in basename. Example: path.extname('foo.bar.js') =&gt; '.js'</p>
+<p class="md-github">3.5 format
+Signature: path.format({dir?, root?, base?, name?, ext?}): string
+Priority: dir+base &gt; root+base &gt; root+name+ext
+Example: path.format({root:'/', name:'f', ext:'txt'}) =&gt; '/f.txt'</p>
+<p class="md-github">3.6 matchesGlob (Experimental)
+Signature: path.matchesGlob(path: string, pattern: string): boolean
+Behavior: True if path matches pattern.</p>
+<p class="md-github">3.7 isAbsolute
+Signature: path.isAbsolute(path: string): boolean
+Behavior: Tests literal absolute path, not safe against traversal.</p>
+<p class="md-github">3.8 join
+Signature: path.join(...paths: string[]): string
+Behavior: Joins with sep, normalizes, returns '.' if empty.</p>
+<p class="md-github">3.9 normalize
+Signature: path.normalize(path: string): string
+Behavior: Resolves ., .., multiple separators.</p>
+<p class="md-github">3.10 parse
+Signature: path.parse(path: string): {root, dir, base, ext, name}
+Behavior: Splits into components.</p>
+<p class="md-github">3.11 relative
+Signature: path.relative(from: string, to: string): string
+Behavior: Relative path between two locations.</p>
+<p class="md-github">3.12 resolve
+Signature: path.resolve(...paths: string[]): string
+Behavior: Right-to-left absolute resolution, normalize.</p>
+<p class="md-github">3.13 sep
+Type: string
+Values: '''' on Windows, '/' on POSIX</p>
+<p class="md-github">3.14 toNamespacedPath
+Signature: path.toNamespacedPath(path: string): string
+Behavior: Windows namespace prefix, identity on POSIX.</p>
+<p class="md-github">3.15 posix and win32
+Objects exposing POSIX-only or Windows-only implementations of above methods.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Node.js Core &amp; Advanced APIs
+https://nodejs.org/api/path.html</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-path_module" href="#digest-of-path_module"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of PATH_MODULE</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="path-module" href="#path-module"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Path Module</h1>
+<p class="md-github">Stability: 2 - Stable
+Source Code: lib/path.js</p>
+<h2 class="md-github"><a class="md-github__anchor" name="import" href="#import"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Import</h2>
+<p class="md-github">const path = require('node:path');
+import path from 'node:path';</p>
+<h2 class="md-github"><a class="md-github__anchor" name="windows-vs-posix" href="#windows-vs-posix"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Windows vs. POSIX</h2>
+<p class="md-github">Use path.win32 for consistent Windows behavior and path.posix for consistent POSIX behavior on any platform.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="methods" href="#methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="pathbasenamepath-suffix" href="#pathbasenamepath-suffix"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.basename(path, [suffix])</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.basename(path: string, suffix?: string): string
+</code></pre>
+<p class="md-github">Parameters:</p>
+<ul class="md-github">
+<li class="md-github">path <string>  Path string</li>
+<li class="md-github">suffix <string> Optional suffix to remove
+Returns: <string> Last portion of path. Ignores trailing separators.
+Throws: TypeError if path or suffix is not a string.
+Example:</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">path.basename('/foo/bar/baz.txt'); // 'baz.txt'
+path.basename('/foo/bar/baz.txt', '.txt'); // 'baz'
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="pathdelimiter" href="#pathdelimiter"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.delimiter</h3>
+<pre class="md-github"><code class="md-github language-js">const delim: string
+</code></pre>
+<p class="md-github">Value: Platform-specific path delimiter (';' on Windows, ':' on POSIX).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="pathdirnamepath" href="#pathdirnamepath"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.dirname(path)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.dirname(path: string): string
+</code></pre>
+<p class="md-github">Returns: Directory name of path. Ignores trailing separators.
+Throws: TypeError if path is not a string.
+Example:</p>
+<pre class="md-github"><code class="md-github language-js">path.dirname('/foo/bar/baz'); // '/foo/bar'
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="pathextnamepath" href="#pathextnamepath"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.extname(path)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.extname(path: string): string
+</code></pre>
+<p class="md-github">Returns: Extension from last '.' in basename, including '.'. Empty string if none.
+Throws: TypeError if path is not a string.
+Example:</p>
+<pre class="md-github"><code class="md-github language-js">path.extname('index.html'); // '.html'
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="pathformatpathobject" href="#pathformatpathobject"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.format(pathObject)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.format(pathObject: {root?: string, dir?: string, base?: string, name?: string, ext?: string}): string
+</code></pre>
+<p class="md-github">Returns: Formatted path string.
+Priority: dir over root; base over name+ext.
+Example:</p>
+<pre class="md-github"><code class="md-github language-js">path.format({ dir: '/home/user', base: 'file.txt' }); // '/home/user/file.txt'
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="pathisabsolutepath" href="#pathisabsolutepath"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.isAbsolute(path)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.isAbsolute(path: string): boolean
+</code></pre>
+<p class="md-github">Returns: true if path is absolute, false otherwise.
+Throws: TypeError if path is not a string.
+Example:</p>
+<pre class="md-github"><code class="md-github language-js">path.isAbsolute('/foo'); // true
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="pathjoinpaths" href="#pathjoinpaths"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.join(...paths)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.join(...paths: string[]): string
+</code></pre>
+<p class="md-github">Joins segments, normalizes, ignores empty segments, returns '.' if result is ''.
+Throws: TypeError if any segment is not a string.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="pathnormalizepath" href="#pathnormalizepath"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.normalize(path)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.normalize(path: string): string
+</code></pre>
+<p class="md-github">Normalizes path, resolving '..' and '.', replaces multiple separators.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="pathparsepath" href="#pathparsepath"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.parse(path)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.parse(path: string): { root: string, dir: string, base: string, ext: string, name: string }
+</code></pre>
+<p class="md-github">Returns: Object with path elements.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="pathrelativefrom-to" href="#pathrelativefrom-to"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.relative(from, to)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.relative(from: string, to: string): string
+</code></pre>
+<p class="md-github">Returns: Relative path from &quot;from&quot; to &quot;to&quot;.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="pathresolvepaths" href="#pathresolvepaths"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.resolve(...paths)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.resolve(...paths: string[]): string
+</code></pre>
+<p class="md-github">Returns: Absolute normalized path. Processes from right to left.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="pathsep" href="#pathsep"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.sep</h3>
+<pre class="md-github"><code class="md-github language-js">const sep: string
+</code></pre>
+<p class="md-github">Value: Platform-specific segment separator ('\' on Windows, '/' on POSIX).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="pathtonamespacedpathpath" href="#pathtonamespacedpathpath"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.toNamespacedPath(path)</h3>
+<p class="md-github">Syntax:</p>
+<pre class="md-github"><code class="md-github language-js">path.toNamespacedPath(path: string): string
+</code></pre>
+<p class="md-github">Windows only: returns namespace-prefixed path.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="pathposix-pathwin32" href="#pathposix-pathwin32"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>path.posix, path.win32</h3>
+<p class="md-github">POSIX- and Windows-specific implementations of above methods. Accessible via require('node:path').posix or .win32.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Node.js Core &amp; Advanced APIs</li>
+<li class="md-github">URL: https://nodejs.org/api/path.html</li>
+<li class="md-github">License: Node.js License</li>
+<li class="md-github">Crawl Date: 2025-05-12T21:26:33.950Z</li>
+<li class="md-github">Data Size: 3688689 bytes</li>
+<li class="md-github">Links Found: 3204</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-12</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-13T10:40:53.676Z</p>
+  </footer>
+</body>
+</html>

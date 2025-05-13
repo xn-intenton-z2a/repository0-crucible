@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="atomic_file_writes" href="#atomic_file_writes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ATOMIC_FILE_WRITES</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">writeFileAtomic(filename:String,data:String|Buffer,[options:Object|String],[callback:Function]) and writeFileAtomicSync(filename,data,[options]); Options: chown{uid:Number,gid:Number}|false(default inherit), encoding:String|null(default 'utf8'), fsync:Boolean(default true), mode:Number|false(default inherit), tmpfileCreated(Function); Workflow: create tmp file named filename.murmurhex, write data, fsync, optional chown, rename to target, error path unlinks tmp; concurrent writes to same path serialized via Promise queue, different paths parallel.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">API Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Options Object</p>
+</li>
+<li class="md-github">
+<p class="md-github">Temporary Filename Generation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Write &amp; Sync Sequence</p>
+</li>
+<li class="md-github">
+<p class="md-github">Ownership Handling</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rename &amp; Replacement</p>
+</li>
+<li class="md-github">
+<p class="md-github">Error Handling</p>
+</li>
+<li class="md-github">
+<p class="md-github">Concurrency Queue</p>
+</li>
+<li class="md-github">
+<p class="md-github">API Methods
+writeFileAtomic(filename: String, data: String|Buffer, options?: Object|String, callback?: Function)
+writeFileAtomicSync(filename: String, data: String|Buffer, options?: Object|String)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Options Object
+chown: { uid: Number, gid: Number } or false
+encoding: String or null, default 'utf8'
+fsync: Boolean, default true
+mode: Number or false, default from existing file
+tmpfileCreated: Function(tmpFilename)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Temporary Filename Generation
+tmpFilename = filename + '.' + murmurhex(__filename, process.pid, ++invocations)
+if in worker: include worker_threads.threadId</p>
+</li>
+<li class="md-github">
+<p class="md-github">Write &amp; Sync Sequence
+fs.writeFile(tmpFilename, data, encoding)
+if fsync true: fs.fsync(fd)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Ownership Handling
+If options.chown !== false:
+require both uid and gid
+default inherits existing owner
+fs.chown(tmpFilename, uid, gid)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rename &amp; Replacement
+fs.rename(tmpFilename, filename)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Error Handling
+On any error (write, fsync, chown, rename): fs.unlink(tmpFilename) then callback(error)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Concurrency Queue
+Internal Promise-based queue keyed by filename ensures writes to same file serialized; parallel for different files</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Parameter Defaults:</p>
+<ul class="md-github">
+<li class="md-github">chown: retrieves uid&amp;gid with fs.stat if existing file, false to skip</li>
+<li class="md-github">encoding: 'utf8', ignored for Buffer</li>
+<li class="md-github">fsync: true triggers fs.fsync after write</li>
+<li class="md-github">mode: retrieves from fs.stat, false to use system default umask</li>
+</ul>
+<p class="md-github">Implementation Steps:</p>
+<ol class="md-github">
+<li class="md-github">Increment invocation counter per module load</li>
+<li class="md-github">Compute tmpFilename</li>
+<li class="md-github">fs.open(tmpFilename, flags='w', mode)</li>
+<li class="md-github">fs.write or fs.writeFile</li>
+<li class="md-github">if fsync: fs.fsync</li>
+<li class="md-github">if chown object: fs.chown</li>
+<li class="md-github">fs.rename to final filename</li>
+<li class="md-github">Close file descriptor</li>
+<li class="md-github">On errors at any step: fs.unlink(tmpFilename)</li>
+</ol>
+<p class="md-github">Internal Queue:</p>
+<ul class="md-github">
+<li class="md-github">Map&lt;String,Promise&gt; per filename</li>
+<li class="md-github">New write appended: queue = queue.then(() =&gt; performWrite)</li>
+<li class="md-github">After write promise settles, next write runs</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Asynchronous API:</p>
+<pre class="md-github"><code class="md-github">function writeFileAtomic(
+  filename: string,
+  data: string | Buffer,
+  options?: {
+    chown?: { uid: number; gid: number } | false;
+    encoding?: string | null;
+    fsync?: boolean;
+    mode?: number | false;
+    tmpfileCreated?: (tmp: string) =&gt; void;
+  } | string,
+  callback?: (err: NodeJS.ErrnoException | null) =&gt; void
+): void
+</code></pre>
+<ul class="md-github">
+<li class="md-github">If options is string: treated as encoding</li>
+<li class="md-github">Callback invoked with null on success or Error on failure</li>
+</ul>
+<p class="md-github">Synchronous API:</p>
+<pre class="md-github"><code class="md-github">function writeFileAtomicSync(
+  filename: string,
+  data: string | Buffer,
+  options?: {
+    chown?: { uid: number; gid: number } | false;
+    encoding?: string | null;
+    fsync?: boolean;
+    mode?: number | false;
+    tmpfileCreated?: (tmp: string) =&gt; void;
+  } | string
+): void
+</code></pre>
+<p class="md-github">Code Examples:</p>
+<pre class="md-github"><code class="md-github language-js">const writeFileAtomic = require('write-file-atomic')
+
+// Async with callback
+writeFileAtomic('out.txt', 'payload', {
+  chown: { uid:1000, gid:1000 },
+  encoding: 'utf8',
+  fsync: true,
+  mode: 0o644,
+  tmpfileCreated(tmp) { console.log('tmp:', tmp) }
+}, err =&gt; {
+  if (err) console.error('write failed', err)
+})
+
+// Async with Promise
+writeFileAtomic('out.txt', Buffer.from('payload'), { fsync:false })
+  .then(() =&gt; console.log('done'))
+  .catch(err =&gt; console.error(err))
+
+// Sync
+const writeSync = require('write-file-atomic').sync
+writeSync('out.txt', 'sync payload', { mode: 0o600, chown: false })
+</code></pre>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Always handle errors in callback or catch</li>
+<li class="md-github">Use explicit mode and chown to avoid unintended permissions</li>
+<li class="md-github">Pass tmpfileCreated for debugging temp file issues</li>
+</ul>
+<p class="md-github">Troubleshooting:</p>
+<ol class="md-github">
+<li class="md-github">Enable logging:<pre class="md-github"><code class="md-github language-js">process.env.DEBUG = 'write-file-atomic'
+</code></pre>
+</li>
+<li class="md-github">Check temp files left in directory: pattern <code class="md-github">filename.*</code></li>
+<li class="md-github">Permission errors: ensure process has write and chmod rights</li>
+<li class="md-github">Race conditions: avoid parallel writes to same file without queue</li>
+<li class="md-github">fsync skipped: confirm <code class="md-github">fsync:false</code> setting</li>
+</ol>
+<p class="md-github">Expected Outputs:</p>
+<ul class="md-github">
+<li class="md-github">On success: no temp files, target file updated atomically</li>
+<li class="md-github">On error during rename: temp file removed, error bubbled</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">writeFileAtomic(filename:String,data:String|Buffer,options?:{chown:{uid:Number,gid:Number}|false,encoding:String|null='utf8',fsync:Boolean=true,mode:Number|false,tmpfileCreated?(tmp:String):void}|String,callback?:(Error|null)=&gt;void):void; writeFileAtomicSync(filename,data,options?):void; tmpName=filename+'.'+murmurhex(__filename,process.pid,++invocations)+■threadId; Steps: open tmp, write, fsync?, chown?, rename, close; Defaults inherit existing file stat for chown &amp; mode; optionsString=encoding; errors at any step perform fs.unlink(tmp) then callback; internal filename-keyed Promise queue serializes writes to same file; buffer data ignores encoding; fsync:false skips fs.fsync; chown:false skips ownership change; mode:false uses umask; tmpfileCreated invoked with tmp path.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">API Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Options Object</p>
+</li>
+<li class="md-github">
+<p class="md-github">Temporary Filename Generation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Write &amp; Sync Sequence</p>
+</li>
+<li class="md-github">
+<p class="md-github">Ownership Handling</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rename &amp; Replacement</p>
+</li>
+<li class="md-github">
+<p class="md-github">Error Handling</p>
+</li>
+<li class="md-github">
+<p class="md-github">Concurrency Queue</p>
+</li>
+<li class="md-github">
+<p class="md-github">API Methods
+writeFileAtomic(filename: String, data: String|Buffer, options?: Object|String, callback?: Function)
+writeFileAtomicSync(filename: String, data: String|Buffer, options?: Object|String)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Options Object
+chown: { uid: Number, gid: Number } or false
+encoding: String or null, default 'utf8'
+fsync: Boolean, default true
+mode: Number or false, default from existing file
+tmpfileCreated: Function(tmpFilename)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Temporary Filename Generation
+tmpFilename = filename + '.' + murmurhex(__filename, process.pid, ++invocations)
+if in worker: include worker_threads.threadId</p>
+</li>
+<li class="md-github">
+<p class="md-github">Write &amp; Sync Sequence
+fs.writeFile(tmpFilename, data, encoding)
+if fsync true: fs.fsync(fd)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Ownership Handling
+If options.chown !== false:
+require both uid and gid
+default inherits existing owner
+fs.chown(tmpFilename, uid, gid)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rename &amp; Replacement
+fs.rename(tmpFilename, filename)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Error Handling
+On any error (write, fsync, chown, rename): fs.unlink(tmpFilename) then callback(error)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Concurrency Queue
+Internal Promise-based queue keyed by filename ensures writes to same file serialized; parallel for different files</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Atomic File Writes
+https://github.com/npm/write-file-atomic</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-atomic_file_writes" href="#digest-of-atomic_file_writes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of ATOMIC_FILE_WRITES</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="atomic-file-writes-documentation-retrieved-2024-06-10" href="#atomic-file-writes-documentation-retrieved-2024-06-10"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Atomic File Writes Documentation (retrieved 2024-06-10)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="api-methods" href="#api-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Methods</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="writefileatomicfilename-data-options-callback" href="#writefileatomicfilename-data-options-callback"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>writeFileAtomic(filename, data, [options], [callback])</h3>
+<ul class="md-github">
+<li class="md-github">Parameters:
+<ul class="md-github">
+<li class="md-github">filename (String): path to target file</li>
+<li class="md-github">data (String | Buffer): contents to write</li>
+<li class="md-github">options (Object | String, optional): configuration or encoding string</li>
+<li class="md-github">callback (Function, optional): function(err) called on completion</li>
+</ul>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="writefileatomicsyncfilename-data-options" href="#writefileatomicsyncfilename-data-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>writeFileAtomicSync(filename, data, [options])</h3>
+<ul class="md-github">
+<li class="md-github">Parameters:
+<ul class="md-github">
+<li class="md-github">filename (String)</li>
+<li class="md-github">data (String | Buffer)</li>
+<li class="md-github">options (Object | String, optional)</li>
+</ul>
+</li>
+<li class="md-github">Returns: void</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="options-object" href="#options-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options Object</h2>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Property</th>
+<th class="md-github">Type</th>
+<th class="md-github">Default</th>
+<th class="md-github">Description</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">chown</td>
+<td class="md-github">Object</td>
+<td class="md-github">false</td>
+<td class="md-github">inherits existing file owner (uid &amp; gid) or false to skip</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">encoding</td>
+<td class="md-github">String</td>
+<td class="md-github">null</td>
+<td class="md-github">'utf8'</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">fsync</td>
+<td class="md-github">Boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Skip final fsync if false</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">mode</td>
+<td class="md-github">Number</td>
+<td class="md-github">false</td>
+<td class="md-github">inherits existing file mode or false to use system default</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">tmpfileCreated</td>
+<td class="md-github">Function</td>
+<td class="md-github">—</td>
+<td class="md-github">Callback invoked with temporary filename when created</td>
+</tr>
+</tbody>
+</table>
+<h2 class="md-github"><a class="md-github__anchor" name="behavior--implementation-details" href="#behavior--implementation-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Behavior &amp; Implementation Details</h2>
+<ol class="md-github">
+<li class="md-github"><strong class="md-github">Temporary Filename</strong>: <code class="md-github">filename + '.' + murmurhex(__filename, process.pid, ++invocations)</code>; includes <code class="md-github">worker_threads.threadId</code> if in a worker.</li>
+<li class="md-github"><strong class="md-github">Write &amp; Sync</strong>: uses <code class="md-github">fs.writeFile</code> then <code class="md-github">fs.fsync</code> (unless <code class="md-github">fsync:false</code>).</li>
+<li class="md-github"><strong class="md-github">Ownership</strong>: after write, if <code class="md-github">options.chown</code> truthy, calls <code class="md-github">fs.chown(tmp, uid, gid)</code>. Defaults to existing file owner or skips if <code class="md-github">false</code>.</li>
+<li class="md-github"><strong class="md-github">Rename</strong>: <code class="md-github">fs.rename(tmp, filename)</code> replaces original.</li>
+<li class="md-github"><strong class="md-github">Error Handling</strong>: on any fs error attempts <code class="md-github">fs.unlink(tmp)</code> then passes error to callback.</li>
+<li class="md-github"><strong class="md-github">Concurrency</strong>: writes to same filename serialized via internal Promise queue; different filenames run in parallel.</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: https://github.com/npm/write-file-atomic</li>
+<li class="md-github">Data Size: 570286 bytes</li>
+<li class="md-github">Crawled: 2024-06-10</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution-1" href="#attribution-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Atomic File Writes</li>
+<li class="md-github">URL: https://github.com/npm/write-file-atomic</li>
+<li class="md-github">License: License: MIT</li>
+<li class="md-github">Crawl Date: 2025-05-13T09:28:02.792Z</li>
+<li class="md-github">Data Size: 570286 bytes</li>
+<li class="md-github">Links Found: 4735</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-13</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-13T10:40:54.308Z</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="ejs_templating" href="#ejs_templating"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EJS_TEMPLATING</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation: npm install ejs. Core API: ejs.render(template:String, data:Object, options:Object, callback?:Function) returns String, options={cache:false,filename,root,delimiter:'%',openDelimiter:'&lt;',closeDelimiter:'&gt;',rmWhitespace:false,context,compileDebug:true}. ejs.renderFile(path:String, data:Object, options:Object, callback:Function). ejs.compile(template:String, options:Object) returns reusable function(data:Object, options?:Object):String. Express: app.set('view engine','ejs'), app.set('views',dir), res.render(name,data). Config options with defaults as above. Caching: options.cache or app.set('view cache',true), clear via ejs.clearCache(). Filters via ejs.filters.myFilter. Includes via &lt;%- include(file,data) %&gt;, paths from root and filename. Debug: compileDebug, client option, inspect fn.toString().</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Installation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Render Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Compilation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Express Integration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Caching</p>
+</li>
+<li class="md-github">
+<p class="md-github">Filters</p>
+</li>
+<li class="md-github">
+<p class="md-github">Includes</p>
+</li>
+<li class="md-github">
+<p class="md-github">Debugging</p>
+</li>
+<li class="md-github">
+<p class="md-github">Installation
+npm install ejs</p>
+</li>
+<li class="md-github">
+<p class="md-github">Render Methods
+ejs.render(template:String, data:Object, options:Object, callback?:Function):String|undefined</p>
+<ul class="md-github">
+<li class="md-github">callback invokes (err, str)</li>
+</ul>
+<p class="md-github">ejs.renderFile(path:String, data:Object, options:Object, callback:Function):void</p>
+</li>
+<li class="md-github">
+<p class="md-github">Compilation
+ejs.compile(template:String, options:Object):Function</p>
+<ul class="md-github">
+<li class="md-github">Returns fn(data:Object, options?:Object):String</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Express Integration
+app.set('view engine','ejs')
+app.set('views','&lt;project_root&gt;/views')
+res.render('templateName', dataObject)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options
+cache:Boolean = false
+filename:String
+root:String|Array<String>
+delimiter:String = '%'
+openDelimiter:String = '&lt;'
+closeDelimiter:String = '&gt;'
+rmWhitespace:Boolean = false
+context:Object
+compileDebug:Boolean = true</p>
+</li>
+<li class="md-github">
+<p class="md-github">Caching
+app.set('view cache',true)
+ejs.clearCache()</p>
+</li>
+<li class="md-github">
+<p class="md-github">Filters
+ejs.filters.filterName = function(input){ return modified }
+Usage: &lt;%= value|filterName %&gt;</p>
+</li>
+<li class="md-github">
+<p class="md-github">Includes
+&lt;%- include('partial.ejs', data) %&gt;
+Resolution: options.root / dirname(filename)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Debugging
+options.compileDebug = true
+ejs.compile(template, {client:true})
+inspect via fn.toString()</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Install: npm install ejs@latest (v3.x). Import: const ejs = require('ejs'); or import * as ejs from 'ejs';
+Express: ensure app.engine('ejs', ejs.renderFile) if custom. views dir priority: options.root or default 'views'.
+Filename option must be absolute path for include and cache key. Include search order: Array of roots in options.root, then dirname(filename).
+Use rmWhitespace to collapse whitespace: all safe-to-remove whitespace between tags removed.
+Context: options.context binds 'this' inside template functions.
+clearCache takes no args and resets ejs cache object.
+Client compilation: options.client = true adds function body string as return value, no Node require dependencies.
+Strict mode: options.strict = true enforces JavaScript strict mode inside templates.
+Local debug var name: options.debugLocalsName = '_locals', default used in generated debug code.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API ejs.render(template:String, data:Object, options:Object, callback?:Function):String|undefined
+options: {
+cache:Boolean = false,
+filename:String,
+root:String|Array<String>,
+delimiter:String = '%',
+openDelimiter:String = '&lt;',
+closeDelimiter:String = '&gt;',
+rmWhitespace:Boolean = false,
+context:Object,
+compileDebug:Boolean = true,
+client:Boolean = false,
+strict:Boolean = false,
+debugLocalsName:String = 'locals'
+}
+callback signature: (err:Error|null, str:String) =&gt; void</p>
+<p class="md-github">API ejs.renderFile(path:String, data:Object, options:Object, callback:Function):void
+path must exist, callback invoked with rendered string or error.</p>
+<p class="md-github">API ejs.compile(template:String, options:Object):Function
+Returns fn(data:Object, options?:Object):String</p>
+<p class="md-github">Express setup:
+app.engine('ejs', ejs.renderFile)
+app.set('view engine', 'ejs')
+app.set('views', [dir1, dir2])</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Always set filename when using includes or cache.</li>
+<li class="md-github">Precompile templates via ejs.compile to reuse functions in high-load contexts.</li>
+<li class="md-github">Use rmWhitespace in HTML-heavy templates to reduce output size.</li>
+<li class="md-github">Define filters early: ejs.filters.myFilter = fn</li>
+</ul>
+<p class="md-github">Troubleshooting:
+Command: DEBUG=ejs* node app.js
+Expect logs: [ejs compile debug] templateName compiled in Xms
+To inspect generated function: console.log(ejs.compile(src,{client:true}));
+Common errors: missing filename for includes =&gt; Error: Could not find include 'file.ejs'
+Fix: provide absolute filename option or root config.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">ejs.render(template:String,data:Object,options:Object={cache:false,filename,root,delimiter:'%',openDelimiter:'&lt;',closeDelimiter:'&gt;',rmWhitespace:false,context,compileDebug:true,client:false,strict:false,debugLocalsName:'locals'},callback?:(err, str)=&gt;void):String|undefined</p>
+<p class="md-github">ejs.renderFile(path:String,data:Object,options:Object,callback:(err,str)=&gt;void):void</p>
+<p class="md-github">ejs.compile(template:String,options:Object):Function(data:Object,options?:Object)=&gt;String</p>
+<p class="md-github">Express: app.engine('ejs',ejs.renderFile);app.set('view engine','ejs');app.set('views','<dir>');res.render('tpl',data)</p>
+<p class="md-github">Options.defaults:cache=false,compileDebug=true,delimiter '%',openDelimiter '&lt;',closeDelimiter '&gt;',rmWhitespace=false</p>
+<p class="md-github">Cache.clear:ejs.clearCache()</p>
+<p class="md-github">Filters:ejs.filters.name=fn;Use:&lt;%= val|name %&gt;</p>
+<p class="md-github">Include:&lt;%- include('partial.ejs',data) %&gt;;Paths:options.root[] then dirname(filename)</p>
+<p class="md-github">Debug:options.compileDebug=true;client:true=&gt;function source</p>
+<p class="md-github">Best: set filename, precompile, rmWhitespace for HTML, define filters before compile</p>
+<p class="md-github">Trouble: include path errors fix with filename or root, inspect with DEBUG=ejs*; console.log(fn.toString())</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Installation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Render Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Compilation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Express Integration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Caching</p>
+</li>
+<li class="md-github">
+<p class="md-github">Filters</p>
+</li>
+<li class="md-github">
+<p class="md-github">Includes</p>
+</li>
+<li class="md-github">
+<p class="md-github">Debugging</p>
+</li>
+<li class="md-github">
+<p class="md-github">Installation
+npm install ejs</p>
+</li>
+<li class="md-github">
+<p class="md-github">Render Methods
+ejs.render(template:String, data:Object, options:Object, callback?:Function):String|undefined</p>
+<ul class="md-github">
+<li class="md-github">callback invokes (err, str)</li>
+</ul>
+<p class="md-github">ejs.renderFile(path:String, data:Object, options:Object, callback:Function):void</p>
+</li>
+<li class="md-github">
+<p class="md-github">Compilation
+ejs.compile(template:String, options:Object):Function</p>
+<ul class="md-github">
+<li class="md-github">Returns fn(data:Object, options?:Object):String</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Express Integration
+app.set('view engine','ejs')
+app.set('views','&lt;project_root&gt;/views')
+res.render('templateName', dataObject)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options
+cache:Boolean = false
+filename:String
+root:String|Array<String>
+delimiter:String = '%'
+openDelimiter:String = '&lt;'
+closeDelimiter:String = '&gt;'
+rmWhitespace:Boolean = false
+context:Object
+compileDebug:Boolean = true</p>
+</li>
+<li class="md-github">
+<p class="md-github">Caching
+app.set('view cache',true)
+ejs.clearCache()</p>
+</li>
+<li class="md-github">
+<p class="md-github">Filters
+ejs.filters.filterName = function(input){ return modified }
+Usage: &lt;%= value|filterName %&gt;</p>
+</li>
+<li class="md-github">
+<p class="md-github">Includes
+&lt;%- include('partial.ejs', data) %&gt;
+Resolution: options.root / dirname(filename)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Debugging
+options.compileDebug = true
+ejs.compile(template, {client:true})
+inspect via fn.toString()</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">EJS Templating Engine
+https://ejs.co/#docs</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-ejs_templating" href="#digest-of-ejs_templating"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of EJS_TEMPLATING</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<p class="md-github">Install via npm:</p>
+<pre class="md-github"><code class="md-github">npm install ejs
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="usage-methods" href="#usage-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage Methods</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="ejsrendertemplate-data-options-callback" href="#ejsrendertemplate-data-options-callback"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ejs.render(template, data, options, callback)</h2>
+<p class="md-github">Signature:</p>
+<pre class="md-github"><code class="md-github">ejs.render(template:String, data:Object, options:Object, callback?:Function):String|undefined
+</code></pre>
+<p class="md-github">Parameters:
+template      JavaScript string with EJS tags
+data          Object supplying template variables
+options       {
+cache:Boolean = false,
+filename:String|undefined,
+root:String|undefined,
+delimiter:String = '%',
+openDelimiter:String = '&lt;',
+closeDelimiter:String = '&gt;',
+rmWhitespace:Boolean = false,
+context:Object|undefined,
+compileDebug:Boolean = true
+}
+callback      (err:Error|null, str:String) =&gt; void
+Returns rendered HTML string or invokes callback.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="ejsrenderfilefilename-data-options-callback" href="#ejsrenderfilefilename-data-options-callback"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ejs.renderFile(filename, data, options, callback)</h2>
+<p class="md-github">Signature:</p>
+<pre class="md-github"><code class="md-github">ejs.renderFile(path:String, data:Object, options:Object, callback:Function):void
+</code></pre>
+<p class="md-github">Parameters:
+path          filesystem path to .ejs template
+data          Object supplying template variables
+options       same as render options, filename option used for caching
+callback      (err:Error|null, str:String) =&gt; void</p>
+<h2 class="md-github"><a class="md-github__anchor" name="ejscompiletemplate-options" href="#ejscompiletemplate-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ejs.compile(template, options)</h2>
+<p class="md-github">Signature:</p>
+<pre class="md-github"><code class="md-github">ejs.compile(template:String, options:Object):Function
+</code></pre>
+<p class="md-github">Returns reusable function: (data:Object, options?:Object) =&gt; String.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="express-integration" href="#express-integration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Express Integration</h1>
+<p class="md-github">In Express setup:</p>
+<pre class="md-github"><code class="md-github language-js">app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
+// Render in route:
+res.render('templateName', { key: value })
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="configuration-options" href="#configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Options</h1>
+<p class="md-github">cache         Boolean = false      // Cache intermediate JS functions
+filename      String               // Required for includes and cache key
+root          String|Array<String> // Base dirs for include
+delimiter     String = '%'         // Tag delimiter
+openDelimiter String = '&lt;'         // Opening marker
+closeDelimiter String = '&gt;'        // Closing marker
+rmWhitespace  Boolean = false      // Remove all safe-to-remove whitespace
+context       Object               // Binding for 'this' in templates
+compileDebug  Boolean = true       // Include debug instrumentation</p>
+<h1 class="md-github"><a class="md-github__anchor" name="caching" href="#caching"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Caching</h1>
+<p class="md-github">Enable cache via options.cache = true or Express setting:</p>
+<pre class="md-github"><code class="md-github language-js">app.set('view cache', true)
+</code></pre>
+<p class="md-github">Clear cache:</p>
+<pre class="md-github"><code class="md-github language-js">ejs.clearCache():void
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="filters" href="#filters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Filters</h1>
+<p class="md-github">Define custom filters:</p>
+<pre class="md-github"><code class="md-github language-js">ejs.filters.upper = function(str:String):String { return str.toUpperCase() }
+</code></pre>
+<p class="md-github">Use in template:</p>
+<pre class="md-github"><code class="md-github">&lt;%= 'text'|upper %&gt;
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="includes" href="#includes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Includes</h1>
+<p class="md-github">Include partials:</p>
+<pre class="md-github"><code class="md-github">&lt;%- include('partial.ejs', {foo: 'bar'}) %&gt;
+</code></pre>
+<p class="md-github">Search paths from options.root and dirname(filename).</p>
+<h1 class="md-github"><a class="md-github__anchor" name="debugging" href="#debugging"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Debugging</h1>
+<p class="md-github">Enable compile debug for stack traces:
+options.compileDebug = true
+Generate client-side function:</p>
+<pre class="md-github"><code class="md-github">ejs.compile(template, {client:true}):String
+</code></pre>
+<p class="md-github">View intermediate source:</p>
+<pre class="md-github"><code class="md-github language-js">var fn = ejs.compile(template, {compileDebug:true});
+console.log(fn.toString());
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: EJS Templating Engine</li>
+<li class="md-github">URL: https://ejs.co/#docs</li>
+<li class="md-github">License: MIT</li>
+<li class="md-github">Crawl Date: 2025-05-12T18:29:07.298Z</li>
+<li class="md-github">Data Size: 8029 bytes</li>
+<li class="md-github">Links Found: 26</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-12</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-13T10:40:53.587Z</p>
+  </footer>
+</body>
+</html>

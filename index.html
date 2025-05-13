@@ -23,7 +23,7 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
-<p class="md-github"><code class="md-github">@xn-intenton-z2a/repository0-crucible</code> is a demo repository that showcases the GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/repository0-crucible" class="md-github">repository0-crucible</a> and also provides a CLI tool and JavaScript library for calculating π to a specified precision using different algorithms. It supports diagnostics, benchmarking, convergence data export, chart generation, feature specification validation, and an HTTP API server mode.</p>
+<p class="md-github"><code class="md-github">@xn-intenton-z2a/repository0-crucible</code> is a demo repository that showcases the GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/repository0-crucible" class="md-github">repository0-crucible</a> and also provides a CLI tool and JavaScript library for calculating π to a specified precision using different algorithms. It supports diagnostics, benchmarking, convergence data export, chart generation, feature specification validation, an HTTP API server mode, and an interactive web dashboard.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="repository-template" href="#repository-template"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Template</h2>
 <p class="md-github">The repository is intended as a template that includes:</p>
 <ul class="md-github">
@@ -40,15 +40,19 @@
 <li class="md-github">
 <p class="md-github">π Calculation</p>
 <ul class="md-github">
-<li class="md-github"><code class="md-github">--digits &lt;number&gt;</code>: Number of decimal places (default: 5).</li>
-<li class="md-github"><code class="md-github">--algorithm &lt;string&gt;</code>: Calculation method (<code class="md-github">leibniz</code>, <code class="md-github">montecarlo</code>, <code class="md-github">chudnovsky</code>).</li>
-<li class="md-github"><code class="md-github">--diagnostics</code>: Outputs a JSON object with execution diagnostics (algorithm, parameters, result, durationMs, iterations/samplesUsed).</li>
+<li class="md-github"><code class="md-github">--algorithm &lt;string&gt;</code>: Calculation method (<code class="md-github">leibniz</code>, <code class="md-github">montecarlo</code>, <code class="md-github">chudnovsky</code>, <code class="md-github">ramanujan-sato</code>, <code class="md-github">gauss-legendre</code>) (default: <code class="md-github">leibniz</code>).</li>
+<li class="md-github"><code class="md-github">--digits &lt;number&gt;</code>: Number of decimal places (for digit-based algorithms) (default: <code class="md-github">5</code>).</li>
+<li class="md-github"><code class="md-github">--samples &lt;number&gt;</code>: Number of random samples (for Monte Carlo) (default: <code class="md-github">100000</code>).</li>
+<li class="md-github"><code class="md-github">--level &lt;number&gt;</code>: Level for Ramanujan–Sato series (default: <code class="md-github">1</code>).</li>
+<li class="md-github"><code class="md-github">--max-iterations &lt;number&gt;</code>: Maximum iterations for high-precision series (default: <code class="md-github">50</code>).</li>
+<li class="md-github"><code class="md-github">--error-tolerance &lt;number&gt;</code>: Error tolerance threshold for series termination.</li>
+<li class="md-github"><code class="md-github">--diagnostics</code>: Outputs a JSON object with execution diagnostics (<code class="md-github">algorithm</code>, parameters, <code class="md-github">result</code>, <code class="md-github">durationMs</code>, <code class="md-github">iterations</code>/<code class="md-github">samplesUsed</code>).</li>
 </ul>
 </li>
 <li class="md-github">
 <p class="md-github">Benchmark</p>
 <ul class="md-github">
-<li class="md-github"><code class="md-github">--benchmark</code>: Runs all supported algorithms and outputs a consolidated JSON benchmark report including result, durationMs, and error.</li>
+<li class="md-github"><code class="md-github">--benchmark</code>: Runs all supported algorithms and outputs a consolidated JSON benchmark report including algorithm, input parameters, result, durationMs, and error.</li>
 </ul>
 </li>
 <li class="md-github">
@@ -66,13 +70,19 @@
 <li class="md-github">
 <p class="md-github">Feature Specification Validation</p>
 <ul class="md-github">
-<li class="md-github"><code class="md-github">--validate-features</code>: Validates that all feature spec files under <code class="md-github">features/</code> reference <code class="md-github">MISSION.md</code>; exits with code 0 on success or 1 with a list of missing references.</li>
+<li class="md-github"><code class="md-github">--validate-features</code>: Validates that all feature spec files under <code class="md-github">features/</code> reference <code class="md-github">MISSION.md</code> and exits with status 0.</li>
 </ul>
 </li>
 <li class="md-github">
 <p class="md-github">HTTP API Server</p>
 <ul class="md-github">
-<li class="md-github"><code class="md-github">--serve &lt;port&gt;</code>: Starts an Express HTTP server exposing <code class="md-github">/pi</code>, <code class="md-github">/pi/data</code>, and <code class="md-github">/pi/chart</code> endpoints for programmatic access.</li>
+<li class="md-github"><code class="md-github">--serve &lt;port&gt;</code>: Starts an Express HTTP server exposing <code class="md-github">/pi</code>, <code class="md-github">/pi/data</code>, <code class="md-github">/pi/chart</code>, and <code class="md-github">/dashboard</code> endpoints for programmatic and interactive use.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Interactive Dashboard</p>
+<ul class="md-github">
+<li class="md-github">Access the web dashboard at <code class="md-github">http://localhost:&lt;port&gt;/dashboard</code> for a browser-based UI to configure π calculation parameters and view live results and an error chart.</li>
 </ul>
 </li>
 </ul>
@@ -82,6 +92,12 @@ node src/lib/main.js --digits 10
 
 # Monte Carlo sampling with diagnostics
 node src/lib/main.js --algorithm montecarlo --samples 100000 --diagnostics
+
+# Ramanujan–Sato series: level 1, 3 digits
+node src/lib/main.js --algorithm ramanujan-sato --level 1 --digits 3
+
+# Gauss–Legendre algorithm: 4 digits
+node src/lib/main.js --algorithm gauss-legendre --digits 4
 
 # Benchmark all algorithms with 5-digit precision
 node src/lib/main.js --benchmark --digits 5
@@ -103,6 +119,15 @@ node src/lib/main.js --validate-features
 <pre class="md-github"><code class="md-github language-bash"># Basic π calculation
 curl http://localhost:3000/pi
 
+# Chudnovsky for 2 digits
+curl &quot;http://localhost:3000/pi?algorithm=chudnovsky&amp;digits=2&quot;
+
+# Ramanujan–Sato with diagnostics
+curl &quot;http://localhost:3000/pi?algorithm=ramanujan-sato&amp;digits=3&amp;level=1&amp;diagnostics=true&quot;
+
+# Gauss–Legendre for 2 digits
+curl &quot;http://localhost:3000/pi?algorithm=gauss-legendre&amp;digits=2&quot;
+
 # Monte Carlo with diagnostics
 curl &quot;http://localhost:3000/pi?digits=3&amp;algorithm=montecarlo&amp;samples=1000&amp;diagnostics=true&quot;
 
@@ -111,11 +136,14 @@ curl &quot;http://localhost:3000/pi/data?digits=2&amp;algorithm=leibniz&quot;
 
 # Convergence chart PNG
 curl &quot;http://localhost:3000/pi/chart?digits=2&amp;algorithm=leibniz&quot; --output chart.png
+
+# Interactive Dashboard
+curl http://localhost:3000/dashboard
 </code></pre>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-12T10:40:48.889Z</p>
+    <p>Generated on 2025-05-13T10:40:54.993Z</p>
   </footer>
 </body>
 </html>

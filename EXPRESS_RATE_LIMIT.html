@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="express_rate_limit" href="#express_rate_limit"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EXPRESS_RATE_LIMIT</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Basic rate-limiting middleware for Express. rateLimit(options) ⇒ Express.RequestHandler. Options: windowMs (ms), limit (count|fn), message (string|json|fn), statusCode (default 429), handler, legacyHeaders, standardHeaders, keyGenerator, skip, store (MemoryStore or custom), passOnStoreError, requestPropertyName, skipSuccessfulRequests, skipFailedRequests, requestWasSuccessful, validate. Built-in memory store and external stores via store option. Usage: import rateLimit, configure options, app.use(limiter).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Installation
+2 Middleware Initialization
+3 Configuration Options
+4 Data Store Integration
+5 Applying Middleware</p>
+<p class="md-github">1 Installation
+npm install express-rate-limit</p>
+<p class="md-github">2 Middleware Initialization
+import { rateLimit } from 'express-rate-limit'
+const limiter = rateLimit(options)</p>
+<p class="md-github">3 Configuration Options
+windowMs: number (ms)
+limit: number or (req)=&gt;number
+message: string, object or (req,res)=&gt;string|object
+statusCode: number (default 429)
+handler: (req,res,next,options)=&gt;void
+legacyHeaders: boolean (default true)
+standardHeaders: 'draft-6' | 'draft-7' | 'draft-8'
+keyGenerator: (req,res)=&gt;string
+skip: (req,res)=&gt;boolean
+store: Store implementation (default memory)
+passOnStoreError: boolean (default false)
+requestPropertyName: string (default 'rateLimit')
+skipSuccessfulRequests: boolean
+skipFailedRequests: boolean
+requestWasSuccessful: (res)=&gt;boolean
+validate: boolean or object</p>
+<p class="md-github">4 Data Store Integration
+Built-in MemoryStore
+To use Redis: npm install rate-limit-redis ioredis
+const RedisStore = require('rate-limit-redis')
+const redisClient = new Redis({host,port})
+store: new RedisStore({ sendCommand: (...args)=&gt;redisClient.call(...args) })</p>
+<p class="md-github">5 Applying Middleware
+app.use(rateLimit({windowMs:60000,limit:100}))
+Add limiter per route: app.use('/api', limiter)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default values:
+windowMs: 600000 (10 minutes)
+limit: 5
+message: 'Too many requests, please try again later.'
+statusCode: 429
+legacyHeaders: true
+standardHeaders: undefined
+keyGenerator: (req)=&gt;req.ip
+skip: ()=&gt;false
+passOnStoreError: false
+requestPropertyName: 'rateLimit'
+skipSuccessfulRequests: false
+skipFailedRequests: false
+requestWasSuccessful: res.statusCode &lt; 400
+validate: true</p>
+<p class="md-github">Implementation Steps:</p>
+<ol class="md-github">
+<li class="md-github">Install package: npm install express-rate-limit</li>
+<li class="md-github">Import and configure limiter</li>
+<li class="md-github">(Optional) Install and configure external store</li>
+<li class="md-github">Use limiter globally or per-route</li>
+<li class="md-github">Access rate limit info via req.rateLimit</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Function Signature:
+function rateLimit(options: RateLimitOptions): Express.RequestHandler</p>
+<p class="md-github">Type RateLimitOptions {
+windowMs: number;
+delayAfter?: number;
+delayMs?: number;
+max?: number | ((req: Request, res: Response) =&gt; number);
+message?: string | object | ((req: Request, res: Response) =&gt; string | object);
+statusCode?: number;
+standardHeaders?: 'draft-6' | 'draft-7' | 'draft-8';
+legacyHeaders?: boolean;
+handler?: (req: Request, res: Response, next: NextFunction, options: RateLimitOptions) =&gt; void;
+keyGenerator?: (req: Request, res: Response) =&gt; string;
+skip?: (req: Request, res: Response) =&gt; boolean;
+store?: Store;
+passOnStoreError?: boolean;
+requestPropertyName?: string;
+skipSuccessfulRequests?: boolean;
+skipFailedRequests?: boolean;
+requestWasSuccessful?: (res: Response) =&gt; boolean;
+validate?: boolean | { statusCode?: boolean; legacyHeaders?: boolean; standardHeaders?: boolean; message?: boolean; }}</p>
+<p class="md-github">Store Interface:
+interface Store {
+incr(key: string, cb: (err: Error | null, hits: number, resetTime: number) =&gt; void): void;
+decrement?(key: string): void;
+resetKey(key: string): void;
+}</p>
+<p class="md-github">Example Code:</p>
+<pre class="md-github"><code class="md-github language-js">import { rateLimit } from 'express-rate-limit'
+
+const limiter = rateLimit({
+  windowMs: 60000,
+  max: (req) =&gt; req.user ? 1000 : 10,
+  message: { error: 'Rate limit exceeded' },
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  skip: (req) =&gt; req.ip === '127.0.0.1',
+  handler: (req,res) =&gt; res.status(429).json({error:'Blocked'}),
+});
+
+app.use('/api/', limiter);
+</code></pre>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Use different limiters per route group.</li>
+<li class="md-github">Configure skip based on authentication or IP whitelist.</li>
+<li class="md-github">Persist counters in Redis in clustered environments.</li>
+</ul>
+<p class="md-github">Troubleshooting:
+Command: curl -I http://localhost:3000/
+Expected headers:
+RateLimit-Limit: 100
+RateLimit-Remaining: 99
+RateLimit-Reset: <timestamp>
+On store error: set passOnStoreError:true and simulate disconnect.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">rateLimit(options)⇒Express middleware. Options: windowMs ms, max count|fn, message string|object|fn, statusCode 429, handler fn(req,res,next,opts), standardHeaders draft-6|7|8, legacyHeaders bool, keyGenerator(req)=&gt;string, skip(req)=&gt;bool, store Store interface (incr,resetKey), passOnStoreError bool, requestPropertyName string, skipSuccessfulRequests bool, skipFailedRequests bool, requestWasSuccessful(res)=&gt;bool, validate bool|object. Default memory store; external via store option (RedisStore,new RedisStore({sendCommand:…})). Usage: import, configure options, app.use(limiter) or per-route. Access req.rateLimit.{limit,remaining,reset}. Troubleshoot: inspect headers, console.log(req.rateLimit), enable passOnStoreError for store errors.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Installation
+2 Middleware Initialization
+3 Configuration Options
+4 Data Store Integration
+5 Applying Middleware</p>
+<p class="md-github">1 Installation
+npm install express-rate-limit</p>
+<p class="md-github">2 Middleware Initialization
+import { rateLimit } from 'express-rate-limit'
+const limiter = rateLimit(options)</p>
+<p class="md-github">3 Configuration Options
+windowMs: number (ms)
+limit: number or (req)=&gt;number
+message: string, object or (req,res)=&gt;string|object
+statusCode: number (default 429)
+handler: (req,res,next,options)=&gt;void
+legacyHeaders: boolean (default true)
+standardHeaders: 'draft-6' | 'draft-7' | 'draft-8'
+keyGenerator: (req,res)=&gt;string
+skip: (req,res)=&gt;boolean
+store: Store implementation (default memory)
+passOnStoreError: boolean (default false)
+requestPropertyName: string (default 'rateLimit')
+skipSuccessfulRequests: boolean
+skipFailedRequests: boolean
+requestWasSuccessful: (res)=&gt;boolean
+validate: boolean or object</p>
+<p class="md-github">4 Data Store Integration
+Built-in MemoryStore
+To use Redis: npm install rate-limit-redis ioredis
+const RedisStore = require('rate-limit-redis')
+const redisClient = new Redis({host,port})
+store: new RedisStore({ sendCommand: (...args)=&gt;redisClient.call(...args) })</p>
+<p class="md-github">5 Applying Middleware
+app.use(rateLimit({windowMs:60000,limit:100}))
+Add limiter per route: app.use('/api', limiter)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Express.js &amp; Middleware
+https://github.com/nfriedly/express-rate-limit</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-express_rate_limit" href="#digest-of-express_rate_limit"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of EXPRESS_RATE_LIMIT</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="express-rate-limit" href="#express-rate-limit"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>express-rate-limit</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<pre class="md-github"><code class="md-github language-js">import { rateLimit } from 'express-rate-limit'
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 100,               // allow 100 requests per windowMs per IP
+  standardHeaders: 'draft-8', // enable `RateLimit` header (draft-7/draft-8)
+  legacyHeaders: false      // disable `X-RateLimit-*` headers
+})
+
+app.use(limiter)
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="configuration-options" href="#configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Options</h2>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Option</th>
+<th class="md-github">Type</th>
+<th class="md-github">Default</th>
+<th class="md-github">Description</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">windowMs</td>
+<td class="md-github">number</td>
+<td class="md-github">600000</td>
+<td class="md-github">Time frame for counting requests in milliseconds</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">limit</td>
+<td class="md-github">number | (req)⇒number</td>
+<td class="md-github">5</td>
+<td class="md-github">Max number of requests per window per IP</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">message</td>
+<td class="md-github">string | object | fn</td>
+<td class="md-github">'Too many requests, please try again later.'</td>
+<td class="md-github">Response sent when limit exceeded</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">statusCode</td>
+<td class="md-github">number</td>
+<td class="md-github">429</td>
+<td class="md-github">HTTP status code returned when limit is exceeded</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">handler</td>
+<td class="md-github">(req,res,next,options)⇒void</td>
+<td class="md-github">undefined</td>
+<td class="md-github">Custom callback instead of default response</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">legacyHeaders</td>
+<td class="md-github">boolean</td>
+<td class="md-github">true</td>
+<td class="md-github">Enable <code class="md-github">X-RateLimit-*</code> headers</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">standardHeaders</td>
+<td class="md-github">'draft-6'|'draft-7'|'draft-8'</td>
+<td class="md-github">undefined</td>
+<td class="md-github">Enable standardized RateLimit header draft version</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">keyGenerator</td>
+<td class="md-github">(req,res)⇒string</td>
+<td class="md-github">ip address</td>
+<td class="md-github">Function to generate key for storing hits</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">skip</td>
+<td class="md-github">(req,res)⇒boolean</td>
+<td class="md-github">()⇒false</td>
+<td class="md-github">Function to skip rate limiting for specific requests</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">store</td>
+<td class="md-github">Store</td>
+<td class="md-github">MemoryStore</td>
+<td class="md-github">Custom store implementing in-memory or external datastore</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">passOnStoreError</td>
+<td class="md-github">boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">On store error, allow requests when true, otherwise block</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">requestPropertyName</td>
+<td class="md-github">string</td>
+<td class="md-github">'rateLimit'</td>
+<td class="md-github">Name of property added to req object containing rate limit info</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">skipSuccessfulRequests</td>
+<td class="md-github">boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Do not count successful 1xx–3xx responses</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">skipFailedRequests</td>
+<td class="md-github">boolean</td>
+<td class="md-github">false</td>
+<td class="md-github">Do not count failed 4xx–5xx responses</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">requestWasSuccessful</td>
+<td class="md-github">(res)⇒boolean</td>
+<td class="md-github">res.statusCode&lt;400</td>
+<td class="md-github">Determine success for skipSuccessfulRequests and skipFailedRequests</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">validate</td>
+<td class="md-github">boolean | object</td>
+<td class="md-github">true</td>
+<td class="md-github">Enable built-in validation of options</td>
+</tr>
+</tbody>
+</table>
+<h2 class="md-github"><a class="md-github__anchor" name="data-stores" href="#data-stores"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Stores</h2>
+<p class="md-github">Built-in memory store; supports external stores via <code class="md-github">store</code> option:</p>
+<ul class="md-github">
+<li class="md-github">RedisStore: <code class="md-github">npm install rate-limit-redis</code></li>
+<li class="md-github">MemcachedStore: <code class="md-github">npm install rate-limit-memcached</code></li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="example-redis-store" href="#example-redis-store"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example: Redis Store</h3>
+<pre class="md-github"><code class="md-github language-js">import { rateLimit } from 'express-rate-limit'
+import RedisStore from 'rate-limit-redis'
+import Redis from 'ioredis'
+
+const redisClient = new Redis({ host: '127.0.0.1', port: 6379 })
+const limiter = rateLimit({
+  store: new RedisStore({ sendCommand: (...args) =&gt; redisClient.call(...args) }),
+  windowMs: 60000,
+  limit: 10
+})
+app.use(limiter)
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="troubleshooting" href="#troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h2>
+<ul class="md-github">
+<li class="md-github">Ensure <code class="md-github">windowMs</code> and <code class="md-github">limit</code> are set to expected units.</li>
+<li class="md-github">If using external store, verify connectivity and credentials.</li>
+<li class="md-github">Enable <code class="md-github">passOnStoreError: true</code> to allow traffic on store failures during testing.</li>
+<li class="md-github">To debug hits: add <code class="md-github">console.log(req.rateLimit)</code> in middleware.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Express.js &amp; Middleware</li>
+<li class="md-github">URL: https://github.com/nfriedly/express-rate-limit</li>
+<li class="md-github">License: License: MIT</li>
+<li class="md-github">Crawl Date: 2025-05-13T06:29:42.906Z</li>
+<li class="md-github">Data Size: 554013 bytes</li>
+<li class="md-github">Links Found: 4816</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-13</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-13T10:40:53.858Z</p>
+  </footer>
+</body>
+</html>

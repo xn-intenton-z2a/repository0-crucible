@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="benchmark_js" href="#benchmark_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BENCHMARK_JS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Benchmark.js v2.1.4; dependency: lodash; include platform.js for Benchmark.platform; loader support: browser, AMD, Node.js; optional microtime for high-resolution timing; key classes: Benchmark, Suite; methods: Suite.add(name:string,fn:function)→Suite; Suite.on(event:string,listener:function)→Suite; Suite.run(options:{async:boolean})→Suite; events: cycle, complete; tested in modern browsers, Node.js, PhantomJS.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation and Integration
+2 Suite Initialization
+3 Test Registration
+4 Event Hooks
+5 Execution Control</p>
+<p class="md-github">1 Installation and Integration
+Command: npm install --save benchmark
+Include lodash.js then platform.js then benchmark.js in browser
+AMD loader paths: benchmark at path/to/benchmark, lodash at path/to/lodash, platform at path/to/platform
+Node.js import: var Benchmark = require('benchmark')
+Optional: npm install --save microtime for nanosecond timing</p>
+<p class="md-github">2 Suite Initialization
+Instantiate a new suite with var suite = new Benchmark.Suite</p>
+<p class="md-github">3 Test Registration
+suite.add(name, fn)
+name: string label
+fn: function containing code to measure
+Returns the suite instance for chaining</p>
+<p class="md-github">4 Event Hooks
+suite.on(event, listener)
+Supported events: cycle, complete
+listener signature: function(event) where event.target references the current Benchmark instance
+Chaining: multiple .on calls supported</p>
+<p class="md-github">5 Execution Control
+suite.run(options)
+options.async boolean to run asynchronously (default false)
+Returns the suite instance</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Platform Detection
+Include platform.js before benchmark.js to populate Benchmark.platform with name, version, description</p>
+<p class="md-github">Lodash Dependency
+Benchmark.js requires lodash for utilities</p>
+<p class="md-github">High-Resolution Timing
+Install microtime module; require('microtime') before running suite to override default timers</p>
+<p class="md-github">Loader Configurations
+Browser: direct script tags in correct sequence
+AMD: require.config with explicit paths for benchmark, lodash, platform
+Node.js: var Benchmark = require('benchmark')</p>
+<p class="md-github">Version Information
+Benchmark.js version 2.1.4</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Class: Benchmark
+Constructor signature: new Benchmark(name:string, fn:function, options?:object)
+Parameters:
+name: descriptive label for the benchmark
+fn: code function to measure
+options: optional object with properties defer:boolean, async:boolean, initCount:number, maxTime:number, minSamples:number, minTime:number
+Properties:
+name  string
+fn    function
+Methods:
+toString(): string  returns formatted benchmark statistics</p>
+<p class="md-github">Class: Suite
+Constructor signature: new Benchmark.Suite(options?:object)
+Parameters:
+options: optional suite configuration
+Methods:
+add(name:string, fn:function, options?:object): Suite
+name: test label
+fn: function to benchmark
+options: same as Benchmark constructor options
+returns the Suite instance
+on(event:string, listener:function): Suite
+event: 'cycle' or 'complete' or 'abort'
+listener receives event object with event.target referencing Benchmark or Suite context
+returns the Suite instance
+run(options:{async:boolean}): Suite
+options.async: true to run asynchronously, false for synchronous
+returns the Suite instance</p>
+<p class="md-github">Events and Listeners
+cycle: fired after each test cycle; listener(event) logs event.target statistics
+complete: fired when all tests finish; listener context is suite; use this.filter('fastest').map('name') to get fastest test</p>
+<p class="md-github">Configuration Options
+async (boolean) default: false
+defer (boolean) default: false
+initCount (number) default: 1
+maxTime (number) default: 5 seconds
+minSamples (number) default: 5
+minTime (number) default: 0.005 seconds</p>
+<p class="md-github">Usage Pattern</p>
+<ol class="md-github">
+<li class="md-github">load dependencies</li>
+<li class="md-github">instantiate suite</li>
+<li class="md-github">add tests</li>
+<li class="md-github">attach listeners</li>
+<li class="md-github">run suite with desired options</li>
+</ol>
+<p class="md-github">Best Practice
+Use asynchronous execution for long-running benchmarks to avoid blocking the main thread
+Adjust initCount and minTime for stable statistical results</p>
+<p class="md-github">Troubleshooting
+If no output appears, ensure console.log statements in listeners and that suite.run is invoked
+To validate timing, compare output margin of error; increase minSamples or maxTime if error &gt;2%</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">v2.1.4; dependencies: lodash, optional microtime; loader: browser(lodash.js → platform.js → benchmark.js), AMD(paths for benchmark, lodash, platform), Node(require('benchmark')); API: Suite.add(name:string,fn:function,options?:object)→Suite; Suite.on(event:cycle|complete,listener:function(event))→Suite; Suite.run(options:{async:boolean})→Suite; events cycle yields event.target stats, complete context suite; default options async:false,defer:false,initCount:1,maxTime:5,minSamples:5,minTime:0.005; best practice: run async for nonblocking, adjust initCount/minTime for precision; troubleshoot by checking listeners and suite.run invocation</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation and Integration
+2 Suite Initialization
+3 Test Registration
+4 Event Hooks
+5 Execution Control</p>
+<p class="md-github">1 Installation and Integration
+Command: npm install --save benchmark
+Include lodash.js then platform.js then benchmark.js in browser
+AMD loader paths: benchmark at path/to/benchmark, lodash at path/to/lodash, platform at path/to/platform
+Node.js import: var Benchmark = require('benchmark')
+Optional: npm install --save microtime for nanosecond timing</p>
+<p class="md-github">2 Suite Initialization
+Instantiate a new suite with var suite = new Benchmark.Suite</p>
+<p class="md-github">3 Test Registration
+suite.add(name, fn)
+name: string label
+fn: function containing code to measure
+Returns the suite instance for chaining</p>
+<p class="md-github">4 Event Hooks
+suite.on(event, listener)
+Supported events: cycle, complete
+listener signature: function(event) where event.target references the current Benchmark instance
+Chaining: multiple .on calls supported</p>
+<p class="md-github">5 Execution Control
+suite.run(options)
+options.async boolean to run asynchronously (default false)
+Returns the suite instance</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Testing &amp; Benchmarking Tools
+https://github.com/bestiejs/benchmark.js</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-benchmark_js" href="#digest-of-benchmark_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of BENCHMARK_JS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="benchmarkjs-documentation-retrieved-2024-06-20" href="#benchmarkjs-documentation-retrieved-2024-06-20"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Benchmark.js Documentation (retrieved 2024-06-20)</h1>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<ul class="md-github">
+<li class="md-github">Hard dependency: lodash</li>
+<li class="md-github">Include platform.js to populate Benchmark.platform</li>
+<li class="md-github">Browser script order: lodash.js, platform.js, benchmark.js</li>
+<li class="md-github">AMD loader:
+require({
+paths: {
+benchmark: 'path/to/benchmark',
+lodash:    'path/to/lodash',
+platform:  'path/to/platform'
+}
+}, ['benchmark'], function(Benchmark) {});</li>
+<li class="md-github">npm package: npm install --save benchmark</li>
+<li class="md-github">Optional high-resolution timers: npm install --save microtime</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="usage-example" href="#usage-example"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage Example</h1>
+<p class="md-github">var suite = new Benchmark.Suite;</p>
+<p class="md-github">// add tests
+suite.add('RegExp#test', function() {
+/o/.test('Hello World!');
+})
+.add('String#indexOf', function() {
+'Hello World!'.indexOf('o') &gt; -1;
+})</p>
+<p class="md-github">// add listeners
+suite.on('cycle', function(event) {
+console.log(String(event.target));
+})
+.on('complete', function() {
+console.log('Fastest is ' + this.filter('fastest').map('name'));
+})</p>
+<p class="md-github">// run asynchronously
+suite.run({ async: true });</p>
+<p class="md-github">// Sample console output:
+// RegExp#test x 4,161,532 ±0.99% (59 cycles)
+// String#indexOf x 6,139,623 ±1.00% (131 cycles)
+// Fastest is String#indexOf</p>
+<h1 class="md-github"><a class="md-github__anchor" name="supported-environments" href="#supported-environments"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supported Environments</h1>
+<p class="md-github">Chrome 54–55, Firefox 49–50, IE 11, Edge 14, Safari 9–10, Node.js 6–7, PhantomJS 2.1.1</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Testing &amp; Benchmarking Tools</li>
+<li class="md-github">URL: https://github.com/bestiejs/benchmark.js</li>
+<li class="md-github">License: MIT</li>
+<li class="md-github">Crawl Date: 2025-05-13T00:40:12.006Z</li>
+<li class="md-github">Data Size: 642682 bytes</li>
+<li class="md-github">Links Found: 5007</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-13</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-13T10:40:54.395Z</p>
+  </footer>
+</body>
+</html>
