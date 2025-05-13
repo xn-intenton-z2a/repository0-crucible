@@ -1,49 +1,48 @@
 # Overview
 
-Enhance π calculation methods by implementing true high-precision algorithms using decimal.js. Replace existing fallback implementations with Chudnovsky, Gauss-Legendre, and Ramanujan–Sato methods to deliver accurate π approximations at arbitrary digit lengths and improve convergence performance.
-
-# Dependencies
-
-- Add decimal.js@^10.4.3 to package.json dependencies.
+Consolidate all π calculation methods and introduce automatic selection mode under a unified feature. Support five high-precision and sampling algorithms plus an `auto` algorithm that chooses the best method based on user-provided parameters. Simplify dispatcher logic so both CLI and HTTP API use a single entry point for algorithm choice.
 
 # Implementation
 
-1. Precision Configuration
-   - Import { Decimal } from 'decimal.js' in src/lib/main.js.
-   - Compute precision bits as Math.ceil(digits * 3.32) + 10 and call Decimal.set({ precision: bits }).
+1. Dependencies
+   • Ensure `decimal.js` is listed in package.json. No additional new libraries required.
 
 2. Algorithm Functions
-   - calculatePiChudnovsky(digits): Implement the Chudnovsky series using Decimal arithmetic until the term magnitude drops below 10^(-digits). Use Decimal methods for factorial, power, and arithmetic to accumulate the series efficiently.
-   - calculatePiGaussLegendre(digits): Implement the Gauss-Legendre iteration using Decimal. Initialize a0=1, b0=1/sqrt(2), t0=1/4, p0=1 and iterate until |a−b|<10^(-digits), then compute π=(a+b)²/(4t).
-   - calculatePiRamanujanSato(digits, options): Implement Ramanujan–Sato series using BigInt for binomial coefficients and Decimal for fractional operations. Support options: level (series variant), maxIterations, and errorTolerance to stop when term magnitude < errorTolerance.
-   - Refactor the algorithm dispatcher in both CLI main() and createApp() to select and invoke the correct function based on algorithm name and parameters.
+   • calculatePiLeibniz(digits): unchanged.
+   • calculatePiMonteCarlo(samples): unchanged.
+   • calculatePiChudnovsky(digits): implement true series using Decimal until term < 10^(-digits).
+   • calculatePiRamanujanSato(opts): support `level`, `maxIterations`, `errorTolerance` parameters with Decimal and BigInt per RAMANUJAN_SATO guidelines.
+   • calculatePiGaussLegendre(digits): implement iteration until |a−b|<10^(−digits) with precision bits computed from digits.
 
-3. CLI Integration
-   - Extend CLIOptionsSchema in src/lib/main.js to accept algorithm values "gauss-legendre" and "ramanujan-sato".
-   - Add minimist flags --level <number>, --max-iterations <number>, and --error-tolerance <number> and validate them in Zod schema.
+3. Automatic Selection
+   • Extend allowed algorithm values to include `auto` in Zod schemas and minimist enums.
+   • In dispatcher (CLI main and `/pi` handler), detect `algorithm === "auto"` and apply heuristics:
+     – If digits >= 50 → `chudnovsky`.
+     – Else if digits >= 10 → `gauss-legendre`.
+     – Else if `samples` provided and samples > 10000 → `montecarlo`.
+     – Else → `leibniz`.
+   • When diagnostics enabled, include both `auto` and resolved `algorithm` fields in output.
 
-4. HTTP API Integration
-   - Update ApiParamsSchema in createApp() to parse and validate level, maxIterations, and errorTolerance parameters when algorithm is gauss-legendre or ramanujan-sato.
-   - Adjust GET /pi, /pi/data, and /pi/chart handlers to branch on the new algorithms and pass parsed options to their respective functions.
+4. Dispatcher Refactor
+   • Extract shared logic for parameter parsing and algorithm invocation into a helper dispatchAlgo(params) returning `{ name, result, meta }`.
+   • Use dispatchAlgo in both CLI and HTTP routes, passing `diagnostics` flag to control response shape.
 
 # Testing
 
-- Unit tests in tests/unit/main.test.js:
-  • Test calculatePiChudnovsky for small digit values, asserting accuracy within 10^(-digits).
-  • Test calculatePiGaussLegendre convergence for known digits under maxIterations.
-  • Test calculatePiRamanujanSato for level 1 and 2 configurations, verifying iterations do not exceed maxIterations and result meets errorTolerance.
+1. Unit tests in `tests/unit/main.test.js`
+   • New tests for `auto` algorithm matching outputs for known thresholds.
+   • Retain existing tests for individual algorithms.
+   • Mock Decimal precision errors to validate fallback.
 
-- HTTP tests in tests/unit/server.test.js:
-  • GET /pi?algorithm=gauss-legendre&digits=5 returns JSON with correct result and diagnostics when requested.
-  • GET /pi?algorithm=ramanujan-sato&digits=3&level=1&error-tolerance=1e-8 returns valid response.
-  • Ensure /pi/data and /pi/chart endpoints produce appropriate data points or chart images for new algorithms.
+2. HTTP tests in `tests/unit/server.test.js`
+   • GET `/pi?algorithm=auto&digits=2` returns same result as `leibniz`.
+   • GET `/pi?algorithm=auto&digits=20&diagnostics=true` includes selected algorithm `gauss-legendre`.
 
 # Documentation
 
-- Update docs/USAGE.md:
-  • Document new --algorithm values gauss-legendre and ramanujan-sato.
-  • Add flags --level, --max-iterations, and --error-tolerance with descriptions and examples.
+1. docs/USAGE.md
+   • Under **Algorithms**, add `auto` description and examples.
 
-- Update README.md under Features:
-  • List all supported π calculation methods: Leibniz, Monte Carlo, Chudnovsky, Gauss-Legendre, Ramanujan–Sato.
-  • Provide sample CLI and HTTP usage for the new algorithms.
+2. README.md
+   • Under **Features**, update **π Calculation** to list `auto` option and its heuristics.
+   • Provide CLI and HTTP examples demonstrating automatic selection.
