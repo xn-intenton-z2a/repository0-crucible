@@ -58,11 +58,6 @@ Defines the OpenAPI 3.1 specification and interactive Swagger UI integration. Gu
 Guides Prometheus metrics (`prom-client`), structured JSON logging with Pino (`pino`, `pino-pretty`, `pino-http`), and OpenTelemetry instrumentation in Node.js/Express. Covers SDK setup, exporters (OTLP, Prometheus), tracing, metrics pipelines, and developer-friendly log formatting. Essential for end-to-end observability in both CLI and server contexts.
 ## License: MIT / Apache-2.0
 
-# Node.js Core & Advanced APIs
-## https://nodejs.org/api/
-Comprehensive reference for built-in Node.js modules and advanced APIs including Worker Threads, Performance Hooks, Streams, ESM module loading, and File System promises. Fundamental for CLI I/O, parallel π computations, performance measurement, and interactive HTTP modes.
-## License: Node.js license
-
 # Server-Sent Events (SSE)
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
 In-depth MDN documentation on the SSE protocol. Explains EventSource usage, `text/event-stream` headers, reconnection logic, and event formatting. Critical for real-time `/pi/stream` endpoint and CLI streaming of convergence data.
@@ -89,8 +84,19 @@ Combines ESLint and Prettier guides on rule configuration, plugin integrations, 
 Authoritative MDN references for Fetch, URLSearchParams, and FormData. Explains request building, parameter encoding, and multipart form handling in browsers. Vital for implementing the interactive `/dashboard` client-side script to fetch `/pi` data and update charts dynamically.
 ## License: CC BY-SA 2.5
 
-# Node.js Streams & Data Pipelines
-## https://nodejs.org/api/stream.html
+# Node.js Core, Streams & ESM Modules
+## https://nodejs.org/api/
 ## https://nodejs.dev/learn/nodejs-streams
-Tutorials and APIs for readable/writable streams, Transform streams, and pipeline patterns. Covers error handling, backpressure management, and async iteration. Crucial for efficient handling of large convergence data sets and streaming responses without exhausting memory.
+## https://nodejs.org/api/esm.html
+Comprehensive reference for built-in Node.js modules including Streams (Readable, Writable, Transform), pipeline patterns, Worker Threads, Performance Hooks, and ESM module loading. Covers asynchronous file system promises, error handling, backpressure management, and module import/export semantics. Foundational for CLI I/O, caching, parallel computations, and server bundling.
 ## License: Node.js license / CC BY 4.0
+
+# Atomic File Writes & File Operations
+## https://github.com/npm/write-file-atomic
+Documented utilities for safe and atomic saving of files, preventing data corruption during concurrent writes. Explains both async and sync APIs, temporary file strategies, file descriptor handling, and fallback behaviors. Crucial for implementing reliable file-based cache persistence (`.pi_cache.json`) with atomic write guarantees.
+## License: MIT
+
+# GitHub Actions & Workflow Configuration
+## https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+Official reference for GitHub Actions workflow syntax, events, jobs, and steps. Details reusable workflows, secrets management, environment variables, cache strategies, and matrix builds. Essential for CI/CD automation and integrating external workflows like agentic-lib in GitHub repository templates.
+## License: CC BY-SA 4.0
