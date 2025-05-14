@@ -87,12 +87,13 @@ Combines ESLint and Prettier guides on rule configuration, plugin integrations, 
 Authoritative MDN references for Fetch, URLSearchParams, and FormData. Explains request building, parameter encoding, and multipart form handling in browsers. Vital for implementing the interactive `/dashboard` client-side script to fetch `/pi` data and update charts dynamically.
 ## License: CC BY-SA 2.5
 
-# Node.js Core, Streams & ESM Modules
+# Node.js Core, Streams, ESM Modules & Performance
 ## https://nodejs.org/api/
-## https://nodejs.dev/learn/nodejs-streams
+## https://nodejs.org/api/streams.html
 ## https://nodejs.org/api/esm.html
 ## https://nodejs.org/api/worker_threads.html
-Comprehensive reference for built-in Node.js modules including Streams (Readable, Writable, Transform), Worker Threads for offloading CPU-intensive tasks, Performance Hooks, and ESM module loading. Covers asynchronous file system promises, error handling, backpressure management, and module import/export semantics. Foundational for CLI I/O, caching, parallel computations, and server bundling.
+## https://nodejs.org/api/perf_hooks.html
+Comprehensive reference for built-in Node.js modules including Streams (Readable, Writable, Transform), Worker Threads for offloading CPU-intensive tasks, ESM module loading, and Performance Hooks for profiling. Covers asynchronous file system promises, error handling, backpressure management, module import/export semantics, and performance tracing. Foundational for CLI I/O, caching, parallel computations, and server tuning.
 ## License: Node.js license / CC BY 4.0
 
 # Atomic File Writes & File Operations
@@ -106,7 +107,7 @@ Combined utilities for safe atomic saving of files and cross-process locking to 
 Official reference for GitHub Actions workflow syntax, events, jobs, and steps. Details reusable workflows, secrets management, environment variables, cache strategies, and matrix builds. Essential for CI/CD automation and integrating external workflows like agentic-lib in GitHub repository templates.
 ## License: CC BY-SA 4.0
 
-# Node.js Performance & Profiling
-## https://nodejs.org/en/docs/guides/simple-profiling/
-Guide on profiling and performance tuning in Node.js. Covers the built-in inspector, CPU and heap profiling, flamegraphs, diagnosing bottlenecks, and memory leak detection. Provides actionable steps to optimize π calculation loops, server request handling, and canvas rendering by identifying hotspots and tuning V8 settings.
-## License: CC BY-SA 3.0
+# OpenTelemetry JS Instrumentation
+## https://github.com/open-telemetry/opentelemetry-js-contrib
+Provides a suite of auto-instrumentation plugins for common Node.js frameworks and libraries, including Express, HTTP, gRPC, and database clients. Streamlines trace and metrics collection by automatically wrapping APIs, offering configuration options for exporters (OTLP, Prometheus), and supporting context propagation. Essential for integrating comprehensive observability with minimal boilerplate. Last updated: 2023. License: Apache-2.0.
+## License: Apache-2.0
