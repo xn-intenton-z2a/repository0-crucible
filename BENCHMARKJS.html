@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="benchmarkjs" href="#benchmarkjs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BENCHMARKJS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Constructor signature: Benchmark(name:String, fn:Function|string, options?:Object)
+Default options: async=false, defer=false, delay=0, id=auto, initCount=1, maxTime=5, minSamples=5, minTime=0, name=undefined, callbacks:onAbort,onComplete,onCycle,onError,onReset,onStart, setup:Function|string, teardown:Function|string
+Static methods: version():String, filter(Array,Function|string):Array, formatNumber(Number):String, invoke(Array,String|Object,...*):Array, join(Array|Object,String, String):String, runInContext(Object):Function
+Instance props: aborted:Boolean, compiled:Function|string, count:Number, cycles:Number, error:Object, fn:Function|string, hz:Number, running:Boolean, stats:{mean,deviation,moe,rme,sem,variance,sample}, times:{cycle,elapsed,period,timeStamp}
+Instance methods: abort():Benchmark, clone(Object):Benchmark, compare(Benchmark):Number, reset():Benchmark, run(Object):Benchmark, toString():String
+Suite API: Suite(name:String,options:Object):Suite; properties aborted, length, running; methods add, abort, clone, emit, filter, listeners, off, on, reset, run</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Constructor Signature</p>
+</li>
+<li class="md-github">
+<p class="md-github">Default Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Static Utility Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Instance Properties &amp; Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Benchmark Suite API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Support &amp; Platform Flags</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constructor Signature
+Benchmark(name:String, fn:Function|string, options:Object={})</p>
+</li>
+<li class="md-github">
+<p class="md-github">Default Options
+async:Boolean=false
+defer:Boolean=false
+delay:Number=0
+id:String=auto-generated
+initCount:Number=1
+maxTime:Number=5  // seconds
+minSamples:Number=5
+minTime:Number=0  // seconds
+name:String
+onStart:Function
+onCycle:Function
+onAbort:Function
+onError:Function
+onReset:Function
+onComplete:Function
+setup:Function|string
+teardown:Function|string</p>
+</li>
+<li class="md-github">
+<p class="md-github">Static Utility Methods
+version():String
+filter(arr:Array, callback:Function|string):Array
+formatNumber(num:Number):String
+invoke(benches:Array, name:String|Object, ...args):Array
+join(obj:Array|Object, sep1:String=',', sep2:String=': '):String
+runInContext(ctx:Object):Function</p>
+</li>
+<li class="md-github">
+<p class="md-github">Instance Properties &amp; Methods
+Properties:
+aborted:Boolean
+compiled:Function|string
+count:Number
+cycles:Number
+error:Object
+fn:Function|string
+hz:Number
+running:Boolean
+stats:Object { mean, deviation, moe, rme, sem, variance, sample:Array }
+times:Object { cycle, elapsed, period, timeStamp }</p>
+</li>
+</ol>
+<p class="md-github">Methods:
+abort():Benchmark
+clone(options:Object):Benchmark
+compare(other:Benchmark):Number
+reset():Benchmark
+run(options:Object={ async:Boolean, queued:Boolean }):Benchmark
+toString():String</p>
+<ol start="5" class="md-github">
+<li class="md-github">
+<p class="md-github">Benchmark Suite API
+Suite(name:String, options:Object={})
+Properties:
+aborted:Boolean
+length:Number
+running:Boolean
+Methods:
+add(name:String, fn:Function|string, options:Object={}):Benchmark
+abort():Suite
+clone(options:Object):Suite
+emit(type:String|Object, ...args):*
+filter(callback:Function|string):Suite
+listeners(type:String):Array
+off(type:String, listener:Function):Suite
+on(type:String, listener:Function):Suite
+reset():Suite
+run(options:Object={ async:Boolean, queued:Boolean }):Suite</p>
+</li>
+<li class="md-github">
+<p class="md-github">Support &amp; Platform Flags
+Benchmark.platform:Object { parse userAgent }
+Benchmark.support:Object { browser:Boolean, decompilation:Boolean, timeout:Boolean }</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default option values and effects:</p>
+<ul class="md-github">
+<li class="md-github">async=false: execute cycles synchronously</li>
+<li class="md-github">defer=false: clock start deferred until Deferred.resolve() called</li>
+<li class="md-github">delay=0: no delay between cycles</li>
+<li class="md-github">initCount=1: initial iteration count</li>
+<li class="md-github">maxTime=5: maximum benchmark duration in seconds</li>
+<li class="md-github">minSamples=5: minimum number of sample periods collected</li>
+<li class="md-github">minTime=0: no warm-up period</li>
+<li class="md-github">event callbacks invoked at defined lifecycle points</li>
+</ul>
+<p class="md-github">Implementation steps:</p>
+<ol class="md-github">
+<li class="md-github">Import Benchmark: const Benchmark = require('benchmark');</li>
+<li class="md-github">Instantiate: const bench = new Benchmark('name', fn, { maxTime:3, onCycle:c });</li>
+<li class="md-github">Listen events: bench.on('cycle', evt =&gt; console.log(evt.cycle));</li>
+<li class="md-github">Run: bench.run({ async:true });</li>
+<li class="md-github">Access results: bench.hz, bench.stats.mean, bench.times.elapsed</li>
+</ol>
+<p class="md-github">Best practices:</p>
+<ul class="md-github">
+<li class="md-github">Set maxTime≥1 for reliable stats</li>
+<li class="md-github">Use defer:true for async operations with Deferred.resolve()</li>
+<li class="md-github">Call reset() before rerunning</li>
+<li class="md-github">Use Suite to batch compare tests</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">// Installation
+npm install benchmark lodash</p>
+<p class="md-github">// Simple benchmark
+test.js:
+const Benchmark = require('benchmark');
+const suite = new Benchmark.Suite('MySuite', {
+onStart: () =&gt; console.log('Suite started'),
+onComplete: () =&gt; console.log('Suite completed')
+});</p>
+<p class="md-github">suite
+.add('Method A', function() {
+arr.sort();
+}, { onCycle: evt =&gt; console.log('A cycle', evt.times.elapsed) })
+.add('Method B', function() {
+arr.reverse();
+}, { defer: true, fn: defer =&gt; { setTimeout(() =&gt; defer.resolve(), 10); } })
+.on('cycle', evt =&gt; console.log(String(evt.target)))
+.on('complete', function() {
+console.log('Fastest is ' + this.filter('fastest').map('name'));
+})
+.run({ async: true, queued: true });</p>
+<p class="md-github">// Full API
+Signature: Benchmark(name:String, fn:Function|string, options:Object)
+Options properties with types and defaults:
+async:Boolean = false
+defer:Boolean = false
+delay:Number = 0
+id:String = auto-generated UUID
+initCount:Number = 1
+maxTime:Number = 5
+minSamples:Number = 5
+minTime:Number = 0
+name:String
+onStart:Function(event:Benchmark.Event)
+onCycle:Function(event:Benchmark.Event)
+onAbort:Function(event:Benchmark.Event)
+onError:Function(event:Benchmark.Event)
+onReset:Function(event:Benchmark.Event)
+onComplete:Function(event:Benchmark.Event)
+setup:Function|string
+teardown:Function|string</p>
+<p class="md-github">Methods:</p>
+<ul class="md-github">
+<li class="md-github">abort(): Benchmark  // stops and returns instance</li>
+<li class="md-github">clone(opts:Object): Benchmark  // duplicates instance with merged options</li>
+<li class="md-github">compare(other:Benchmark): Number  // -1|0|1</li>
+<li class="md-github">reset(): Benchmark  // reset values and abort if running</li>
+<li class="md-github">run(opts:Object={ async:Boolean, queued:Boolean }): Benchmark</li>
+<li class="md-github">toString(): String // &quot;name x Hz ±rme%&quot;</li>
+</ul>
+<p class="md-github">Deferred:
+Signature: new Benchmark.Deferred(benchmark:Benchmark)
+Properties:
+benchmark:Benchmark
+cycles:Number
+elapsed:Number
+timeStamp:Number</p>
+<p class="md-github">Event:
+Signature: new Benchmark.Event(type:String)
+Properties:
+type:String
+aborted:Boolean
+cancelled:Boolean
+currentTarget:Object
+target:Object
+result:Any
+timeStamp:Number</p>
+<p class="md-github">Suite API:
+Signature: new Benchmark.Suite(name:String, options:Object)
+Options: onStart,onCycle,onAbort,onError,onReset,onComplete
+Methods:</p>
+<ul class="md-github">
+<li class="md-github">add(name:String, fn:Function|string, options:Object): Benchmark</li>
+<li class="md-github">abort(): Suite</li>
+<li class="md-github">clone(options:Object): Suite</li>
+<li class="md-github">emit(type:String, ...args): any</li>
+<li class="md-github">filter(callback:Function|string): Suite</li>
+<li class="md-github">listeners(type:String): Array<Function></li>
+<li class="md-github">off(type:String, listener:Function): Suite</li>
+<li class="md-github">on(type:String, listener:Function): Suite</li>
+<li class="md-github">reset(): Suite</li>
+<li class="md-github">run(options:Object={ async:Boolean, queued:Boolean }): Suite</li>
+</ul>
+<p class="md-github">// Troubleshooting
+// Common issue: insufficient samples
+// Command: bench.options.minSamples = 10;
+// If decompilation false, setup as function not string</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">CONSTRUCTOR: (name:String, fn:Function|string, options:Object) =&gt; Benchmark
+OPTIONS: { async:Boolean=false, defer:Boolean=false, delay:Number=0, id:String=auto, initCount:Number=1, maxTime:Number=5, minSamples:Number=5, minTime:Number=0, name:String, onStart:Function, onCycle:Function, onAbort:Function, onError:Function, onReset:Function, onComplete:Function, setup:Function|string, teardown:Function|string }
+STATICS: version():String | filter(Array,Function|string):Array | formatNumber(Number):String | invoke(Array,String|Object,...*):Array | join(Array|Object, String=',',String=': '):String | runInContext(Object):Function
+INSTANCE PROPS: aborted:Boolean, compiled:Function|string, count:Number, cycles:Number, error:Object, fn:Function|string, hz:Number, running:Boolean, stats:{mean, deviation, moe, rme, sem, variance, sample:Array}, times:{cycle, elapsed, period, timeStamp}
+INSTANCE METHODS: abort():Benchmark | clone(Object):Benchmark | compare(Benchmark):Number | reset():Benchmark | run(Object={async,queued}):Benchmark | toString():String
+SUITE: new Suite(name:String, options:Object) =&gt; Suite; props: aborted:Boolean, length:Number, running:Boolean; methods: add(name,fn,opts):Benchmark, abort():Suite, clone(Object):Suite, emit(String, ...):any, filter(Function|string):Suite, listeners(String):Array, off(String,Function):Suite, on(String,Function):Suite, reset():Suite, run(Object={async,queued}):Suite
+FLAGS: Benchmark.support={browser:Boolean, decompilation:Boolean, timeout:Boolean}; Benchmark.platform={description of environment}
+INSTALL: npm install benchmark lodash
+EXAMPLES: const b=require('benchmark'); new b('t',()=&gt;1+1,{maxTime:3}).run();</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Constructor Signature</p>
+</li>
+<li class="md-github">
+<p class="md-github">Default Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Static Utility Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Instance Properties &amp; Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Benchmark Suite API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Support &amp; Platform Flags</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constructor Signature
+Benchmark(name:String, fn:Function|string, options:Object={})</p>
+</li>
+<li class="md-github">
+<p class="md-github">Default Options
+async:Boolean=false
+defer:Boolean=false
+delay:Number=0
+id:String=auto-generated
+initCount:Number=1
+maxTime:Number=5  // seconds
+minSamples:Number=5
+minTime:Number=0  // seconds
+name:String
+onStart:Function
+onCycle:Function
+onAbort:Function
+onError:Function
+onReset:Function
+onComplete:Function
+setup:Function|string
+teardown:Function|string</p>
+</li>
+<li class="md-github">
+<p class="md-github">Static Utility Methods
+version():String
+filter(arr:Array, callback:Function|string):Array
+formatNumber(num:Number):String
+invoke(benches:Array, name:String|Object, ...args):Array
+join(obj:Array|Object, sep1:String=',', sep2:String=': '):String
+runInContext(ctx:Object):Function</p>
+</li>
+<li class="md-github">
+<p class="md-github">Instance Properties &amp; Methods
+Properties:
+aborted:Boolean
+compiled:Function|string
+count:Number
+cycles:Number
+error:Object
+fn:Function|string
+hz:Number
+running:Boolean
+stats:Object { mean, deviation, moe, rme, sem, variance, sample:Array }
+times:Object { cycle, elapsed, period, timeStamp }</p>
+</li>
+</ol>
+<p class="md-github">Methods:
+abort():Benchmark
+clone(options:Object):Benchmark
+compare(other:Benchmark):Number
+reset():Benchmark
+run(options:Object={ async:Boolean, queued:Boolean }):Benchmark
+toString():String</p>
+<ol start="5" class="md-github">
+<li class="md-github">
+<p class="md-github">Benchmark Suite API
+Suite(name:String, options:Object={})
+Properties:
+aborted:Boolean
+length:Number
+running:Boolean
+Methods:
+add(name:String, fn:Function|string, options:Object={}):Benchmark
+abort():Suite
+clone(options:Object):Suite
+emit(type:String|Object, ...args):*
+filter(callback:Function|string):Suite
+listeners(type:String):Array
+off(type:String, listener:Function):Suite
+on(type:String, listener:Function):Suite
+reset():Suite
+run(options:Object={ async:Boolean, queued:Boolean }):Suite</p>
+</li>
+<li class="md-github">
+<p class="md-github">Support &amp; Platform Flags
+Benchmark.platform:Object { parse userAgent }
+Benchmark.support:Object { browser:Boolean, decompilation:Boolean, timeout:Boolean }</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Testing &amp; Benchmarking Tools
+https://benchmarkjs.com</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-benchmarkjs" href="#digest-of-benchmarkjs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of BENCHMARKJS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="benchmarkjs-api-overview-retrieved-2024-06-14" href="#benchmarkjs-api-overview-retrieved-2024-06-14"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Benchmark.js API Overview (Retrieved 2024-06-14)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="benchmark-constructor" href="#benchmark-constructor"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Benchmark Constructor</h2>
+<p class="md-github">Benchmark(name:String, fn:Function|string, options:Object={})</p>
+<h2 class="md-github"><a class="md-github__anchor" name="static-methods" href="#static-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Static Methods</h2>
+<ul class="md-github">
+<li class="md-github">version(): String</li>
+<li class="md-github">filter(array:Array, callback:Function|string): Array</li>
+<li class="md-github">formatNumber(number:Number): String</li>
+<li class="md-github">invoke(benches:Array, name:Object|string, ...args): Array</li>
+<li class="md-github">join(object:Array|Object, separator1:String=',', separator2:String=': '): String</li>
+<li class="md-github">runInContext(context:Object=root): Function</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="instance-properties" href="#instance-properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instance Properties</h2>
+<ul class="md-github">
+<li class="md-github">aborted: Boolean</li>
+<li class="md-github">compiled: Function|string</li>
+<li class="md-github">count: Number</li>
+<li class="md-github">cycles: Number</li>
+<li class="md-github">error: Object</li>
+<li class="md-github">fn: Function|string</li>
+<li class="md-github">hz: Number</li>
+<li class="md-github">running: Boolean</li>
+<li class="md-github">setup: Function|string</li>
+<li class="md-github">teardown: Function|string</li>
+<li class="md-github">stats: Object { mean:Number, deviation:Number, moe:Number, rme:Number, sem:Number, variance:Number, sample:Array }</li>
+<li class="md-github">times: Object { cycle:Number, elapsed:Number, period:Number, timeStamp:Number }</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="instance-methods" href="#instance-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instance Methods</h2>
+<ul class="md-github">
+<li class="md-github">abort(): Benchmark</li>
+<li class="md-github">clone(options:Object): Benchmark</li>
+<li class="md-github">compare(other:Benchmark): Number</li>
+<li class="md-github">reset(): Benchmark</li>
+<li class="md-github">run(options:Object={ async:Boolean, queued:Boolean }): Benchmark</li>
+<li class="md-github">toString(): String</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="suite-api" href="#suite-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Suite API</h2>
+<p class="md-github">Benchmark.Suite(name:String, options:Object={})</p>
+<h3 class="md-github"><a class="md-github__anchor" name="suite-properties" href="#suite-properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Suite Properties</h3>
+<ul class="md-github">
+<li class="md-github">aborted: Boolean</li>
+<li class="md-github">length: Number</li>
+<li class="md-github">running: Boolean</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="suite-methods" href="#suite-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Suite Methods</h3>
+<ul class="md-github">
+<li class="md-github">add(name:String, fn:Function|string, options:Object={}): Benchmark</li>
+<li class="md-github">abort(): Suite</li>
+<li class="md-github">clone(options:Object): Suite</li>
+<li class="md-github">emit(type:Object|string, ...args): *</li>
+<li class="md-github">filter(callback:Function|string): Suite</li>
+<li class="md-github">listeners(type:String): Array</li>
+<li class="md-github">off(type:String, listener:Function): Suite</li>
+<li class="md-github">on(type:String, listener:Function): Suite</li>
+<li class="md-github">reset(): Suite</li>
+<li class="md-github">run(options:Object={ async:Boolean, queued:Boolean }): Suite</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="support-and-platform-flags" href="#support-and-platform-flags"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Support and Platform Flags</h2>
+<ul class="md-github">
+<li class="md-github">Benchmark.platform: Object { name:String, version:String, os:String, etc. }</li>
+<li class="md-github">Benchmark.support: Object { browser:Boolean, decompilation:Boolean, timeout:Boolean }</li>
+</ul>
+<hr class="md-github">
+<p class="md-github"><strong class="md-github">Data Size</strong>: 14091256 bytes
+<strong class="md-github">Links Found</strong>: 30724
+<strong class="md-github">Retrieval Date</strong>: 2024-06-14</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Testing &amp; Benchmarking Tools</li>
+<li class="md-github">URL: https://benchmarkjs.com</li>
+<li class="md-github">License: License: MIT</li>
+<li class="md-github">Crawl Date: 2025-05-13T18:29:24.419Z</li>
+<li class="md-github">Data Size: 14091256 bytes</li>
+<li class="md-github">Links Found: 30724</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-13</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-14T10:40:40.992Z</p>
+  </footer>
+</body>
+</html>
