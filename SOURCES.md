@@ -104,10 +104,7 @@ Combined utilities for safe atomic saving of files and cross-process locking to 
 
 # GitHub Actions & Workflow Configuration
 ## https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
-Official reference for GitHub Actions workflow syntax, events, jobs, and steps. Details reusable workflows, secrets management, environment variables, cache strategies, and matrix builds. Essential for CI/CD automation and integrating external workflows like agentic-lib in GitHub repository templates.
-## License: CC BY-SA 4.0
-
-# OpenTelemetry JS Instrumentation
-## https://github.com/open-telemetry/opentelemetry-js-contrib
-Provides a suite of auto-instrumentation plugins for common Node.js frameworks and libraries, including Express, HTTP, gRPC, and database clients. Streamlines trace and metrics collection by automatically wrapping APIs, offering configuration options for exporters (OTLP, Prometheus), and supporting context propagation. Essential for integrating comprehensive observability with minimal boilerplate. Last updated: 2023. License: Apache-2.0.
-## License: Apache-2.0
+## https://github.com/actions/setup-node
+## https://docs.github.com/en/actions/advanced-guides/caching-dependencies-to-speed-up-workflows
+Official references for defining and optimizing GitHub Actions workflows. Explains the YAML syntax for triggers, jobs, steps, reusable workflows, and secrets management; includes the setup-node action for configuring Node.js versions, dependency caching strategies (actions/cache), environment variables, matrix builds, and performance tuning. Essential for CI/CD automation, caching dependencies to speed up tests, and integrating external workflows like agentic-lib in repository templates.
+## License: CC BY-SA 2.5
