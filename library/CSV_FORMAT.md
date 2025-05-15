@@ -1,141 +1,149 @@
 # CSV_FORMAT
 
 ## Crawl Summary
-Records on separate lines delimited by CRLF. Optional header line matching record format, indicated by header parameter (present|absent). Fields separated by comma, fixed count, spaces significant. Fields optionally enclosed in double-quotes. Fields with CRLF, comma, or quotes must be quoted; embedded quotes doubled. ABNF grammar defines file, header, record, field, escaped/non-escaped. MIME type text/csv registered with optional charset, header parameters, CRLF encoding, .csv extension.
+Records delimited by CRLF; optional header line matching field count; fields separated by comma; fields containing CRLF, comma, or DQUOTE must be enclosed in DQUOTE; embedded DQUOTE escaped by doubling; ABNF grammar defines file, header, record, field; MIME type text/csv registered with optional charset and header parameters.
 
 ## Normalised Extract
-Table of Contents
-1. Record Delimitation
+Table of Contents:
+1. Record Delimiter
 2. Header Line
 3. Field Separation
-4. Field Enclosure and Quoting
-5. Escaping Rules
+4. Field Enclosure & Escape
+5. MIME Parameters
 6. ABNF Grammar
-7. MIME Type Registration
 
-1. Record Delimitation
-Each record ends with CRLF (\r\n). Last record may omit final CRLF.
+1. Record Delimiter
+   • Terminator: CRLF (0x0D 0x0A)
+   • Last record may omit CRLF
 
 2. Header Line
-Optional first line with same comma-separated format. Controlled by header present|absent parameter.
+   • Optional first line with same format as records
+   • Field count constant across file
+   • Indicated by header=present or header=absent
 
 3. Field Separation
-Fields separated by comma (0x2C). No trailing comma after final field. All lines must have same number of fields. Spaces are part of field data.
+   • Delimiter: comma (0x2C)
+   • Spaces significant
+   • No comma after final field
 
-4. Field Enclosure and Quoting
-Fields may be enclosed in double-quote (0x22). Unquoted fields cannot contain quotes. Fields containing CRLF, comma, or quotes must be quoted.
+4. Field Enclosure & Escape
+   • Unescaped fields: only TEXTDATA (0x20-21,0x23-2B,0x2D-7E)
+   • Escaped field: DQUOTE ... DQUOTE
+     – Allowed content: TEXTDATA, COMMA, CR, LF, 2DQUOTE
+     – Embedded quote: represented as two DQUOTE
+   • Examples:
+     – "a,b" → field contains comma
+     – "a\n b" → field contains CRLF
+     – "a""b" → field contains quote
 
-5. Escaping Rules
-Within quoted field, each internal double-quote must be represented as two consecutive double-quote characters.
+5. MIME Parameters
+   • charset: default US-ASCII; any IANA text charset
+   • header: present | absent; absence requires implementor default
+   • encoding: CRLF as per RFC2046; implementations may vary
 
 6. ABNF Grammar
-file    = [header CRLF] record *(CRLF record) [CRLF]
-header  = name *(COMMA name)
-record  = field *(COMMA field)
-field   = (escaped / non-escaped)
-escaped = DQUOTE *(TEXTDATA / COMMA / CR / LF / 2DQUOTE) DQUOTE
-non-escaped = *TEXTDATA
-
-7. MIME Type Registration
-media-type: text/csv
-optional parameters: charset=IANA-text (default US-ASCII), header=present|absent
-line break encoding: CRLF
-file extension: .csv
+   • file, header, record, name, field, escaped, non-escaped
+   • Definitions for COMMA, CR, LF, CRLF, DQUOTE, TEXTDATA
 
 ## Supplementary Details
-Parameter: charset
-- Valid values: US-ASCII, UTF-8, ISO-8859-1, ... (IANA text charsets)
-- Default: US-ASCII
+Parameter Values:
+- CR: 0x0D
+- LF: 0x0A
+- COMMA: 0x2C
+- DQUOTE: 0x22
+- TEXTDATA: 0x20-21, 0x23-2B, 0x2D-7E
 
-Parameter: header
-- Values: present, absent
-- Default: absent (implementor-defined if omitted)
+MIME Parameters and Defaults:
+- charset: US-ASCII (default); values e.g. UTF-8, ISO-8859-1
+- header: absent (default); valid values present, absent
 
-File extension: .csv
-MIME type: text/csv
-Line break: CRLF
-Encoding considerations: use CRLF; accept LF or CR only when interoperating
-Security: sanitize fields before embedding in applications; guard against buffer overruns
-Interoperability: implement robust parser accepting optional presence of header; trim unquoted trailing spaces not recommended
+Implementation Steps:
+1. Read input in binary or text preserving CRLF.
+2. Split on CRLF sequence, handling missing final CRLF.
+3. For each line, scan fields:
+   a. If starts DQUOTE, read until closing DQUOTE, interpreting "" as ".
+   b. Else read until comma.
+4. Trim nothing; spaces preserved.
+5. Emit array of fields; verify uniform length or raise error.
+6. If header=present, extract first record as keys.
+
+Concrete Examples:
+- Line: ""a,b"","c""d""
+  Fields: ["a,b", "c""d"]
+- Line: a,b,c
+  Fields: ["a","b","c"]
 
 ## Reference Details
-MIME Media Type Registration text/csv
-Parameters:
-- charset: token (IANA text charsets), default US-ASCII
-- header: "present" | "absent"; implementors must decide default when absent
-Encoding: lines terminated by 0x0D 0x0A (CRLF)
-File extension: .csv; no magic number
+MIME Type Registration (RFC 4180):
+- media type: text/csv
+- parameters:
+   • charset=US-ASCII | IANA-text; default US-ASCII
+   • header=present | absent
+- per RFC2046, line breaks = CRLF
+- file extension .csv
+- no magic number
 
-ABNF Definitions:
-CR = %x0D; LF = %x0A; COMMA = %x2C; DQUOTE = %x22; TEXTDATA = %x20-21 / %x23-2B / %x2D-7E
-file = [header CRLF] record *(CRLF record) [CRLF]
-header = name *(COMMA name)
-record = field *(COMMA field)
-field = escaped / non-escaped
-escaped = DQUOTE *(TEXTDATA / COMMA / CR / LF / 2DQUOTE) DQUOTE
-non-escaped = *TEXTDATA
+ABNF Grammar (repeat from Detailed Digest)
 
-Concrete Parsing Pattern (pseudocode):
-Initialize empty list of records
-For each character in input:
-  If at start of record, read until CRLF, respecting quoted spans
-  Split record on commas outside quotes
-  For each field:
-    If field starts and ends with DQUOTE, remove outer quotes, replace "" with " inside
-Verify number of fields consistent across records
+Parsing Best Practices:
+- Conservative parsing: accept lone LF, stray CR before LF.
+- Reject records with mismatched quote count.
+- Stream parse to handle large files; use state machine.
 
-Troubleshooting Commands:
-Check inconsistent field counts:
-awk -F',' 'NR==1{n=NF} NF!=n{print "Line " NR " has " NF " fields"}' file.csv
-Normalize line endings to CRLF:
-dos2unix -ascii file.csv; unix2dos file.csv
-
-Best Practices:
-- Always quote fields containing delimiter, quotes, or line breaks
-- Use header parameter to explicitly declare header presence
-- Validate field counts programmatically before ingestion
+Troubleshooting Procedures:
+1. Identify unbalanced quotes:
+   $ awk -F '"' '{ if (NR%2==0) print NR }' file.csv
+2. Detect inconsistent field count:
+   $ awk -F',' '{ print NF }' file.csv | uniq -c
+3. Validate CRLF usage:
+   $ grep -UPO '\r(?!\n)' file.csv
+4. Convert lone LF to CRLF:
+   $ sed -e 's/\([^]\)\n/\1\r\n/g' input.csv > fixed.csv
 
 ## Information Dense Extract
-Records: CRLF-delimited lines; optional header matching record format; fields separated by comma; spaces part of data; no trailing comma; fields optionally quoted with "; quoted fields for values containing comma, CRLF, "; inside quoted, use double " to escape; ABNF grammar provided; MIME type text/csv with optional charset=IANA-text (default US-ASCII), header=present|absent; CRLF encoding; extension .csv; parser must enforce consistent field count; best practice: conservative parsing, liberal production.
+Record=CRLF-delimited lines; optional header with same field count; delimiter=comma; fields: TEXTDATA or DQUOTE-escaped containing comma,CRLF,DQUOTE; embedded DQUOTE=2DQUOTE; CR=0x0D LF=0x0A COMMA=0x2C DQUOTE=0x22 TEXTDATA=0x20-21/0x23-2B/0x2D-7E. ABNF: file=[header CRLF] record*(CRLF record)[CRLF], field=escaped/non-escaped, escaped=DQUOTE*(TEXTDATA/COMMA/CR/LF/2DQUOTE)DQUOTE. MIME text/csv; params charset=IANA-text default US-ASCII; header=present|absent. Implement: split on CRLF, parse fields by state machine, preserve spaces, handle escapes. Troubleshoot with awk/sed/grep to find unbalanced quotes, inconsistent fields, lone LFs.
 
 ## Sanitised Extract
-Table of Contents
-1. Record Delimitation
+Table of Contents:
+1. Record Delimiter
 2. Header Line
 3. Field Separation
-4. Field Enclosure and Quoting
-5. Escaping Rules
+4. Field Enclosure & Escape
+5. MIME Parameters
 6. ABNF Grammar
-7. MIME Type Registration
 
-1. Record Delimitation
-Each record ends with CRLF ('r'n). Last record may omit final CRLF.
+1. Record Delimiter
+    Terminator: CRLF (0x0D 0x0A)
+    Last record may omit CRLF
 
 2. Header Line
-Optional first line with same comma-separated format. Controlled by header present|absent parameter.
+    Optional first line with same format as records
+    Field count constant across file
+    Indicated by header=present or header=absent
 
 3. Field Separation
-Fields separated by comma (0x2C). No trailing comma after final field. All lines must have same number of fields. Spaces are part of field data.
+    Delimiter: comma (0x2C)
+    Spaces significant
+    No comma after final field
 
-4. Field Enclosure and Quoting
-Fields may be enclosed in double-quote (0x22). Unquoted fields cannot contain quotes. Fields containing CRLF, comma, or quotes must be quoted.
+4. Field Enclosure & Escape
+    Unescaped fields: only TEXTDATA (0x20-21,0x23-2B,0x2D-7E)
+    Escaped field: DQUOTE ... DQUOTE
+      Allowed content: TEXTDATA, COMMA, CR, LF, 2DQUOTE
+      Embedded quote: represented as two DQUOTE
+    Examples:
+      'a,b'  field contains comma
+      'a'n b'  field contains CRLF
+      'a''b'  field contains quote
 
-5. Escaping Rules
-Within quoted field, each internal double-quote must be represented as two consecutive double-quote characters.
+5. MIME Parameters
+    charset: default US-ASCII; any IANA text charset
+    header: present | absent; absence requires implementor default
+    encoding: CRLF as per RFC2046; implementations may vary
 
 6. ABNF Grammar
-file    = [header CRLF] record *(CRLF record) [CRLF]
-header  = name *(COMMA name)
-record  = field *(COMMA field)
-field   = (escaped / non-escaped)
-escaped = DQUOTE *(TEXTDATA / COMMA / CR / LF / 2DQUOTE) DQUOTE
-non-escaped = *TEXTDATA
-
-7. MIME Type Registration
-media-type: text/csv
-optional parameters: charset=IANA-text (default US-ASCII), header=present|absent
-line break encoding: CRLF
-file extension: .csv
+    file, header, record, name, field, escaped, non-escaped
+    Definitions for COMMA, CR, LF, CRLF, DQUOTE, TEXTDATA
 
 ## Original Source
 Data Serialization & Templating
@@ -143,45 +151,53 @@ https://tools.ietf.org/html/rfc4180
 
 ## Digest of CSV_FORMAT
 
-# Introduction
+# Definition of CSV Format
 
-Specification of Comma-Separated Values (CSV) files, formal registration of MIME type text/csv.
+1. Each record on a separate line terminated by CRLF (0x0D 0x0A).
+   - Example: aaa,bbb,ccc␍␊
 
-# Definition of the CSV Format
+2. Last record may omit terminating CRLF.
+   - Example: zzz,yyy,xxx (no CRLF)
 
-1. Records: one per line, delimited by CRLF (\r\n).
-   Example:
-   aaa,bbb,ccc CRLF
-   zzz,yyy,xxx CRLF
+3. Optional header line as first record; indicated by "header" MIME parameter.
+   - Field count in header matches all subsequent records.
+   - Example: field1,field2,field3␍␊
 
-2. Last record: may lack trailing CRLF.
+4. Fields separated by comma (0x2C). Spaces are part of field data.
+   - No trailing comma after last field.
+   - Example: aaa,bbb,ccc
 
-3. Optional header line with same format as records, indicated by header parameter.
-   Example:
-   field1,field2,field3 CRLF
-   aaa,bbb,ccc CRLF
+5. Field enclosure:
+   - Unenclosed fields must not contain double quotes (0x22).
+   - Enclose fields containing CRLF, comma, or double quote in double quotes.
+   - Escape embedded quotes by doubling them ("" becomes one quote).
+   - Examples:
+     • "aaa","b CRLF
+       bb","ccc"␍␊
+     • "aaa","b""bb","ccc"
 
-4. Fields separated by commas; all lines same field count; spaces significant; no trailing comma after last field.
+# MIME Type Registration (text/csv)
 
-5. Quoting: optional double-quote enclosure. Unquoted fields must not contain quotes.
-   Example: “aaa”,“bbb”,“ccc” CRLF
-
-6. Fields with CRLF, commas or quotes must be quoted.
-   Example:
-   "a","b CRLF
-   b","c" CRLF
-
-7. Inside quoted field, double-quote escaped by doubling.
-   Example: "a","b""b","c"
+- Type: text
+- Subtype: csv
+- Required parameters: none
+- Optional parameters:
+  • charset: IANA text character set (default US-ASCII)
+  • header: present | absent
+- Encoding: uses CRLF for line breaks; other line break values may occur in practice.
+- File extension: .csv
+- Magic number: none
+- IANA registered October 2005
 
 # ABNF Grammar
 
-file = [header CRLF] record *(CRLF record) [CRLF]
-header = name *(COMMA name)
-record = field *(COMMA field)
+```
+file = [ header CRLF ] record *( CRLF record ) [ CRLF ]
+header = name *( COMMA name )
+record = field *( COMMA field )
 name = field
-field = (escaped / non-escaped)
-escaped = DQUOTE *(TEXTDATA / COMMA / CR / LF / 2DQUOTE) DQUOTE
+field = escaped / non-escaped
+escaped = DQUOTE *( TEXTDATA / COMMA / CR / LF / 2DQUOTE ) DQUOTE
 non-escaped = *TEXTDATA
 COMMA = %x2C
 CR = %x0D
@@ -189,33 +205,15 @@ LF = %x0A
 CRLF = CR LF
 DQUOTE = %x22
 TEXTDATA = %x20-21 / %x23-2B / %x2D-7E
-
-# MIME Type Registration (text/csv)
-
-Media Type Name: text
-Subtype: csv
-Required Parameters: none
-Optional Parameters:
-- charset: IANA text charsets (default US-ASCII)
-- header: present | absent
-
-Encoding: CRLF for line breaks
-File Extension: .csv
-Macintosh Type Code: TEXT
-
-# Security, Interoperability
-
-Security: passive text; risk of buffer overruns via malicious data
-Interoperability: be conservative in accept, liberal in produce; treat header param per implementation
-
+```
 
 ## Attribution
 - Source: Data Serialization & Templating
 - URL: https://tools.ietf.org/html/rfc4180
 - License: License: MIT
-- Crawl Date: 2025-05-15T12:29:33.841Z
-- Data Size: 1314478 bytes
-- Links Found: 1269
+- Crawl Date: 2025-05-15T18:28:15.156Z
+- Data Size: 843502 bytes
+- Links Found: 1116
 
 ## Retrieved
 2025-05-15
