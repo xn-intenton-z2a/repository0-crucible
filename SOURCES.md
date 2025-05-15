@@ -109,3 +109,9 @@ Combined utilities for safe atomic saving of files and cross-process locking to 
 ## https://docs.github.com/en/actions/advanced-guides/caching-dependencies-to-speed-up-workflows
 Official references for defining and optimizing GitHub Actions workflows. Explains the YAML syntax for triggers, jobs, steps, reusable workflows, and secrets management; includes the setup-node action for configuring Node.js versions, dependency caching strategies (actions/cache), environment variables, matrix builds, and performance tuning. Essential for CI/CD automation, caching dependencies to speed up tests, and integrating external workflows like agentic-lib in repository templates.
 ## License: CC BY-SA 2.5
+
+# GraphQL API & Apollo Integration
+## https://graphql.org/learn/
+## https://www.apollographql.com/docs/apollo-server/integrations/middleware#express
+Comprehensive resources for designing and implementing a GraphQL API in Express. The GraphQL official learning guide defines the core spec, schema language, query mechanics, and best practices for type design and error handling. The Apollo Server Express integration doc shows how to embed `ApolloServer` into an Express app at `/graphql`, configure context, error masking, request size limits, and CORS, as well as performance tuning tips. Essential for adding a robust, strongly-typed GraphQL interface alongside REST.
+## License: CC0 / MIT
