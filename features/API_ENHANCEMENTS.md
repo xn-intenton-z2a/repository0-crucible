@@ -1,51 +1,56 @@
 # Overview
 
-Consolidate and enhance HTTP API capabilities by providing a machine-readable OpenAPI specification, an interactive Swagger UI at `/docs`, a server-sent events streaming endpoint for iterative π approximation at `/pi/stream`, and global request rate limiting to protect against abuse. This unified feature ensures comprehensive API documentation, real-time progress updates, and secure usage limits.
+Consolidate and enhance HTTP API capabilities by providing comprehensive documentation, real-time feedback, secure access control, and request safeguards. This unified feature ensures machine-readable API specs, interactive docs, server-sent events, rate limiting, and API key authentication for robust and user-friendly π calculation services.
 
 # Implementation
 
 1. Dependencies
-   • Add `swagger-ui-express` and `express-rate-limit` to `package.json` dependencies.
+   • Add or verify `swagger-ui-express`, `express-rate-limit`, and no new dependencies for authentication (use built-in Node/Express).  
+   • Ensure all required libraries (`express`, `zod`, etc.) remain at compatible versions.
 
 2. OpenAPI Specification Endpoint
-   • In `createApp()`, construct an `openapiSpec` object defining all existing endpoints (`/pi`, `/pi/data`, `/pi/chart`, `/pi/stream`, `/benchmark`, `/dashboard`).
-   • Include path parameters, query schemas, request and response bodies, and SSE event definitions for `/pi/stream`.
-   • Register GET `/openapi.json` returning the JSON spec: `res.json(openapiSpec)`.
+   • In `createApp()`, build `openapiSpec` object listing all endpoints (`/pi`, `/pi/data`, `/pi/chart`, `/pi/stream`, `/benchmark`, `/dashboard`, `/metrics`, `/healthz`, `/ready`).  
+   • Include parameters, request/response schemas, SSE definitions, security schemes for API key.  
+   • Register GET `/openapi.json` that returns `openapiSpec` as JSON.
 
 3. Swagger UI Setup
-   • In `createApp()`, import `swaggerUi` from `swagger-ui-express`.
-   • Add middleware: `app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec))` to serve interactive documentation.
+   • In `createApp()`, import `swaggerUi` from `swagger-ui-express` and serve UI at `/docs` with `app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec))`.
 
 4. Server-Sent Events Streaming Endpoint
-   • In `createApp()`, register GET `/pi/stream`.
-   • Parse and validate query parameters via the existing `ApiParamsSchema`.
-   • Set SSE headers (`Content-Type: text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`).
-   • Compute π approximation updates (Leibniz, sampling, etc.) and periodically `res.write` frames:
-     ```
-     data: { index, approximation, error }
-     
-     ```
-   • Send `event: end` at completion and close the stream.
+   • In `createApp()`, ensure GET `/pi/stream` streams incremental π approximations with SSE headers and sends periodic `data: { index, approximation, error }` frames, ending with `event: end`.
 
 5. Rate Limiting Middleware
-   • Import `rateLimit` from `express-rate-limit` in `createApp()`.
-   • Configure global limiter using env vars (`RATE_LIMIT_WINDOW_MS`, `RATE_LIMIT_MAX_REQUESTS`, `RATE_LIMIT_STANDARD_HEADERS`, `RATE_LIMIT_LEGACY_HEADERS`).
-   • Apply to all API routes before handlers: `app.use(rateLimit(config))`.
+   • Import `rateLimit` from `express-rate-limit`.  
+   • Configure using environment variables (`RATE_LIMIT_WINDOW_MS`, `RATE_LIMIT_MAX_REQUESTS`, etc.).  
+   • Apply globally: `app.use(rateLimit(config))` before all routes to cap abuse.
+
+6. API Key Authentication
+   • Introduce environment variable `API_KEYS` holding comma-separated valid keys.  
+   • In `createApp()`, before registering routes, insert middleware to:
+     - Extract `X-API-KEY` header.  
+     - Split and trim `API_KEYS` into an allow list.  
+     - If header missing or invalid, respond with 401 and `{ error: "Unauthorized" }`.  
+     - Otherwise, call `next()` to continue.
+   • Secure all primary routes under `/pi`, `/pi/data`, `/pi/chart`, `/pi/stream`, `/benchmark`, `/openapi.json`, `/docs`, `/metrics`, `/healthz`, and `/ready`.
 
 # Testing
 
-1. Unit Tests (`tests/unit/server.test.js`)
-   • Verify GET `/openapi.json` returns status 200 with the correct JSON spec.
-   • Verify GET `/docs` returns HTML containing Swagger UI assets.
-   • Simulate SSE connection to `/pi/stream`, mock `res.write`, assert SSE frames and final `event: end`.
-   • Mock `express-rate-limit` middleware and verify it is applied; simulate exceed limit and assert HTTP 429 with JSON error and rate limit headers.
+1. Unit Tests in `tests/unit/server.test.js`:
+   • Mock `express-rate-limit` to verify headers and HTTP 429 on limit exceeded.  
+   • Simulate SSE connection to `/pi/stream`, assert SSE frame structure and `event: end`.  
+   • Test GET `/openapi.json` returns valid OpenAPI JSON.  
+   • Test GET `/docs` serves HTML containing Swagger assets.  
+   • Test authentication middleware:
+     - Without `X-API-KEY` when `API_KEYS` is set: status 401 and JSON error.  
+     - With invalid key: status 401.  
+     - With valid key: proceed to endpoint.
 
 # Documentation
 
-1. `docs/USAGE.md`
-   • Under **REST Endpoints**, add sections for **GET /openapi.json**, **GET /docs**, and **GET /pi/stream** with usage examples.
-   • Document environment variables for rate limiting and example 429 response.
+1. `docs/USAGE.md`:
+   • Under **REST Endpoints**, add sections for **GET /openapi.json**, **GET /docs**, **SSE at /pi/stream**, and notes on **Authentication** and **Rate Limiting** with examples.  
+   • Document `API_KEYS` env var usage and sample 401/429 responses.
 
-2. `README.md`
-   • Under **Features**, replace separate OpenAPI UI and Rate Limiting entries with **API Enhancements** describing machine-readable spec at `/openapi.json`, interactive docs at `/docs`, SSE progress at `/pi/stream`, and request caps with config via environment variables.
-   • Provide example `curl` commands and sample rate limit headers.
+2. `README.md`:
+   • Under **Features**, update **API Enhancements** to describe machine-readable spec, interactive docs, SSE progress, rate limiting, and API key authentication.  
+   • Provide `curl` examples for authenticated and unauthenticated requests, sample headers, and environment variable setup.
