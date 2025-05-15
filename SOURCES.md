@@ -26,7 +26,8 @@ Integrated reference for fast unit, integration, and performance testing in Node
 ## License: MIT
 
 # Schema Validation with Zod
-## https://github.com/colinhacks/zod
+## https://github.com/colinhacks/zod#readme
+## https://zod.dev/
 In-depth TypeScript-first runtime schema validation. Explains synchronous/asynchronous parsing, refinements, custom error reporting, schema composition, and passthrough modes. Vital for reliable CLI and HTTP argument validation (`ApiParamsSchema`, `CLIOptionsSchema`).
 ## License: MIT
 
