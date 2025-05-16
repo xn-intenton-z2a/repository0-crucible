@@ -11354,4 +11354,856 @@ Found a mistake? Let us know     Edit page        Previous  Basic Structure     
 Standardize your APIs with projects,
                                     style checks, and reusable domains.
  Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nMIME Types        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+An API can accept and return data in different formats, the most common being JSON and XML. You can use the consumes and produces keywords to specify the MIME types understood by your API. The value of consumes and produces is an array of MIME types. Global MIME types can be defined on the root level of an API specification and are inherited by all API operations. Here the API uses JSON and XML:
+1consumes:2  - application/json3  - application/xml4produces:5  - application/json6  - application/xml
+Note that consumes only affects operations with a request body, such as POST, PUT and PATCH. It is ignored for bodiless operations like GET. When used on the operation level, consumes and produces override (not extend) the global definitions. In the following example, the GET /logo operation redefines the produces array to return an image:
+1paths:2  /logo:3    get:4      summary: Returns the logo image5      produces:6        - image/png7        - image/gif8        - image/jpeg9      responses:10        200:11          description: OK12          schema:13            type: file
+MIME types listed in consumes and produces should be compliant with RFC 6838. For example, you can use standard MIME types such as:
+1application/json2application/xml3application/x-www-form-urlencoded4multipart/form-data5text/plain; charset=utf-86text/html7application/pdf8image/png
+as well as vendor-specific MIME types (indicated by vnd.):
+1application/vnd.mycompany.myapp.v2+json2application/vnd.ms-excel3application/vnd.openstreetmap.data+xml4application/vnd.github-issue.text+json5application/vnd.github.v3.diff6image/vnd.djvu
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  API Host and Base Path       Next  Paths and Operations\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nPaths and Operations        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+In Swagger terms, paths are endpoints (resources) that your API exposes, such as /users or /reports/summary, and operations are the HTTP methods used to manipulate these paths, such as GET, POST or DELETE.
+Paths
+API paths and operations are defined in the global paths section of the API specification.
+1paths:2  /ping: ...3  /users: ...4  /users/{id}: ...
+All paths are relative to basePath (see API Host and Base URL). The full request URL is constructed as scheme://host/basePath/path.
+Path Templating
+Swagger supports path templating, meaning you can use curly braces {} to mark parts of a URL as path parameters:
+1/users/{id}2/organizations/{orgId}/members/{memberId}3/report.{format}
+The API client needs to provide appropriate parameter values when making an API call, such as /users/5 or /users/12.
+Operations
+For each path, you define operations (HTTP methods) that can be used to access that path. Swagger 2.0 supports get, post, put, patch, delete, head, and options. A single path can support multiple operations, for example, GET /users to get a list of users and POST /users to add a new user. Swagger defines a unique operation as a combination of a path and an HTTP method. This means that two GET or two POST methods for the same path are not allowed – even if they have different parameters (parameters have no effect on uniqueness). Minimal example of an operation:
+1paths:2  /ping:3    get:4      responses:5        200:6          description: OK
+More detailed example with parameters and response schema:
+1paths:2  /users/{id}:3    get:4      summary: Gets a user by ID.5      description: >6        A detailed description of the operation.7        GitHub Flavored Markdown can be used for rich text representation,8        such as **bold**, *italic* and [links](https://swagger.io).9      operationId: getUsers10      tags:11        - users12      produces:13        - application/json14        - application/xml15      parameters:16        - name: id17          in: path18          description: User ID19          type: integer20          required: true21      responses:22        200:23          description: OK24          schema:25            $ref: "#/definitions/User"26      externalDocs:27        url: http://api.example.com/docs/user-operations/28        description: Learn more about User operations provided by this API.29definitions:30  User:31    type: object32    properties:33      id:34        type: integer35      name:36        type: string37    required:38      - id39      - name
+Operations support some optional elements for documentation purposes:
+
+A short summary and a longer description of what the operation does. description can be multi-line and supports GitHub Flavored Markdown for rich text representation.
+tags are used to group operations in Swagger UI.
+externalDocs allows referencing an external resource that contains additional documentation.
+
+Operation Parameters
+Swagger supports operation parameters passed via path, query string, headers and request body. For details, see Describing Parameters.
+operationId
+Each operation may specify a unique operationId. Some code generators use this value to name the corresponding methods in code.
+1/users:2    get:3      operationId: getUsers4      summary: Gets all users.5      ...6    post:7      operationId: addUser8      summary: Adds a new user.9      ...10  /user/{id}:11    get:12      operationId: getUserById13      summary: Gets a user by user ID.14      ...
+Query String in Paths
+Query string parameters must not be included in paths. They should be defined as query parameters instead. Incorrect:
+1paths:2  /users?role={role}:
+Correct:
+1paths:2  /users:3    get:4      parameters:5        - in: query6          name: role7          type: string8          enum: [user, poweruser, admin]9          required: false
+This also means that it is impossible to have multiple paths that differ only in query string, such as:
+1GET /users?firstName=value&lastName=value2GET /users?role=value
+This is because Swagger considers a unique operation as a combination of a path and the HTTP method, and additional parameters do not make the operation unique. Instead, you should use unique paths such as:
+1GET /users/findByName?firstName=value&lastName=value2GET /users/findByRole?role=value
+Marking as Deprecated
+You can mark specific operations as deprecated to indicate that they should be transitioned out of usage:
+1/pet/findByTags:2  get:3    deprecated: true
+Tools may handle deprecated operations in a specific way. For example, Swagger UI displays them with a different style:
+
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  MIME Types       Next  Describing Parameters\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nDescribing Parameters        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+In Swagger, API operation parameters are defined under the parameters section in the operation definition. Each parameter has name, value type (for primitive value parameters) or schema (for request body), and optional description. Here is an example:
+1paths:2  /users/{userId}:3    get:4      summary: Gets a user by ID.5      parameters:6        - in: path7          name: userId8          type: integer9          required: true10          description: Numeric ID of the user to get.
+Note that parameters is an array, so, in YAML, each parameter definition must be listed with a dash (-) in front of it.
+Parameter Types
+Swagger distinguishes between the following parameter types based on the parameter location. The location is determined by the parameter’s in key, for example, in: query or in: path.
+
+query parameters, such as /users?role=admin
+path parameters, such as /users/{id}
+header parameters, such as X-MyHeader: Value
+body parameters that describe the body of POST, PUT and PATCH requests (see Describing Request Body)
+form parameters – a variety of body parameters used to describe the payload of requests with Content-Type of application/x-www-form-urlencoded and multipart/form-data (the latter is typically used for file uploads)
+
+Query Parameters
+Query parameters are the most common type of parameters. They appear at the end of the request URL after a question mark (?), with different name=value pairs separated by ampersands (&). Query parameters can be required and optional.
+Terminal window1GET /pets/findByStatus?status=available2GET /notes?offset=100&limit=50
+Use in: query to denote query parameters:
+1parameters:2  - in: query3    name: offset4    type: integer5    description: The number of items to skip before starting to collect the result set.6  - in: query7    name: limit8    type: integer9    description: The numbers of items to return.
+Query parameters only support primitive types. You can have an array, but the items must be a primitive value type. Objects are not supported.
+Note: To describe API keys passed as query parameters, use a security definition instead. See API Keys.
+Path Parameters
+Path parameters are components of a URL path that can vary. They are typically used to point to a specific resource within a collection, such as a user identified by ID. A URL can have several path parameters, each denoted with curly braces { }.
+Terminal window1GET /users/{id}2GET /cars/{carId}/drivers/{driverId}
+Each path parameter must be substituted with an actual value when the client makes an API call. In Swagger, a path parameter is defined using in: path and other attributes as necessary. The parameter name must be the same as specified in the path. Also, remember to add required: true, because path parameters are always required. Here is an example for GET /users/{id}:
+1paths:2  /users/{id}:3    get:4      parameters:5        - in: path6          name: id   # Note the name is the same as in the path7          required: true8          type: integer9          minimum: 110          description: The user ID.11        responses:12          200:13            description: OK
+Path parameters can be multi-valued, such as GET /users/12,34,56. This is achieved by specifying the parameter type as array. See Array and Multi-Value Parameters below.
+Header Parameters
+An API call may require that custom headers be sent with an HTTP request. Swagger lets you define custom request headers as in: header parameters. For example, suppose, a call to GET /ping requires the X-Request-ID header:
+Terminal window1GET /ping HTTP/1.12Host: example.com3X-Request-ID: 77e1c83b-7bb0-437b-bc50-a7a58e5660ac
+In Swagger, you would define this operation as follows:
+1paths:2  /ping:3    get:4      summary: Checks if the server is alive.5      parameters:6        - in: header7          name: X-Request-ID8          type: string9          required: true
+In a similar way, you can define custom response headers.
+Note: Swagger specification has special keywords for some headers:
+
+	
+		
+			Header
+			Swagger Keywords
+			For more information, see...
+		
+	
+	
+		
+			Content-Type
+			consumes (request content type)
+			produces (response content type)
+			MIME Types
+		
+		
+			Accept
+			produces
+			MIME Types
+		
+		
+			Authorization
+			securityDefinitions, security
+			Authentication
+		
+	
+
+Form Parameters
+Form parameters are used to describe the payload of requests with Content-Type of:
+
+application/x-www-form-urlencoded (used to POST primitive values and arrays of primitive values).
+multipart/form-data (used to upload files or a combination of files and primitive data).
+
+That is, the operation’s consumes property must specify one of these content types. Form parameters are defined as in: formData. They can only be primitives (strings, numbers, booleans) or arrays of primitives (meaning you cannot use a $ref as the items value). Also, form parameters cannot coexist with the in: bodyparameter, because formData is a specific way of describing the body. To illustrate form parameters, consider an HTML POST form:
+1<form action="http://example.com/survey" method="post">2  <input type="text" name="name" />3  <input type="number" name="fav_number" />4  <input type="submit" />5</form>
+This form POSTs data to the form’s endpoint:
+Terminal window1POST /survey HTTP/1.12Host: example.com3Content-Type: application/x-www-form-urlencoded4Content-Length: 295
+6name=Amy+Smith&fav_number=321
+In Swagger, you can describe the endpoint as follows:
+1paths:2  /survey:3    post:4      summary: A sample survey.5      consumes:6        - application/x-www-form-urlencoded7      parameters:8        - in: formData9          name: name10          type: string11          description: A person's name.12        - in: formData13          name: fav_number14          type: number15          description: A person's favorite number.16      responses:17        200:18          description: OK
+To learn how to define form parameters for file uploads, see File Upload.
+Required and Optional Parameters
+By default, Swagger treats all request parameters as optional. You can add required: true to mark a parameter as required. Note that path parameters must have required: true, because they are always required.
+1parameters:2  - in: path3    name: userId4    type: integer5    required: true # <----------6    description: Numeric ID of the user to get.
+Default Parameter Values
+You can use the default key to specify the default value for an optional parameter. The default value is the one that the server uses if the client does not supply the parameter value in the request. The value type must be the same as the parameter’s data type. A typical example is paging parameters such as offset and limit:
+Terminal window1GET /users2GET /users?offset=30&limit=10
+Assuming offset defaults to 0 and limit defaults to 20 and ranges from 0 to 100, you would define these parameters as:
+1parameters:2  - in: query3    name: offset4    type: integer5    required: false6    default: 07    minimum: 08    description: The number of items to skip before starting to collect the result set.9  - in: query10    name: limit11    type: integer12    required: false13    default: 2014    minimum: 115    maximum: 10016    description: The numbers of items to return.
+Common Mistakes
+There are two common mistakes when using the default keyword:
+
+Using default with required parameters or properties, for example, with path parameters. This does not make sense – if a value is required, the client must always send it, and the default value is never used.
+Using default to specify a sample value. This is not intended use of default and can lead to unexpected behavior in some Swagger tools. Some elements of the specification support the example or examples keyword for this purpose.
+
+Enum Parameters
+The enum keyword allows you to restrict a parameter value to a fixed set of values. The enum values must be of the same type as the parameter type.
+1- in: query2  name: status3  type: string4  enum: [available, pending, sold]
+More info: Defining an Enum.
+Array and Multi-Value Parameters
+Path, query, header and form parameters can accept a list of values, for example:
+Terminal window1GET /users/12,34,56,782GET /resource?param=value1,value2,value33GET /resource?param=value1&param=value2&param=value34
+5POST /resource6param=value1&param=value2
+A multi-value parameter must be defined with type: array and the appropriate collectionFormat.
+1# color=red,black,white2parameters:3  - in: query4    name: color5    type: array6    collectionFormat: csv7    items:8      type: string
+collectionFormat specifies the array format (a single parameter with multiple parameter or multiple parameters with the same name) and the separator for array items.
+
+	
+		
+			collectionFormat
+			Description
+			Example
+		
+	
+	
+		
+			csv (default)
+			Comma-separated values.
+			foo,bar,baz
+		
+		
+			ssv
+			Space-separated values.
+			foo bar baz
+		
+		
+			tsv
+			Tab-separated values.
+			"foo\tbar\tbaz"
+		
+		
+			pipes
+			Pipe-separated values.
+			foo|bar|baz
+		
+		
+			multi
+			Multiple parameter instances rather than multiple values. This is only supported for the in: query and in: formData parameters.
+			foo=value&foo=another_value
+		
+	
+
+Additionally, you can:
+
+use minItems and maxItems to control the size of the array,
+enforce uniqueItems,
+restrict the array items to a fixed set of enum values.
+
+For example:
+1- in: query2  name: color3  required: false4  type: array5  minItems: 16  maxItems: 57  uniqueItems: true8  items:9    type: string10    enum:11      [12        black,13        white,14        gray,15        red,16        pink,17        orange,18        yellow,19        green,20        blue,21        purple,22        brown,23      ]
+You can also specify the default array that the server will use if this parameter is omitted:
+1- in: query2  name: sort3  required: false4  type: array5  items:6    type: string7  default: ["-modified", "+id"]
+Constant Parameters
+You can define a constant parameter as a required parameter with only one possible value:
+1- required: true2  enum: [value]
+The enum property specifies possible values. In this example, only one value can be used, and this will be the only value available in the Swagger UI for the user to choose from.
+Note: A constant parameter is not the same as the default parameter value. A constant parameter is always sent by the client, whereas the default value is something that the server uses if the parameter is not sent by the client.
+Parameters Without a Value
+Query string and form data parameters may only have a name and no value:
+Terminal window1GET /foo?metadata2
+3POST /something4foo&bar&baz
+Use allowEmptyValue to describe such parameters:
+1- in: query2  name: metadata3  required: true4  type: boolean5  allowEmptyValue: true # <-----
+Common Parameters
+Common Parameters for All Methods of a Path
+Parameters can be defined under a path itself, in this case, the parameters exist in all operations described under this path. A typical example is the GET/PUT/PATCH/DELETE operations that manipulate the same resource accessed via a path parameter.
+1paths:2  /user/{id}:3    parameters:4      - in: path5        name: id6        type: integer7        required: true8        description: The user ID.9
+10    get:11      summary: Gets a user by ID.12      ...13    patch:14      summary: Updates an existing user with the specified ID.15      ...16    delete:17      summary: Deletes the user with the specified ID.18      ...
+Any extra parameters defined at the operation level are used together with path-level parameters:
+1paths:2  /users/{id}:3    parameters:4      - in: path5        name: id6        type: integer7        required: true8        description: The user ID.9
+10    # GET/users/{id}?metadata=true11    get:12      summary: Gets a user by ID.13      # Note we only define the query parameter, because the {id} is defined at the path level.14      parameters:15        - in: query16          name: metadata17          type: boolean18          required: false19          description: If true, the endpoint returns only the user metadata.20      responses:21        200:22          description: OK
+Specific path-level parameters can be overridden on the operation level, but cannot be removed.
+1paths:2  /users/{id}:3    parameters:4      - in: path5        name: id6        type: integer7        required: true8        description: The user ID.9
+10    # DELETE /users/{id} - uses a single ID.11    # Reuses the {id} parameter definition from the path level.12    delete:13      summary: Deletes the user with the specified ID.14      responses:15        204:16          description: User was deleted.17
+18    # GET /users/id1,id2,id3 - uses one or more user IDs.19    # Overrides the path-level {id} parameter.20    get:21      summary: Gets one or more users by ID.22      parameters:23        - in: path24          name: id25          required: true26          description: A comma-separated list of user IDs.27          type: array28          items:29            type: integer30          collectionFormat: csv31          minItems: 132      responses:33        200:34          description: OK
+Common Parameters in Different Paths
+Different API paths may have some common parameters, such as pagination parameters. You can define common parameters in the global parameters section and reference them in individual operations via $ref.
+1parameters:2  offsetParam: # <-- Arbitrary name for the definition that will be used to refer to it.3    # Not necessarily the same as the parameter name.4    in: query5    name: offset6    required: false7    type: integer8    minimum: 09    description: The number of items to skip before starting to collect the result set.10  limitParam:11    in: query12    name: limit13    required: false14    type: integer15    minimum: 116    maximum: 5017    default: 2018    description: The numbers of items to return.19paths:20  /users:21    get:22      summary: Gets a list of users.23      parameters:24        - $ref: "#/parameters/offsetParam"25        - $ref: "#/parameters/limitParam"26      responses:27        200:28          description: OK29  /teams:30    get:31      summary: Gets a list of teams.32      parameters:33        - $ref: "#/parameters/offsetParam"34        - $ref: "#/parameters/limitParam"35      responses:36        200:37          description: OK
+Note that the global parameters are not parameters applied to all operations — they are simply global definitions that can be easily re-used.
+Parameter Dependencies
+Swagger does not support parameter dependencies and mutually exclusive parameters. There is an open feature request at https://github.com/OAI/OpenAPI-Specification/issues/256. What you can do is document the restrictions in the parameter description and define the logic in the 400 Bad Request response. For example, consider the /report endpoint that accepts either a relative date range (rdate) or an exact range (start_date+ end_date):
+Terminal window1GET /report?rdate=Today2GET /report?start_date=2016-11-15&end_date=2016-11-20
+You can describe this endpoint as follows:
+1paths:2  /report:3    get:4      parameters:5        - name: rdate6          in: query7          type: string8          description: >9            A relative date range for the report, such as `Today` or `LastWeek`.10            For an exact range, use `start_date` and `end_date` instead.11        - name: start_date12          in: query13          type: string14          format: date15          description: >16            The start date for the report. Must be used together with `end_date`.17            This parameter is incompatible with `rdate`.18        - name: end_date19          in: query20          type: string21          format: date22          description: >23            The end date for the report. Must be used together with `start_date`.24            This parameter is incompatible with `rdate`.25      responses:26        400:27          description: Either `rdate` or `start_date`+`end_date` are required.
+FAQ
+When should I use “type” vs “schema”?
+schema is only used with in: body parameters. Any other parameters expect a primitive type, such as type: string, or an array of primitives.
+Can I have an object as a query parameter?
+This is possible in OpenAPI 3.0, but not in 2.0.
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Paths and Operations       Next  Describing Request Body\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nDescribing Request Body        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+The POST, PUT and PATCH requests can have the request body (payload), such as JSON or XML data. In Swagger terms, the request body is called a body parameter. There can be only one body parameter, although the operation may have other parameters (path, query, header).
+Note: The payload of the application/x-www-form-urlencoded and multipart/form-data requests is described by using form parameters, not body parameters.
+The body parameter is defined in the operation’s parameters section and includes the following:
+
+in: body
+schema that describes the body data type and structure. The data type is usually an object, but can also be a primitive (such as a string or number) or an array.
+Optional description.
+The payload name. It is required but ignored (it is used for documentation purposes only).
+
+Object Payload (JSON, etc.)
+Many APIs transmit data as an object, such as JSON. schema for an object should specify type: object and properties for that object. For example, the POST /users operation with this JSON body:
+1{2  "userName": "Trillian",3  "firstName": "Tricia",4  "lastName": "McMillan"5}
+can be described as:
+1paths:2  /users:3    post:4      summary: Creates a new user.5      consumes:6        - application/json7      parameters:8        - in: body9          name: user10          description: The user to create.11          schema:12            type: object13            required:14              - userName15            properties:16              userName:17                type: string18              firstName:19                type: string20              lastName:21                type: string22      responses:23        201:24          description: Created
+Note: The name of the body parameter is ignored. It is used for documentation purposes only. For a more modular style, you can move the schema definitions to the global definitions section and refer to them by using $ref:
+1paths:2  /users:3    post:4      summary: Creates a new user.5      consumes:6        - application/json7      parameters:8        - in: body9          name: user10          description: The user to create.11          schema:12            $ref: "#/definitions/User" # <----------13      responses:14        200:15          description: OK16definitions:17  User: # <----------18    type: object19    required:20      - userName21    properties:22      userName:23        type: string24      firstName:25        type: string26      lastName:27        type: string
+Primitive Body
+Want to POST/PUT just a single value? No problem, you can define the body schema type as a primitive, such as a string or number. Raw request:
+1POST /status HTTP/1.12Host: api.example.com3Content-Type: text/plain4Content-Length: 425
+6Time is an illusion. Lunchtime doubly so.
+Swagger definition:
+1paths:2  /status:3    post:4      summary: Updates the status message.5      consumes:6        - text/plain # <----------7      parameters:8        - in: body9          name: status10          required: true11          schema:12            type: string # <----------13      responses:14        200:15          description: Success!
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Describing Parameters       Next  File Upload\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nFile Upload        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+Swagger 2.0 supports file uploads sent with Content-Type: multipart/form-data. That is, your API server must consume multipart/form-data for this operation:
+1consumes:2  - multipart/form-data
+The operation payload is defined using formData parameters (not body parameters). The file parameter must have type: file:
+1paths:2  /upload:3    post:4      summary: Uploads a file.5      consumes:6        - multipart/form-data7      parameters:8        - in: formData9          name: upfile10          type: file11          description: The file to upload.
+This definition corresponds to the following HTTP request:
+1POST /upload2Host: example.com3Content-Type: multipart/form-data; boundary=abcde123454Content-Length: 2045
+6--abcde123457Content-Disposition: form-data; name="upfile"; filename="example.txt"8Content-Type: text/plain9
+10File contents go here.11--abcde12345--
+Swagger UI displays file parameters using a file input control, allowing the users to browse for a local file to upload. 
+Upload a File + Other Data
+File parameters can be sent along with other form data:
+1parameters:2  - in: formData3    name: upfile4    type: file5    required: true6    description: The file to upload.7  - in: formData8    name: note9    type: string10    required: false11    description: Description of file contents.
+The corresponding HTTP request payload will include multiple parts:
+1POST /upload2Host: example.com3Content-Type: multipart/form-data; boundary=abcde123454Content-Length: 3325
+6--abcde123457Content-Disposition: form-data; name="upfile"; filename="example.txt"8Content-Type: text/plain9
+10File contents go here.11--abcde1234512Content-Disposition: form-data; name="note"13
+14Uploading a file named "example.txt"15--abcde12345--
+Multiple Upload
+You can have several named file parameters, each defined individually:
+1parameters:2  - in: formData3    name: upfile14    type: file5    required: true6  - in: formData7    name: upfile28    type: file9    required: false10  - in: formData11    name: upfile312    type: file13    required: false
+However, uploading an arbitrary number of files (an array of files) is not supported. There is an open feature request at https://github.com/OAI/OpenAPI-Specification/issues/254. For now, you can use a binary string array as a workaround for uploading an arbitrary number of files:
+1type: array2items:3  type: string4  format: binary
+Note that this will not produce the file upload interface in Swagger UI.
+FAQ
+Can I upload files via PUT?
+Swagger 2.0 supports file upload requests with Content-Type: multipart/form-data, but does not care about the HTTP method. You can use POST, PUT or any other method, provided that the operation consumes multipart/form-data. Uploads where the payload is just the raw file contents are not supported in Swagger 2.0, because they are not multipart/form-data. That is, Swagger 2.0 does NOT support something like:
+1curl --upload-file archive.zip http://example.com/upload
+Note also that file uploading in Swagger UI only works for POST requests, because HTML forms in browsers support GET and POST methods only.
+Can I define the Content-Type for uploaded files?
+This is supported in OpenAPI 3.0, but not in OpenAPI/Swagger 2.0. In 2.0, you can say that an operation accepts a file, but you cannot say that this file is of a specific type or structure.
+As a workaround, vendor extensions may be used to extend this functionality, for example:
+1- in: formData2  name: zipfile3  type: file4  description: Contents of the ZIP file.5  x-mimetype: application/zip
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Describing Request Body       Next  Describing Responses\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nDescribing Responses        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+An API specification needs to specify the responses for all API operations. Each operation must have at least one response defined, usually a successful response. A response is defined by its HTTP status code and the data returned in the response body and/or headers. Here is a minimal example:
+1paths:2  /ping:3    get:4      produces:5        - application/json6      responses:7        200:8          description: OK
+Response Media Types
+An API can respond with various media types. JSON is the most common format for data exchange, but not the only one possible. To specify the response media types, use the produces keyword on the root level or operation level. The global list can be overridden on the operation level.
+1produces:2  - application/json3
+4paths:5  # This operation returns JSON - as defined globally above6  /users:7    get:8      summary: Gets a list of users.9      responses:10        200:11          description: OK12  # Here, we override the "produces" array to specify other media types13  /logo:14    get:15      summary: Gets the logo image.16      produces:17        - image/png18        - image/gif19        - image/jpeg20      responses:21        200:22          description: OK
+More info: MIME Types.
+HTTP Status Codes
+Under responses, each response definition starts with a status code, such as 200 or 404. An operation typically returns one successful status code and one or more error statuses. Each response status requires a description. For example, you can describe the conditions for error responses. GitHub Flavored Markdown can be used for rich text representation.
+1responses:2  200:3    description: OK4  400:5    description: Bad request. User ID must be an integer and bigger than 0.6  401:7    description: Authorization information is missing or invalid.8  404:9    description: A user with the specified ID was not found.
+Note that an API specification does not necessarily need to cover all possible HTTP response codes, since they may not be known in advance. However, it is expected to cover successful responses and any known errors. By “known errors” we mean, for example, a 404 Not Found response for an operation that returns a resource by ID, or a 400 Bad Request response in case of invalid operation parameters.
+Response Body
+The schema keyword is used to describe the response body. A schema can define:
+
+object or array – typically used with JSON and XML APIs,
+a primitive such as a number or string – used for plain text responses,
+file (see below).
+
+Schema can be defined inline in the operation:
+1responses:2  200:3    description: A User object4    schema:5      type: object6      properties:7        id:8          type: integer9          description: The user ID.10        username:11          type: string12          description: The user name.
+or defined at the root level and referenced via $ref. This is useful if multiple responses use the same schema.
+1      responses:2        200:3          description: A User object4          schema:5            $ref: '#/definitions/User'6definitions:7  User:8    type: object9    properties:10      id:11        type: integer12        description: The user ID.13      username:14        type: string15        description: The user name.
+Response That Returns a File
+An API operation can return a file, such as an image or PDF. In this case, define the response schema with type: file and specify the appropriate MIME types in the produces section.
+1paths:2  /report:3    get:4      summary: Returns the report in the PDF format.5      produces:6        - application/pdf7      responses:8        200:9          description: A PDF file.10          schema:11            type: file
+Empty Response Body
+Some responses, such as 204 No Content, have no body. To indicate the response body is empty, do not specify a schema for the response. Swagger treats no schema as a response without a body.
+1responses:2  204:3    description: The resource was deleted successfully.
+Response Headers
+Responses from an API can include custom headers to provide additional information on the result of an API call. For example, a rate-limited API may provide the rate limit status via response headers as follows:
+1HTTP 1/1 200 OK2X-RateLimit-Limit: 1003X-RateLimit-Remaining: 994X-RateLimit-Reset: 2016-10-12T11:00:00Z5
+6{ ... }
+You can define custom headers for each response as follows:
+1paths:2  /ping:3    get:4      summary: Checks if the server is alive.5      responses:6        200:7          description: OK8          headers:9            X-RateLimit-Limit:10              type: integer11              description: Request limit per hour.12            X-RateLimit-Remaining:13              type: integer14              description: The number of requests left for the time window.15            X-RateLimit-Reset:16              type: string17              format: date-time18              description: The UTC date/time at which the current rate limit window resets.
+Note that, currently, there is no way in Swagger to define common response headers for different response codes or different API operations. You need to define the headers for each response individually.
+Default Response
+Sometimes, an operation can return multiple errors with different HTTP status codes, but all of them have the same response structure:
+1responses:2  200:3    description: Success4    schema:5      $ref: "#/definitions/User"6  400:7    description: Bad request8    schema:9      $ref: "#/definitions/Error" # <-----10  404:11    description: Not found12    schema:13      $ref: "#/definitions/Error" # <-----
+You can use the default response to describe these errors collectively, not individually. “Default” means this response is used for all HTTP codes that are not covered individually for this operation.
+1responses:2  200:3    description: Success4    schema:5      $ref: "#/definitions/User"6  # Definition of all error statuses7  default:8    description: Unexpected error9    schema:10      $ref: "#/definitions/Error"
+Reusing Responses
+If multiple operations return the same response (status code and data), you can define it in the global responses section and reference that definition via $ref at the operation level. This is useful for error responses with the same status codes and response body.
+1paths:2  /users:3    get:4      summary: Gets a list of users.5      response:6        200:7          description: OK8          schema:9            $ref: "#/definitions/ArrayOfUsers"10        401:11          $ref: "#/responses/Unauthorized" # <-----12  /users/{id}:13    get:14      summary: Gets a user by ID.15      response:16        200:17          description: OK18          schema:19            $ref: "#/definitions/User"20        401:21          $ref: "#/responses/Unauthorized" # <-----22        404:23          $ref: "#/responses/NotFound" # <-----24# Descriptions of common responses25responses:26  NotFound:27    description: The specified resource was not found28    schema:29      $ref: "#/definitions/Error"30  Unauthorized:31    description: Unauthorized32    schema:33      $ref: "#/definitions/Error"34definitions:35  # Schema for error response body36  Error:37    type: object38    properties:39      code:40        type: string41      message:42        type: string43    required:44      - code45      - message
+Note that responses defined at the root level are not automatically applied to all operations. These are just definitions that can be referenced and reused by multiple operations.
+FAQ
+Can I have different responses based on a request parameter? Such as:
+1GET /something -> {200, schema_1}2GET /something?foo=bar -> {200, schema_2}
+No, this is not supported.
+Reference
+https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responsesDefinitionsObject
+https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responsesObject
+https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responseObject
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  File Upload       Next  Overview\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nAuthentication        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+Swagger 2.0 lets you define the following authentication types for an API:
+
+Basic authentication
+API key (as a header or a query string parameter)
+OAuth 2 common flows (authorization code, implicit, resource owner password credentials, client credentials)
+
+Follow the links above for examples specific to these authentication types, or continue reading to learn how to describe authentication in general.
+Authentication is described by using the securityDefinitions and security keywords. You use securityDefinitions to define all authentication types supported by the API, then use security to apply specific authentication types to the whole API or individual operations.
+The securityDefinitions section is used to define all security schemes (authentication types) supported by the API. It is a name->definition map that maps arbitrary names to the security scheme definitions. Here, the API supports three security schemes named BasicAuth, ApiKeyAuth and OAuth2, and these names will be used to refer to these security schemes from elsewhere:
+1securityDefinitions:2  BasicAuth:3    type: basic4  ApiKeyAuth:5    type: apiKey6    in: header7    name: X-API-Key8  OAuth2:9    type: oauth210    flow: accessCode11    authorizationUrl: https://example.com/oauth/authorize12    tokenUrl: https://example.com/oauth/token13    scopes:14      read: Grants read access15      write: Grants write access16      admin: Grants read and write access to administrative information
+Each security scheme can be of type:
+
+basic for Basic authentication
+apiKey for an API key
+oauth2 for OAuth 2
+
+Other required properties depend on the security type. For details, check the Swagger Specification or our examples for Basic auth and API keys.
+After you have defined the security schemes in securityDefinitions, you can apply them to the whole API or individual operations by adding the security section on the root level or operation level, respectively. When used on the root level, security applies the specified security schemes globally to all API operations, unless overridden on the operation level.
+In the following example, the API calls can be authenticated using either an API key or OAuth 2. The ApiKeyAuth and OAuth2 names refer to the security schemes previously defined in securityDefinitions.
+1security:2  - ApiKeyAuth: []3  - OAuth2: [read, write]
+Global security can be overridden in individual operations to use a different authentication type, different OAuth 2 scopes, or no authentication at all:
+1paths:2/billing_info:3  get:4    summary: Gets the account billing info5    security:6      - OAuth2: [admin]   # Use OAuth with a different scope7    responses:8      200:9        description: OK10      401:11        description: Not authenticated12      403:13        description: Access token does not have the required scope14
+15/ping:16  get:17    summary: Checks if the server is running18    security: []   # No security19    responses:20      200:21        description: Server is up and running22      default:23        description: Something is wrong
+Using Multiple Authentication Types
+Some REST APIs support several authentication types. The security section lets you combine the security requirements using logical OR and AND to achieve the desired result. security uses the following logic:
+1security:    # A OR B2  - A3  - B4
+5security:    # A AND B6  - A7    B8
+9security:    # (A AND B) OR (C AND D)10  - A11    B12  - C13    D
+That is, security is an array of hashmaps, where each hashmap contains one or more named security schemes. Items in a hashmap are combined using logical AND, and array items are combined using logical OR. Security schemes combined via OR are alternatives – any one can be used in the given context. Security schemes combined via AND must be used simultaneously in the same request. Here, we can use either Basic authentication or an API key:
+1security:2  - basicAuth: []3  - apiKey: []
+Here, the API requires a pair of API keys to be included in requests:
+1security:2  - apiKey1: []3    apiKey2: []
+Here, we can use either OAuth 2 or a pair of API keys:
+1security:2  - oauth2: [scope1, scope2]3  - apiKey1: []4    apiKey2: []
+FAQ
+What does [ ] mean in “securitySchemeName: [ ]”?
+[] is a YAML/JSON syntax for an empty array. The Swagger Specification requires that items in the security array specify a list of required scopes, as in:
+1security:2  - securityA: [scopeA1, scopeA2]3  - securityB: [scopeB1, scopeB2]
+Scopes are only used with OAuth 2, so the Basic and API key security items use an empty array instead.
+1security:2  - oauth2: [scope1, scope2]3  - BasicAuth: []4  - ApiKeyAuth: []
+Reference
+securityDefinitions
+security
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Describing Responses       Next  API Keys\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nAPI Keys        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+Some APIs use API keys for authorization. An API key is a special token that the client needs to provide when making API calls. The key is usually sent as a request header:
+1GET /something HTTP/1.12X-API-Key: abcdef12345
+or as a query parameter:
+1GET /something?api_key=abcdef12345
+API keys are supposed to be a secret that only the client and server know. But, as well as Basic authentication, API key-based authentication is not considered secure unless used together with other security mechanisms such as HTTPS/SSL.
+To define API key-based security:
+
+Add an entry with type: apiKey in the global securityDefinitions section. The entry name can be arbitrary (such as APIKeyHeader in the example below) and is used to refer to this security definition from other parts of the spec.
+Specify whether the API key will be passed in: header or in: query.
+Specify a name for that parameter or header.
+
+1securityDefinitions:2  # X-API-Key: abcdef123453  APIKeyHeader:4    type: apiKey5    in: header6    name: X-API-Key7  # /path?api_key=abcdef123458  APIKeyQueryParam:9    type: apiKey10    in: query11    name: api_key
+Then, use the security section on the root level or operation level to apply API keys to the whole API or specific operations.
+1# Global security (applies to all operations):2security:3  - APIKeyHeader: []4paths:5  /something:6    get:7      # Operation-specific security:8      security:9        - APIKeyQueryParam: []10      responses:11        200:12          description: OK (successfully authenticated)
+Note that it is possible to support multiple authorization types in an API. See Using Multiple Authentication Types.
+Pair of API Keys
+Some APIs use a pair of security keys, say, API Key and App ID. To specify that the keys are used together (as in logical AND), list them in the same array item in the security array:
+1securityDefinitions:2  apiKey:3    type: apiKey4    in: header5    name: X-API-KEY6  appId:7    type: apiKey8    in: header9    name: X-APP-ID10security:11  - apiKey: []12    appId: []
+Note the difference from:
+1security:2  - apiKey: []3  - appId: []
+which means either key can be used (as in logical OR). For more examples, see Using Multiple Authentication Types.
+401 Response
+You can also define the 401 “Unauthorized” response returned for requests with missing or invalid API key. This response includes the WWW-Authenticate header, which you may want to mention. As with other common responses, the 401 response can be defined in the global responses section and referenced from multiple operations.
+1paths:2  /something:3    get:4      ...5      responses:6        ...7        401:8            $ref: '#/responses/UnauthorizedError'9    post:10      ...11      responses:12        ...13        401:14          $ref: '#/responses/UnauthorizedError'15responses:16  UnauthorizedError:17    description: API key is missing or invalid18    headers:19      WWW_Authenticate:20        type: string
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Overview       Next  Basic Authentication\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nBasic Authentication        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger).
+To learn about the latest version, visit OpenAPI 3 pages.
+Basic authentication is a very simple authentication scheme that is built into the HTTP protocol. The client sends HTTP requests with the Authorization header that contains the Basic word followed by a space and a base64-encoded username:password string. For example, a header containing the demo / p@55w0rd credentials would be encoded as:
+1Authorization: Basic ZGVtbzpwQDU1dzByZA==
+Note: Because base64 is easily decoded, Basic authentication should only be used together with other security mechanisms such as HTTPS/SSL.
+Basic authentication is easy to define. In the global securityDefinitions section, add an entry with type: basic and an arbitrary name (in this example - basicAuth). Then, apply security to the whole API or specific operations by using the security section.
+1securityDefinitions:2  basicAuth:3    type: basic4
+5# To apply Basic auth to the whole API:6security:7  - basicAuth: []8
+9paths:10  /something:11    get:12      # To apply Basic auth to an individual operation:13      security:14        - basicAuth: []15      responses:16        200:17          description: OK (successfully authenticated)
+401 Response
+You can also define the 401 “Unauthorized” response returned for requests with missing or incorrect credentials. This response includes the WWW-Authenticate header, which you may want to mention. As with other common responses, the 401 response can be defined in the global responses section and referenced from multiple operations.
+1paths:2  /something:3    get:4      ...5      responses:6        ...7        401:8            $ref: '#/responses/UnauthorizedError'9    post:10      ...11      responses:12        ...13        401:14          $ref: '#/responses/UnauthorizedError'15responses:16  UnauthorizedError:17    description: Authentication information is missing or invalid18    headers:19      WWW_Authenticate:20        type: string
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  API Keys       Next  Adding Examples\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nAdding Examples        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger).
+To learn about the latest version, visit OpenAPI 3 pages.
+An API specification can include examples for:
+
+response MIME types,
+schemas (data models),
+individual properties in schemas.
+
+Examples can be used by tools and libraries, for instance, Swagger UI auto-populates request bodies based on input schema examples, and some API mocking tools use examples to generate mock responses.
+Note: Do not confuse example values with the default values. An example is used to illustrate what the value is supposed to be like. A default value is something that the server uses if the value is not provided in the request.
+Schema Examples
+The example key is used to provide a schema example. Examples can be given for individual properties, objects and the whole schema.
+Property Examples
+Property examples can be specified inline. The example value must conform to the property type.
+1definitions:2  CatalogItem:3    type: object4    properties:5      id:6        type: integer7        example: 388      title:9        type: string10        example: T-shirt11    required:12      - id13      - title
+Note that multiple example values per property or schema are not supported, that is, you cannot have:
+1title:2  type: string3  example: T-shirt4  example: Phone
+Object Examples
+Properties of a type object can have complex inline examples that include that object’s properties. The example should comply with the object schema.
+1definitions:2  CatalogItem:3    type: object4    properties:5      id:6        type: integer7        example: 388      title:9        type: string10        example: T-shirt11      image:12        type: object13        properties:14          url:15            type: string16          width:17            type: integer18          height:19            type: integer20        required:21          - url22        example:   # <-----23          url: images/38.png24          width: 10025          height: 10026    required:27      - id28      - title
+Array Examples
+An example for an array of primitives:
+1definitions:2  ArrayOfStrings:3    type: array4    items:5      type: string6    example:7      - foo8      - bar9      - baz
+Similarly, an array of objects would be specified as:
+1definitions:2  ArrayOfCatalogItems:3    type: array4    items:5      $ref: '#/definitions/CatalogItem'6    example:7      - id: 388        title: T-shirt9      - id: 11410        title: Phone
+Whole Schema Examples
+An example can be specified for the entire schema (including all nested schema), provided that the example conforms to the schema.
+1definition:2  CatalogItem:3    type: object4    properties:5      id:6        type: integer7      name:8        type: string9      image:10        type: object11        properties:12          url:13            type: string14          width:15            type: integer16          height:17            type: integer18    required:19      - id20      - name21    example:   # <----------22      id: 3823      name: T-shirt24      image:25        url: images/38.png26        width: 10027        height: 100
+Response Examples
+Swagger allows examples on the response level, each example corresponding to a specific MIME type returned by the operation. Such as one example for application/json, another one for text/csv and so on. Each MIME type must be one of the operation’s produces values — either explicit or inherited from the global scope.
+1produces:2  - application/json3  - text/csv4responses:5  200:6    description: OK7    examples:8      application/json: { "id": 38, "title": "T-shirt" }9      text/csv: >10        id,title11        38,T-shirt
+All examples are free-form, meaning their interpretation is up to tools and libraries.
+JSON and YAML Examples
+Since JSON and YAML are interchangeable (YAML is a superset of JSON), both can be specified either using the JSON syntax:
+1examples:2  application/json:3    {4      "id": 38,5      "title": "T-shirt"6    }
+or the YAML syntax:
+1examples:2  application/json:3    id: 384    title: T-shirt5    image:6      url: images/38.png
+XML Examples
+There is no specific syntax for XML response examples. But, since the response examples are free-form, you can use any format that you wish or that is supported by your tool.
+1examples:2  application/xml: '<users><user>Alice</user><user>Bob</user></users>'3
+4examples:5  application/xml:6    users:7      user:8        - Alice9        - Bob10
+11examples:12  application/xml:13    url: http://myapi.com/examples/users.xml
+Alternatively, you can specify the example values in the response schema, as explained above.
+Text Examples
+Since all response examples are free-form, you can use any format supported by your tool or library. For instance, something like:
+1examples:2  text/html: '<html><body><p>Hello, world!</p></body></html>'3  text/plain: Hello, world!
+See also this post on Stack Overflow for tips on how to write multi-line strings in YAML.
+Example Precedence
+If there are multiple examples on different levels (property, schema, response), the higher-level example is used by the tool that is processing the spec. That is, the order of precedence is:
+
+Response example
+Schema example
+Object and array property examples
+Atomic property examples and array item examples
+
+Examples and $ref
+OpenAPI 2.0 example and examples keywords require inline examples and do not support $ref. The example values are displayed as is, so $ref would be displayed as an object property named $ref.
+Referencing examples is supported in OpenAPI 3.0.
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Basic Authentication       Next  Enums\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nEnums        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+You can use the enum keyword to specify possible values of a request parameter or a model property. For example, the sort parameter in:
+1GET /items?sort=[asc|desc]
+can be described as:
+1paths:2  /items:3    get:4      parameters:5        - in: query6          name: sort7          description: Sort order8          type: string9          enum: [asc, desc]
+In YAML, you can also specify one enum value per line:
+1enum:2  - asc3  - desc
+All values in an enum must adhere to the specified type. If you need to specify descriptions for enum items, you can do this in the description of the parameter or property:
+1type: string2enum:3  - asc4  - desc5description: >6  Sort order:7   * asc - Ascending, from A to Z.8   * desc - Descending, from Z to A.
+Reusable Enums
+Reusable enum definitions are supported in OpenAPI 3.0.
+While Swagger 2.0 does not have built-in support for reusable enums, it is possible to define them in YAML using YAML anchors – provided that your tool supports them. Anchors are a handy feature of YAML where you can mark a key with &anchor-name and then further down use *anchor-name to reference that key’s value. This lets you easily duplicate the content across a YAML file.
+Note: An anchor (&) must be defined before it is used.
+1definitions:2  Colors:3    type: string4    enum: &COLORS5      - black6      - white7      - red8      - green9      - blue10    # OR:11    # enum: &COLORS [black, white, red, green, blue]12
+13paths:14  /products:15    get:16      parameters:17        - in: query18          name: color19          required: true20          type: string21          enum: *COLORS22      responses:23        200:24          description: OK
+If your tool’s YAML parser supports YAML merge keys (<<), you can use this trick to reference both the type and the enum values.
+1definitions:2  Colors: &COLORS3    type: string4    enum: [black, white, red, green, blue]5paths:6  /products:7    get:8      parameters:9        - in: query10          name: color11          required: true12          <<: *COLORS13      responses:14        200:15          description: OK
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Adding Examples       Next  Grouping Operations With Tags\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nGrouping Operations With Tags        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger). To learn about the latest version, visit OpenAPI 3 pages.
+You can assign a list of tags to each API operation. Tagged operations may be handled differently by tools and libraries. For example, Swagger UI uses tags to group the displayed operations.
+1paths:2  /pet/findByStatus:3    get:4      summary: Finds pets by Status5      tags:6        - pets7      ...8  /pet:9    post:10      summary: Adds a new pet to the store11      tags:12        - pets13      ...14  /store/inventory:15    get:16      summary: Returns pet inventories17      tags:18        - store19      ...
+ Optionally, you can specify description and externalDocs for each tag by using the global tags section on the root level. The tag names here should match those used in operations.
+1tags:2  - name: pets3    description: Everything about your Pets4    externalDocs:5      url: http://docs.my-api.com/pet-operations.htm6  - name: store7    description: Access to Petstore orders8    externalDocs:9      url: http://docs.my-api.com/store-orders.htm
+The tag order in the global tags section also controls the default sorting in Swagger UI. Note that it is possible to use a tag in an operation even if it is not defined on the root level.
+
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Enums       Next  Swagger Extensions\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nSwagger Extensions        NoteOAS 2 This page applies to OpenAPI Specification ver. 2 (fka Swagger).
+To learn about the latest version, visit OpenAPI 3 pages.
+Extensions, or vendor extensions, are custom properties that start with x-, such as x-logo. They can be used to describe extra functionality that is not covered by the standard Swagger specification. Many API-related products that support Swagger make use of extensions to document their own attributes, such as Amazon API Gateway, ReDoc, APIMatic and others. Extensions are supported on the root level of the API spec and in the following places:
+
+info section
+paths section, individual paths and operations
+operation parameters
+responses
+tags
+security schemes
+
+The extension value can be a primitive, an array, an object or null. If the value is an object or array of objects, the object’s property names do not need to start with x-.
+Example
+An API that uses Amazon API Gateway custom authorizer would include extensions similar to this:
+1securityDefinitions:2  APIGatewayAuthorizer:3    type: apiKey4    name: Authorization5    in: header6    x-amazon-apigateway-authtype: oauth27    x-amazon-apigateway-authorizer:8      type: token9      authorizerUri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:account-id:function:function-name/invocations10      authorizerCredentials: arn:aws:iam::account-id:role11      identityValidationExpression: "^x-[a-z]+"12      authorizerResultTtlInSeconds: 60
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Grouping Operations With Tags\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nAPI Keys        NoteOAS 3 This guide is for OpenAPI 3.0. If you use OpenAPI 2.0, see our OpenAPI 2.0 guide.
+Some APIs use API keys for authorization. An API key is a token that a client provides when making API calls. The key can be sent in the query string:
+1GET /something?api_key=abcdef12345
+or as a request header:
+1GET /something HTTP/1.12X-API-Key: abcdef12345
+or as a cookie:
+1GET /something HTTP/1.12Cookie: X-API-KEY=abcdef12345
+API keys are supposed to be a secret that only the client and server know. Like Basic authentication, API key-based authentication is only considered secure if used together with other security mechanisms such as HTTPS/SSL.
+Describing API Keys
+In OpenAPI 3.0, API keys are described as follows:
+1openapi: 3.0.42---3# 1) Define the key name and location4components:5  securitySchemes:6    ApiKeyAuth: # arbitrary name for the security scheme7      type: apiKey8      in: header # can be "header", "query" or "cookie"9      name: X-API-KEY # name of the header, query parameter or cookie10
+11# 2) Apply the API key globally to all operations12security:13  - ApiKeyAuth: [] # use the same name as under securitySchemes
+This example defines an API key named X-API-Key sent as a request header X-API-Key: <key>. The key name ApiKeyAuth is an arbitrary name for the security scheme (not to be confused with the API key name, which is specified by the name key). The name ApiKeyAuth is used again in the security section to apply this security scheme to the API. Note: The securitySchemes section alone is not enough; you must also use security for the API key to have effect. security can also be set on the operation level instead of globally. This is useful if just a subset of the operations need the API key:
+1paths:2  /something:3    get:4      # Operation-specific security:5      security:6        - ApiKeyAuth: []7      responses:8        "200":9          description: OK (successfully authenticated)
+Note that it is possible to support multiple authorization types in an API. See Using Multiple Authentication Types.
+Multiple API Keys
+Some APIs use a pair of security keys, say, API Key and App ID. To specify that the keys are used together (as in logical AND), list them in the same array item in the security array:
+1components:2  securitySchemes:3    apiKey:4      type: apiKey5      in: header6      name: X-API-KEY7    appId:8      type: apiKey9      in: header10      name: X-APP-ID11
+12security:13  - apiKey: []14    appId: [] # <-- no leading dash (-)
+Note the difference from:
+1security:2  - apiKey: []3  - appId: []
+which means either key can be used (as in logical OR). For more examples, see Using Multiple Authentication Types.
+401 Response
+You can define the 401 “Unauthorized” response returned for requests with missing or invalid API key. This response includes the WWW-Authenticate header, which you may want to mention. As with other common responses, the 401 response can be defined in the global components/responses section and referenced elsewhere via $ref.
+1paths:2  /something:3    get:4      ...5      responses:6        ...7        '401':8            $ref: "#/components/responses/UnauthorizedError"9    post:10      ...11      responses:12        ...13        '401':14          $ref: "#/components/responses/UnauthorizedError"15
+16components:17  responses:18    UnauthorizedError:19      description: API key is missing or invalid20      headers:21        WWW_Authenticate:22          schema:23            type: string
+To learn more about describing responses, see Describing Responses.
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Basic Authentication       Next  Bearer Authentication\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nAPI Keys        NoteOAS 3 This guide is for OpenAPI 3.0. If you use OpenAPI 2.0, see our OpenAPI 2.0 guide.
+Some APIs use API keys for authorization. An API key is a token that a client provides when making API calls. The key can be sent in the query string:
+1GET /something?api_key=abcdef12345
+or as a request header:
+1GET /something HTTP/1.12X-API-Key: abcdef12345
+or as a cookie:
+1GET /something HTTP/1.12Cookie: X-API-KEY=abcdef12345
+API keys are supposed to be a secret that only the client and server know. Like Basic authentication, API key-based authentication is only considered secure if used together with other security mechanisms such as HTTPS/SSL.
+Describing API Keys
+In OpenAPI 3.0, API keys are described as follows:
+1openapi: 3.0.42---3# 1) Define the key name and location4components:5  securitySchemes:6    ApiKeyAuth: # arbitrary name for the security scheme7      type: apiKey8      in: header # can be "header", "query" or "cookie"9      name: X-API-KEY # name of the header, query parameter or cookie10
+11# 2) Apply the API key globally to all operations12security:13  - ApiKeyAuth: [] # use the same name as under securitySchemes
+This example defines an API key named X-API-Key sent as a request header X-API-Key: <key>. The key name ApiKeyAuth is an arbitrary name for the security scheme (not to be confused with the API key name, which is specified by the name key). The name ApiKeyAuth is used again in the security section to apply this security scheme to the API. Note: The securitySchemes section alone is not enough; you must also use security for the API key to have effect. security can also be set on the operation level instead of globally. This is useful if just a subset of the operations need the API key:
+1paths:2  /something:3    get:4      # Operation-specific security:5      security:6        - ApiKeyAuth: []7      responses:8        "200":9          description: OK (successfully authenticated)
+Note that it is possible to support multiple authorization types in an API. See Using Multiple Authentication Types.
+Multiple API Keys
+Some APIs use a pair of security keys, say, API Key and App ID. To specify that the keys are used together (as in logical AND), list them in the same array item in the security array:
+1components:2  securitySchemes:3    apiKey:4      type: apiKey5      in: header6      name: X-API-KEY7    appId:8      type: apiKey9      in: header10      name: X-APP-ID11
+12security:13  - apiKey: []14    appId: [] # <-- no leading dash (-)
+Note the difference from:
+1security:2  - apiKey: []3  - appId: []
+which means either key can be used (as in logical OR). For more examples, see Using Multiple Authentication Types.
+401 Response
+You can define the 401 “Unauthorized” response returned for requests with missing or invalid API key. This response includes the WWW-Authenticate header, which you may want to mention. As with other common responses, the 401 response can be defined in the global components/responses section and referenced elsewhere via $ref.
+1paths:2  /something:3    get:4      ...5      responses:6        ...7        '401':8            $ref: "#/components/responses/UnauthorizedError"9    post:10      ...11      responses:12        ...13        '401':14          $ref: "#/components/responses/UnauthorizedError"15
+16components:17  responses:18    UnauthorizedError:19      description: API key is missing or invalid20      headers:21        WWW_Authenticate:22          schema:23            type: string
+To learn more about describing responses, see Describing Responses.
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Basic Authentication       Next  Bearer Authentication\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nAPI Keys        NoteOAS 3 This guide is for OpenAPI 3.0. If you use OpenAPI 2.0, see our OpenAPI 2.0 guide.
+Some APIs use API keys for authorization. An API key is a token that a client provides when making API calls. The key can be sent in the query string:
+1GET /something?api_key=abcdef12345
+or as a request header:
+1GET /something HTTP/1.12X-API-Key: abcdef12345
+or as a cookie:
+1GET /something HTTP/1.12Cookie: X-API-KEY=abcdef12345
+API keys are supposed to be a secret that only the client and server know. Like Basic authentication, API key-based authentication is only considered secure if used together with other security mechanisms such as HTTPS/SSL.
+Describing API Keys
+In OpenAPI 3.0, API keys are described as follows:
+1openapi: 3.0.42---3# 1) Define the key name and location4components:5  securitySchemes:6    ApiKeyAuth: # arbitrary name for the security scheme7      type: apiKey8      in: header # can be "header", "query" or "cookie"9      name: X-API-KEY # name of the header, query parameter or cookie10
+11# 2) Apply the API key globally to all operations12security:13  - ApiKeyAuth: [] # use the same name as under securitySchemes
+This example defines an API key named X-API-Key sent as a request header X-API-Key: <key>. The key name ApiKeyAuth is an arbitrary name for the security scheme (not to be confused with the API key name, which is specified by the name key). The name ApiKeyAuth is used again in the security section to apply this security scheme to the API. Note: The securitySchemes section alone is not enough; you must also use security for the API key to have effect. security can also be set on the operation level instead of globally. This is useful if just a subset of the operations need the API key:
+1paths:2  /something:3    get:4      # Operation-specific security:5      security:6        - ApiKeyAuth: []7      responses:8        "200":9          description: OK (successfully authenticated)
+Note that it is possible to support multiple authorization types in an API. See Using Multiple Authentication Types.
+Multiple API Keys
+Some APIs use a pair of security keys, say, API Key and App ID. To specify that the keys are used together (as in logical AND), list them in the same array item in the security array:
+1components:2  securitySchemes:3    apiKey:4      type: apiKey5      in: header6      name: X-API-KEY7    appId:8      type: apiKey9      in: header10      name: X-APP-ID11
+12security:13  - apiKey: []14    appId: [] # <-- no leading dash (-)
+Note the difference from:
+1security:2  - apiKey: []3  - appId: []
+which means either key can be used (as in logical OR). For more examples, see Using Multiple Authentication Types.
+401 Response
+You can define the 401 “Unauthorized” response returned for requests with missing or invalid API key. This response includes the WWW-Authenticate header, which you may want to mention. As with other common responses, the 401 response can be defined in the global components/responses section and referenced elsewhere via $ref.
+1paths:2  /something:3    get:4      ...5      responses:6        ...7        '401':8            $ref: "#/components/responses/UnauthorizedError"9    post:10      ...11      responses:12        ...13        '401':14          $ref: "#/components/responses/UnauthorizedError"15
+16components:17  responses:18    UnauthorizedError:19      description: API key is missing or invalid20      headers:21        WWW_Authenticate:22          schema:23            type: string
+To learn more about describing responses, see Describing Responses.
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Basic Authentication       Next  Bearer Authentication\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nCookie Authentication        NoteOAS 3 This guide is for OpenAPI 3.0.
+Cookie authentication uses HTTP cookies to authenticate client requests and maintain session information. It works as follows:
+
+The client sends a login request to the server.
+On the successful login, the server response includes the Set-Cookie header that contains the cookie name, value, expiry time and some other info. Here is an example that sets the cookie named JSESSIONID:
+
+1Set-Cookie: JSESSIONID=abcde12345; Path=/; HttpOnly
+
+The client needs to send this cookie in the Cookie header in all subsequent requests to the server.
+
+1Cookie: JSESSIONID=abcde12345
+
+On the logout operation, the server sends back the Set-Cookie header that causes the cookie to expire.
+
+Note: Cookie authentication is vulnerable to Cross-Site Request Forgeries (CSRF) attacks, so it should be used together with other security measures, such as CSRF tokens.
+Note for Swagger UI and Swagger Editor users: Cookie authentication is currently not supported for “try it out” requests due to browser security restrictions. See this issue for more information. SwaggerHub does not have this limitation.
+Describing Cookie Authentication
+In OpenAPI 3.0 terms, cookie authentication is an API key that is sent in: cookie. For example, authentication via a cookie named JSESSIONID is defined as follows:
+1openapi: 3.0.42---3# 1) Define the cookie name4components:5  securitySchemes:6    cookieAuth: # arbitrary name for the security scheme; will be used in the "security" key later7      type: apiKey8      in: cookie9      name: JSESSIONID # cookie name10
+11# 2) Apply cookie auth globally to all operations12security:13  - cookieAuth: []
+In this example, cookie authentication is applied globally to the whole API using the security key at the root level of the specification. If cookies are required for just a subset of operations, apply security on the operation level instead of doing it globally:
+1paths:2  /users:3    get:4      security:5        - cookieAuth: []6      description: Returns a list of users.7      responses:8        "200":9          description: OK
+Cookie authentication can be combined with other authentication methods as explained in Using Multiple Authentication Types.
+Describing the Set-Cookie Header
+You may also want to document that your login operation returns the cookie in the Set-Cookie header. You can include this information in the description, and also define the Set-Cookie header in the response headers, like so:
+1paths:2  /login:3    post:4      summary: Logs in and returns the authentication  cookie5      requestBody:6        required: true7        description: A JSON object containing the login and password.8        content:9          application/json:10            schema:11              $ref: "#/components/schemas/LoginRequest"12      security: [] # no authentication13      responses:14        "200":15          description: >16            Successfully authenticated.17            The session ID is returned in a cookie named `JSESSIONID`. You need to include this cookie in subsequent requests.18          headers:19            Set-Cookie:20              schema:21                type: string22                example: JSESSIONID=abcde12345; Path=/; HttpOnly
+Note that the Set-Cookie header and securitySchemes are not connected in any way, and the Set-Header definition is for documentation purposes only.
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  OpenID Connect Discovery       Next  Links\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nBasic Authentication        NoteOAS 3 This guide is for OpenAPI 3.0. If you use OpenAPI 2.0, see our OpenAPI 2.0 guide.
+Basic authentication is a simple authentication scheme built into the HTTP protocol. The client sends HTTP requests with the Authorization header that contains the word Basic word followed by a space and a base64-encoded string username:password. For example, to authorize as demo / p@55w0rd the client would send
+1Authorization: Basic ZGVtbzpwQDU1dzByZA==
+Note: Because base64 is easily decoded, Basic authentication should only be used together with other security mechanisms such as HTTPS/SSL.
+Describing Basic Authentication
+Using OpenAPI 3.0, you can describe Basic authentication as follows:
+1openapi: 3.0.42---3components:4  securitySchemes:5    basicAuth: # <-- arbitrary name for the security scheme6      type: http7      scheme: basic8
+9security:10  - basicAuth: [] # <-- use the same name here
+The first section, securitySchemes, defines a security scheme named basicAuth (an arbitrary name). This scheme must have type: http and scheme: basic. The security section then applies Basic authentication to the entire API. The square brackets [] denote the security scopes used; the list is empty because Basic authentication does not use scopes. security can be set globally (as in the example above) or on the operation level. The latter is useful if only a subset of operations require Basic authentication:
+1paths:2  /something:3    get:4      security:5        - basicAuth: []
+Basic authentication can also be combined with other authentication methods as explained in Using Multiple Authentication Types.
+401 Response
+You can also define the 401 “Unauthorized” response returned for requests with missing or incorrect credentials. This response includes the WWW-Authenticate header, which you may want to mention. As with other common responses, the 401 response can be defined in the global components/responses section and referenced elsewhere via $ref.
+1paths:2  /something:3    get:4      ...5      responses:6        ...7        '401':8            $ref: '#/components/responses/UnauthorizedError'9    post:10      ...11      responses:12        ...13        '401':14          $ref: '#/components/responses/UnauthorizedError'15...16components:17  responses:18    UnauthorizedError:19      description: Authentication information is missing or invalid20      headers:21        WWW_Authenticate:22          schema:23            type: string
+To learn more about the responses syntax, see Describing Responses.
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Overview       Next  API Keys\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
+                                        and document APIs.\n\n\n\nAuthentication        NoteOAS 3 This guide is for OpenAPI 3.0. If you use OpenAPI 2.0, see our OpenAPI 2.0 guide.
+OpenAPI uses the term security scheme for authentication and authorization schemes. OpenAPI 3.0 lets you describe APIs protected using the following security schemes:
+
+HTTP authentication schemes (they use the Authorization header):
+
+Basic
+Bearer
+other HTTP schemes as defined by RFC 7235 and HTTP Authentication Scheme Registry
+
+
+API keys in headers, query string or cookies
+
+Cookie authentication
+
+
+OAuth 2
+OpenID Connect Discovery
+
+Follow the links above for the guides on specific security types, or continue reading to learn how to describe security in general.
+Changes from OpenAPI 2.0
+If you used OpenAPI 2.0 before, here is a summary of changes to help you get started with OpenAPI 3.0:
+
+securityDefinitions were renamed to securitySchemes and moved inside components.
+type: basic was replaced with type: http and scheme: basic.
+The new type: http is an umbrella type for all HTTP security schemes, including Basic, Bearer and other, and the scheme keyword indicates the scheme type.
+API keys can now be sent in: cookie.
+Added support for OpenID Connect Discovery (type: openIdConnect).
+OAuth 2 security schemes can now define multiple flows.
+OAuth 2 flows were renamed to match the OAuth 2 Specification: accessCode is now authorizationCode, and application is now clientCredentials.
+
+Describing Security
+Security is described using the securitySchemes and security keywords. You use securitySchemes to define all security schemes your API supports, then use security to apply specific schemes to the whole API or individual operations.
+Step 1. Defining securitySchemes
+All security schemes used by the API must be defined in the global components/securitySchemes section. This section contains a list of named security schemes, where each scheme can be of type:
+
+http – for Basic, Bearer and other HTTP authentications schemes
+apiKey – for API keys and cookie authentication
+oauth2 – for OAuth 2
+openIdConnect – for OpenID Connect Discovery
+
+Other required properties for security schemes depend on the type. The following example shows how various security schemes are defined. The BasicAuth, BearerAuth names and others are arbitrary names that will be used to refer to these definitions from other places in the spec.
+1components:2  securitySchemes:3    BasicAuth:4      type: http5      scheme: basic6
+7    BearerAuth:8      type: http9      scheme: bearer10
+11    ApiKeyAuth:12      type: apiKey13      in: header14      name: X-API-Key15
+16    OpenID:17      type: openIdConnect18      openIdConnectUrl: https://example.com/.well-known/openid-configuration19
+20    OAuth2:21      type: oauth222      flows:23        authorizationCode:24          authorizationUrl: https://example.com/oauth/authorize25          tokenUrl: https://example.com/oauth/token26          scopes:27            read: Grants read access28            write: Grants write access29            admin: Grants access to admin operations
+Step 2. Applying security
+After you have defined the security schemes in the securitySchemes section, you can apply them to the whole API or individual operations by adding the security section on the root level or operation level, respectively. When used on the root level, security applies the specified security schemes globally to all API operations, unless overridden on the operation level. In the following example, the API calls can be authenticated using either an API key or OAuth 2. The ApiKeyAuth and OAuth2 names refer to the schemes previously defined in securitySchemes.
+1security:2  - ApiKeyAuth: []3  - OAuth2:4      - read5      - write6# The syntax is:7# - scheme name:8#     - scope 19#     - scope 2
+For each scheme, you specify a list of security scopes required for API calls (see below). Scopes are used only for OAuth 2 and OpenID Connect Discovery; other security schemes use an empty array [] instead. Global security can be overridden in individual operations to use a different authentication type, different OAuth/OpenID scopes, or no authentication at all:
+1paths:2  /billing_info:3    get:4      summary: Gets the account billing info5      security:6        - OAuth2: [admin] # Use OAuth with a different scope7      responses:8        "200":9          description: OK10        "401":11          description: Not authenticated12        "403":13          description: Access token does not have the required scope14
+15  /ping:16    get:17      summary: Checks if the server is running18      security: [] # No security19      responses:20        "200":21          description: Server is up and running22        default:23          description: Something is wrong
+Scopes
+OAuth 2 and OpenID Connect use scopes to control permissions to various user resources. For example, the scopes for a pet store may include read_pets, write_pets, read_orders, write_orders, admin. When applying security, the entries corresponding to OAuth 2 and OpenID Connect need to specify a list of scopes required for a specific operation (if security is used on the operation level) or all API calls (if security is used on the root level).
+1security:2  - OAuth2:3      - scope14      - scope25  - OpenId:6      - scopeA7      - scopeB8  - BasicAuth: []
+
+In case of OAuth 2, the scopes used in security must be previously defined in securitySchemes.
+In case of OpenID Connect Discovery, possible scopes are listed in the discovery endpoint specified by openIdConnectUrl.
+Other schemes (Basic, Bearer, API keys and others) do not use scopes, so their security entries specify an empty array [] instead.
+
+Different operations typically require different scopes, such as read vs write vs admin. In this case, you should apply scoped security to specific operations instead of doing it globally.
+1# Instead of this:2# security:3#   - OAuth2:4#       - read5#       - write6
+7# Do this:8paths:9  /users:10    get:11      summary: Get a list of users12      security:13        - OAuth2: [read]     # <------14      ...15
+16    post:17      summary: Add a user18      security:19        - OAuth2: [write]    # <------20      ...
+Using Multiple Authentication Types
+Some REST APIs support several authentication types. The security section lets you combine the security requirements using logical OR and AND to achieve the desired result. security uses the following logic:
+1security: # A OR B2  - A3  - B
+1security: # A AND B2  - A3    B
+1security: # (A AND B) OR (C AND D)2  - A3    B4  - C5    D
+That is, security is an array of hashmaps, where each hashmap contains one or more named security schemes. Items in a hashmap are combined using logical AND, and array items are combined using logical OR. Security schemes combined via OR are alternatives – any one can be used in the given context. Security schemes combined via AND must be used simultaneously in the same request. Here, we can use either Basic authentication or an API key:
+1security:2  - basicAuth: []3  - apiKey: []
+Here, the API requires a pair of API keys to be included in requests:
+1security:2  - apiKey1: []3    apiKey2: []
+Here, we can use either OAuth 2 or a pair of API keys:
+1security:2  - oauth2: [scope1, scope2]3  - apiKey1: []4    apiKey2: []
+Reference
+Security Scheme Object
+Security Requirement Object
+Did not find what you were looking for? Ask the community
+Found a mistake? Let us know     Edit page        Previous  Adding Examples       Next  Basic Authentication\n\nAccelerate API development with
+                                    quality and consistency across
+                                    OpenAPI and AsyncAPI.
+Standardize your APIs with projects,
+                                    style checks, and reusable domains.
+ Ideal for individuals and small teams to design, build,
                                         and document APIs.\n\n\n\n
