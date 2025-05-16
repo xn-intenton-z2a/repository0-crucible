@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="api_keys" href="#api_keys"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API_KEYS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">OpenAPI 3.0.4 securitySchemes.apiKey definitions: type=apiKey, in=header|query|cookie, name=<keyName>. Global security with security: - <schemeName>: []. Operation-specific security under paths.<path>.<operation>.security. Multiple API keys: define both under components.securitySchemes; AND by listing both in same security entry; OR by separate entries. 401 Unauthorized response via components.responses.UnauthorizedError with description and WWW-Authenticate header schema type:string.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Security Schemes Definition
+2 Applying Security Globally
+3 Operation-Specific Security
+4 Multiple API Keys (AND, OR)
+5 401 Unauthorized Response</p>
+<p class="md-github">1 Security Schemes Definition
+components.securitySchemes.ApiKeyAuth
+type: apiKey
+in: header  (options: header, query, cookie)
+name: X-API-KEY</p>
+<p class="md-github">2 Applying Security Globally
+security:</p>
+<ul class="md-github">
+<li class="md-github">ApiKeyAuth: []</li>
+</ul>
+<p class="md-github">3 Operation-Specific Security
+paths./something.get.security:</p>
+<ul class="md-github">
+<li class="md-github">ApiKeyAuth: []
+responses.200.description: OK (successfully authenticated)</li>
+</ul>
+<p class="md-github">4 Multiple API Keys (AND, OR)
+components.securitySchemes.apiKey
+type: apiKey  in: header  name: X-API-KEY
+components.securitySchemes.appId
+type: apiKey  in: header  name: X-APP-ID
+security (AND):</p>
+<ul class="md-github">
+<li class="md-github">apiKey: []
+appId: []
+security (OR):</li>
+<li class="md-github">apiKey: []</li>
+<li class="md-github">appId: []</li>
+</ul>
+<p class="md-github">5 401 Unauthorized Response
+paths./something.get.responses.'401': $ref: &quot;#/components/responses/UnauthorizedError&quot;
+paths./something.post.responses.'401': $ref: &quot;#/components/responses/UnauthorizedError&quot;
+components.responses.UnauthorizedError.description: API key is missing or invalid
+components.responses.UnauthorizedError.headers.WWW_Authenticate.schema.type: string</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Parameter Values and Options</p>
+<ul class="md-github">
+<li class="md-github">type: must be &quot;apiKey&quot;</li>
+<li class="md-github">in: one of &quot;header&quot;, &quot;query&quot;, &quot;cookie&quot;</li>
+<li class="md-github">name: string matching header name, query parameter or cookie name</li>
+</ul>
+<p class="md-github">Implementation Steps</p>
+<ol class="md-github">
+<li class="md-github">Generate a secure random 32-byte key (e.g., openssl rand -base64 32).</li>
+<li class="md-github">Store the key in environment variable API_KEY.</li>
+<li class="md-github">Define securitySchemes.ApiKeyAuth in your OpenAPI document as shown.</li>
+<li class="md-github">Set top-level security or operation-level security per your requirements.</li>
+<li class="md-github">Implement server-side middleware to extract key from request header, query or cookie.</li>
+<li class="md-github">Compare extracted key against expected value; respond with 401 on mismatch.</li>
+</ol>
+<p class="md-github">Best Practices</p>
+<ul class="md-github">
+<li class="md-github">Always serve over HTTPS.</li>
+<li class="md-github">Rotate keys regularly and use versioned key identifiers.</li>
+<li class="md-github">Limit operations that require API key to necessary endpoints.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Express Middleware Example
+function apiKeyAuth(req, res, next) {
+const key = req.header('X-API-KEY') || req.query.api_key || req.cookies['X-API-KEY'];
+if (!key || key !== process.env.API_KEY) {
+return res.status(401)
+.set('WWW-Authenticate', 'API key is missing or invalid')
+.json({ error: 'Unauthorized' });
+}
+next();
+}
+app.use(apiKeyAuth);</p>
+<p class="md-github">Swagger UI-Express Configuration
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./openapi.json');
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+swaggerOptions: {
+authAction: {
+ApiKeyAuth: {
+name: 'X-API-KEY',
+schema: { type: 'apiKey', in: 'header' },
+value: ''
+}
+}
+}
+}));</p>
+<p class="md-github">Troubleshooting Steps</p>
+<ol class="md-github">
+<li class="md-github">Verify key header is present:
+curl -v http://localhost:3000/something -H 'X-API-KEY: wrong'
+Expect 401 Unauthorized and header WWW-Authenticate: API key is missing or invalid</li>
+<li class="md-github">Check environment variable:
+echo $API_KEY</li>
+<li class="md-github">Regenerate key if missing:
+openssl rand -base64 32 &gt; api_key.txt &amp;&amp; export API_KEY=$(cat api_key.txt)</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">OpenAPI3.0.4 components.securitySchemes.ApiKeyAuth: type=apiKey,in=header|query|cookie,name=X-API-KEY; global security: security:[{ApiKeyAuth:[]}]; operation-level override: paths.<path>.<op>.security:[{ApiKeyAuth:[]}]; multiple keys: define apiKey and appId under securitySchemes; AND: single entry with both schemes; OR: separate entries; UnauthorizedError: components.responses.UnauthorizedError: description=API key is missing or invalid, headers.WWW_Authenticate.schema.type=string; Express middleware: extract req.header('X-API-KEY')|req.query.api_key|req.cookies['X-API-KEY'], compare to process.env.API_KEY, on fail res.status(401).set('WWW-Authenticate','API key is missing or invalid').json({error});&quot;,&quot;referenceDetails&quot;:</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Security Schemes Definition
+2 Applying Security Globally
+3 Operation-Specific Security
+4 Multiple API Keys (AND, OR)
+5 401 Unauthorized Response</p>
+<p class="md-github">1 Security Schemes Definition
+components.securitySchemes.ApiKeyAuth
+type: apiKey
+in: header  (options: header, query, cookie)
+name: X-API-KEY</p>
+<p class="md-github">2 Applying Security Globally
+security:</p>
+<ul class="md-github">
+<li class="md-github">ApiKeyAuth: []</li>
+</ul>
+<p class="md-github">3 Operation-Specific Security
+paths./something.get.security:</p>
+<ul class="md-github">
+<li class="md-github">ApiKeyAuth: []
+responses.200.description: OK (successfully authenticated)</li>
+</ul>
+<p class="md-github">4 Multiple API Keys (AND, OR)
+components.securitySchemes.apiKey
+type: apiKey  in: header  name: X-API-KEY
+components.securitySchemes.appId
+type: apiKey  in: header  name: X-APP-ID
+security (AND):</p>
+<ul class="md-github">
+<li class="md-github">apiKey: []
+appId: []
+security (OR):</li>
+<li class="md-github">apiKey: []</li>
+<li class="md-github">appId: []</li>
+</ul>
+<p class="md-github">5 401 Unauthorized Response
+paths./something.get.responses.'401': $ref: '#/components/responses/UnauthorizedError'
+paths./something.post.responses.'401': $ref: '#/components/responses/UnauthorizedError'
+components.responses.UnauthorizedError.description: API key is missing or invalid
+components.responses.UnauthorizedError.headers.WWW_Authenticate.schema.type: string</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">API Key Authentication &amp; Security Schemes
+https://swagger.io/docs/specification/authentication/api-keys/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-api_keys" href="#digest-of-api_keys"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of API_KEYS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="api-keys" href="#api-keys"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Keys</h1>
+<p class="md-github">Some APIs use API keys for authorization. An API key is a token that a client provides when making API calls. The key can be sent in the query string, header, or cookie.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="describing-api-keys" href="#describing-api-keys"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Describing API Keys</h1>
+<pre class="md-github"><code class="md-github language-yaml">openapi: 3.0.4
+components:
+  securitySchemes:
+    ApiKeyAuth:           # arbitrary name for the security scheme
+      type: apiKey        # required: apiKey
+      in: header          # required: one of header, query, cookie
+      name: X-API-KEY     # required: name of header, query parameter or cookie
+security:
+  - ApiKeyAuth: []       # applies ApiKeyAuth globally to all operations
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="operation-specific-security" href="#operation-specific-security"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Operation-Specific Security</h1>
+<pre class="md-github"><code class="md-github language-yaml">paths:
+  /something:
+    get:
+      security:
+        - ApiKeyAuth: []      # applies only to this operation
+      responses:
+        &quot;200&quot;:
+          description: OK (successfully authenticated)
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="multiple-api-keys" href="#multiple-api-keys"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Multiple API Keys</h1>
+<pre class="md-github"><code class="md-github language-yaml">components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+    appId:
+      type: apiKey
+      in: header
+      name: X-APP-ID
+security:
+  - apiKey: []              # AND: both keys required
+    appId: []
+# OR: either key can be used
+security:
+  - apiKey: []
+  - appId: []
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="401-unauthorized-response" href="#401-unauthorized-response"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>401 Unauthorized Response</h1>
+<pre class="md-github"><code class="md-github language-yaml">paths:
+  /something:
+    get:
+      responses:
+        '401':
+          $ref: &quot;#/components/responses/UnauthorizedError&quot;
+    post:
+      responses:
+        '401':
+          $ref: &quot;#/components/responses/UnauthorizedError&quot;
+components:
+  responses:
+    UnauthorizedError:
+      description: API key is missing or invalid
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: API Key Authentication &amp; Security Schemes</li>
+<li class="md-github">URL: https://swagger.io/docs/specification/authentication/api-keys/</li>
+<li class="md-github">License: License: CC BY 4.0</li>
+<li class="md-github">Crawl Date: 2025-05-16T00:40:33.998Z</li>
+<li class="md-github">Data Size: 673304 bytes</li>
+<li class="md-github">Links Found: 6877</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-16</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-16T10:40:10.220Z</p>
+  </footer>
+</body>
+</html>
