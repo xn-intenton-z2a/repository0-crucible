@@ -451,7 +451,7 @@ export function createApp() {
     (function(){
       const form = document.getElementById('pi-form');
       const resultDiv = document.getElementById('result');
-      const ctx = document.getElementById('chart').getContext('2d');
+      const ctx = document.getElementById('chart').getContext("2d");
       let chart;
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -660,10 +660,10 @@ export function main(args = process.argv.slice(2)) {
       piValue = (inside / samplesUsed) * 4;
     } else if (algorithm === "chudnovsky") {
       piValue = calculatePiChudnovsky(digits);
-    } else if (algorithm === "ramanujan-sato") {
-      const tol = errorTolerance != null ? errorTolerance : Math.pow(10, -digits);
+    } else if (algorithm==="ramanujan-sato") {
+      const tol = errorTolerance != null ? errorTolerance : Math.pow(10,-digits);
       piValue = calculatePiRamanujanSato({ level, digits, errorTolerance: tol, maxIterations });
-    } else if (algorithm === "gauss-legendre") {
+    } else if (algorithm==="gauss-legendre") {
       piValue = calculatePiGaussLegendre(digits);
     }
 
@@ -683,21 +683,21 @@ export function main(args = process.argv.slice(2)) {
         data: { labels, datasets:[{ label:'Error', data, borderColor:'blue', backgroundColor:'lightblue' }] },
         options: { scales:{ x:{ type:"linear", title:{ display:true,text:"Index" } }, y:{ beginAtZero:true, title:{ display:true,text:"Error" } } } }
       });
-      const out = createCanvas(width, height).toBuffer('image/png');
-      fs.writeFileSync(chartPath, out);
+      const buf = canvas.toBuffer('image/png');
+      fs.writeFileSync(chartPath, buf);
     }
   } else {
     if (algorithm === "leibniz") {
-      iterations = Math.min(Math.pow(10, digits) * 20, 1e7);
+      iterations = Math.min(Math.pow(10,digits)*20,1e7);
       piValue = calculatePiLeibniz(digits);
-    } else if (algorithm === "montecarlo") {
+    } else if (algorithm==="montecarlo") {
       piValue = calculatePiMonteCarlo(samplesUsed);
-    } else if (algorithm === "chudnovsky") {
+    } else if (algorithm==="chudnovsky") {
       piValue = calculatePiChudnovsky(digits);
-    } else if (algorithm === "ramanujan-sato") {
-      const tol = errorTolerance != null ? errorTolerance : Math.pow(10, -digits);
+    } else if (algorithm==="ramanujan-sato") {
+      const tol = errorTolerance!=null?errorTolerance:Math.pow(10,-digits);
       piValue = calculatePiRamanujanSato({ level, digits, errorTolerance: tol, maxIterations });
-    } else if (algorithm === "gauss-legendre") {
+    } else if (algorithm==="gauss-legendre") {
       piValue = calculatePiGaussLegendre(digits);
     } else {
       console.error(`Unsupported algorithm: ${algorithm}`);
@@ -726,7 +726,8 @@ export function main(args = process.argv.slice(2)) {
   }
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.uri)) {
+// Invoke main if executed directly
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }
 
