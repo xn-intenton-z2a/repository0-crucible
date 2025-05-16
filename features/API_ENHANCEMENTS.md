@@ -1,56 +1,44 @@
 # Overview
 
-Consolidate and enhance HTTP API capabilities by providing comprehensive documentation, real-time feedback, secure access control, and request safeguards. This unified feature ensures machine-readable API specs, interactive docs, server-sent events, rate limiting, and API key authentication for robust and user-friendly π calculation services.
+Extend the existing HTTP API to support CSV response format for the /pi and /pi/data endpoints while preserving JSON as the default response. This enhancement enables users to request results and convergence data in a text-based CSV format for integration with spreadsheet tools and data pipelines.
 
 # Implementation
 
-1. Dependencies
-   • Add or verify `swagger-ui-express`, `express-rate-limit`, and no new dependencies for authentication (use built-in Node/Express).  
-   • Ensure all required libraries (`express`, `zod`, etc.) remain at compatible versions.
+1. Query Parameter
+   • In the ApiParamsSchema, introduce an optional `format` parameter with allowed values `json` and `csv`. Default to `json`.
 
-2. OpenAPI Specification Endpoint
-   • In `createApp()`, build `openapiSpec` object listing all endpoints (`/pi`, `/pi/data`, `/pi/chart`, `/pi/stream`, `/benchmark`, `/dashboard`, `/metrics`, `/healthz`, `/ready`).  
-   • Include parameters, request/response schemas, SSE definitions, security schemes for API key.  
-   • Register GET `/openapi.json` that returns `openapiSpec` as JSON.
+2. CSV Response for /pi Endpoint
+   • After computing π value (and diagnostics when requested), inspect the `format` parameter.  
+   • If `format` is `csv`, set response header `Content-Type` to `text/csv`.  
+   • Build a CSV string with a header row containing: algorithm,digits,samples,level,maxIterations,errorTolerance,result,durationMs  
+   • Append a single data row with corresponding values.  
+   • Send the CSV string as the response body.
 
-3. Swagger UI Setup
-   • In `createApp()`, import `swaggerUi` from `swagger-ui-express` and serve UI at `/docs` with `app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec))`.
+3. CSV Response for /pi/data Endpoint
+   • In the `/pi/data` handler, inspect `format`.  
+   • If `format` is `csv`, set `Content-Type` to `text/csv`.  
+   • Output a header row: index,approximation,error  
+   • For each data point, append a new line with comma-separated values.  
+   • Return the complete CSV text.
 
-4. Server-Sent Events Streaming Endpoint
-   • In `createApp()`, ensure GET `/pi/stream` streams incremental π approximations with SSE headers and sends periodic `data: { index, approximation, error }` frames, ending with `event: end`.
-
-5. Rate Limiting Middleware
-   • Import `rateLimit` from `express-rate-limit`.  
-   • Configure using environment variables (`RATE_LIMIT_WINDOW_MS`, `RATE_LIMIT_MAX_REQUESTS`, etc.).  
-   • Apply globally: `app.use(rateLimit(config))` before all routes to cap abuse.
-
-6. API Key Authentication
-   • Introduce environment variable `API_KEYS` holding comma-separated valid keys.  
-   • In `createApp()`, before registering routes, insert middleware to:
-     - Extract `X-API-KEY` header.  
-     - Split and trim `API_KEYS` into an allow list.  
-     - If header missing or invalid, respond with 401 and `{ error: "Unauthorized" }`.  
-     - Otherwise, call `next()` to continue.
-   • Secure all primary routes under `/pi`, `/pi/data`, `/pi/chart`, `/pi/stream`, `/benchmark`, `/openapi.json`, `/docs`, `/metrics`, `/healthz`, and `/ready`.
+4. JSON Fallback
+   • If `format` is `json` or any other case, retain existing JSON response behavior for both endpoints.
 
 # Testing
 
-1. Unit Tests in `tests/unit/server.test.js`:
-   • Mock `express-rate-limit` to verify headers and HTTP 429 on limit exceeded.  
-   • Simulate SSE connection to `/pi/stream`, assert SSE frame structure and `event: end`.  
-   • Test GET `/openapi.json` returns valid OpenAPI JSON.  
-   • Test GET `/docs` serves HTML containing Swagger assets.  
-   • Test authentication middleware:
-     - Without `X-API-KEY` when `API_KEYS` is set: status 401 and JSON error.  
-     - With invalid key: status 401.  
-     - With valid key: proceed to endpoint.
+1. Add tests in `tests/unit/server.test.js`:
+   • GET `/pi?format=csv` should return status 200, header `Content-Type: text/csv`, and a CSV body with the correct header and a single data row matching the default digits and algorithm values.
+   • GET `/pi/data?format=csv&digits=2&algorithm=leibniz` should return status 200, header `Content-Type: text/csv`, and CSV rows beginning with `index,approximation,error` followed by multiple data lines.
+   • Invalid `format` value (e.g., `format=xml`) should return 400 with JSON body `{ errors: [...] }`.
 
 # Documentation
 
 1. `docs/USAGE.md`:
-   • Under **REST Endpoints**, add sections for **GET /openapi.json**, **GET /docs**, **SSE at /pi/stream**, and notes on **Authentication** and **Rate Limiting** with examples.  
-   • Document `API_KEYS` env var usage and sample 401/429 responses.
+   • Under **REST Endpoints**, update **GET /pi** and **GET /pi/data** sections to document the `format` query parameter and provide examples:
+     ```bash
+     curl "http://localhost:3000/pi?format=csv"
+     curl "http://localhost:3000/pi/data?format=csv&digits=2&algorithm=leibniz"
+     ```
 
 2. `README.md`:
-   • Under **Features**, update **API Enhancements** to describe machine-readable spec, interactive docs, SSE progress, rate limiting, and API key authentication.  
-   • Provide `curl` examples for authenticated and unauthenticated requests, sample headers, and environment variable setup.
+   • In the **Features** list under **API Enhancements**, note CSV response support for the `/pi` and `/pi/data` endpoints and show a curl example.
