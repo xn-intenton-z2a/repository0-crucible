@@ -19,8 +19,8 @@ Authoritative reference for building secure and performant Express 4.x applicati
 
 # Testing & Benchmarking Tools
 ## https://vitest.dev/
-## https://github.com/visionmedia/supertest
-## https://github.com/sindresorhus/execa
+## https://github.com/visionmedia/supertest#readme
+## https://github.com/sindresorhus/execa#readme
 ## https://benchmarkjs.com
 Integrated reference for fast unit, integration, and performance testing in Node.js. Vitest supports test isolation, mocks, snapshots, and coverage reporting. SuperTest enables HTTP assertions against Express endpoints. Execa drives CLI process testing and output capture. Benchmark.js facilitates micro-benchmarks with statistical analysis for algorithm performance. Crucial for validating correctness, API flows, CLI tooling, and benchmarking π calculation methods.
 ## License: MIT
@@ -67,7 +67,7 @@ Guides Prometheus metrics (`prom-client`), structured JSON logging with Pino (`p
 # Arbitrary-Precision Arithmetic & Pi Algorithms
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 ## https://mikemcl.github.io/decimal.js/
-## https://github.com/MikeMcl/decimal.js
+## https://github.com/MikeMcl/decimal.js#readme
 ## https://github.com/trekhleb/javascript-algorithms/blob/master/src/algorithms/numerical/pi/pi.md
 Comprehensive resources for BigInt and Decimal.js high-precision arithmetic. MDN BigInt docs describe native large-integer support. Decimal.js covers configurable precision and operations. JavaScript Algorithms details Chudnovsky, Gauss–Legendre, and Ramanujan–Sato methods with convergence analysis. Essential for implementing accurate π calculation algorithms.
 ## License: CC0 / MIT
@@ -88,14 +88,14 @@ Comprehensive reference for built-in Node.js modules including Streams (Readable
 ## License: Node.js license / CC BY 4.0
 
 # Atomic File Writes & File Operations
-## https://github.com/npm/write-file-atomic
+## https://github.com/npm/write-file-atomic#readme
 ## https://github.com/moxystudio/proper-lockfile#readme
 Combined utilities for safe atomic saving of files and cross-process locking to prevent data corruption during concurrent writes. Explains write-file-atomic's temporary file renaming strategy and proper-lockfile's lock acquisition, retry strategies, stale lock detection, and fallback behaviors. Crucial for reliable `.pi_cache.json` persistence with atomic guarantees.
 ## License: MIT
 
 # GitHub Actions & Workflow Configuration
 ## https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
-## https://github.com/actions/setup-node
+## https://github.com/actions/setup-node#readme
 ## https://docs.github.com/en/actions/advanced-guides/caching-dependencies-to-speed-up-workflows
 Official references for defining and optimizing GitHub Actions workflows. Explains YAML syntax for triggers, jobs, steps, reusable workflows, secrets management, and the setup-node action. Covers dependency caching strategies (`actions/cache`), environment variables, matrix builds, and performance tuning. Essential for CI/CD automation and integrating external workflows like agentic-lib.
 ## License: CC BY-SA 2.5
@@ -111,3 +111,8 @@ Comprehensive best practices and technical guidance for securing HTTP APIs with 
 ## https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
 Authoritative MDN documentation on the Fetch API for performing HTTP requests in browser contexts and available in Node.js via global fetch. Explains request initialization, response parsing, streaming responses, and error handling. The URLSearchParams guide demonstrates efficient query string construction for REST endpoints. Crucial for implementing the interactive dashboard’s client-side logic that fetches JSON and CSV data and updates the Chart.js visualization in real time.
 ## License: CC BY-SA 2.5
+
+# Agentic-lib Reusable Workflows
+## https://github.com/xn-intenton-z2a/agentic-lib#readme
+Official repository for Intentïon’s Agentic-lib, providing a library of reusable GitHub Actions workflows. Documents schedule triggers, path mappings, workflow permissions, and seeding strategies for repository initialization. Provides actionable patterns for integrating and customizing CI/CD pipelines, automating feature development, and managing discussion bots. Last updated 2024; maintained under an MIT license, authoritative by direct source.
+## License: MIT
