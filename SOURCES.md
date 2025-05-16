@@ -4,7 +4,7 @@
 ## https://www.chartjs.org/docs/latest/
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
 ## https://github.com/Automattic/node-canvas#readme
-Comprehensive guide for both hosted RESTful and in-process chart generation on the server, as well as client-side rendering via CDN. QuickChart and Image-Charts detail URL-based chart creation with theming, export formats, rate limits, and watermarking. Chart.js, ChartjsNodeCanvas, and node-canvas demonstrate server-side canvas setup, Docker-compatible PNG pipelines, performance tuning, payload optimization, and integration into Express endpoints. For client dashboards, Chart.js via CDN patterns are outlined, including chart configuration, data binding, and responsive layouts. Essential for both CLI (`--chart`) and HTTP (`/pi/chart`, `/dashboard`) visualizations.
+Comprehensive guide for both hosted RESTful and in-process chart generation on the server, as well as client-side rendering via CDN. QuickChart and Image-Charts detail URL-based chart creation with theming, export formats, rate limits, and watermarking. Chart.js, ChartjsNodeCanvas, and node-canvas demonstrate server-side canvas setup, Docker-compatible PNG pipelines, performance tuning, payload optimization, and integration into Express endpoints. Essential for both CLI (`--chart`) and HTTP (`/pi/chart`, `/dashboard`) visualizations.
 ## License: CC0 1.0 Universal / MIT
 
 # Express.js & Security Middleware
@@ -38,11 +38,13 @@ In-depth TypeScript-first runtime schema validation. Explains synchronous/asynch
 Demonstrates layered configuration strategies: environment variables via dotenv, hierarchical discovery with cosmiconfig, and CLI parsing with minimist. Covers default overrides, aliasing, merging strategies, and error handling for both server and CLI modes.
 ## License: MIT
 
-# Data Serialization & Templating
+# Data Formatting & Serialization
 ## https://github.com/nodeca/js-yaml#readme
 ## https://ejs.co/#docs
 ## https://tools.ietf.org/html/rfc4180
-Combined guide to YAML parsing/dumping (`load`, `safeLoad`, `dump`), Embedded JavaScript Templates (EJS) for dynamic HTML, and the CSV standard (RFC 4180) for reliable CSV export. Explains YAML security considerations, EJS syntax (partials, filters, caching), and CSV formatting guidelines (escaping, line breaks, headers). Supports multi-format output for HTTP CSV endpoints, CLI exports, and dashboard templates.
+## https://csv.js.org/parse/doc
+## https://csv.js.org/stringify/doc
+Combined guide to YAML parsing/dumping (`load`, `safeLoad`, `dump`), Embedded JavaScript Templates (EJS) for dynamic HTML, the CSV standard (RFC 4180) for reliable CSV export, and the `csv-parse`/`csv-stringify` libraries for streaming and callback-based CSV parsing and generation. Covers performance considerations, asynchronous API patterns, custom delimiters, and CSV formatting guidelines (escaping, line breaks, headers). Supports multi-format output for HTTP CSV endpoints, CLI exports, and dashboard templates.
 ## License: MIT
 
 # OpenAPI & API Documentation
@@ -103,12 +105,6 @@ Official references for defining and optimizing GitHub Actions workflows. Explai
 ## https://swagger.io/docs/specification/authentication/api-keys/
 Comprehensive best practices and technical guidance for securing HTTP APIs with API key authentication. OWASP API Security Top Ten outlines common threats and mitigation strategies including key rotation, rate limiting, and proper error handling. The Swagger guide details defining `apiKey` security schemes in OpenAPI, specifying header, query, or cookie placement, and integrating API key checks into documentation and middleware. Directly informs implementation of `X-API-KEY` validation and OpenAPI `securitySchemes`.
 ## License: CC BY 4.0
-
-# CSV Formatting & Parsing
-## https://csv.js.org/parse/doc
-## https://csv.js.org/stringify/doc
-Combined documentation for the `csv-parse` and `csv-stringify` libraries, detailing streaming and callback-based CSV parsing and generation compliant with RFC 4180. Covers performance considerations, asynchronous API patterns, Node.js stream integration, and custom delimiter/quote handling. Essential for robust CSV output in HTTP endpoints (`/pi`, `/pi/data`) and parsing any CSV inputs or logs.
-## License: MIT
 
 # Fetch API & URLSearchParams
 ## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
