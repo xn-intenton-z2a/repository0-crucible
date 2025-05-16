@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // src/lib/main.js
 
+/* eslint-disable sonarjs/pseudo-random, sonarjs/no-unused-collection */
 import { fileURLToPath } from "url";
 import minimist from "minimist";
 import fs from "fs";
@@ -252,12 +253,11 @@ export function createApp() {
     const start = Date.now();
     let piValue;
     let iterations;
-    let samplesUsed;
+
     if (algorithm === "leibniz") {
       iterations = Math.min(Math.pow(10, digits) * 20, 1e7);
       piValue = calculatePiLeibniz(digits);
     } else if (algorithm === "montecarlo") {
-      samplesUsed = samples;
       piValue = calculatePiMonteCarlo(samples);
     } else if (algorithm === "chudnovsky") {
       piValue = calculatePiChudnovsky(digits);
@@ -680,8 +680,8 @@ export function main(args = process.argv.slice(2)) {
       const data = dataPoints.map(p => p.error);
       new Chart(ctx, {
         type: 'line',
-        data: { labels, datasets: [{ label: 'Error', data, borderColor: 'blue', backgroundColor: 'lightblue' }] },
-        options: { scales: { x: { type: "linear", title: { display: true, text: "Index" } }, y: { beginAtZero: true, title: { display: true, text: "Error" } } } }
+        data: { labels, datasets:[{ label:'Error', data, borderColor:'blue', backgroundColor:'lightblue' }] },
+        options: { scales:{ x:{ type:"linear", title:{ display:true,text:"Index" } }, y:{ beginAtZero:true, title:{ display:true,text:"Error" } } } }
       });
       const out = createCanvas(width, height).toBuffer('image/png');
       fs.writeFileSync(chartPath, out);
@@ -726,7 +726,7 @@ export function main(args = process.argv.slice(2)) {
   }
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (process.argv[1] === fileURLToPath(import.meta.uri)) {
   main();
 }
 

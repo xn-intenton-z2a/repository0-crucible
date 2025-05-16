@@ -1,4 +1,4 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import {
   main,
@@ -8,7 +8,6 @@ import {
   calculatePiRamanujanSato,
   calculatePiGaussLegendre,
 } from "@src/lib/main.js";
-import fs from "fs";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
