@@ -1,19 +1,25 @@
 # CLI Usage
 
-The π calculation CLI supports selecting the number of significant digits, choice of algorithm, and output format.
+The π calculation CLI supports precision control, algorithm selection, performance benchmarking, and output formatting.
 
 ## Options
 
-- `--digits <number>`  
-  Total significant digits to display (integer ≥ 1). Default: `10`.
+- `--digits, -d <number>`  
+  Total significant digits to display (integer ≥ 1). Default: `100`.
 
-- `--algorithm <string>`  
-  Algorithm to use for π approximation. Supported: `leibniz`. Default: `leibniz`.
+- `--algorithm, -a <leibniz|spigot|montecarlo>`  
+  Algorithm to use for π approximation. Default: `leibniz`.
 
-- `--format <text|png>`  
-  Output format. Only `text` is supported in this release. Default: `text`.
+- `--benchmark, -b`  
+  Prefix output with execution time in milliseconds. Default: `false`.
 
-- `--help`  
+- `--output-format, -f <text|png>`  
+  Output format. `text` prints digits to console; `png` writes a PNG image. Default: `text`.
+
+- `--output, -o <file>`  
+  Output file path when using PNG format. Default: `pi.png`.
+
+- `--help, -h`  
   Display usage information and exit.
 
 ## Examples
@@ -21,13 +27,28 @@ The π calculation CLI supports selecting the number of significant digits, choi
 ### Text Output
 
 ```bash
-node src/lib/main.js --digits 3 --algorithm leibniz --format text
+node src/lib/main.js --digits 5 --algorithm leibniz --output-format text
 # Output:
-3.14
+3.1415
 ```
 
+### PNG Output
+
 ```bash
-npm run start -- --digits 5 --algorithm leibniz --format text
-# Output (approximate):
-3.1415
+node src/lib/main.js --digits 20 --output-format png --output mypi.png
+# Writes 'mypi.png' with the π digits rendered on a monospaced canvas
+```
+
+### Benchmarking
+
+```bash
+node src/lib/main.js --digits 10 --benchmark
+# Output example:
+[Benchmark] Execution time: 12ms 3.141592653
+```
+
+### Help
+
+```bash
+node src/lib/main.js --help
 ```
