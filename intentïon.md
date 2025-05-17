@@ -11,3 +11,5 @@
 
 2025-05-17T16:29:18.103Z - Worked to resolve issue Add robust CLI parsing with yargs algorithm selection benchmarking and PNG output support. Add robust CLI parsing with yargs algorithm selection benchmarking and PNG output support.
 
+2025-05-17T16:57:56.102Z - Maintained feature HTTP_API.
+
