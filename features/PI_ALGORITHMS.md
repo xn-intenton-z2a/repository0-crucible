@@ -1,64 +1,57 @@
+# PI_ALGORITHMS
+
+---
+This feature aligns with the project mission defined in [MISSION.md](../MISSION.md)
+---
+
 # Overview
 
-Consolidate all π calculation methods under a unified feature and introduce an automatic selection mode. Support five high-precision and sampling algorithms plus an `auto` option that delegates algorithm choice based on user parameters. This simplifies dispatch logic so both CLI and HTTP API use a shared helper for algorithm invocation and diagnostics.
+Consolidate all π calculation methods under a unified dispatch layer, streamline both CLI and HTTP logic, and introduce an `auto` algorithm selection mode based on user parameters. This reduces duplication and ensures consistent behavior across interfaces.
 
 # Implementation
 
-1. Dependencies
-   • Ensure `decimal.js` is listed in package.json for high-precision algorithms. No additional libraries required.
+1. **Dispatch Helper**
+   • Create `dispatchAlgo(params)` in `src/lib/main.js` that takes an object with fields: `digits`, `algorithm`, `samples`, `level`, `maxIterations`, `errorTolerance`, `diagnostics`.
+   • Return an object: `{ requested, resolved, result, durationMs, metadata }` where:
+     - `requested`: original algorithm string.
+     - `resolved`: actual algorithm used (auto mode resolves to one of the five methods).
+     - `metadata`: includes iterations, samplesUsed, level, errorTolerance as applicable.
 
-2. Algorithm Functions
-   • calculatePiLeibniz(digits): existing Leibniz series implementation.
-   • calculatePiMonteCarlo(samples): existing Monte Carlo sampling implementation.
-   • calculatePiChudnovsky(digits): existing Chudnovsky fallback or full series if extended.
-   • calculatePiRamanujanSato(opts): existing Ramanujan–Sato implementation with level, errorTolerance, maxIterations parameters.
-   • calculatePiGaussLegendre(digits): existing Gauss–Legendre implementation based on decimal.js.
+2. **Automatic Selection**
+   • Support `auto` in both CLIOptionsSchema and ApiParamsSchema enum alongside existing methods.
+   • Heuristics for `auto`:
+     - `digits >= 50` → `chudnovsky`
+     - `digits >= 10` → `gauss-legendre`
+     - `samples > 10000` → `montecarlo`
+     - otherwise → `leibniz`
 
-3. Automatic Selection
-   • Extend CLIOptionsSchema and ApiParamsSchema to include `auto` in the allowed algorithm enum.
-   • Introduce a helper function `dispatchAlgo(params)` that returns an object with fields: `requested`, `resolved`, `result`, and metadata (`iterations`, `samplesUsed`, `level`, `errorTolerance`).
-   • When algorithm is `auto`, apply heuristics:
-     – If digits ≥ 50: choose `chudnovsky`.
-     – Else if digits ≥ 10: choose `gauss-legendre`.
-     – Else if samples > 10000: choose `montecarlo`.
-     – Else: choose `leibniz`.
+3. **Refactor CLI Integration**
+   • In `main()`, replace per-algorithm branches with a single call to `dispatchAlgo(opts)`.
+   • On `--diagnostics`, log full dispatch object; otherwise log `result`.
 
-4. CLI Integration
-   • In `src/lib/main.js`, modify the Zod `CLIOptionsSchema` to include `auto` and add `dispatchAlgo` invocation in main().
-   • Replace existing per-algorithm branches with a call to `dispatchAlgo({digits,algorithm,samples,level,maxIterations,errorTolerance,diagnostics})`.
-   • When `--diagnostics` is set, log the full dispatch output including both `requested` and `resolved` algorithm fields.
+4. **Refactor HTTP API**
+   • In `createApp()`, for `/pi`, replace current branching with `const output = dispatchAlgo({ ...params, diagnostics });`.
+   • If diagnostics flag, return full output JSON; else return `{ result }`.
 
-5. HTTP API Integration
-   • In `createApp()`, extend `ApiParamsSchema` to accept `auto`.
-   • Replace `/pi` handler logic with a call to `dispatchAlgo(params)` and return JSON: if `diagnostics=true`, return full dispatch object; otherwise return `{ result }`.
-
-6. Backward Compatibility
-   • Preserve existing behavior when algorithm is explicitly set to a known method.
-   • Fail-fast on invalid algorithm strings via Zod.
+5. **Backward Compatibility**
+   • Preserve existing behavior for explicit algorithm names.
+   • Fail-fast on invalid algorithm via Zod.
 
 # Testing
 
-1. Unit Tests (`tests/unit/main.test.js`)
-   • Add tests for `dispatchAlgo` with algorithm `auto` at various thresholds to confirm correct resolution.
-   • Verify that dispatch output includes both `requested` and `resolved` fields and appropriate metadata.
-
-2. Existing Algorithm Tests
-   • Retain tests for each individual calculation function (Leibniz, Monte Carlo, Chudnovsky, Ramanujan–Sato, Gauss–Legendre).
-
-3. CLI Tests
-   • Test `main(["--algorithm","auto","--digits",X])` produces correct result matching the resolved algorithm.
-   • Test diagnostics output for `--algorithm auto --diagnostics` includes `resolved` property.
-
-4. HTTP Tests (`tests/unit/server.test.js`)
-   • GET `/pi?algorithm=auto&digits=2` returns result matching `leibniz`.
-   • GET `/pi?algorithm=auto&digits=20&diagnostics=true` returns JSON with both `requested: "auto"` and `resolved: "gauss-legendre"`.
+1. **Dispatch Tests** in `tests/unit/main.test.js`
+   • Verify `dispatchAlgo` resolves correct algorithm for various `auto` thresholds.
+   • Ensure returned object contains `requested`, `resolved`, `result`, `durationMs`, and correct metadata keys.
+2. **CLI Tests**
+   • Test `main(["--algorithm","auto","--digits",X])` produces expected result matching resolved algorithm.
+   • Test diagnostic output for `auto` includes both `requested` and `resolved`.
+3. **HTTP Tests** in `tests/unit/server.test.js`
+   • GET `/pi?algorithm=auto&digits=3` returns correct JSON: `{ result }`.
+   • GET `/pi?algorithm=auto&digits=20&diagnostics=true` returns `{ requested:"auto", resolved:"gauss-legendre", ... }`.
 
 # Documentation
 
-1. docs/USAGE.md
-   • Under **Algorithms**, add `auto`: automatic selection with heuristics and examples.
-2. README.md
-   • Under **Features**, update **π Calculation** to list `auto` option and its resolution heuristics.
-   • Provide CLI and HTTP examples for auto mode:
-     - `node src/lib/main.js --algorithm auto --digits 3`
-     - `curl "http://localhost:3000/pi?algorithm=auto&digits=3&diagnostics=true"`
+1. **docs/USAGE.md**
+   • Under **Algorithms**, document `auto` option and heuristics, with examples for CLI and HTTP.
+2. **README.md**
+   • Under **Features** update π Calculation section to list `auto` and describe automatic dispatch.
