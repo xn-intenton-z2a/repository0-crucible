@@ -17,3 +17,5 @@
 
 2025-05-17T18:29:03.552Z - Digested Constructor new URLSearchParams(init?:string|Record<string,string>|Iterable<[string,string]>|URLSearchParams):URLSearchParams; size:number; append(name:string,value:string):void; delete(name:string,value?:string):void; set(name:string,value:string):void; get(name:string):string|null; getAll(name:string):string[]; has(name:string,value?:string):boolean; sort():void; toString():string; entries():Iterator<[string,string]>; keys():Iterator<string>; values():Iterator<string>; forEach(fn,value,name,parent):void; [Symbol.iterator]=>entries; parsing: percent-decodes input; '+'->space; strips leading '?'; does not parse full URLs; serialization: percent-encodes except ASCII alnum,*,-,.,_; space-> '+' ; integration: URL.searchParams auto-updates URL.search; pitfall: URL.search uses '%20'; always use append to preserve '+'; empty vs none-equals both yield empty string.
 
+2025-05-17T20:56:58.130Z - Maintained feature CHUDNOVSKY_ALGORITHM.
+
