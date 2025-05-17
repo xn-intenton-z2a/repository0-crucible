@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from "vitest";
-import { calculatePi, main } from "@src/lib/main.js";
+import { calculatePi, main } from "../../src/lib/main.js";
 
 // Existing import test
 describe("Main Module Import", () => {
@@ -41,7 +41,7 @@ describe("Main Output", () => {
 
   test("should show help and return without error", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    expect(() => main(["--help"];)).not.toThrow();
+    expect(() => main(["--help"])) .not.toThrow();
     expect(logSpy).toHaveBeenCalledWith(
       "Usage: node src/lib/main.js --digits <number> --algorithm <string> --format <text|png>"
     );
