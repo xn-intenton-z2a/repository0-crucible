@@ -90,7 +90,8 @@ function outputPng(piString, outputPath) {
  * CLI entrypoint: parse flags and output π.
  */
 export function main(cliArgs) {
-  const argv = yargs(cliArgs)
+  const parser = yargs(cliArgs)
+    .exitProcess(false)
     .scriptName("pi")
     .usage("Usage: $0 [options]")
     .option("digits", {
@@ -101,7 +102,7 @@ export function main(cliArgs) {
     })
     .option("algorithm", {
       alias: "a",
-      choices: ["leibniz", "spigot", "montecarlo"],
+      type: "string",
       describe: "Algorithm to use for π approximation",
       default: "leibniz",
     })
@@ -113,7 +114,7 @@ export function main(cliArgs) {
     })
     .option("output-format", {
       alias: "f",
-      choices: ["text", "png"],
+      type: "string",
       describe: "Output format",
       default: "text",
     })
@@ -124,7 +125,9 @@ export function main(cliArgs) {
       default: "pi.png",
     })
     .help("help")
-    .alias("help", "h").argv;
+    .alias("help", "h");
+
+  const argv = parser.argv;
 
   const digits = argv.digits;
   const algorithm = argv.algorithm;
