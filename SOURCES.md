@@ -31,6 +31,11 @@ Integrated reference for fast unit, integration, and performance testing in Node
 In-depth TypeScript-first runtime schema validation. Explains synchronous/asynchronous parsing, custom refinements, error reporting, schema composition, and passthrough modes. Vital for enforcing API parameters (`ApiParamsSchema`) and CLI options (`CLIOptionsSchema`), ensuring robust error responses and type safety.
 ## License: MIT
 
+# Zod to OpenAPI Integration
+## https://github.com/asteasolutions/zod-to-openapi
+This library bridges Zod schemas with the OpenAPI 3 specification, enabling automatic generation of type-safe, machine-readable API documentation directly from runtime validation definitions. It covers schema decorators, metadata annotations, and seamless integration with Swagger UI, reducing duplication between code and docs. Essential for maintaining synchronous API changes and documentation consistency.
+## License: MIT
+
 # Configuration Management & Argument Parsing
 ## https://github.com/motdotla/dotenv#readme
 ## https://github.com/cosmiconfig/cosmiconfig#readme
@@ -86,12 +91,6 @@ Combines ESLint and Prettier guides on rule configuration, plugin integrations, 
 ## https://nodejs.org/api/perf_hooks.html
 Comprehensive reference for built-in Node.js modules including Streams (Readable, Writable, Transform), Worker Threads for offloading CPU-intensive tasks, ESM module loading, and Performance Hooks for profiling. Covers asynchronous file system promises, error handling, backpressure management, module import/export semantics, and performance tracing. Foundational for CLI I/O, caching, parallel computations, and server tuning.
 ## License: Node.js license / CC BY 4.0
-
-# Atomic File Writes & File Operations
-## https://github.com/npm/write-file-atomic#readme
-## https://github.com/moxystudio/proper-lockfile#readme
-Combined utilities for safe atomic saving of files and cross-process locking to prevent data corruption during concurrent writes. Explains write-file-atomic's temporary file renaming strategy and proper-lockfile's lock acquisition, retry strategies, stale lock detection, and fallback behaviors. Crucial for reliable `.pi_cache.json` persistence with atomic guarantees.
-## License: MIT
 
 # GitHub Actions & Workflow Configuration
 ## https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
