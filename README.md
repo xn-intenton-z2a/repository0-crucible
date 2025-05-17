@@ -1,65 +1,45 @@
 # repository0-crucible
 
-`@xn-intenton-z2a/repository0-crucible` is a simple CLI tool and demo repository showcasing:
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
 
-- A mission flag (`--mission` or `-m`) to display the repository mission statement
-- Default behavior: echoing provided arguments
+To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
 
-It also serves as a template demonstrating GitHub workflows imported from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib).
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
 
-You can base your own self-evolving agentic coding system on this project: https://github.com/xn-intenton-z2a/agentic-lib
+## Repository Template
+
+The repository is intended as a template that includes:
+* A Template Base: A starting point for new projects.
+* A Running Experiment: An example implementation that demonstrates one way to use the template.
+* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
 
 ## Installation
 
 Install via npm:
 
 ```bash
-npm install @xn-intenton-z2a/repository0-crucible
+npm install repository0-crucible
 ```
 
 ## Features
 
-- `--mission`, `-m`: Display the repository's mission statement.
-- Default: Echoes the provided arguments.
+TODO: Add features here.
 
 ## Usage
 
-Run the CLI tool directly:
+To run the CLI tool and see help instructions:
 
 ```bash
-node src/lib/main.js --mission
+node src/lib/main.js --help
 ```
 
-Or using the npm script:
+### Example Commands
 
-```bash
-npm run start -- --mission
-```
+- **Default Demo Output:**
+  ```bash
+  npm run start
+  ```
 
-Sample output:
-
-```markdown
-# xn-intenton-z2a/repository0-crucible
-Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.
-```
-
-Run with custom arguments:
-
-```bash
-node src/lib/main.js foo bar
-```
-
-Output:
-
-```text
-Run with: ["foo","bar"]
-```
-
-Or via npm script:
-
-```bash
-npm run start -- foo bar
-```
 
 ## Incremental Changes Plan
 
@@ -67,7 +47,7 @@ TODO: Add forthcoming changes here.
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
 
 ## License
 
