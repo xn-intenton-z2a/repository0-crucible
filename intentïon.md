@@ -9,3 +9,5 @@
 
 2025-05-17T13:04:39.907Z - Maintained feature PNG_OUTPUT.
 
+2025-05-17T16:29:18.103Z - Worked to resolve issue Add robust CLI parsing with yargs algorithm selection benchmarking and PNG output support. Add robust CLI parsing with yargs algorithm selection benchmarking and PNG output support.
+
