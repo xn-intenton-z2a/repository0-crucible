@@ -4,7 +4,7 @@
 ## https://www.chartjs.org/docs/latest/
 ## https://github.com/SeanSobey/ChartjsNodeCanvas#readme
 ## https://github.com/Automattic/node-canvas#readme
-Comprehensive guide for both hosted RESTful and in-process chart generation on the server, as well as client-side rendering via CDN. QuickChart and Image-Charts detail URL-based chart creation with theming, export formats, rate limits, and watermarking. Chart.js, ChartjsNodeCanvas, and node-canvas demonstrate server-side canvas setup, Docker-compatible PNG pipelines, performance tuning, payload optimization, and integration into Express endpoints. Essential for both CLI (`--chart`) and HTTP (`/pi/chart`, `/dashboard`) visualizations.
+Comprehensive reference for both hosted REST-based and in-process chart generation. QuickChart and Image-Charts detail URL parameters, theming, export formats (PNG, SVG), rate limits, and watermarking. Chart.js v4 docs cover component registration and plugin architecture. ChartjsNodeCanvas and node-canvas guides walk through headless canvas setup, Docker-friendly pipelines, performance tuning, and integration into Express endpoints (e.g., `/pi/chart`). Essential for CLI (`--chart`) and HTTP (`/pi/chart`, `/dashboard`) visualizations.
 ## License: CC0 1.0 Universal / MIT
 
 # Express.js & Security Middleware
@@ -12,9 +12,8 @@ Comprehensive guide for both hosted RESTful and in-process chart generation on t
 ## https://github.com/expressjs/cors
 ## https://github.com/nfriedly/express-rate-limit
 ## https://helmetjs.github.io/
-## https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-Authoritative reference for building secure and performant Express 4.x applications with real-time streaming. Covers core APIs, routing conventions, JSON and CORS middleware, IP-based rate limiting (`express-rate-limit`), HTTP header protections (CSP, HSTS, X-Frame-Options) with Helmet, standard 429 Too Many Requests responses, and Server-Sent Events (`text/event-stream` usage, reconnection, event framing) on endpoints like `/pi/stream`. Guides best practices for endpoints including `/pi`, `/metrics`, and `/dashboard`, balancing security, streaming performance, and user experience.
+Authoritative Express 4.x API reference for building secure, high-performance REST and SSE endpoints. Covers routing, JSON parsing, CORS, global middleware ordering, IP-based rate limiting with custom handlers, HTTP header hardening (CSP, HSTS, XSS Protection) via Helmet, and Server-Sent Events best practices. Directly informs middleware setup for `/pi`, `/metrics`, `/pi/stream`, and health endpoints.
 ## License: MIT
 
 # Testing & Benchmarking Tools
@@ -22,51 +21,50 @@ Authoritative reference for building secure and performant Express 4.x applicati
 ## https://github.com/visionmedia/supertest#readme
 ## https://github.com/sindresorhus/execa#readme
 ## https://benchmarkjs.com
-Integrated reference for fast unit, integration, and performance testing in Node.js. Vitest supports test isolation, mocks, snapshots, and coverage reporting. SuperTest enables HTTP assertions against Express endpoints. Execa drives CLI process testing and output capture. Benchmark.js facilitates micro-benchmarks with statistical analysis for algorithm performance. Crucial for validating correctness, API flows, CLI tooling, and benchmarking π calculation methods.
+Practical guides for unit, integration, CLI, and performance testing in Node.js. Vitest provides fast test execution, mocking, snapshots, and coverage. SuperTest offers HTTP assertions for Express servers. Execa enables robust CLI process control and output capture. Benchmark.js supports statistically sound micro-benchmarks. Essential for validating π computations, API behaviors, streaming SSE, CLI flags, and algorithm performance.
 ## License: MIT
 
 # Schema Validation with Zod
 ## https://github.com/colinhacks/zod#readme
 ## https://zod.dev/
-In-depth TypeScript-first runtime schema validation. Explains synchronous/asynchronous parsing, custom refinements, error reporting, schema composition, and passthrough modes. Vital for enforcing API parameters (`ApiParamsSchema`) and CLI options (`CLIOptionsSchema`), ensuring robust error responses and type safety.
+In-depth TypeScript-first runtime schema validation and inference. Explains parsing pipelines, custom refinements, error flattening, schema composition, and metadata. Vital for secure API parameter validation (`ApiParamsSchema`), CLI options enforcement, and error response consistency.
 ## License: MIT
 
 # Zod to OpenAPI Integration
 ## https://github.com/asteasolutions/zod-to-openapi
-This library bridges Zod schemas with the OpenAPI 3 specification, enabling automatic generation of type-safe, machine-readable API documentation directly from runtime validation definitions. It covers schema decorators, metadata annotations, and seamless integration with Swagger UI, reducing duplication between code and docs. Essential for maintaining synchronous API changes and documentation consistency.
+Library bridging Zod schemas to OpenAPI 3, enabling automatic spec and Swagger UI generation from validation definitions. Covers metadata annotations, decorators, path and response schemas, reducing duplication between code and documentation.
 ## License: MIT
 
-# Configuration Management & Argument Parsing
+# Configuration Management & CLI Parsing
 ## https://github.com/motdotla/dotenv#readme
 ## https://github.com/cosmiconfig/cosmiconfig#readme
 ## https://www.npmjs.com/package/minimist
-Demonstrates layered configuration strategies: environment variables via dotenv, hierarchical discovery with cosmiconfig, and CLI parsing with minimist. Covers default overrides, aliasing, merging strategies, and error handling for both server and CLI modes.
+Detailed patterns for layered configuration: environment variables, hierarchical config discovery, and CLI argument parsing. Demonstrates variable expansion, default overrides, aliasing, merging, and error handling for both server (`--serve`) and CLI modes.
 ## License: MIT
 
-# Data Formatting & Serialization
+# Data Serialization & Templating
 ## https://github.com/nodeca/js-yaml#readme
 ## https://ejs.co/#docs
 ## https://tools.ietf.org/html/rfc4180
 ## https://csv.js.org/parse/doc
 ## https://csv.js.org/stringify/doc
-Combined guide to YAML parsing/dumping (`load`, `safeLoad`, `dump`), Embedded JavaScript Templates (EJS) for dynamic HTML, the CSV standard (RFC 4180) for reliable CSV export, and the `csv-parse`/`csv-stringify` libraries for streaming and callback-based CSV parsing and generation. Covers performance considerations, asynchronous API patterns, custom delimiters, and CSV formatting guidelines (escaping, line breaks, headers). Supports multi-format output for HTTP CSV endpoints, CLI exports, and dashboard templates.
+Comprehensive reference for YAML (`js-yaml`), templating (EJS), and CSV standards (RFC4180). Covers streaming APIs, custom delimiters, escaping strategies, performance considerations, and synchronous/asynchronous usage. Supports multi-format outputs for CSV endpoints, CLI exports, and HTML dashboards.
 ## License: MIT
 
-# OpenAPI & API Documentation
+# OpenAPI & Interactive Documentation
 ## https://spec.openapis.org/oas/v3.1.0
 ## https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/
 ## https://github.com/scottie1984/swagger-ui-express#readme
-Defines the OpenAPI 3.1 specification and interactive Swagger UI integration. Guides spec authoring, validation, client generation, and embedding via `swagger-ui-express`. Powers live docs (`/docs`) and machine-readable spec (`/openapi.json`) in the HTTP API server.
+Defines OpenAPI 3.1 schema authoring, validation, and interactive UI integration. Guides spec-driven development, embedding Swagger UI, and serving machine-readable `/openapi.json`. Powers live API docs (`/docs`) and client generation.
 ## License: CC0 1.0 Universal / Apache-2.0 / MIT
 
 # Observability & Telemetry
 ## https://github.com/siimon/prom-client#readme
 ## https://github.com/pinojs/pino
-## https://github.com/pinojs/pino-pretty
 ## https://github.com/pinojs/pino-http#readme
 ## https://opentelemetry.io/docs/js/
 ## https://prometheus.io/docs/instrumenting/exposition_formats/
-Guides Prometheus metrics (`prom-client`), structured JSON logging with Pino (`pino`, `pino-pretty`, `pino-http`), and OpenTelemetry instrumentation in Node.js/Express. Covers SDK setup, exporters (OTLP, Prometheus), tracing, metrics pipelines, exposition format details for scraping, and developer-friendly log formatting. Essential for end-to-end observability across CLI and server contexts.
+End-to-end observability patterns for Node.js services. Prom-client for Prometheus metrics, Pino for structured logging (HTTP, pretty print), and OpenTelemetry JS SDK for tracing and metrics pipelines. Details exporters (OTLP, Prometheus), registry configuration, auto-instrumentation, and exposition format specifics.
 ## License: MIT / Apache-2.0
 
 # Arbitrary-Precision Arithmetic & Pi Algorithms
@@ -74,44 +72,44 @@ Guides Prometheus metrics (`prom-client`), structured JSON logging with Pino (`p
 ## https://mikemcl.github.io/decimal.js/
 ## https://github.com/MikeMcl/decimal.js#readme
 ## https://github.com/trekhleb/javascript-algorithms/blob/master/src/algorithms/numerical/pi/pi.md
-Comprehensive resources for BigInt and Decimal.js high-precision arithmetic. MDN BigInt docs describe native large-integer support. Decimal.js covers configurable precision and operations. JavaScript Algorithms details Chudnovsky, Gauss–Legendre, and Ramanujan–Sato methods with convergence analysis. Essential for implementing accurate π calculation algorithms.
+Comprehensive resources on native BigInt, Decimal.js precision control, and algorithmic implementations (Chudnovsky, Gauss–Legendre, Ramanujan–Sato, Monte Carlo, Leibniz). Includes performance trade-offs, convergence analysis, and sample code.
 ## License: CC0 / MIT
 
 # Code Quality & Formatting
 ## https://eslint.org/docs/latest/user-guide/configuring
 ## https://prettier.io/docs/en/index.html
-Combines ESLint and Prettier guides on rule configuration, plugin integrations, and formatting strategies. Covers editor integrations, caching, and CI pipeline enforcement. Ensures consistent code style, automated fixes, and maintainability across CLI and server code.
+Best practices for linting and formatting JavaScript/TypeScript. Covers rule configuration, plugin ecosystems, CI enforcement, editor integration, and caching strategies. Ensures consistent style and automatic code fixes.
 ## License: MIT
 
-# Node.js Core, Streams, ESM Modules & Performance
+# Node.js Core APIs & Performance
 ## https://nodejs.org/api/
 ## https://nodejs.org/api/streams.html
 ## https://nodejs.org/api/esm.html
 ## https://nodejs.org/api/worker_threads.html
 ## https://nodejs.org/api/perf_hooks.html
-Comprehensive reference for built-in Node.js modules including Streams (Readable, Writable, Transform), Worker Threads for offloading CPU-intensive tasks, ESM module loading, and Performance Hooks for profiling. Covers asynchronous file system promises, error handling, backpressure management, module import/export semantics, and performance tracing. Foundational for CLI I/O, caching, parallel computations, and server tuning.
+Authoritative Node.js reference: ESM modules, Streams (Readable/Writable/Transform), Worker Threads for parallelism, Performance Hooks for high-resolution profiling. Guides error handling, backpressure, asynchronous FS, and module semantics critical for CLI, server, and compute-intensive workflows.
 ## License: Node.js license / CC BY 4.0
 
-# GitHub Actions & Workflow Configuration
+# GitHub Actions & CI/CD Workflows
 ## https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 ## https://github.com/actions/setup-node#readme
 ## https://docs.github.com/en/actions/advanced-guides/caching-dependencies-to-speed-up-workflows
-Official references for defining and optimizing GitHub Actions workflows. Explains YAML syntax for triggers, jobs, steps, reusable workflows, secrets management, and the setup-node action. Covers dependency caching strategies (`actions/cache`), environment variables, matrix builds, and performance tuning. Essential for CI/CD automation and integrating external workflows like agentic-lib.
+Official documentation for defining, optimizing, and reusing GitHub Actions. Explains triggers, job matrices, secrets, caching strategies, and `setup-node` usage. Underpins CI pipelines and integration of Intentïon’s reusable workflows (`agentic-lib`).
 ## License: CC BY-SA 2.5
 
-# API Key Authentication & Security Schemes
+# API Key Security & OpenAPI Schemes
 ## https://owasp.org/www-project-api-security/
 ## https://swagger.io/docs/specification/authentication/api-keys/
-Comprehensive best practices and technical guidance for securing HTTP APIs with API key authentication. OWASP API Security Top Ten outlines common threats and mitigation strategies including key rotation, rate limiting, and proper error handling. The Swagger guide details defining `apiKey` security schemes in OpenAPI, specifying header, query, or cookie placement, and integrating API key checks into documentation and middleware. Directly informs implementation of `X-API-KEY` validation and OpenAPI `securitySchemes`.
+Guides robust API key authentication, rotation, and threat mitigation patterns from OWASP API Security Top Ten. Swagger API Key security schemes documentation covers defining header, query, or cookie-based authentication in OpenAPI. Directly informs middleware for `X-API-KEY` validation and documentation.
 ## License: CC BY 4.0
 
 # Fetch API & URLSearchParams
 ## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 ## https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-Authoritative MDN documentation on the Fetch API for performing HTTP requests in browser contexts and available in Node.js via global fetch. Explains request initialization, response parsing, streaming responses, and error handling. The URLSearchParams guide demonstrates efficient query string construction for REST endpoints. Crucial for implementing the interactive dashboard’s client-side logic that fetches JSON and CSV data and updates the Chart.js visualization in real time.
+Browser and Node.js fetch documentation for HTTP requests, streaming responses, and error handling. URLSearchParams guides efficient query string construction. Fundamental for dashboard client logic and server-side API consumption.
 ## License: CC BY-SA 2.5
 
 # Agentic-lib Reusable Workflows
 ## https://github.com/xn-intenton-z2a/agentic-lib#readme
-Official repository for Intentïon’s Agentic-lib, providing a library of reusable GitHub Actions workflows. Documents schedule triggers, path mappings, workflow permissions, and seeding strategies for repository initialization. Provides actionable patterns for integrating and customizing CI/CD pipelines, automating feature development, and managing discussion bots. Last updated 2024; maintained under an MIT license, authoritative by direct source.
+Intentïon’s library of reusable GitHub Actions workflows. Documents schedule triggers, file path mappings, permission scopes, and seeding strategies for repository initialization. Direct source, latest 2024 updates, MIT license. Empowers CI reuse and customization.
 ## License: MIT
