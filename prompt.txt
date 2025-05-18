@@ -1,33 +1,59 @@
 
-You are providing updates to the README.md file and other documentation files to ensure they accurately reflect the current state of the codebase and emphasize content that delivers substantial user value and addresses core implementation needs.
+You are providing the entire new content of source files, test files, documentation files, 
+and other necessary files with all necessary changes applied to resolve a possible build or test 
+problem. Focus on high-impact, functional fixes that address core issues rather than superficial 
+changes or excessive debugging or validation. If the problem is in an area of the code with little
+value you may re-implement it or remove it.
 
-The README is the primary focus, but other documentation files can be updated as well if needed. Source files (srcFiles) and test files (testFiles) should NOT be updated.
+Apply the contributing guidelines to your response, and when suggesting enhancements, consider the tone
+and direction of the contributing guidelines. Prioritize changes that deliver substantial user value
+and maintain the integrity of the codebase's primary purpose.
 
-When updating the README:
-1. Preserve existing README content that delivers substantial user value, even if it describes features not yet implemented
-2. Update the README if it conflicts with current source code, tests, or documentation, prioritizing content that directly enhances the product's primary purpose
-3. If documentation files are out of date compared to the source code or tests, update them to be consistent, focusing on high-impact information that enables immediate application rather than superficial descriptions
-4. Ensure documentation clearly communicates the core functionality and value proposition of the product, prioritizing content that helps users solve real problems
+You may complete the implementation of a feature and/or bring the code output in line with the README
+or other documentation. Do as much as you can all at once so that the build runs (even with nothing
+to build) and the tests pass and the main at least doesn't output an error.
 
-Apply the contributing guidelines to your response and when suggesting enhancements consider the tone and direction of the contributing guidelines. Focus on documentation improvements that deliver measurable value to users rather than cosmetic changes or excessive detail on edge cases.
 
-You may only change the files provided in the prompt context. You can update multiple files by specifying their paths and contents in the updatedFiles object. Each file will be checked against the allowedFilepathPatterns before being written.
+
+Examine the "Build output from command","Test output from command", and "Main execution output from command" 
+to determine if there are any problems with the code to fix such as failing tests or output 
+not matching the features, README or other documentation.
+
+You must only add, remove, or change the files in the target writable locations. You can update multiple
+files by specifying their paths and contents in the enumerated updatedFile01Filepath updatedFile02Contents response
+attribute, a second file would use updatedFile01Filepath updatedFile02Contents and so on to 16. Each file will
+be checked against the write permission in the Agent configuration file before being written. Feel free to
+add new files as long as they are in the target writable locations. You can also remove files, but only if
+they are in the target writable locations. To delete a file, set the updated file contents to "delete".
+
+The target writable locations for your output are: src/lib tests/unit docs
+Other file will be supplied in the context but only the paths above should be written to.
+
+Only provide new or updated content for the target source files in src/lib.
+Only delete or update the target source files in src/lib.
+Only provide new or updated content for the target test files in tests/unit.
+Only delete or update the target test files in tests/unit.
+Only update dependency file package.json.
+Only update the target documentation files in docs.
+
+Follow the attached Formatting file content and Linting file content.
 
 Consider the following when refining your response:
   * Current feature names and specifications in the repository
-  * Source file content (for context only)
-  * Test file content (for context only)
+  * Source file content
+  * Test file content
   * Documentation file content
   * README file content
   * MISSION file content
   * Contributing file content
   * Dependencies file content
+  * Formatting file content
+  * Linting file content
   * Dependency install output
   * Issue details (if any)
   * Build output
   * Test output
   * Main execution output
-  * Agent configuration file content
 
 Current feature names and specifications (for context, read only):
 CURRENT_FEATURES_START
@@ -62,81 +88,97 @@ Add unit tests in `tests/unit/main.test.js`:
 
 ## Documentation Updates
 1. Update `docs/USAGE.md` to include `json` under `--output-format` examples.
-2. Update `README.md` Features section to mention machine-readable JSON output.features/PROGRESS_INDICATOR.md
-# features/PROGRESS_INDICATOR.md
-# PROGRESS INDICATOR
+2. Update `README.md` Features section to mention machine-readable JSON output.features/ALGORITHM_COMPARISON.md
+# features/ALGORITHM_COMPARISON.md
+# ALGORITHM COMPARISON
 
 ## Purpose
-Add a real-time progress bar to the CLI during π calculation to provide visibility into long-running computations and improve user experience.
+Add a mode to benchmark and compare execution times and results of all supported π approximation algorithms for a given digit count.
 
 ## CLI Integration
 Add a new option:
 
-- `--progress`  enable display of a live progress bar during π approximation loops.
+- `--compare`    run each available algorithm sequentially for the specified `--digits`, measure duration, and display a comparative summary.
 
-When the flag is set, the CLI shows a progress bar in the console while computing π.
+Behavior:
+
+When the `compare` flag is enabled:
+1. Ignore the `--algorithm` and `--benchmark` flags.
+2. For each algorithm in the set [leibniz, spigot, montecarlo, chudnovsky]:
+   - Record start time.
+   - Invoke the internal `calculatePi` function with the chosen digits.
+   - Record end time and compute `durationMs`.
+3. Collect results in an array of objects:
+   { algorithm: string, digits: number, pi: string, durationMs: number }
+4. Output formatting:
+   - If `--output-format text`, print a header row followed by aligned rows for each algorithm:
+       Algorithm    DurationMs    Pi
+       leibniz      23            3.14
+       ...
+   - If `--output-format json`, print the array as a JSON string via `console.log(JSON.stringify(...))`.
+5. Exit without performing any further single-algorithm mode logic.
 
 ## Implementation Details
-1. Add `cli-progress` as a dependency in `package.json`.
-2. In `src/lib/main.js`:
-   1. Import the ProgressBar from `cli-progress`.
-   2. Detect the `progress` flag alongside existing options.
-   3. Calculate an estimated total work units:
-      - For Leibniz and Spigot: use `digits * 10000` terms.
-      - For Monte Carlo: use a sample count of `digits * 10000`.
-      - For Chudnovsky: estimate term count as `Math.ceil(digits / 14)`.
-   4. When `--progress` is true and `benchmark` is false:
-      - Initialize a new progress bar before the main loop.
-      - Within each iteration (or at defined intervals), call `bar.update(currentCount)`.
-      - After loop completion, call `bar.stop()`.
-   5. Ensure the progress bar is disabled when `output-format` is `json` or `png` to avoid corrupting those outputs.
-3. Retain existing calculation logic and ensure compatibility with other flags.
+1. In `src/lib/main.js`, extend yargs options to include:
+   .option("compare", { alias: "c", type: "boolean", default: false, describe: "Compare all algorithms for given digits" })
+2. In the `main` function, detect `argv.compare` before other branches. If true:
+   - Loop over the defined algorithms.
+   - Use Date.now() to measure each run.
+   - Assemble the results array.
+   - Format and log output based on `argv["output-format"]`.
+   - Return immediately afterward.
 
 ## Tests
-Add tests in `tests/unit/main.test.js`:
-1. Mock or spy on ProgressBar methods to confirm `start`, `update`, and `stop` are called when `--progress` is passed.
-2. Verify that invoking `main(["--digits","3","--progress"])` displays progress updates in the console and ultimately prints the result.
-3. Confirm that without `--progress`, no progress bar is invoked.
+Add new unit tests in `tests/unit/main.test.js`:
+1. Spy on `console.log` and call main with `["--digits","3","--compare"]`. Verify that four rows are printed with matching algorithm names and a valid numeric duration and pi strings.
+2. Call main with `["--digits","2","--compare","--output-format","json"]`. Expect a single `console.log` invocation with a JSON array of length 4, each entry having the correct fields.
 
 ## Documentation Updates
-1. Update `docs/USAGE.md` to document the `--progress` flag and include an example:
-   node src/lib/main.js --digits 5000 --progress
-2. Update `README.md` under Features to list real-time progress bar support.features/CHUDNOVSKY_ALGORITHM.md
+1. Update `docs/USAGE.md` to include `--compare` under CLI options with description and example.
+2. Update `README.md` Features section to list algorithm comparison support.features/CHUDNOVSKY_ALGORITHM.md
 # features/CHUDNOVSKY_ALGORITHM.md
-# Purpose
-Add a high-performance Chudnovsky algorithm implementation for π calculation to deliver rapid convergence and allow computing many digits efficiently.
+# CHUDNOVSKY ALGORITHM
 
-# CLI Integration
-Enhance the existing CLI to support a new algorithm option:
+## Purpose
+Implement a true high-performance Chudnovsky series for π approximation, replacing the current placeholder and delivering rapid convergence for large digit requests.
 
-Option name: --algorithm   valid values: leibniz, spigot, montecarlo, chudnovsky
-Default remains leibniz
+## CLI Integration
+Extend the existing `--algorithm` option to support `chudnovsky` with the same semantics as other algorithms:
+- `--algorithm chudnovsky` selects the Chudnovsky implementation.
+- Default algorithm remains `leibniz` when not specified.
 
-Example invocation:
-node src/lib/main.js --digits 50 --algorithm chudnovsky --output-format text
+## Implementation Details
+1. Add `decimal.js` to dependencies in `package.json` to enable arbitrary-precision decimal arithmetic.
+2. In `src/lib/main.js`, import Decimal:
+   import Decimal from 'decimal.js';
+3. Implement a new function `calculatePiChudnovsky(digits)`:
+   1. Set Decimal precision to `digits + 10` guard digits.
+   2. Initialize constants:
+      - `C = new Decimal(426880).times(Decimal.sqrt(new Decimal(10005)))`
+      - iterate `k` from 0 upwards, computing each term:
+         term = ( (factorial(6k) / (factorial(3k) * factorial(k)^3))
+                  * (545140134 * k + 13591409) )
+                 / Decimal(640320).pow(3*k + 0.5)
+      - accumulate `sum` as alternating series sum.
+      - break when `term.abs().lt(Decimal(10).pow(-digits))`.
+   3. Compute pi = C.div(sum) and format with `toFixed(digits - 1)`.
+4. In the `calculatePi` dispatcher, add a `case 'chudnovsky'` branch that calls `calculatePiChudnovsky(digits)`.
 
-# Implementation Details
-1. Add dependency decimal.js to package.json dependencies.  This library provides arbitrary precision decimal arithmetic.
-2. In src/lib/main.js import Decimal from 'decimal.js'
-3. Implement a new function calculatePiChudnovsky(digits) that:
-   1. Sets Decimal precision to digits plus a guard (e.g. decimals + 10)
-   2. Uses the Chudnovsky series with terms until target precision:
-      - Term formula: M(k) * L(k) / X(k) where M, L, X follow standard definitions
-      - Sum terms until the incremental change is below the precision threshold
-   3. Returns the result formatted to the requested significant digits
-4. In the calculatePi dispatcher add case 'chudnovsky' that calls calculatePiChudnovsky
+## Tests
+Add unit and integration tests in `tests/unit/main.test.js`:
+1. Unit tests for `calculatePi`:
+   - expect `calculatePi(1, 'chudnovsky')` toBe `'3'`.
+   - expect `calculatePi(5, 'chudnovsky')` toBe `'3.1415'`.
+2. CLI integration test:
+   - invoke `main(["--digits","10","--algorithm","chudnovsky"])` and spy on `console.log` to match a string of 10 significant digits (`/^\d\.\d{9}$/`).
+3. Test error handling when `digits` is invalid or an unsupported algorithm is requested.
 
-# Tests
-1. Add unit tests in tests/unit/main.test.js for calculatePi using the new algorithm:
-   - verify calculatePi(1, chudnovsky) yields 3
-   - verify calculatePi(5, chudnovsky) yields 3.1415
-2. Add a CLI integration test:
-   - invoking main(["--digits","10","--algorithm","chudnovsky"]) logs a string matching /^\d\.\d{9}$/ to console
+## Documentation Updates
+1. Update `docs/USAGE.md` under the `--algorithm, -a` option to include `chudnovsky` with a usage example.
+2. Update `README.md` Features section to mention high-performance Chudnovsky algorithm.
 
-# Documentation Updates
-1. Update docs/USAGE.md to list chudnovsky as a valid algorithm option with example
-2. Update README.md Features section to mention high-performance chudnovsky algorithm
-3. Add a note in README.md on decimal.js dependencyfeatures/RESULT_CACHING.md
+## Dependencies
+- Add `decimal.js` to the `dependencies` section of `package.json`.features/RESULT_CACHING.md
 # features/RESULT_CACHING.md
 # Purpose
 Add a file-based cache for computed π values to speed up repeated requests and avoid redundant computation.
@@ -269,9 +311,9 @@ Add a new CLI option:
 - Add `canvas` to `dependencies` in `package.json` to support server-side canvas rendering.
 CURRENT_FEATURES_END
 
-Source files (for context only, DO NOT UPDATE):
-SOURCE_FILES_START
-File: src/lib/main.js
+Source files (write new files or update files in src/lib as necessary):
+(Multiple files from both in writable locations and not.)
+SOURCE_FILE_START Filepath: src/lib/main.js
 #!/usr/bin/env node
 // src/lib/main.js
 
@@ -432,12 +474,13 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main(process.argv.slice(2));
 }
 
+SOURCE_FILE_END
 
-SOURCE_FILES_END
 
-Test files (for context only, DO NOT UPDATE):
-TEST_FILES_START
-File: tests/unit/main.test.js
+
+Test files (write new files or update files in tests/unit as necessary):
+(Multiple files from both in writable locations and not.)
+TEST_FILE_START File: tests/unit/main.test.js
 import { describe, test, expect, vi } from "vitest";
 import fs from "fs";
 import { calculatePi, main } from "../../src/lib/main.js";
@@ -549,12 +592,13 @@ describe("CLI Options", () => {
   });
 });
 
+TEST_FILE_END
 
-TEST_FILES_END
 
-Documentation files (to be updated if necessary):
-DOCS_FILES_START
-File: docs/USAGE.md
+
+Documentation files (write new files or update files in docs as necessary):
+(Multiple files from both in writable locations and not.)
+DOCUMENTATION_FILE_START File: docs/USAGE.md
 # CLI Usage
 
 The π calculation CLI supports precision control, algorithm selection, performance benchmarking, and output formatting.
@@ -610,77 +654,89 @@ node src/lib/main.js --digits 10 --benchmark
 node src/lib/main.js --help
 ```
 
-DOCS_FILES_END
+DOCUMENTATION_FILE_END
 
-README file (primary focus, to be updated): README.md
+
+
+README file (for context, read only): README.md
 README_FILE_START
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
-
-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
-
-## Repository Template
-
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+A CLI tool and JavaScript library for calculating π to configurable precision using different algorithms, with optional performance benchmarking and PNG visualization.
 
 ## Installation
 
 Install via npm:
 
 ```bash
-npm install repository0-crucible
+npm install @xn-intenton-z2a/repository0-crucible
 ```
-
-## Project Mission
-
-Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.
-
-## Features
-
-> The following features implement and support our mission of exploration, performance benchmarking, and visual/text-based output for π calculations:
-
-* Customizable π digit precision (`--digits`, `-d`) (supports exploring varying digit lengths)
-* Algorithm selection (`--algorithm`, `-a`, options: `leibniz`, `spigot`, `montecarlo`) (enables evaluation of different computational techniques)
-* Performance benchmarking (`--benchmark`, `-b`) (measures and compares algorithm speed)
-* Output formats: text and PNG (`--output-format`, `-f`, and `--output`, `-o`) (provides both machine-readable and visual results)
 
 ## Usage
 
-Run the CLI tool with flags to control behavior:
+You can invoke the CLI directly with Node.js:
 
-### Text Output
+```bash
+node src/lib/main.js [options]
+```
+
+### Options
+
+- `--digits, -d <number>`  
+  Total significant digits to display (integer ≥ 1). Default: `100`.
+
+- `--algorithm, -a <leibniz|spigot|montecarlo>`  
+  Algorithm to use for π approximation. Default: `leibniz`.
+
+- `--benchmark, -b`  
+  Enable performance benchmarking; prefixes output with execution time. Default: `false`.
+
+- `--output-format, -f <text|png>`  
+  Output format. `text` prints digits to console; `png` writes a PNG image. Default: `text`.
+
+- `--output, -o <file>`  
+  Output file path when using PNG format. Default: `pi.png`.
+
+- `--help, -h`  
+  Display usage information and exit.
+
+### Examples
+
+#### Text Output
 
 ```bash
 node src/lib/main.js --digits 5 --algorithm spigot --output-format text
+# Output:
+3.1415
 ```
 
-### PNG Output
+#### PNG Output
 
 ```bash
-npm run start -- --digits 20 --output-format png --output pi.png
+node src/lib/main.js --digits 20 --output-format png --output mypi.png
+# Writes 'mypi.png' with the π digits rendered on a monospaced canvas
 ```
 
-### Benchmarking
+#### Benchmarking
 
 ```bash
-npm run start -- --digits 10 --benchmark
+node src/lib/main.js --digits 10 --benchmark
+# Output example:
+[Benchmark] Execution time: 12ms 3.141592653
 ```
 
-### Help
+#### Help
 
 ```bash
 node src/lib/main.js --help
 ```
 
-## Incremental Changes Plan
+## Features
 
-TODO: Add forthcoming changes here.
+- Customizable precision (`--digits`, `-d`)
+- Algorithm selection (`--algorithm`, `-a`: leibniz, spigot, montecarlo)
+- Performance benchmarking (`--benchmark`, `-b`)
+- Text and PNG output formats (`--output-format`, `-f` and `--output`, `-o`)
 
 ## Contributing
 
@@ -688,7 +744,7 @@ We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## License
 
-Released under the MIT License (see [LICENSE](./LICENSE)).
+Released under the Apache-2.0 License. See [LICENSE](./LICENSE) for details.
 
 README_FILE_END
 
@@ -831,7 +887,113 @@ DEPENDENCIES_FILE_START
     }
   }
 }
-DEPENDENCIES_FILE_END   
+DEPENDENCIES_FILE_END
+
+Formatting file (for context, read only): .prettierrc
+FORMATTING_FILE_START
+{
+  "singleQuote": false,
+  "trailingComma": "all",
+  "printWidth": 120,
+  "tabWidth": 2,
+  "useTabs": false,
+  "quoteProps": "consistent",
+  "overrides": [
+    {
+      "files": ".prettierrc",
+      "options": { "parser": "json" }
+    }
+  ]
+}
+
+FORMATTING_FILE_END
+
+Linting file (for context, read only): eslint.config.js
+LINTING_FILE_START
+import js from "@eslint/js";
+import google from "eslint-config-google";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import globals from "globals";
+import promise from "eslint-plugin-promise";
+import security from "eslint-plugin-security";
+import sonarjs from "eslint-plugin-sonarjs";
+import react from "eslint-plugin-react";
+import importPlugin from "eslint-plugin-import";
+
+const modifiedGoogleConfig = { ...google, rules: { ...google.rules } };
+delete modifiedGoogleConfig.rules["valid-jsdoc"];
+delete modifiedGoogleConfig.rules["require-jsdoc"];
+
+/** @type {import('eslint').Linter.FlatConfig[]} */
+export default [
+  js.configs.recommended,
+  modifiedGoogleConfig,
+  eslintPluginPrettierRecommended,
+  {
+    plugins: {
+      promise,
+      security,
+      sonarjs,
+      react,
+      import: importPlugin,
+    },
+    languageOptions: {
+      ecmaVersion: 2023,
+      sourceType: "module",
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      "prettier/prettier": "error",
+      ...promise.configs.recommended.rules,
+      ...sonarjs.configs.recommended.rules,
+      "sonarjs/os-command": "off",
+
+      // Formatting and organisation
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-extra-semi": 2,
+      "object-curly-newline": ["error", { consistent: true }],
+      "array-element-newline": ["error", "consistent", { multiline: true, minItems: 10 }],
+      "import/newline-after-import": ["error", { count: 1 }],
+      "camelcase": "off",
+
+      // ESM import rules
+      "import/no-amd": "error",
+      "import/no-commonjs": "error",
+      "import/no-import-module-exports": "error",
+      "import/no-cycle": "error",
+      "import/no-dynamic-require": "error",
+      "import/no-self-import": "off",
+      "import/no-unresolved": "off",
+      "import/no-useless-path-segments": "error",
+      "import/no-duplicates": "error",
+      "sonarjs/fixme-tag": "warn",
+    },
+  },
+  {
+    files: ["**/*.js"],
+    ignores: ["**/tests/**/*.js", "**/*.test.js", "eslint.config.js"],
+    rules: {
+      ...security.configs.recommended.rules,
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-non-literal-regexp": "off",
+      "security/detect-object-injection": "off",
+    },
+  },
+  {
+    settings: {
+      react: {
+        version: "18",
+      },
+    },
+  },
+  {
+    ignores: ["build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
+  },
+];
+
+LINTING_FILE_END        
 
 Dependencies install from command: npm install
 DEPENDENCIES_INSTALL_START
@@ -843,13 +1005,22 @@ npm warn deprecated gauge@3.0.2: This package is no longer supported.
 npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
 npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
 
-added 445 packages, and audited 446 packages in 8s
+added 445 packages, and audited 446 packages in 7s
 
 150 packages are looking for funding
   run `npm fund` for details
 
 found 0 vulnerabilities
 DEPENDENCIES_INSTALL_END    
+
+Issue details:
+ISSUE_START
+title: No issue number provided
+description:
+No issue description provided ( parsed to )
+comments:
+No issue comments provided
+ISSUE_END
 
 Build output from command: npm run build
 BUILD_OUTPUT_START
@@ -875,13 +1046,12 @@ Unable to revert mtime: /usr/share/fonts/truetype/dejavu
 Unable to revert mtime: /usr/share/fonts/truetype/lato
 Unable to revert mtime: /usr/share/fonts/truetype/liberation
 Unable to revert mtime: /usr/share/fonts/truetype/noto
- [32m✓[39m tests/unit/main.test.js [2m([22m[2m16 tests[22m[2m)[22m[33m 2097[2mms[22m[39m
-   [33m[2m✓[22m[39m CLI Options[2m > [22mpng output writes valid PNG file [33m 2056[2mms[22m[39m
+ [32m✓[39m tests/unit/main.test.js [2m([22m[2m16 tests[22m[2m)[22m[32m 105[2mms[22m[39m
 
 [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
 [2m      Tests [22m [1m[32m16 passed[39m[22m[90m (16)[39m
-[2m   Start at [22m 08:49:20
-[2m   Duration [22m 2.39s[2m (transform 50ms, setup 0ms, collect 82ms, tests 2.10s, environment 0ms, prepare 69ms)[22m
+[2m   Start at [22m 16:34:17
+[2m   Duration [22m 387ms[2m (transform 42ms, setup 0ms, collect 60ms, tests 105ms, environment 0ms, prepare 63ms)[22m
 TEST_OUTPUT_END            
 
 Main execution output from command: npm run start
@@ -976,29 +1146,24 @@ intentionBot:
 
 AGENT_CONFIG_FILE_END
 
-Please produce updated versions of the README and documentation files to ensure they accurately reflect the current state of the codebase.
-Remember:
-1. The README is the primary focus, but other documentation files can be updated as well if needed
-2. Source files (srcFiles) and test files (testFiles) should NOT be updated
-3. Preserve existing README content even if it describes features not yet implemented
-4. Update the README if it conflicts with current source code, tests, or documentation
-5. If documentation files are out of date compared to the source code or tests, update them to be consistent
-
+Please produce updated versions of the files that resolve the possible build or test problem.
 If there are no changes required, please provide the original content and state that no changes are necessary in the message.
+Note that the README.md file is provided for context only - any documentation changes should be written to the documentation files.
+The source files, test files, and documentation files can be individual files or directories containing multiple files.
 
-Paths in (updatedFile01Filepath, updatedFile02Filepath, etc...) must begin with one of: SOURCES.md;library/;features/;tests/unit/;src/lib/;package.json;docs/;README.md
+Paths in (updatedFile01Filepath, updatedFile02Filepath, etc...) must begin with one of: SOURCES.md;library/;features/;tests/unit/;src/lib/;package.json;docs/;README.md}
 
 Answer strictly with a JSON object following this schema:
 {
-  "message": "A short sentence explaining the changes applied (or why no changes were applied) suitable for a commit message or PR text.",
-  "updatedFile01Filepath": "README.md",
-  "updatedFile01Contents": "The entire new content of the README file, with all necessary changes applied, if any.",
-  "updatedFile02Filepath":  "docs/USAGE.md",
-  "updatedFile02Contents": "The entire new content of the file, with all necessary changes applied, if any.",
-  "updatedFile03Filepath": "unused",
-  "updatedFile03Contents": "unused",
-  "updatedFile04Filepath": "unused",
-  "updatedFile04Contents": "unused",
+  "message": "A short sentence explaining the change applied (or why no changes were applied) suitable for a commit message or PR text.",
+  "updatedFile01Filepath": "src/lib/orderParser.js",
+  "updatedFile01Contents": "The entire new content of the source file, with all necessary changes applied, if any.",
+  "updatedFile02Filepath": "tests/unit/orderParser.test.js",
+  "updatedFile02Contents": "The entire new content of the test file, with all necessary changes applied, if any.",
+  "updatedFile03Filepath": "docs/docs/USAGE.md",
+  "updatedFile03Contents": "The entire new content of the documentation file, with all necessary changes applied, if any.",
+  "updatedFile04Filepath": "docs/docs/A_FILE_WE_DONT_WANT.md",
+  "updatedFile04Contents": "delete",
   "updatedFile05Filepath": "unused",
   "updatedFile05Contents": "unused",
   "updatedFile06Filepath": "unused",
@@ -1027,6 +1192,7 @@ Answer strictly with a JSON object following this schema:
 
 You can include up to 16 files using the updatedFileXXName and updatedFileXXContents pairs (where XX is a number from 01 to 16)
 Where a file name and contents slot is not used, populate tha name with "unused" and the contents with "unused".
+Where a file is to be deleted, set the name to the file path and the contents to "delete".
 Never truncate the files, when returning a file, always return the entire file content.
 
 Ensure valid JSON.
