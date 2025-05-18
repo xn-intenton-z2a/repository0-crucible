@@ -21,3 +21,5 @@
 
 2025-05-18T00:42:53.016Z - Maintain sources of library content.
 
+2025-05-18T00:43:45.723Z - Digested Methods: stringify(input,options?,cb) async callback; stringify.sync(input,options) sync return. Options: delimiter ','; record_delimiter '\n'|'\r\n'; quote char '"'; escape char '"'; quoted flags: quoted,quoted_empty,true; quoted_string; quoted_match regex; header flag; columns array of keys or objects {key,header,formatter}; cast override per type; bom output. Column order follows columns array. Streams: Transform stream, auto backpressure. Default casting: boolean->'true'/'false'; date->toISOString(); number->toString(); object->JSON.stringify(); string->identity. Examples: async, sync, stream with fs and JSONStream. Best practices: predefine columns; tune highWaterMark; custom cast for non-ISO dates. Troubleshoot: quoting rules via quoted_match; enable bom for BOM; use stream API for large sets..
+
