@@ -158,7 +158,38 @@ node src/lib/main.js --digits 50 --algorithm chudnovsky --output-format text
 # Documentation Updates
 1. Update docs/USAGE.md to list chudnovsky as a valid algorithm option with example
 2. Update README.md Features section to mention high-performance chudnovsky algorithm
-3. Add a note in README.md on decimal.js dependencyfeatures/HTTP_API.md
+3. Add a note in README.md on decimal.js dependencyfeatures/RESULT_CACHING.md
+# features/RESULT_CACHING.md
+# Purpose
+Add a file-based cache for computed π values to speed up repeated requests and avoid redundant computation.
+
+# CLI Integration
+Add a new option:
+
+- `--cache` enable cache lookup and storage for computed π results.
+
+When enabled, the CLI checks for a cached file matching the requested digits and algorithm. If found, it skips calculation and prints the cached result. After computing a new result, it writes it to the cache directory.
+
+# Implementation Details
+1. In `src/lib/main.js`, extend yargs options to include `cache` as a boolean flag, defaulting to false.
+2. Define a cache directory named `.pi_cache` in the current working directory.
+3. In `main` when `cache` is true and `benchmark` is false and `output-format` is `text`:
+   1. Compute a cache key filename: `${algorithm}-${digits}.txt`.
+   2. If the cache directory does not exist, create it with `fs.mkdirSync`.
+   3. If a cache file with the key exists, read its contents into `piString` and print it via `console.log`, then return without recalculation.
+   4. If not, perform the usual calculation, then write `piString` to the cache file using `fs.writeFileSync` before printing.
+4. Ensure existing behavior remains unchanged when `cache` is false.
+
+# Tests
+Add new unit tests in `tests/unit/main.test.js`:
+1. Before each test, remove the `.pi_cache` directory if it exists to ensure a clean state.
+2. Test that invoking `main(["--digits","3","--algorithm","spigot","--cache"])` creates `.pi_cache/spigot-3.txt` containing "3.14" and prints "3.14".
+3. Prepopulate `.pi_cache/spigot-3.txt` with custom content (e.g., "X.X"), then invoke `main` with the same arguments and verify it prints the custom content without invoking the calculation logic again.
+4. Confirm that without the `--cache` flag, no `.pi_cache` directory is created and behavior matches existing output.
+
+# Documentation Updates
+1. Update `docs/USAGE.md` to document the `--cache` flag with description and example.
+2. Update `README.md` Features section to list result caching support.features/HTTP_API.md
 # features/HTTP_API.md
 # HTTP API Server
 
@@ -743,9 +774,9 @@ DEPENDENCIES_FILE_START
     "build": "echo 'Nothing to build'",
     "formatting": "prettier --check .",
     "formatting-fix": "prettier --write .",
-    "linting": "eslint .",
-    "linting-json": "eslint --format=@microsoft/eslint-formatter-sarif .",
-    "linting-fix": "eslint --fix .",
+    "linting": "eslint src/lib tests/unit",
+    "linting-json": "eslint --format=@microsoft/eslint-formatter-sarif src/lib tests/unit",
+    "linting-fix": "eslint --fix src/lib tests/unit",
     "update-to-minor": "npx ncu --upgrade --enginesNode --target minor --verbose --install always",
     "update-to-greatest": "npx ncu --upgrade --enginesNode --target greatest --verbose --install always --reject 'alpha'",
     "test": "vitest",
@@ -803,7 +834,15 @@ DEPENDENCIES_FILE_START
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
+  "eslintIgnore": [
+    "archive/**",
+    "build/",
+    "coverage/",
+    "dist/",
+    "exports/",
+    "node_modules/",
+    "eslint.config.js"
+  ],
   "eslintConfig": {
     "rules": {
       "sonarjs/cognitive-complexity": "off"
@@ -1003,368 +1042,46 @@ AGENT_CONFIG_FILE_END
 
 Issue details:
 ISSUE_START
-title: Resolve issues in output from running: npm run linting-fix "." -- --max-warnings=10
+title: Annotate feature list in README with mission alignment
 description:
+We need to explicitly connect our implemented features back to the project’s mission so readers and contributors immediately understand how each feature supports our goal of exploring novel π-calculation algorithms, benchmarking, and visualization. 
 
-> @xn-intenton-z2a/repository0-crucible@1.2.0-0 linting
-> eslint . tests/unit/ src/lib/ src/lib/
+In a single batch change, update only the README.md as follows:
 
+1. Add a new section titled **“Project Mission”** above the **Features** section. This section should pull in or summarize the core mission statement from MISSION.md (e.g., “Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.”).
 
-/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-17-main.js
-  40:50  error  Parsing error: Unexpected token ,
+2. Prepend the existing **Features** list with a short introductory sentence, for example:
+   > The following features implement and support our mission of exploration, performance benchmarking, and visual/text-based output for π calculations:
 
-/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-17-main.test.js
-  44:50  error  Parsing error: Unexpected token ,
+3. For each bullet under **Features**, append a concise parenthetical note linking it to the mission objectives. For example:
+   - Customizable π digit precision (`--digits`, `-d`) (supports exploring varying digit lengths)
+   - Algorithm selection (`--algorithm`, `-a`) (enables evaluation of different computational techniques)
+   - Performance benchmarking (`--benchmark`, `-b`) (measures and compares algorithm speed)
+   - Output formats: text and PNG (`--output-format`, `-f`, and `--output`, `-o`) (provides both machine-readable and visual results)
 
-/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-20-main.js
-  514:53  error  Make sure that using this pseudorandom number generator is safe here  sonarjs/pseudo-random
-  553:33  error  Make sure that using this pseudorandom number generator is safe here  sonarjs/pseudo-random
+No changes to source files, tests, or dependencies are required. After the update, verify that:
 
-/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-20-main.test.js
-  13:10  error  'captureConsole' is defined but never used  no-unused-vars
+- The README opens with a clear mission statement.
+- The Features section introduction emphasizes the mission link.
+- Each feature bullet clearly indicates how it advances the mission.
 
-/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-22-main.js
-  101:10  error  Refactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed  sonarjs/cognitive-complexity
-  239:23  error  Refactor this function to reduce its Cognitive Complexity from 25 to the 15 allowed  sonarjs/cognitive-complexity
-  247:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-  247:14  error  'err' is defined but never used                                                      no-unused-vars
-  267:9   error  Remove this assignment of "i"                                                        sonarjs/updated-loop-counter
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-22-main.test.js
-  249:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-  249:16  error  'err' is defined but never used                 no-unused-vars
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/json-schema-diff-attack-of-the-NaNs-2025-04-12-main.js
-   96:10  error    'isNaNInput' is defined but never used                                               no-unused-vars
-  119:7   error    Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-  119:14  error    'e' is defined but never used                                                        no-unused-vars
-  128:24  warning  Unsafe Regular Expression                                                            security/detect-unsafe-regex
-  128:24  error    Simplify this regular expression to reduce its complexity from 24 to the 20 allowed  sonarjs/regex-complexity
-  128:81  error    Unnecessary escape character: \-                                                     no-useless-escape
-  145:16  error    Refactor this function to reduce its Cognitive Complexity from 27 to the 15 allowed  sonarjs/cognitive-complexity
-  250:10  error    Refactor this function to reduce its Cognitive Complexity from 22 to the 15 allowed  sonarjs/cognitive-complexity
-  281:7   error    Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-  281:14  error    'error' is defined but never used                                                    no-unused-vars
-  343:5   error    Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-  343:12  error    'err' is defined but never used                                                      no-unused-vars
-  365:23  error    Refactor this function to reduce its Cognitive Complexity from 56 to the 15 allowed  sonarjs/cognitive-complexity
-  374:17  error    Make sure that using this pseudorandom number generator is safe here                 sonarjs/pseudo-random
-  385:11  error    Either use this collection's contents or remove the collection                       sonarjs/no-unused-collection
-  397:11  error    Either use this collection's contents or remove the collection                       sonarjs/no-unused-collection
-  492:7   error    Remove this assignment of "i"                                                        sonarjs/updated-loop-counter
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/json-schema-diff-attack-of-the-NaNs-2025-04-12-main.test.js
-    3:44  error  'executePlugins' is defined but never used                                                                  no-unused-vars
-    3:44  error  Remove this unused import of 'executePlugins'                                                               sonarjs/unused-import
-   15:7   error  The body of a for-in should be wrapped in an if statement to filter unwanted properties from the prototype  guard-for-in
-  191:53  error  Refactor this code to not nest functions more than 4 levels deep                                            sonarjs/no-nested-functions
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-02-27-main.js
-  8:38  error  Parsing error: Unexpected token with
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-02-27-main.test.js
-   66:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-   66:14  error  'error' is defined but never used               no-unused-vars
-  244:55  error  Unnecessary escape character: \-                no-useless-escape
-  267:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-  267:14  error  'error' is defined but never used               no-unused-vars
-  288:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-  288:14  error  'error' is defined but never used               no-unused-vars
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-07-main.js
-   61:5   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
-   61:12  error  '_error' is defined but never used                                        no-unused-vars
-  132:5   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
-  132:12  error  '_error' is defined but never used                                        no-unused-vars
-  258:32  error  'reject' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
-  284:5   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
-  284:12  error  '_error' is defined but never used                                        no-unused-vars
-  563:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
-  563:14  error  '_error' is defined but never used                                        no-unused-vars
-  574:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
-  574:14  error  '_error' is defined but never used                                        no-unused-vars
-  625:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
-  625:14  error  '_error' is defined but never used                                        no-unused-vars
-  691:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
-  691:14  error  '_error' is defined but never used                                        no-unused-vars
-  707:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
-  707:14  error  '_error' is defined but never used                                        no-unused-vars
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-07-main.test.js
-  183:37  error  Using http protocol is insecure. Use https instead                                                                                sonarjs/no-clear-text-protocols
-  377:28  error  Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-13-main.js
-     6:97  error  'readdirSync' is defined but never used                                              no-unused-vars
-     6:97  error  Remove this unused import of 'readdirSync'                                           sonarjs/unused-import
-    22:7   error  '__dirname' is assigned a value but never used                                       no-unused-vars
-    62:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-    62:14  error  'err' is defined but never used                                                      no-unused-vars
-    77:10  error  'ensureOntologiesDir' is defined but never used                                      no-unused-vars
-   117:5   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-   117:12  error  'err' is defined but never used                                                      no-unused-vars
-   131:5   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-   131:12  error  'err' is defined but never used                                                      no-unused-vars
-   137:10  error  Refactor this function to reduce its Cognitive Complexity from 18 to the 15 allowed  sonarjs/cognitive-complexity
-   232:24  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
-   577:28  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
-   615:24  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
-   620:5   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-   620:12  error  'err' is defined but never used                                                      no-unused-vars
-   627:34  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
-   633:30  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
-   645:24  error  Using http protocol is insecure. Use https instead                                   sonarjs/no-clear-text-protocols
-   679:10  error  Refactor this function to reduce its Cognitive Complexity from 46 to the 15 allowed  sonarjs/cognitive-complexity
-   697:9   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-   697:16  error  'e' is defined but never used                                                        no-unused-vars
-   783:34  error  Refactor this code to not nest functions more than 4 levels deep                     sonarjs/no-nested-functions
-   786:28  error  Refactor this code to not nest functions more than 4 levels deep                     sonarjs/no-nested-functions
-   861:3   error  Remove this redundant jump                                                           sonarjs/no-redundant-jump
-   865:10  error  Refactor this function to reduce its Cognitive Complexity from 26 to the 15 allowed  sonarjs/cognitive-complexity
-  1007:10  error  Refactor this function to reduce its Cognitive Complexity from 46 to the 15 allowed  sonarjs/cognitive-complexity
-  1025:9   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-  1025:16  error  'e' is defined but never used                                                        no-unused-vars
-  1103:28  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
-  1116:32  error  Refactor this function to reduce its Cognitive Complexity from 65 to the 15 allowed  sonarjs/cognitive-complexity
-  1134:57  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1167:49  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1172:49  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1187:49  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1192:49  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1207:47  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1207:77  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1212:47  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1226:45  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1226:72  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1242:47  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1247:47  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1320:26  error  Refactor this function to reduce its Cognitive Complexity from 51 to the 15 allowed  sonarjs/cognitive-complexity
-  1339:55  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1372:47  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1377:47  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1392:47  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1397:47  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1412:45  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1412:75  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1417:45  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1431:43  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1431:70  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1447:45  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1452:45  error  Unnecessary escape character: \'                                                     no-useless-escape
-  1509:28  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
-  1558:11  error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-  1558:18  error  'e' is defined but never used                                                        no-unused-vars
-  1571:25  error  'ws' is defined but never used. Allowed unused args must match /^_/u                 no-unused-vars
-  1602:16  error  Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed  sonarjs/cognitive-complexity
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-13-main.test.js
-   61:10  error  'clearOntologiesDir' is defined but never used                          no-unused-vars
-  411:26  error  'code' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
-  431:54  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  448:30  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  472:49  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  489:31  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  506:61  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  523:30  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  547:49  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  569:31  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  612:26  error  'code' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
-  712:25  error  'line' is assigned a value but never used                               no-unused-vars
-  712:25  error  Remove the declaration of the unused 'line' variable                    sonarjs/no-unused-vars
-  712:25  error  Remove this useless assignment to variable "line"                       sonarjs/no-dead-store
-  731:25  error  'line' is assigned a value but never used                               no-unused-vars
-  731:25  error  Remove the declaration of the unused 'line' variable                    sonarjs/no-unused-vars
-  731:25  error  Remove this useless assignment to variable "line"                       sonarjs/no-dead-store
-  765:40  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  768:30  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  792:11  error  'serverOutput' is assigned a value but never used                       no-unused-vars
-  798:26  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-  801:19  error  'data' is assigned a value but never used                               no-unused-vars
-  811:36  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-14-main.js
-  186:9   error  This framework implicitly discloses version information by default. Make sure it is safe here  sonarjs/x-powered-by
-  203:17  error  Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed            sonarjs/cognitive-complexity
-  283:17  error  Refactor this function to reduce its Cognitive Complexity from 18 to the 15 allowed            sonarjs/cognitive-complexity
-  332:27  error  Do not access Object.prototype method 'hasOwnProperty' from target object                      no-prototype-builtins
-  407:17  error  Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed            sonarjs/cognitive-complexity
-  472:29  error  'args' is defined but never used. Allowed unused args must match /^_/u                         no-unused-vars
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-14-main.test.js
-   16:3   error  'addCapital' is defined but never used          no-unused-vars
-   16:3   error  Remove this unused import of 'addCapital'       sonarjs/unused-import
-  230:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-  230:16  error  'e' is defined but never used                   no-unused-vars
-  238:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-  238:14  error  'e' is defined but never used                   no-unused-vars
-  259:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-  259:16  error  'e' is defined but never used                   no-unused-vars
-  417:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-  417:16  error  'e' is defined but never used                   no-unused-vars
-  466:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-  466:16  error  'e' is defined but never used                   no-unused-vars
-  501:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
-  501:16  error  'e' is defined but never used                   no-unused-vars
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-15-main.js
-   32:23  error  Refactor this function to reduce its Cognitive Complexity from 89 to the 15 allowed  sonarjs/cognitive-complexity
-  156:9   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-  156:16  error  'err' is defined but never used                                                      no-unused-vars
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-15-main.test.js
-  317:78  error  'filePath' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
-  350:78  error  'filePath' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
-  434:32  error  Refactor this code to not nest functions more than 4 levels deep            sonarjs/no-nested-functions
-  435:26  error  Refactor this code to not nest functions more than 4 levels deep            sonarjs/no-nested-functions
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-25-main.js
-  44:56  error  Parsing error: Unexpected token ,
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-25-main.test.js
-  4:38  error  Parsing error: Unexpected token assert
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-26-main.js
-   20:17  error  Refactor this function to reduce its Cognitive Complexity from 32 to the 15 allowed  sonarjs/cognitive-complexity
-   73:19  error  Do not access Object.prototype method 'hasOwnProperty' from target object            no-prototype-builtins
-   80:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-   80:14  error  'e' is defined but never used                                                        no-unused-vars
-   94:36  error  Do not access Object.prototype method 'hasOwnProperty' from target object            no-prototype-builtins
-   96:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object            no-prototype-builtins
-  109:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
-  109:14  error  'e' is defined but never used                                                        no-unused-vars
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-26-main.test.js
-  1:34  error  'vi' is defined but never used     no-unused-vars
-  1:34  error  Remove this unused import of 'vi'  sonarjs/unused-import
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-05-01-main.js
-  5:38  error  Parsing error: Unexpected token assert
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-05-01-main.test.js
-  4:38  error  Parsing error: Unexpected token assert
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-05-02-main.js
-  18:63  error  Replace `'main.js'` with `"main.js"`  prettier/prettier
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-05-02-main.test.js
-  19:35  error  Replace `'log').mockImplementation((...args)·=>·logs.push(args.join('·'` with `"log").mockImplementation((...args)·=>·logs.push(args.join("·"`  prettier/prettier
-  21:22  error  Replace `l·=>·l.includes('--to-owl'` with `(l)·=>·l.includes("--to-owl"`                                                                        prettier/prettier
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/plot-code-lib-2025-02-24-main.js
-   174:38  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   175:40  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   176:40  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   195:41  error    Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed                                               sonarjs/cognitive-complexity
-   208:29  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
-   208:29  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   229:44  error    Refactor this function to reduce its Cognitive Complexity from 45 to the 15 allowed                                               sonarjs/cognitive-complexity
-   249:20  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
-   249:20  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   249:27  error    Rework this part of the regex to not match the empty string                                                                       sonarjs/empty-string-repetition
-   253:62  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   271:33  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   275:59  error    Review this redundant assignment: "yCoeff" already holds the assigned value along all execution paths                             sonarjs/no-redundant-assignments
-   279:38  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   291:34  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   295:59  error    Review this redundant assignment: "yCoeff" already holds the assigned value along all execution paths                             sonarjs/no-redundant-assignments
-   299:39  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   347:17  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
-   347:17  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   375:57  error    Unnecessary escape character: \-                                                                                                  no-useless-escape
-   379:36  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   382:45  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   385:36  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   388:45  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   411:37  error    Refactor this function to reduce its Cognitive Complexity from 37 to the 15 allowed                                               sonarjs/cognitive-complexity
-   531:7   error    'displayPlot' is assigned a value but never used                                                                                  no-unused-vars
-   549:3   error    Refactor this function to reduce its Cognitive Complexity from 24 to the 15 allowed                                               sonarjs/cognitive-complexity
-   565:16  error    Make sure that using this pseudorandom number generator is safe here                                                              sonarjs/pseudo-random
-  1171:7   error    'demoTest' is assigned a value but never used                                                                                     no-unused-vars
-  1208:23  error    Refactor this function to reduce its Cognitive Complexity from 64 to the 15 allowed                                               sonarjs/cognitive-complexity
-  1274:81  error    Refactor this function to reduce its Cognitive Complexity from 38 to the 15 allowed                                               sonarjs/cognitive-complexity
-  1357:36  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1357:52  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1357:70  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1357:96  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1480:32  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1480:48  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1480:66  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1480:92  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-
-/home/runner/work/repository0-crucible/repository0-crucible/archive/plot-code-lib-2025-02-24.main.js
-   174:38  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   175:40  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   176:40  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   195:41  error    Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed                                               sonarjs/cognitive-complexity
-   208:29  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
-   208:29  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   229:44  error    Refactor this function to reduce its Cognitive Complexity from 45 to the 15 allowed                                               sonarjs/cognitive-complexity
-   249:20  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
-   249:20  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   249:27  error    Rework this part of the regex to not match the empty string                                                                       sonarjs/empty-string-repetition
-   253:62  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   271:33  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   275:59  error    Review this redundant assignment: "yCoeff" already holds the assigned value along all execution paths                             sonarjs/no-redundant-assignments
-   279:38  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   291:34  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   295:59  error    Review this redundant assignment: "yCoeff" already holds the assigned value along all execution paths                             sonarjs/no-redundant-assignments
-   299:39  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   347:17  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
-   347:17  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   375:57  error    Unnecessary escape character: \-                                                                                                  no-useless-escape
-   379:36  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   382:45  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   385:36  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
-   388:45  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-   411:37  error    Refactor this function to reduce its Cognitive Complexity from 37 to the 15 allowed                                               sonarjs/cognitive-complexity
-   531:7   error    'displayPlot' is assigned a value but never used                                                                                  no-unused-vars
-   549:3   error    Refactor this function to reduce its Cognitive Complexity from 24 to the 15 allowed                                               sonarjs/cognitive-complexity
-   565:16  error    Make sure that using this pseudorandom number generator is safe here                                                              sonarjs/pseudo-random
-  1171:7   error    'demoTest' is assigned a value but never used                                                                                     no-unused-vars
-  1208:23  error    Refactor this function to reduce its Cognitive Complexity from 64 to the 15 allowed                                               sonarjs/cognitive-complexity
-  1274:81  error    Refactor this function to reduce its Cognitive Complexity from 38 to the 15 allowed                                               sonarjs/cognitive-complexity
-  1357:36  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1357:52  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1357:70  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1357:96  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1480:32  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1480:48  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1480:66  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-  1480:92  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
-
-/home/runner/work/repository0-crucible/repository0-crucible/tests/unit/main.test.js
-   43:35  error  Delete `·`                                                                                                                                                              prettier/prettier
-   49:51  error  Delete `⏎······`                                                                                                                                                        prettier/prettier
-   59:41  error  Replace `⏎······expect.stringMatching(/^\d\.\d{99}$/)⏎····` with `expect.stringMatching(/^\d\.\d{99}$/)`                                                                prettier/prettier
-   68:41  error  Replace `⏎······expect.stringMatching(/^\d\.\d{49}$/)⏎····` with `expect.stringMatching(/^\d\.\d{49}$/)`                                                                prettier/prettier
-   89:51  error  Delete `⏎······`                                                                                                                                                        prettier/prettier
-   96:41  error  Replace `⏎······expect.stringMatching(/^\[Benchmark\]·Execution·time:·\d+ms·3\.14$/)⏎····` with `expect.stringMatching(/^\[Benchmark\]·Execution·time:·\d+ms·3\.14$/)`  prettier/prettier
-  107:65  error  Replace `E` with `e`                                                                                                                                                    prettier/prettier
-
-✖ 273 problems (266 errors, 7 warnings)
-  10 errors and 0 warnings potentially fixable with the `--fix` option.
+This will improve documentation clarity and reinforce purpose for new users and contributors.
 comments:
-Author:github-actions[bot], Created:2025-05-18T04:39:03Z, Comment: Workflow name: flow-linting-to-issue
-Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15092367462
+Author:github-actions[bot], Created:2025-05-18T08:22:27Z, Comment: Workflow name: flow-feature-development
+Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15093998634
 Workflow event: schedule
 Workflow inputs: null
-HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/bdacdc4fe13fa44d74c825475f792287d9504cde
-Author:github-actions[bot], Created:2025-05-18T04:39:32Z, Comment: Workflow name: flow-linting-to-issue
-Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15092367462
+HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/b86117c6ace19972db93e728d4ab19a3eaee5eb9
+Author:github-actions[bot], Created:2025-05-18T08:23:11Z, Comment: Workflow name: flow-feature-development
+Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15093998634
 Workflow event: schedule
 Workflow inputs: null
-HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/bdacdc4fe13fa44d74c825475f792287d9504cde
-Author:github-actions[bot], Created:2025-05-18T04:40:43Z, Comment: The lint issues are coming from archived, non-active code and do not affect the core π calculation functionality. They represent superficial validation errors in legacy files that fall outside the project's mission and primary feature set.
-Author:github-actions[bot], Created:2025-05-18T04:41:45Z, Comment: Workflow name: flow-linting-to-issue
-Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15092367462
+HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/b86117c6ace19972db93e728d4ab19a3eaee5eb9
+Author:github-actions[bot], Created:2025-05-18T08:24:33Z, Comment: Workflow name: flow-feature-development
+Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15093998634
 Workflow event: schedule
 Workflow inputs: null
-HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/1842fc4bbf0e146dea271c16885cb4a417d5d5a4
-Author:github-actions[bot], Created:2025-05-18T04:43:18Z, Comment: Workflow name: flow-linting-to-issue
-Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15092367462
-Workflow event: schedule
-Workflow inputs: null
-HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/1842fc4bbf0e146dea271c16885cb4a417d5d5a4
+HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/b86117c6ace19972db93e728d4ab19a3eaee5eb9
 ISSUE_END            
 
 Dependencies list from command: npm list
@@ -1420,13 +1137,13 @@ Unable to revert mtime: /usr/share/fonts/truetype/dejavu
 Unable to revert mtime: /usr/share/fonts/truetype/lato
 Unable to revert mtime: /usr/share/fonts/truetype/liberation
 Unable to revert mtime: /usr/share/fonts/truetype/noto
- [32m✓[39m tests/unit/main.test.js [2m([22m[2m16 tests[22m[2m)[22m[33m 2860[2mms[22m[39m
-   [33m[2m✓[22m[39m CLI Options[2m > [22mpng output writes valid PNG file [33m 2820[2mms[22m[39m
+ [32m✓[39m tests/unit/main.test.js [2m([22m[2m16 tests[22m[2m)[22m[33m 1567[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI Options[2m > [22mpng output writes valid PNG file [33m 1528[2mms[22m[39m
 
 [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
 [2m      Tests [22m [1m[32m16 passed[39m[22m[90m (16)[39m
-[2m   Start at [22m 04:45:21
-[2m   Duration [22m 3.14s[2m (transform 34ms, setup 0ms, collect 59ms, tests 2.86s, environment 0ms, prepare 60ms)[22m
+[2m   Start at [22m 08:27:00
+[2m   Duration [22m 1.86s[2m (transform 45ms, setup 0ms, collect 77ms, tests 1.57s, environment 0ms, prepare 58ms)[22m
 TEST_OUTPUT_END            
 
 Main execution output from command: npm run start
