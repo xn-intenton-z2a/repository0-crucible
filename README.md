@@ -21,12 +21,18 @@ Install via npm:
 npm install repository0-crucible
 ```
 
+## Project Mission
+
+Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.
+
 ## Features
 
-* Customizable π digit precision (`--digits`, `-d`)
-* Algorithm selection (`--algorithm`, `-a`, options: `leibniz`, `spigot`, `montecarlo`)
-* Performance benchmarking (`--benchmark`, `-b`)
-* Output formats: text and PNG (`--output-format`, `-f`, and `--output`, `-o`)
+> The following features implement and support our mission of exploration, performance benchmarking, and visual/text-based output for π calculations:
+
+* Customizable π digit precision (`--digits`, `-d`) (supports exploring varying digit lengths)
+* Algorithm selection (`--algorithm`, `-a`, options: `leibniz`, `spigot`, `montecarlo`) (enables evaluation of different computational techniques)
+* Performance benchmarking (`--benchmark`, `-b`) (measures and compares algorithm speed)
+* Output formats: text and PNG (`--output-format`, `-f`, and `--output`, `-o`) (provides both machine-readable and visual results)
 
 ## Usage
 
