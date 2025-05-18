@@ -1,0 +1,1490 @@
+
+You are providing the entire new content of source files, test files, documentation files, and other necessary
+files with all necessary changes applied to deliver the resolution to an issue. Focus on high-impact, 
+functional solutions that address core issues rather than superficial changes or excessive code polishing.
+Implement as much as you can and refer to the projects features and mission statement when expanding the code
+beyond the scope of the original issue. Implement whole features and do not leave stubbed out or pretended code.
+
+Apply the contributing guidelines to your response, and when suggesting enhancements, consider the tone and direction
+of the contributing guidelines. Prioritize changes that deliver user value and maintain the integrity
+of the codebase's primary purpose.
+
+Do as much as you can all at once.
+
+Follow the linting guidelines and the formatting guidelines from the included config.
+
+
+You must only add, remove, or change the files in the target writable locations. You can update multiple
+files by specifying their paths and contents in the enumerated updatedFile01Filepath updatedFile02Contents response
+attribute, a second file would use updatedFile01Filepath updatedFile02Contents and so on to 16. Each file will
+be checked against the write permission in the Agent configuration file before being written. Feel free to
+add new files as long as they are in the target writable locations. You can also remove files, but only if
+they are in the target writable locations. To delete a file, set the updated file contents to "delete".
+
+The target writable locations for your output are: SOURCES.md;library/;features/;tests/unit/;src/lib/;package.json;docs/;README.md
+Other file will be supplied in the context but only the paths above should be written to.
+
+Only provide new or updated content for the target source files in src/lib.
+Only delete or update the target source files in src/lib.
+Only provide new or updated content for the target test files in tests/unit.
+Only delete or update the target test files in tests/unit.
+Only update dependency file package.json.
+Only update the target documentation files in docs.
+
+Follow the attached Formatting file content and Linting file content.
+
+Consider the following when refining your response:
+* Current feature names and specifications in the repository
+* Source file content
+* Test file content
+* Documentation file content
+* README file content
+* MISSION file content
+* Contributing file content
+* Dependencies file content
+* Formatting file content
+* Linting file content
+* Agent configuration file content
+* Issue details
+* Dependency list
+* Build output
+* Test output
+* Main execution output
+
+Current feature names and specifications (for context, read only):
+CURRENT_FEATURES_START
+features/JSON_OUTPUT.md
+# features/JSON_OUTPUT.md
+# JSON Output Support
+
+## CLI Integration
+Add support for a JSON output format to enable machine-readable results. Users can specify `--output-format json` to print π calculation results as a JSON object.
+
+### New Option
+- `--output-format json`  outputs a JSON object to the console.
+
+## Implementation Details
+1. In `src/lib/main.js` extend yargs `choices` for `output-format` to include `json`.
+2. After computing `piString`, when `outputFormat` is `json`:
+   1. Determine `durationMs` if benchmarking is enabled; else omit or set to `null`.
+   2. Construct an object:
+      {
+        digits: <number>,
+        algorithm: <string>,
+        pi: <string>,
+        durationMs: <number or null>
+      }
+   3. Print this object via `console.log(JSON.stringify(...))`.
+
+## Tests
+Add unit tests in `tests/unit/main.test.js`:
+1. Invoking `main(["--digits","3","--output-format","json"])` logs a JSON string matching:
+   {"digits":3,"algorithm":"leibniz","pi":"3.14","durationMs":null}
+2. Invoking `main(["--digits","4","--algorithm","spigot","--benchmark","--output-format","json"])` logs JSON with a numeric `durationMs` and correct fields.
+
+## Documentation Updates
+1. Update `docs/USAGE.md` to include `json` under `--output-format` examples.
+2. Update `README.md` Features section to mention machine-readable JSON output.features/PROGRESS_INDICATOR.md
+# features/PROGRESS_INDICATOR.md
+# PROGRESS INDICATOR
+
+## Purpose
+Add a real-time progress bar to the CLI during π calculation to provide visibility into long-running computations and improve user experience.
+
+## CLI Integration
+Add a new option:
+
+- `--progress`  enable display of a live progress bar during π approximation loops.
+
+When the flag is set, the CLI shows a progress bar in the console while computing π.
+
+## Implementation Details
+1. Add `cli-progress` as a dependency in `package.json`.
+2. In `src/lib/main.js`:
+   1. Import the ProgressBar from `cli-progress`.
+   2. Detect the `progress` flag alongside existing options.
+   3. Calculate an estimated total work units:
+      - For Leibniz and Spigot: use `digits * 10000` terms.
+      - For Monte Carlo: use a sample count of `digits * 10000`.
+      - For Chudnovsky: estimate term count as `Math.ceil(digits / 14)`.
+   4. When `--progress` is true and `benchmark` is false:
+      - Initialize a new progress bar before the main loop.
+      - Within each iteration (or at defined intervals), call `bar.update(currentCount)`.
+      - After loop completion, call `bar.stop()`.
+   5. Ensure the progress bar is disabled when `output-format` is `json` or `png` to avoid corrupting those outputs.
+3. Retain existing calculation logic and ensure compatibility with other flags.
+
+## Tests
+Add tests in `tests/unit/main.test.js`:
+1. Mock or spy on ProgressBar methods to confirm `start`, `update`, and `stop` are called when `--progress` is passed.
+2. Verify that invoking `main(["--digits","3","--progress"])` displays progress updates in the console and ultimately prints the result.
+3. Confirm that without `--progress`, no progress bar is invoked.
+
+## Documentation Updates
+1. Update `docs/USAGE.md` to document the `--progress` flag and include an example:
+   node src/lib/main.js --digits 5000 --progress
+2. Update `README.md` under Features to list real-time progress bar support.features/CHUDNOVSKY_ALGORITHM.md
+# features/CHUDNOVSKY_ALGORITHM.md
+# Purpose
+Add a high-performance Chudnovsky algorithm implementation for π calculation to deliver rapid convergence and allow computing many digits efficiently.
+
+# CLI Integration
+Enhance the existing CLI to support a new algorithm option:
+
+Option name: --algorithm   valid values: leibniz, spigot, montecarlo, chudnovsky
+Default remains leibniz
+
+Example invocation:
+node src/lib/main.js --digits 50 --algorithm chudnovsky --output-format text
+
+# Implementation Details
+1. Add dependency decimal.js to package.json dependencies.  This library provides arbitrary precision decimal arithmetic.
+2. In src/lib/main.js import Decimal from 'decimal.js'
+3. Implement a new function calculatePiChudnovsky(digits) that:
+   1. Sets Decimal precision to digits plus a guard (e.g. decimals + 10)
+   2. Uses the Chudnovsky series with terms until target precision:
+      - Term formula: M(k) * L(k) / X(k) where M, L, X follow standard definitions
+      - Sum terms until the incremental change is below the precision threshold
+   3. Returns the result formatted to the requested significant digits
+4. In the calculatePi dispatcher add case 'chudnovsky' that calls calculatePiChudnovsky
+
+# Tests
+1. Add unit tests in tests/unit/main.test.js for calculatePi using the new algorithm:
+   - verify calculatePi(1, chudnovsky) yields 3
+   - verify calculatePi(5, chudnovsky) yields 3.1415
+2. Add a CLI integration test:
+   - invoking main(["--digits","10","--algorithm","chudnovsky"]) logs a string matching /^\d\.\d{9}$/ to console
+
+# Documentation Updates
+1. Update docs/USAGE.md to list chudnovsky as a valid algorithm option with example
+2. Update README.md Features section to mention high-performance chudnovsky algorithm
+3. Add a note in README.md on decimal.js dependencyfeatures/HTTP_API.md
+# features/HTTP_API.md
+# HTTP API Server
+
+Expose π calculation functionality over HTTP with optional JSON and PNG responses, and include interactive Swagger documentation.
+
+# CLI Flag and Options
+
+Add two new CLI options:
+
+- `--serve`    Launch the HTTP server instead of printing to console or writing files.
+- `--port`     Specify the port for the HTTP server (integer ≥ 1). Defaults to 3000.
+
+# HTTP Endpoints
+
+## GET /pi
+Accepts query parameters:
+- `digits`     Total significant digits (integer ≥ 1).
+- `algorithm`  Approximation method: leibniz, spigot, or montecarlo.
+- `format`     Response format: json (default) or png.
+
+Behavior:
+- When `format=json`, returns `Content-Type: application/json` with body:
+  {
+    pi: string,
+    algorithm: string,
+    digits: number,
+    durationMs: number
+  }
+- When `format=png`, returns `Content-Type: image/png` and the PNG image buffer of the π digits.
+
+## GET /api-docs
+Serve interactive Swagger UI for the API on the same server.
+
+# Implementation Details
+
+1. Add `express` and `swagger-ui-express` to dependencies.  
+2. In `src/lib/main.js`, detect `--serve`:
+   - Load or generate an OpenAPI specification object for the `/pi` endpoint.  
+   - Create an Express app, enable JSON body parsing, and configure CORS as needed.  
+   - Mount the Swagger UI middleware at `/api-docs` using the OpenAPI spec.  
+   - Define the `/pi` route handler that:  
+     - Parses and validates query parameters.  
+     - Invokes `calculatePi` with the specified digits and algorithm.  
+     - Measures calculation time if benchmark is enabled.  
+     - Returns JSON or uses `outputPng` to send the PNG buffer.  
+   - Start listening on the specified port and log a startup message.
+
+# Tests
+
+Add tests in `tests/unit/main.test.js` covering HTTP behavior:
+
+- Starting the server with `main(['--serve','--port','0'])` binds to an ephemeral port and responds to `/pi?digits=3` with JSON `{ pi: '3.14', digits:3, algorithm:'leibniz', durationMs: number }`.
+- Querying `/pi?digits=2&format=png` returns a PNG buffer that begins with the `\x89PNG` signature.
+- Requesting invalid parameters (e.g., non-integer digits) yields HTTP 400 with error message.
+
+# Documentation Updates
+
+- Update `docs/USAGE.md` to document the `--serve` and `--port` flags, describe HTTP endpoints `/pi` and `/api-docs`, and include request examples.
+- Update `README.md` Features section to list HTTP API capabilities and usage instructions for the server mode.
+
+# Dependencies
+
+- Add `express` and `swagger-ui-express` to `dependencies` in `package.json` for HTTP server and Swagger UI support.features/PNG_OUTPUT.md
+# features/PNG_OUTPUT.md
+# PNG Output Generation
+
+Introduce support for rendering π digits as a PNG image for visual inspection and sharing. When users specify the `--format png` flag, the CLI will generate a PNG file displaying the computed digits in a monospaced font on a simple background.
+
+# CLI Flag and Options
+
+Add a new CLI option:
+- `--format png`  renders output as a PNG image rather than text.
+- `--output <file>` (optional)  specifies the output file path. If omitted, defaults to `pi.png` in the current working directory.
+
+# Implementation Details
+
+1. Add `canvas` as a runtime dependency.
+2. In `src/lib/main.js`, detect when `format` is `png`. Create a Canvas instance sized appropriately based on the number of digits:
+   - Use a monospaced font (e.g., Courier) with a fixed font size.
+   - Calculate canvas width as `digitCount * (fontSize * 0.6)` and height as `fontSize * 1.5`.
+   - Render the π string onto the canvas at a fixed margin.
+3. Convert the canvas to a PNG buffer and write it to the specified output file path using Node.js `fs` APIs.
+4. Maintain existing behavior when `--format text` is used.
+
+# Tests
+
+- Add tests in `tests/unit/main.test.js` to cover:
+  - Invoking `main(["--digits","3","--format","png","--output","test.png"])` writes a valid PNG file at `test.png`.
+  - Verify that the generated buffer starts with the PNG signature bytes (`\x89PNG`).
+  - Clean up test files after assertions.
+
+# Documentation Updates
+
+- Update `docs/USAGE.md` to document the new `--format png` and `--output` flags with examples.
+- Update `README.md` under Features and Usage to mention PNG output support.
+
+# Dependencies
+
+- Add `canvas` to `dependencies` in `package.json` to support server-side canvas rendering.
+CURRENT_FEATURES_END
+
+Source files (write new files or update files in src/lib as necessary):
+(Multiple files from both in writable locations and not.)
+SOURCE_FILE_START Filepath: src/lib/main.js
+#!/usr/bin/env node
+// src/lib/main.js
+
+import { fileURLToPath } from "url";
+import fs from "fs";
+import yargs from "yargs";
+import { createCanvas } from "canvas";
+
+/**
+ * Calculate π using the Leibniz series approximation.
+ * @param {number} digits - Total significant digits (integer ≥ 1).
+ * @returns {string} π approximation as a string truncated to the requested digits.
+ */
+function calculatePiLeibniz(digits) {
+  const decimalPlaces = digits - 1;
+  const terms = digits * 10000;
+  let sum = 0;
+  for (let k = 0; k < terms; k++) {
+    sum += (k % 2 === 0 ? 1 : -1) / (2 * k + 1);
+  }
+  const piApprox = 4 * sum;
+  return piApprox.toFixed(decimalPlaces);
+}
+
+/**
+ * Spigot algorithm placeholder (alias to Leibniz).
+ * @param {number} digits - Total significant digits.
+ * @returns {string} π approximation.
+ */
+function calculatePiSpigot(digits) {
+  // Placeholder: alias to Leibniz implementation
+  return calculatePiLeibniz(digits);
+}
+
+/**
+ * Monte Carlo approximation placeholder (alias to Leibniz).
+ * @param {number} digits - Total significant digits.
+ * @returns {string} π approximation.
+ */
+function calculatePiMontecarlo(digits) {
+  // Placeholder: alias to Leibniz implementation
+  return calculatePiLeibniz(digits);
+}
+
+/**
+ * Dispatch π calculation based on algorithm.
+ * @param {number} digits - Total significant digits.
+ * @param {string} algorithm - 'leibniz', 'spigot', or 'montecarlo'.
+ * @returns {string} π approximation.
+ */
+export function calculatePi(digits, algorithm = "leibniz") {
+  if (!Number.isInteger(digits) || digits < 1) {
+    throw new Error("Digits must be a positive integer");
+  }
+  switch (algorithm) {
+    case "leibniz":
+      return calculatePiLeibniz(digits);
+    case "spigot":
+      return calculatePiSpigot(digits);
+    case "montecarlo":
+      return calculatePiMontecarlo(digits);
+    default:
+      throw new Error(`Unsupported algorithm: ${algorithm}`);
+  }
+}
+
+/**
+ * Render π digits as PNG image and write to file.
+ * @param {string} piString - π digits string.
+ * @param {string} outputPath - Output file path.
+ */
+function outputPng(piString, outputPath) {
+  const fontSize = 20;
+  const margin = 10;
+  const width = Math.ceil(piString.length * (fontSize * 0.6) + margin * 2);
+  const height = Math.ceil(fontSize * 1.5 + margin * 2);
+  const canvas = createCanvas(width, height);
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = "black";
+  ctx.font = `${fontSize}px Courier`;
+  ctx.textBaseline = "top";
+  ctx.fillText(piString, margin, margin);
+  const buffer = canvas.toBuffer("image/png");
+  fs.writeFileSync(outputPath, buffer);
+}
+
+/**
+ * CLI entrypoint: parse flags and output π.
+ */
+export function main(cliArgs) {
+  const parser = yargs(cliArgs)
+    .exitProcess(false)
+    .scriptName("pi")
+    .usage("Usage: $0 [options]")
+    .option("digits", {
+      alias: "d",
+      type: "number",
+      describe: "Total significant digits to display (integer ≥ 1)",
+      default: 100,
+    })
+    .option("algorithm", {
+      alias: "a",
+      type: "string",
+      describe: "Algorithm to use for π approximation",
+      default: "leibniz",
+    })
+    .option("benchmark", {
+      alias: "b",
+      type: "boolean",
+      describe: "Enable performance benchmarking",
+      default: false,
+    })
+    .option("output-format", {
+      alias: "f",
+      type: "string",
+      describe: "Output format",
+      default: "text",
+    })
+    .option("output", {
+      alias: "o",
+      type: "string",
+      describe: "Output file for PNG format",
+      default: "pi.png",
+    })
+    .help("help")
+    .alias("help", "h");
+
+  const argv = parser.argv;
+
+  const digits = argv.digits;
+  const algorithm = argv.algorithm;
+  const benchmark = argv.benchmark;
+  const outputFormat = argv["output-format"];
+  const output = argv.output;
+
+  const startTime = benchmark ? Date.now() : null;
+  const piString = calculatePi(digits, algorithm);
+
+  if (benchmark) {
+    const duration = Date.now() - startTime;
+    console.log(`[Benchmark] Execution time: ${duration}ms ${piString}`);
+    return;
+  }
+
+  if (outputFormat === "text") {
+    console.log(piString);
+  } else if (outputFormat === "png") {
+    outputPng(piString, output);
+  } else {
+    throw new Error(`Unsupported format: ${outputFormat}`);
+  }
+}
+
+// Execute if run directly
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main(process.argv.slice(2));
+}
+
+SOURCE_FILE_END
+
+
+
+Test files (write new files or update files in tests/unit as necessary):
+(Multiple files from both in writable locations and not.)
+TEST_FILE_START File: tests/unit/main.test.js
+import { describe, test, expect, vi } from "vitest";
+import fs from "fs";
+import { calculatePi, main } from "../../src/lib/main.js";
+
+// Existing import and calculatePi tests
+describe("Main Module Import", () => {
+  test("should be non-null", () => {
+    expect(calculatePi).not.toBeNull();
+    expect(main).not.toBeNull();
+  });
+});
+
+describe("calculatePi", () => {
+  test("digits=1 yields '3'", () => {
+    expect(calculatePi(1)).toBe("3");
+  });
+  test("digits=2 yields '3.1'", () => {
+    expect(calculatePi(2)).toBe("3.1");
+  });
+  test("digits=3 yields '3.14'", () => {
+    expect(calculatePi(3)).toBe("3.14");
+  });
+  test("throws on non-integer or <1 digits", () => {
+    expect(() => calculatePi(0)).toThrow();
+    expect(() => calculatePi(-2)).toThrow();
+    expect(() => calculatePi(2.5)).toThrow();
+  });
+  test("throws on unsupported algorithm", () => {
+    expect(() => calculatePi(3, "unknown")).toThrow(/Unsupported algorithm/);
+  });
+});
+
+describe("Main Output", () => {
+  test("should print π to console for given digits", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--digits", "3"]);
+    expect(logSpy).toHaveBeenCalledWith("3.14");
+    logSpy.mockRestore();
+  });
+
+  test("should show help and return without error", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    expect(() => main(["--help"])) .not.toThrow();
+    expect(logSpy).toHaveBeenCalled();
+    logSpy.mockRestore();
+  });
+
+  test("throws error for unsupported format", () => {
+    expect(() => main(["--output-format", "xml"]))
+      .toThrow(/Unsupported format/);
+  });
+});
+
+// New CLI options and behaviors
+describe("CLI Options", () => {
+  test("default digits prints 100 significant digits", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main([]);
+    expect(logSpy).toHaveBeenCalledWith(
+      expect.stringMatching(/^\d\.\d{99}$/)
+    );
+    logSpy.mockRestore();
+  });
+
+  test("digits=50 prints 50 significant digits", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--digits", "50"]);
+    expect(logSpy).toHaveBeenCalledWith(
+      expect.stringMatching(/^\d\.\d{49}$/)
+    );
+    logSpy.mockRestore();
+  });
+
+  test("algorithm spigot produces same output as leibniz", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--digits", "3", "--algorithm", "spigot"]);
+    expect(logSpy).toHaveBeenCalledWith("3.14");
+    logSpy.mockRestore();
+  });
+
+  test("algorithm montecarlo produces same output as leibniz", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--digits", "3", "--algorithm", "montecarlo"]);
+    expect(logSpy).toHaveBeenCalledWith("3.14");
+    logSpy.mockRestore();
+  });
+
+  test("unsupported algorithm throws error", () => {
+    expect(() => main(["--algorithm", "unknown"]))
+      .toThrow(/Unsupported algorithm/);
+  });
+
+  test("benchmark prefixes output with timing", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--digits", "3", "--benchmark"]);
+    expect(logSpy).toHaveBeenCalledWith(
+      expect.stringMatching(/^\[Benchmark\] Execution time: \d+ms 3\.14$/)
+    );
+    logSpy.mockRestore();
+  });
+
+  test("png output writes valid PNG file", () => {
+    const file = "test.png";
+    if (fs.existsSync(file)) fs.unlinkSync(file);
+    main(["--digits", "2", "--output-format", "png", "--output", file]);
+    const buf = fs.readFileSync(file);
+    expect(buf.slice(0, 4)).toEqual(Buffer.from([0x89, 0x50, 0x4E, 0x47]));
+    fs.unlinkSync(file);
+  });
+});
+
+TEST_FILE_END
+
+
+
+Documentation files (write new files or update files in docs as necessary):
+(Multiple files from both in writable locations and not.)
+DOCUMENTATION_FILE_START File: docs/USAGE.md
+# CLI Usage
+
+The π calculation CLI supports precision control, algorithm selection, performance benchmarking, and output formatting.
+
+## Options
+
+- `--digits, -d <number>`  
+  Total significant digits to display (integer ≥ 1). Default: `100`.
+
+- `--algorithm, -a <leibniz|spigot|montecarlo>`  
+  Algorithm to use for π approximation. Default: `leibniz`.
+
+- `--benchmark, -b`  
+  Prefix output with execution time in milliseconds. Default: `false`.
+
+- `--output-format, -f <text|png>`  
+  Output format. `text` prints digits to console; `png` writes a PNG image. Default: `text`.
+
+- `--output, -o <file>`  
+  Output file path when using PNG format. Default: `pi.png`.
+
+- `--help, -h`  
+  Display usage information and exit.
+
+## Examples
+
+### Text Output
+
+```bash
+node src/lib/main.js --digits 5 --algorithm leibniz --output-format text
+# Output:
+3.1415
+```
+
+### PNG Output
+
+```bash
+node src/lib/main.js --digits 20 --output-format png --output mypi.png
+# Writes 'mypi.png' with the π digits rendered on a monospaced canvas
+```
+
+### Benchmarking
+
+```bash
+node src/lib/main.js --digits 10 --benchmark
+# Output example:
+[Benchmark] Execution time: 12ms 3.141592653
+```
+
+### Help
+
+```bash
+node src/lib/main.js --help
+```
+DOCUMENTATION_FILE_END
+
+
+
+README file (for context, read only): README.md
+README_FILE_START
+# repository0-crucible
+
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+
+To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
+
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+
+## Repository Template
+
+The repository is intended as a template that includes:
+* A Template Base: A starting point for new projects.
+* A Running Experiment: An example implementation that demonstrates one way to use the template.
+* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+
+## Installation
+
+Install via npm:
+
+```bash
+npm install repository0-crucible
+```
+
+## Features
+
+* Customizable π digit precision (`--digits`, `-d`)
+* Algorithm selection (`--algorithm`, `-a`, options: `leibniz`, `spigot`, `montecarlo`)
+* Performance benchmarking (`--benchmark`, `-b`)
+* Output formats: text and PNG (`--output-format`, `-f`, and `--output`, `-o`)
+
+## Usage
+
+Run the CLI tool with flags to control behavior:
+
+### Text Output
+
+```bash
+node src/lib/main.js --digits 5 --algorithm spigot --output-format text
+```
+
+### PNG Output
+
+```bash
+npm run start -- --digits 20 --output-format png --output pi.png
+```
+
+### Benchmarking
+
+```bash
+npm run start -- --digits 10 --benchmark
+```
+
+### Help
+
+```bash
+node src/lib/main.js --help
+```
+
+## Incremental Changes Plan
+
+TODO: Add forthcoming changes here.
+
+## Contributing
+
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
+
+## License
+
+Released under the MIT License (see [LICENSE](./LICENSE)).
+README_FILE_END
+
+MISSION file (for context, read only): MISSION.md
+MISSION_FILE_START
+# xn-intenton-z2a/repository0-crucible
+Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.
+
+MISSION_FILE_END
+
+Contributing file (for context, read only): CONTRIBUTING.md
+CONTRIBUTING_FILE_START
+# owl-builder
+
+This is a CLI tool and JavaScript library.
+
+## How to Contribute
+
+The guidelines below apply to human or automated contributions:
+
+1. **Report Issues or Ideas:**
+    - Open an issue on GitHub to share bug reports, feature requests, or any improvements you envision.
+    - Clear descriptions and reproducible steps are highly appreciated.
+
+2. **Submit Pull Requests:**
+    - Fork the repository and create a feature branch.
+    - Implement your changes, ensuring you follow the existing coding style and standards.
+    - Add tests to cover any new functionality.
+    - Update documentation if your changes affect usage or workflow behavior.
+    - Submit your pull request for review.
+
+## Guidelines
+
+- **Code Quality:**
+    - Ensure there are tests that cover your changes and any likely new cases they introduce.
+    - When making a change remain consistent with the existing code style and structure.
+    - When adding new functionality, consider if some unused or superseded code should be removed.
+
+- **Compatibility:**
+    - Ensure your code runs on Node 20 and adheres to ECMAScript Module (ESM) standards.
+    - Tests use vitest and competing test frameworks should not be added.
+    - Mocks in tests must not interfere with other tests.
+
+- **Testing:**
+    - The command `npm test` should invoke the tests added for the new functionality (and pass).
+    - If you add new functionality, ensure it is covered by tests.
+
+- **Documentation:**
+    - When making a change to the main source file, review the readme to see if it needs to be updated and if so, update it.
+    - Where the source exports a function, consider that part of the API of the library and document it in the readme.
+    - Where the source stands-up an HTTP endpoint, consider that part of the API of the library and document it in the readme.
+    - Include usage examples including inline code usage and CLI and HTTP invocation, API references.
+
+CONTRIBUTING_FILE_END
+
+Dependencies file (for context, read only): package.json
+DEPENDENCIES_FILE_START
+{
+  "name": "@xn-intenton-z2a/repository0-crucible",
+  "version": "1.2.0-0",
+  "description": "add repository description here",
+  "type": "module",
+  "main": "src/lib/main.js",
+  "scripts": {
+    "build": "echo 'Nothing to build'",
+    "formatting": "prettier --check .",
+    "formatting-fix": "prettier --write .",
+    "linting": "eslint .",
+    "linting-json": "eslint --format=@microsoft/eslint-formatter-sarif .",
+    "linting-fix": "eslint --fix .",
+    "update-to-minor": "npx ncu --upgrade --enginesNode --target minor --verbose --install always",
+    "update-to-greatest": "npx ncu --upgrade --enginesNode --target greatest --verbose --install always --reject 'alpha'",
+    "test": "vitest",
+    "test:unit": "vitest --coverage",
+    "test:e2e": "vitest tests/e2e/cli.test.js",
+    "start": "node src/lib/main.js",
+    "diagnostics": "node src/lib/main.js --diagnostics",
+    "serve": "node src/lib/main.js --serve",
+    "build-intermediate": "node src/lib/main.js --build-intermediate",
+    "build-enhanced": "node src/lib/main.js --build-enhanced",
+    "refresh": "node src/lib/main.js --refresh",
+    "merge-persist": "node src/lib/main.js --merge-persist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "js-yaml": "^4.1.0",
+    "minimatch": "^9.0.5",
+    "openai": "^4.96.2",
+    "yargs": "^17.7.2",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "eslint": "^9.24.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-sonarjs": "^3.0.2",
+    "@microsoft/eslint-formatter-sarif": "^3.1.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-github": "^0.5.0",
+    "prettier": "^3.5.3",
+    "vitest": "^3.1.3",
+    "@vitest/coverage-v8": "^3.1.3",
+    "npm-check-updates": "^17.1.18"
+  },
+  "overrides": {
+    "rimraf": "^4.0.0",
+    "glob": "^9.3.0",
+    "@humanwhocodes/config-array": "^0.13.0",
+    "@humanwhocodes/object-schema": "^2.0.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "files": ["package.json"],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
+  "eslintConfig": {
+    "rules": {
+      "sonarjs/cognitive-complexity": "off"
+    }
+  }
+}
+DEPENDENCIES_FILE_END
+
+Formatting file (for context, read only): .prettierrc
+FORMATTING_FILE_START
+{
+  "singleQuote": false,
+  "trailingComma": "all",
+  "printWidth": 120,
+  "tabWidth": 2,
+  "useTabs": false,
+  "quoteProps": "consistent",
+  "overrides": [
+    {
+      "files": ".prettierrc",
+      "options": { "parser": "json" }
+    }
+  ]
+}
+
+FORMATTING_FILE_END
+
+Linting file (for context, read only): eslint.config.js
+LINTING_FILE_START
+import js from "@eslint/js";
+import google from "eslint-config-google";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import globals from "globals";
+import promise from "eslint-plugin-promise";
+import security from "eslint-plugin-security";
+import sonarjs from "eslint-plugin-sonarjs";
+import react from "eslint-plugin-react";
+import importPlugin from "eslint-plugin-import";
+
+const modifiedGoogleConfig = { ...google, rules: { ...google.rules } };
+delete modifiedGoogleConfig.rules["valid-jsdoc"];
+delete modifiedGoogleConfig.rules["require-jsdoc"];
+
+/** @type {import('eslint').Linter.FlatConfig[]} */
+export default [
+  js.configs.recommended,
+  modifiedGoogleConfig,
+  eslintPluginPrettierRecommended,
+  {
+    plugins: {
+      promise,
+      security,
+      sonarjs,
+      react,
+      import: importPlugin,
+    },
+    languageOptions: {
+      ecmaVersion: 2023,
+      sourceType: "module",
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      "prettier/prettier": "error",
+      ...promise.configs.recommended.rules,
+      ...sonarjs.configs.recommended.rules,
+      "sonarjs/os-command": "off",
+
+      // Formatting and organisation
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-extra-semi": 2,
+      "object-curly-newline": ["error", { consistent: true }],
+      "array-element-newline": ["error", "consistent", { multiline: true, minItems: 10 }],
+      "import/newline-after-import": ["error", { count: 1 }],
+      "camelcase": "off",
+
+      // ESM import rules
+      "import/no-amd": "error",
+      "import/no-commonjs": "error",
+      "import/no-import-module-exports": "error",
+      "import/no-cycle": "error",
+      "import/no-dynamic-require": "error",
+      "import/no-self-import": "off",
+      "import/no-unresolved": "off",
+      "import/no-useless-path-segments": "error",
+      "import/no-duplicates": "error",
+      "sonarjs/fixme-tag": "warn",
+    },
+  },
+  {
+    files: ["**/*.js"],
+    ignores: ["**/tests/**/*.js", "**/*.test.js", "eslint.config.js"],
+    rules: {
+      ...security.configs.recommended.rules,
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-non-literal-regexp": "off",
+      "security/detect-object-injection": "off",
+    },
+  },
+  {
+    settings: {
+      react: {
+        version: "18",
+      },
+    },
+  },
+  {
+    ignores: ["build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
+  },
+];
+
+LINTING_FILE_END
+
+Agent configuration file (for context, read only):
+AGENT_CONFIG_FILE_START
+# Which agentic-lib workflow schedule should be used?
+schedule: schedule-2
+
+# Mapping for from symbolic keys to filepaths for access by agentic-lib workflows with limits and access permissions
+paths:
+  # Filepaths for elaborator workflows
+  missionFilepath:
+    path: 'MISSION.md'
+  librarySourcesFilepath:
+    path: 'SOURCES.md'
+    permissions: [ 'write' ]
+    limit: 16
+  libraryDocumentsPath:
+    path: 'library/'
+    permissions: [ 'write' ]
+    limit: 32
+  featuresPath:
+    path: 'features/'
+    permissions: [ 'write' ]
+    limit: 6
+
+  # Filepaths for engineer workflows
+  contributingFilepath:
+    path: 'CONTRIBUTING.md'
+  targetTestsPath:
+    path: 'tests/unit/'
+    permissions: [ 'write' ]
+  otherTestsPaths:
+    paths: [ ]
+  targetSourcePath:
+    path: 'src/lib/'
+    permissions: [ 'write' ]
+  otherSourcePaths:
+    paths: [ ]
+  dependenciesFilepath:
+    path: 'package.json'
+    permissions: [ 'write' ]
+  documentationPath:
+    path: 'docs/'
+    permissions: [ 'write' ]
+
+  # Filepaths for maintainer workflows
+  formattingFilepath:
+    path: '.prettierrc'
+  lintingFilepath:
+    path: 'eslint.config.js'
+  readmeFilepath:
+    path: 'README.md'
+    permissions: [ 'write' ]
+
+# Execution commands
+buildScript: "npm run build"
+testScript: "npm test"
+mainScript: "npm run start"
+
+# How many issues should be open to be picked up?
+featureDevelopmentIssuesWipLimit: 2
+maintenanceIssuesWipLimit: 1
+
+# How many attempts should be made to work on an issue?
+attemptsPerBranch: 2
+attemptsPerIssue: 2
+
+# Web publishing
+docRoot: 'public'
+
+# Repository seeding
+seeding:
+  repositoryReseed: 'true'
+  missionFilepath: 'seeds/zero-MISSION.md'
+  sourcePath: 'seeds/zero-main.js'
+  testsPath: 'seeds/zero-tests.js'
+  dependenciesFilepath: 'seeds/zero-package.json'
+  readmeFilepath: 'seeds/zero-README.md'
+
+# The intention is associated with the bot's discussion thread.
+intentionBot:
+  intentionFilepath: 'intentïon.md'
+
+AGENT_CONFIG_FILE_END
+
+Issue details:
+ISSUE_START
+title: Resolve issues in output from running: npm run linting-fix "." -- --max-warnings=10
+description:
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 linting
+> eslint . tests/unit/ src/lib/ src/lib/
+
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-17-main.js
+  40:50  error  Parsing error: Unexpected token ,
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-17-main.test.js
+  44:50  error  Parsing error: Unexpected token ,
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-20-main.js
+  514:53  error  Make sure that using this pseudorandom number generator is safe here  sonarjs/pseudo-random
+  553:33  error  Make sure that using this pseudorandom number generator is safe here  sonarjs/pseudo-random
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-20-main.test.js
+  13:10  error  'captureConsole' is defined but never used  no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-22-main.js
+  101:10  error  Refactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed  sonarjs/cognitive-complexity
+  239:23  error  Refactor this function to reduce its Cognitive Complexity from 25 to the 15 allowed  sonarjs/cognitive-complexity
+  247:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  247:14  error  'err' is defined but never used                                                      no-unused-vars
+  267:9   error  Remove this assignment of "i"                                                        sonarjs/updated-loop-counter
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-22-main.test.js
+  249:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  249:16  error  'err' is defined but never used                 no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/json-schema-diff-attack-of-the-NaNs-2025-04-12-main.js
+   96:10  error    'isNaNInput' is defined but never used                                               no-unused-vars
+  119:7   error    Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  119:14  error    'e' is defined but never used                                                        no-unused-vars
+  128:24  warning  Unsafe Regular Expression                                                            security/detect-unsafe-regex
+  128:24  error    Simplify this regular expression to reduce its complexity from 24 to the 20 allowed  sonarjs/regex-complexity
+  128:81  error    Unnecessary escape character: \-                                                     no-useless-escape
+  145:16  error    Refactor this function to reduce its Cognitive Complexity from 27 to the 15 allowed  sonarjs/cognitive-complexity
+  250:10  error    Refactor this function to reduce its Cognitive Complexity from 22 to the 15 allowed  sonarjs/cognitive-complexity
+  281:7   error    Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  281:14  error    'error' is defined but never used                                                    no-unused-vars
+  343:5   error    Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  343:12  error    'err' is defined but never used                                                      no-unused-vars
+  365:23  error    Refactor this function to reduce its Cognitive Complexity from 56 to the 15 allowed  sonarjs/cognitive-complexity
+  374:17  error    Make sure that using this pseudorandom number generator is safe here                 sonarjs/pseudo-random
+  385:11  error    Either use this collection's contents or remove the collection                       sonarjs/no-unused-collection
+  397:11  error    Either use this collection's contents or remove the collection                       sonarjs/no-unused-collection
+  492:7   error    Remove this assignment of "i"                                                        sonarjs/updated-loop-counter
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/json-schema-diff-attack-of-the-NaNs-2025-04-12-main.test.js
+    3:44  error  'executePlugins' is defined but never used                                                                  no-unused-vars
+    3:44  error  Remove this unused import of 'executePlugins'                                                               sonarjs/unused-import
+   15:7   error  The body of a for-in should be wrapped in an if statement to filter unwanted properties from the prototype  guard-for-in
+  191:53  error  Refactor this code to not nest functions more than 4 levels deep                                            sonarjs/no-nested-functions
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-02-27-main.js
+  8:38  error  Parsing error: Unexpected token with
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-02-27-main.test.js
+   66:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+   66:14  error  'error' is defined but never used               no-unused-vars
+  244:55  error  Unnecessary escape character: \-                no-useless-escape
+  267:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  267:14  error  'error' is defined but never used               no-unused-vars
+  288:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  288:14  error  'error' is defined but never used               no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-07-main.js
+   61:5   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+   61:12  error  '_error' is defined but never used                                        no-unused-vars
+  132:5   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  132:12  error  '_error' is defined but never used                                        no-unused-vars
+  258:32  error  'reject' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  284:5   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  284:12  error  '_error' is defined but never used                                        no-unused-vars
+  563:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  563:14  error  '_error' is defined but never used                                        no-unused-vars
+  574:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  574:14  error  '_error' is defined but never used                                        no-unused-vars
+  625:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  625:14  error  '_error' is defined but never used                                        no-unused-vars
+  691:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  691:14  error  '_error' is defined but never used                                        no-unused-vars
+  707:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  707:14  error  '_error' is defined but never used                                        no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-07-main.test.js
+  183:37  error  Using http protocol is insecure. Use https instead                                                                                sonarjs/no-clear-text-protocols
+  377:28  error  Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-13-main.js
+     6:97  error  'readdirSync' is defined but never used                                              no-unused-vars
+     6:97  error  Remove this unused import of 'readdirSync'                                           sonarjs/unused-import
+    22:7   error  '__dirname' is assigned a value but never used                                       no-unused-vars
+    62:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+    62:14  error  'err' is defined but never used                                                      no-unused-vars
+    77:10  error  'ensureOntologiesDir' is defined but never used                                      no-unused-vars
+   117:5   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+   117:12  error  'err' is defined but never used                                                      no-unused-vars
+   131:5   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+   131:12  error  'err' is defined but never used                                                      no-unused-vars
+   137:10  error  Refactor this function to reduce its Cognitive Complexity from 18 to the 15 allowed  sonarjs/cognitive-complexity
+   232:24  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   577:28  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   615:24  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   620:5   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+   620:12  error  'err' is defined but never used                                                      no-unused-vars
+   627:34  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   633:30  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   645:24  error  Using http protocol is insecure. Use https instead                                   sonarjs/no-clear-text-protocols
+   679:10  error  Refactor this function to reduce its Cognitive Complexity from 46 to the 15 allowed  sonarjs/cognitive-complexity
+   697:9   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+   697:16  error  'e' is defined but never used                                                        no-unused-vars
+   783:34  error  Refactor this code to not nest functions more than 4 levels deep                     sonarjs/no-nested-functions
+   786:28  error  Refactor this code to not nest functions more than 4 levels deep                     sonarjs/no-nested-functions
+   861:3   error  Remove this redundant jump                                                           sonarjs/no-redundant-jump
+   865:10  error  Refactor this function to reduce its Cognitive Complexity from 26 to the 15 allowed  sonarjs/cognitive-complexity
+  1007:10  error  Refactor this function to reduce its Cognitive Complexity from 46 to the 15 allowed  sonarjs/cognitive-complexity
+  1025:9   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  1025:16  error  'e' is defined but never used                                                        no-unused-vars
+  1103:28  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+  1116:32  error  Refactor this function to reduce its Cognitive Complexity from 65 to the 15 allowed  sonarjs/cognitive-complexity
+  1134:57  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1167:49  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1172:49  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1187:49  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1192:49  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1207:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1207:77  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1212:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1226:45  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1226:72  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1242:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1247:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1320:26  error  Refactor this function to reduce its Cognitive Complexity from 51 to the 15 allowed  sonarjs/cognitive-complexity
+  1339:55  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1372:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1377:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1392:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1397:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1412:45  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1412:75  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1417:45  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1431:43  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1431:70  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1447:45  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1452:45  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1509:28  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+  1558:11  error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  1558:18  error  'e' is defined but never used                                                        no-unused-vars
+  1571:25  error  'ws' is defined but never used. Allowed unused args must match /^_/u                 no-unused-vars
+  1602:16  error  Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed  sonarjs/cognitive-complexity
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-13-main.test.js
+   61:10  error  'clearOntologiesDir' is defined but never used                          no-unused-vars
+  411:26  error  'code' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  431:54  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  448:30  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  472:49  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  489:31  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  506:61  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  523:30  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  547:49  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  569:31  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  612:26  error  'code' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  712:25  error  'line' is assigned a value but never used                               no-unused-vars
+  712:25  error  Remove the declaration of the unused 'line' variable                    sonarjs/no-unused-vars
+  712:25  error  Remove this useless assignment to variable "line"                       sonarjs/no-dead-store
+  731:25  error  'line' is assigned a value but never used                               no-unused-vars
+  731:25  error  Remove the declaration of the unused 'line' variable                    sonarjs/no-unused-vars
+  731:25  error  Remove this useless assignment to variable "line"                       sonarjs/no-dead-store
+  765:40  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  768:30  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  792:11  error  'serverOutput' is assigned a value but never used                       no-unused-vars
+  798:26  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  801:19  error  'data' is assigned a value but never used                               no-unused-vars
+  811:36  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-14-main.js
+  186:9   error  This framework implicitly discloses version information by default. Make sure it is safe here  sonarjs/x-powered-by
+  203:17  error  Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed            sonarjs/cognitive-complexity
+  283:17  error  Refactor this function to reduce its Cognitive Complexity from 18 to the 15 allowed            sonarjs/cognitive-complexity
+  332:27  error  Do not access Object.prototype method 'hasOwnProperty' from target object                      no-prototype-builtins
+  407:17  error  Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed            sonarjs/cognitive-complexity
+  472:29  error  'args' is defined but never used. Allowed unused args must match /^_/u                         no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-14-main.test.js
+   16:3   error  'addCapital' is defined but never used          no-unused-vars
+   16:3   error  Remove this unused import of 'addCapital'       sonarjs/unused-import
+  230:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  230:16  error  'e' is defined but never used                   no-unused-vars
+  238:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  238:14  error  'e' is defined but never used                   no-unused-vars
+  259:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  259:16  error  'e' is defined but never used                   no-unused-vars
+  417:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  417:16  error  'e' is defined but never used                   no-unused-vars
+  466:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  466:16  error  'e' is defined but never used                   no-unused-vars
+  501:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  501:16  error  'e' is defined but never used                   no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-15-main.js
+   32:23  error  Refactor this function to reduce its Cognitive Complexity from 89 to the 15 allowed  sonarjs/cognitive-complexity
+  156:9   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  156:16  error  'err' is defined but never used                                                      no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-15-main.test.js
+  317:78  error  'filePath' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  350:78  error  'filePath' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  434:32  error  Refactor this code to not nest functions more than 4 levels deep            sonarjs/no-nested-functions
+  435:26  error  Refactor this code to not nest functions more than 4 levels deep            sonarjs/no-nested-functions
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-25-main.js
+  44:56  error  Parsing error: Unexpected token ,
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-25-main.test.js
+  4:38  error  Parsing error: Unexpected token assert
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-26-main.js
+   20:17  error  Refactor this function to reduce its Cognitive Complexity from 32 to the 15 allowed  sonarjs/cognitive-complexity
+   73:19  error  Do not access Object.prototype method 'hasOwnProperty' from target object            no-prototype-builtins
+   80:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+   80:14  error  'e' is defined but never used                                                        no-unused-vars
+   94:36  error  Do not access Object.prototype method 'hasOwnProperty' from target object            no-prototype-builtins
+   96:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object            no-prototype-builtins
+  109:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  109:14  error  'e' is defined but never used                                                        no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-26-main.test.js
+  1:34  error  'vi' is defined but never used     no-unused-vars
+  1:34  error  Remove this unused import of 'vi'  sonarjs/unused-import
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-05-01-main.js
+  5:38  error  Parsing error: Unexpected token assert
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-05-01-main.test.js
+  4:38  error  Parsing error: Unexpected token assert
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-05-02-main.js
+  18:63  error  Replace `'main.js'` with `"main.js"`  prettier/prettier
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-05-02-main.test.js
+  19:35  error  Replace `'log').mockImplementation((...args)·=>·logs.push(args.join('·'` with `"log").mockImplementation((...args)·=>·logs.push(args.join("·"`  prettier/prettier
+  21:22  error  Replace `l·=>·l.includes('--to-owl'` with `(l)·=>·l.includes("--to-owl"`                                                                        prettier/prettier
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/plot-code-lib-2025-02-24-main.js
+   174:38  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   175:40  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   176:40  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   195:41  error    Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed                                               sonarjs/cognitive-complexity
+   208:29  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
+   208:29  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   229:44  error    Refactor this function to reduce its Cognitive Complexity from 45 to the 15 allowed                                               sonarjs/cognitive-complexity
+   249:20  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
+   249:20  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   249:27  error    Rework this part of the regex to not match the empty string                                                                       sonarjs/empty-string-repetition
+   253:62  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   271:33  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   275:59  error    Review this redundant assignment: "yCoeff" already holds the assigned value along all execution paths                             sonarjs/no-redundant-assignments
+   279:38  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   291:34  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   295:59  error    Review this redundant assignment: "yCoeff" already holds the assigned value along all execution paths                             sonarjs/no-redundant-assignments
+   299:39  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   347:17  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
+   347:17  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   375:57  error    Unnecessary escape character: \-                                                                                                  no-useless-escape
+   379:36  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   382:45  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   385:36  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   388:45  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   411:37  error    Refactor this function to reduce its Cognitive Complexity from 37 to the 15 allowed                                               sonarjs/cognitive-complexity
+   531:7   error    'displayPlot' is assigned a value but never used                                                                                  no-unused-vars
+   549:3   error    Refactor this function to reduce its Cognitive Complexity from 24 to the 15 allowed                                               sonarjs/cognitive-complexity
+   565:16  error    Make sure that using this pseudorandom number generator is safe here                                                              sonarjs/pseudo-random
+  1171:7   error    'demoTest' is assigned a value but never used                                                                                     no-unused-vars
+  1208:23  error    Refactor this function to reduce its Cognitive Complexity from 64 to the 15 allowed                                               sonarjs/cognitive-complexity
+  1274:81  error    Refactor this function to reduce its Cognitive Complexity from 38 to the 15 allowed                                               sonarjs/cognitive-complexity
+  1357:36  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1357:52  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1357:70  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1357:96  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1480:32  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1480:48  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1480:66  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1480:92  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/plot-code-lib-2025-02-24.main.js
+   174:38  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   175:40  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   176:40  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   195:41  error    Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed                                               sonarjs/cognitive-complexity
+   208:29  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
+   208:29  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   229:44  error    Refactor this function to reduce its Cognitive Complexity from 45 to the 15 allowed                                               sonarjs/cognitive-complexity
+   249:20  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
+   249:20  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   249:27  error    Rework this part of the regex to not match the empty string                                                                       sonarjs/empty-string-repetition
+   253:62  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   271:33  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   275:59  error    Review this redundant assignment: "yCoeff" already holds the assigned value along all execution paths                             sonarjs/no-redundant-assignments
+   279:38  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   291:34  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   295:59  error    Review this redundant assignment: "yCoeff" already holds the assigned value along all execution paths                             sonarjs/no-redundant-assignments
+   299:39  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   347:17  warning  Unsafe Regular Expression                                                                                                         security/detect-unsafe-regex
+   347:17  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   375:57  error    Unnecessary escape character: \-                                                                                                  no-useless-escape
+   379:36  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   382:45  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   385:36  error    Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+   388:45  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+   411:37  error    Refactor this function to reduce its Cognitive Complexity from 37 to the 15 allowed                                               sonarjs/cognitive-complexity
+   531:7   error    'displayPlot' is assigned a value but never used                                                                                  no-unused-vars
+   549:3   error    Refactor this function to reduce its Cognitive Complexity from 24 to the 15 allowed                                               sonarjs/cognitive-complexity
+   565:16  error    Make sure that using this pseudorandom number generator is safe here                                                              sonarjs/pseudo-random
+  1171:7   error    'demoTest' is assigned a value but never used                                                                                     no-unused-vars
+  1208:23  error    Refactor this function to reduce its Cognitive Complexity from 64 to the 15 allowed                                               sonarjs/cognitive-complexity
+  1274:81  error    Refactor this function to reduce its Cognitive Complexity from 38 to the 15 allowed                                               sonarjs/cognitive-complexity
+  1357:36  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1357:52  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1357:70  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1357:96  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1480:32  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1480:48  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1480:66  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+  1480:92  error    Extract this nested ternary operation into an independent statement                                                               sonarjs/no-nested-conditional
+
+/home/runner/work/repository0-crucible/repository0-crucible/tests/unit/main.test.js
+   43:35  error  Delete `·`                                                                                                                                                              prettier/prettier
+   49:51  error  Delete `⏎······`                                                                                                                                                        prettier/prettier
+   59:41  error  Replace `⏎······expect.stringMatching(/^\d\.\d{99}$/)⏎····` with `expect.stringMatching(/^\d\.\d{99}$/)`                                                                prettier/prettier
+   68:41  error  Replace `⏎······expect.stringMatching(/^\d\.\d{49}$/)⏎····` with `expect.stringMatching(/^\d\.\d{49}$/)`                                                                prettier/prettier
+   89:51  error  Delete `⏎······`                                                                                                                                                        prettier/prettier
+   96:41  error  Replace `⏎······expect.stringMatching(/^\[Benchmark\]·Execution·time:·\d+ms·3\.14$/)⏎····` with `expect.stringMatching(/^\[Benchmark\]·Execution·time:·\d+ms·3\.14$/)`  prettier/prettier
+  107:65  error  Replace `E` with `e`                                                                                                                                                    prettier/prettier
+
+✖ 273 problems (266 errors, 7 warnings)
+  10 errors and 0 warnings potentially fixable with the `--fix` option.
+comments:
+Author:github-actions[bot], Created:2025-05-18T04:39:03Z, Comment: Workflow name: flow-linting-to-issue
+Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15092367462
+Workflow event: schedule
+Workflow inputs: null
+HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/bdacdc4fe13fa44d74c825475f792287d9504cde
+Author:github-actions[bot], Created:2025-05-18T04:39:32Z, Comment: Workflow name: flow-linting-to-issue
+Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15092367462
+Workflow event: schedule
+Workflow inputs: null
+HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/bdacdc4fe13fa44d74c825475f792287d9504cde
+Author:github-actions[bot], Created:2025-05-18T04:40:43Z, Comment: The lint issues are coming from archived, non-active code and do not affect the core π calculation functionality. They represent superficial validation errors in legacy files that fall outside the project's mission and primary feature set.
+Author:github-actions[bot], Created:2025-05-18T04:41:45Z, Comment: Workflow name: flow-linting-to-issue
+Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15092367462
+Workflow event: schedule
+Workflow inputs: null
+HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/1842fc4bbf0e146dea271c16885cb4a417d5d5a4
+Author:github-actions[bot], Created:2025-05-18T04:43:18Z, Comment: Workflow name: flow-linting-to-issue
+Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15092367462
+Workflow event: schedule
+Workflow inputs: null
+HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/1842fc4bbf0e146dea271c16885cb4a417d5d5a4
+ISSUE_END            
+
+Dependencies list from command: npm list
+DEPENDENCIES_LIST_START
+@xn-intenton-z2a/repository0-crucible@1.2.0-0 /home/runner/work/repository0-crucible/repository0-crucible
+├── @microsoft/eslint-formatter-sarif@3.1.0
+├── @vitest/coverage-v8@3.1.3
+├── canvas@2.11.2
+├── dotenv@16.5.0
+├── ejs@3.1.10
+├── eslint-config-google@0.14.0
+├── eslint-config-prettier@10.1.5
+├── eslint-plugin-import@2.31.0
+├── eslint-plugin-prettier@5.4.0
+├── eslint-plugin-promise@7.2.1
+├── eslint-plugin-react@7.37.5
+├── eslint-plugin-security@3.0.1
+├── eslint-plugin-sonarjs@3.0.2
+├── eslint@9.27.0
+├── js-yaml@4.1.0
+├── markdown-it-github@0.5.0
+├── markdown-it@14.1.0
+├── minimatch@9.0.5
+├── npm-check-updates@17.1.18
+├── openai@4.100.0
+├── prettier@3.5.3
+├── vitest@3.1.3
+├── yargs@17.7.2
+└── zod@3.24.4
+DEPENDENCIES_LIST_END    
+
+Build output from command: npm run build
+BUILD_OUTPUT_START
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 build
+> echo 'Nothing to build'
+
+Nothing to build
+BUILD_OUTPUT_END      
+
+Test output from command: npm test
+TEST_OUTPUT_START
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 test
+> vitest
+
+
+[1m[46m RUN [49m[22m [36mv3.1.3 [39m[90m/home/runner/work/repository0-crucible/repository0-crucible[39m
+
+Unable to revert mtime: /usr/share/fonts
+Unable to revert mtime: /usr/share/fonts/truetype
+Unable to revert mtime: /usr/share/fonts/truetype/dejavu
+Unable to revert mtime: /usr/share/fonts/truetype/lato
+Unable to revert mtime: /usr/share/fonts/truetype/liberation
+Unable to revert mtime: /usr/share/fonts/truetype/noto
+ [32m✓[39m tests/unit/main.test.js [2m([22m[2m16 tests[22m[2m)[22m[33m 2860[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI Options[2m > [22mpng output writes valid PNG file [33m 2820[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+[2m   Start at [22m 04:45:21
+[2m   Duration [22m 3.14s[2m (transform 34ms, setup 0ms, collect 59ms, tests 2.86s, environment 0ms, prepare 60ms)[22m
+TEST_OUTPUT_END            
+
+Main execution output from command: npm run start
+MAIN_OUTPUT_START
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+3.141591653589774324473182787187397480010986328125000000000000000000000000000000000000000000000000000
+MAIN_OUTPUT_END    
+
+Please produce updated versions of the files that resolve the issue.
+Note that the README.md file is provided for context only - any documentation changes should be written to the documentation files.
+The source files, test files, and documentation files can be individual files or directories containing multiple files.
+Never truncate the files, when returning a file, always return the entire file content.
+
+Paths in (updatedFile01Filepath, updatedFile02Filepath, etc...) must begin with one of: SOURCES.md;library/;features/;tests/unit/;src/lib/;package.json;docs/;README.md
+
+Answer strictly with a JSON object following this schema:
+{
+  "message": "A short sentence explaining the change applied (or why no changes were applied) suitable for a commit message or PR text.",
+  "updatedFile01Filepath": "src/lib/orderParser.js",
+  "updatedFile01Contents": "The entire new content of the source file, with all necessary changes applied, if any.",
+  "updatedFile02Filepath":  "tests/unit/orderParser.test.js",
+  "updatedFile02Contents": "The entire new content of the test file, with all necessary changes applied, if any.",
+  "updatedFile03Filepath": "docs/USAGE.md",
+  "updatedFile03Contents": "The entire new content of the documentation file, with all necessary changes applied, if any.",
+  "updatedFile04Filepath": "docs/A_FILE_WE_DONT_WANT.md",
+  "updatedFile04Contents": "delete",
+  "updatedFile05Filepath": "unused",
+  "updatedFile05Contents": "unused",
+  "updatedFile06Filepath": "unused",
+  "updatedFile06Contents": "unused",
+  "updatedFile07Filepath": "unused",
+  "updatedFile07Contents": "unused",
+  "updatedFile08Filepath": "unused",
+  "updatedFile08Contents": "unused",
+  "updatedFile09Filepath": "unused",
+  "updatedFile09Contents": "unused",
+  "updatedFile10Filepath": "unused",
+  "updatedFile10Contents": "unused",
+  "updatedFile11Filepath": "unused",
+  "updatedFile11Contents": "unused",
+  "updatedFile12Filepath": "unused",
+  "updatedFile12Contents": "unused",
+  "updatedFile13Filepath": "unused",
+  "updatedFile13Contents": "unused",
+  "updatedFile14Filepath": "unused",
+  "updatedFile14Contents": "unused",
+  "updatedFile15Filepath": "unused",
+  "updatedFile15Contents": "unused",
+  "updatedFile16Filepath": "unused",
+  "updatedFile16Contents": "unused"
+}
+
+You can include up to 16 files using the updatedFileXXName and updatedFileXXContents pairs (where XX is a number from 01 to 16)
+Where a file name and contents slot is not used, populate tha name with "unused" and the contents with "unused".
+Where a file is to be deleted, set the name to the file path and the contents to "delete".
+Never truncate the files, when returning a file, always return the entire file content.
+
+Ensure valid JSON.
