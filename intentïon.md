@@ -25,3 +25,5 @@
 
 2025-05-18T01:22:52.967Z - Maintained feature JSON_OUTPUT.
 
+2025-05-18T04:37:37.561Z - Maintained feature PROGRESS_INDICATOR.
+
