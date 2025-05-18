@@ -54,3 +54,5 @@ Example: yargs().scriptName('cli').usage('$0 <cmd>').command('run <file>','run f
 
 2025-05-18T08:28:16.073Z - Worked to resolve issue Annotate features in README with mission alignment. Annotate features in README with mission alignment.
 
+2025-05-18T08:50:55.005Z - Worked to update README with: Update README to document current CLI functionality and align license.
+
