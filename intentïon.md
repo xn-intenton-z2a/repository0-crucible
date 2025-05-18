@@ -50,3 +50,5 @@ import yargs from 'yargs'; import { hideBin } from 'yargs/helpers';
 API: yargs(opts?):Yargs; .scriptName(s):Yargs; .usage(u):Yargs; .command(cmd,desc,builder(fn:Yargs=>Yargs),handler(fn:argv=>void)):Yargs; .positional(key, {type:string|number|boolean|array, default?, describe}):Yargs; .option(name,{alias?,type,default,describe}):Yargs; .demandCommand(n,message?):Yargs; .help():Yargs; .parse(args:string[]):Record<string,any>;
 Example: yargs().scriptName('cli').usage('$0 <cmd>').command('run <file>','run file',y=>y.positional('file',{type:'string',describe:'file path'}),(argv)=>console.log(argv)).option('verbose',{alias:'v',type:'boolean',default:false,describe:'verbose'}).demandCommand(1).help().parse(hideBin(process.argv));.
 
+2025-05-18T08:21:55.068Z - Generated feature development issue with title Annotate feature list in README with mission alignment.
+
