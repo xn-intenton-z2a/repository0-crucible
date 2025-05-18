@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="url_search_params" href="#url_search_params"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>URL_SEARCH_PARAMS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Constructor new URLSearchParams([init]) accepts string/object/iterable/URLSearchParams; property size:number; append(name:string,value:string); delete(name:string, value?:string); get(name:string):string|null; getAll(name:string):string[]; has(name:string,value?:string):boolean; set(name:string,value:string); sort():void; toString():string; entries(), keys(), values(), forEach(), <a href="" class="md-github">Symbol.iterator</a>; parses percent-encoding, '+' as space; does not parse full URLs; integrates with URL.searchParams, space encoding differences.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Constructor Overloads</p>
+</li>
+<li class="md-github">
+<p class="md-github">Property: size</p>
+</li>
+<li class="md-github">
+<p class="md-github">CRUD Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Iteration Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Serialization and Encoding</p>
+</li>
+<li class="md-github">
+<p class="md-github">Integration with URL</p>
+</li>
+<li class="md-github">
+<p class="md-github">Pitfalls and Workarounds</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constructor Overloads
+Signature: new URLSearchParams([init])
+init parameter types and behavior:
+• String: query string; strips leading '?' ; percent-decodes; '+'→space
+• Object: own enumerable string properties paired
+• Iterable: array of [name,value] pairs
+• URLSearchParams: constructs deep copy</p>
+</li>
+<li class="md-github">
+<p class="md-github">Property: size
+size returns count of all key/value entries</p>
+</li>
+<li class="md-github">
+<p class="md-github">CRUD Methods
+append(name,value):void adds new entry
+delete(name,value?):void removes entries matching name or name+value
+get(name):string|null returns first value or null
+getAll(name):string[] returns all matching values
+has(name,value?):boolean checks existence
+set(name,value):void replaces all values for name with value
+sort():void sorts entries by name codepoint order</p>
+</li>
+<li class="md-github">
+<p class="md-github">Iteration Methods
+entries():iterator&lt;[string,string]&gt;
+keys():iterator<string>
+values():iterator<string>
+forEach(fn,thisArg?):void invokes fn(value,name,params)
+<a href="" class="md-github">Symbol.iterator</a>:iterator&lt;[string,string]&gt;</p>
+</li>
+<li class="md-github">
+<p class="md-github">Serialization and Encoding
+toString():string yields application/x-www-form-urlencoded
+percent-encodes all except ASCII alphanumeric, '*','-','.', '_' ; encodes space as '+'
+encoding rules applied only on serialization/deserialization, not on individual access
+double-encoding occurs if percent-encoded inputs appended</p>
+</li>
+<li class="md-github">
+<p class="md-github">Integration with URL
+URL.searchParams reflects URL.search
+Mutating searchParams writes back to URL.search
+URL.search uses '%20' for spaces; URLSearchParams uses '+'</p>
+</li>
+<li class="md-github">
+<p class="md-github">Pitfalls and Workarounds
+• '+' treated as space in constructor: avoid parsing raw base64; use append
+• No full URL parsing: pass url.search to constructor
+• Empty vs no-equals: both map to empty string; to force empty value use 'name=' explicitly</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Specification of init parameter:</p>
+<ul class="md-github">
+<li class="md-github">init: USVString including percent-encoded sequences; strips initial '?'</li>
+<li class="md-github">init: Record&lt;string,string&gt; maps each property key to string value</li>
+<li class="md-github">init: Iterable&lt;[string,string]&gt; accepts any iterable of string pair arrays
+Optional behaviors:</li>
+<li class="md-github">percent-encoding set: all code points excluding ASCII alnum,*,-,.,_ ; space encode U+0020→'+'</li>
+<li class="md-github">space decode: '+' in input interpreted as U+0020
+Implementation steps:</li>
+</ul>
+<ol class="md-github">
+<li class="md-github">Create instance: const params = new URLSearchParams(init)</li>
+<li class="md-github">Modify: use append/set/delete to manage entries; avoid string concatenation</li>
+<li class="md-github">Retrieve: get/getAll/has for value checks</li>
+<li class="md-github">Iterate: for (const [n,v] of params)</li>
+<li class="md-github">Serialize: let qs = params.toString()
+Integration:</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">new URL(url).searchParams to get linked params instance</li>
+<li class="md-github">After mutation, url.search reflects serialized params</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications:
+Constructor:
+new URLSearchParams():URLSearchParams
+new URLSearchParams(init: string|Record&lt;string,string&gt;|Iterable&lt;[string,string]&gt;|URLSearchParams):URLSearchParams</p>
+<p class="md-github">Properties:
+readonly size: number</p>
+<p class="md-github">Methods:
+append(name: string, value: string): void
+delete(name: string, value?: string): void
+get(name: string): string | null
+getAll(name: string): string[]
+has(name: string, value?: string): boolean
+set(name: string, value: string): void
+sort(): void
+toString(): string
+entries(): IterableIterator&lt;[string,string]&gt;
+keys(): IterableIterator<string>
+values(): IterableIterator<string>
+forEach(callbackfn: (value: string, name: string, parent: URLSearchParams) =&gt; void, thisArg?: any): void
+<a href="" class="md-github">Symbol.iterator</a>: IterableIterator&lt;[string,string&gt;]</p>
+<p class="md-github">Code Examples:
+// Construct from string
+const p1 = new URLSearchParams('a=1&amp;b=2');
+console.log(p1.get('b')); // '2'
+// Construct from object
+const p2 = new URLSearchParams({foo:'bar',baz:'qux'});
+console.log(p2.toString()); // 'foo=bar&amp;baz=qux'
+// Append and serialize
+const p3 = new URLSearchParams();
+p3.append('x','1');
+p3.append('x','2');
+console.log(p3.toString()); // 'x=1&amp;x=2'
+// Delete specific
+p3.delete('x','1');
+console.log(p3.toString()); // 'x=2'
+// Iterate
+for(const [k,v] of p3){ /* use k,v */ }</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Never use dynamic strings: do not do new URLSearchParams(<code class="md-github">bin=${data}</code>)</li>
+<li class="md-github">Always use append or set to include binary/base64 data</li>
+<li class="md-github">Use URL.searchParams when integrating with URL objects</li>
+</ul>
+<p class="md-github">Troubleshooting:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Plus sign lost:
+// Incorrect
+const p = new URLSearchParams(<code class="md-github">data=${b64}</code>);
+console.log(p.get('data')); // spaces replace '+'
+// Fix
+const p = new URLSearchParams();
+p.append('data',b64);
+console.log(p.get('data')); // original '+' preserved</p>
+</li>
+<li class="md-github">
+<p class="md-github">Unexpected URL mutation:
+const url = new URL('https://ex/?q=a%20b');
+console.log(url.searchParams.toString()); // 'q=a+b'
+url.searchParams.sort();
+console.log(url.href); // 'https://ex/?q=a+b' // space encoding changed</p>
+</li>
+<li class="md-github">
+<p class="md-github">No value vs empty:
+const p = new URLSearchParams('foo&amp;bar=baz');
+console.log(p.get('foo')); // ''
+console.log(p.toString()); // 'foo=&amp;bar=baz'</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">Constructor new URLSearchParams(init?:string|Record&lt;string,string&gt;|Iterable&lt;[string,string]&gt;|URLSearchParams):URLSearchParams; size:number; append(name:string,value:string):void; delete(name:string,value?:string):void; set(name:string,value:string):void; get(name:string):string|null; getAll(name:string):string[]; has(name:string,value?:string):boolean; sort():void; toString():string; entries():Iterator&lt;[string,string]&gt;; keys():Iterator<string>; values():Iterator<string>; forEach(fn,value,name,parent):void; [Symbol.iterator]=&gt;entries; parsing: percent-decodes input; '+'-&gt;space; strips leading '?'; does not parse full URLs; serialization: percent-encodes except ASCII alnum,*,-,.,_; space-&gt; '+' ; integration: URL.searchParams auto-updates URL.search; pitfall: URL.search uses '%20'; always use append to preserve '+'; empty vs none-equals both yield empty string</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Constructor Overloads</p>
+</li>
+<li class="md-github">
+<p class="md-github">Property: size</p>
+</li>
+<li class="md-github">
+<p class="md-github">CRUD Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Iteration Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Serialization and Encoding</p>
+</li>
+<li class="md-github">
+<p class="md-github">Integration with URL</p>
+</li>
+<li class="md-github">
+<p class="md-github">Pitfalls and Workarounds</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constructor Overloads
+Signature: new URLSearchParams([init])
+init parameter types and behavior:
+String: query string; strips leading '?' ; percent-decodes; '+'space
+Object: own enumerable string properties paired
+Iterable: array of [name,value] pairs
+URLSearchParams: constructs deep copy</p>
+</li>
+<li class="md-github">
+<p class="md-github">Property: size
+size returns count of all key/value entries</p>
+</li>
+<li class="md-github">
+<p class="md-github">CRUD Methods
+append(name,value):void adds new entry
+delete(name,value?):void removes entries matching name or name+value
+get(name):string|null returns first value or null
+getAll(name):string[] returns all matching values
+has(name,value?):boolean checks existence
+set(name,value):void replaces all values for name with value
+sort():void sorts entries by name codepoint order</p>
+</li>
+<li class="md-github">
+<p class="md-github">Iteration Methods
+entries():iterator&lt;[string,string]&gt;
+keys():iterator<string>
+values():iterator<string>
+forEach(fn,thisArg?):void invokes fn(value,name,params)
+<a href="" class="md-github">Symbol.iterator</a>:iterator&lt;[string,string]&gt;</p>
+</li>
+<li class="md-github">
+<p class="md-github">Serialization and Encoding
+toString():string yields application/x-www-form-urlencoded
+percent-encodes all except ASCII alphanumeric, '*','-','.', '_' ; encodes space as '+'
+encoding rules applied only on serialization/deserialization, not on individual access
+double-encoding occurs if percent-encoded inputs appended</p>
+</li>
+<li class="md-github">
+<p class="md-github">Integration with URL
+URL.searchParams reflects URL.search
+Mutating searchParams writes back to URL.search
+URL.search uses '%20' for spaces; URLSearchParams uses '+'</p>
+</li>
+<li class="md-github">
+<p class="md-github">Pitfalls and Workarounds
+'+' treated as space in constructor: avoid parsing raw base64; use append
+No full URL parsing: pass url.search to constructor
+Empty vs no-equals: both map to empty string; to force empty value use 'name=' explicitly</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Fetch API &amp; URLSearchParams
+https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-url_search_params" href="#digest-of-url_search_params"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of URL_SEARCH_PARAMS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="urlsearchparams-detailed-digest" href="#urlsearchparams-detailed-digest"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>URLSearchParams Detailed Digest</h1>
+<p class="md-github">Date Retrieved: 2024-06-20
+Data Size: 2443004 bytes</p>
+<h2 class="md-github"><a class="md-github__anchor" name="constructor" href="#constructor"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constructor</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="new-urlsearchparamsinit" href="#new-urlsearchparamsinit"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new URLSearchParams([init])</h3>
+<ul class="md-github">
+<li class="md-github">Signature: new URLSearchParams()</li>
+<li class="md-github">Overloads:
+• init: USVString (query string), automatically strips leading '?'
+• init: Record&lt;string,string&gt;
+• init: Iterable&lt;[string,string]&gt;
+• init: URLSearchParams (copy constructor)</li>
+<li class="md-github">Returns: URLSearchParams instance</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="instance-properties" href="#instance-properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instance Properties</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="size--number-read-only" href="#size--number-read-only"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>size : number (read-only)</h3>
+<p class="md-github">Indicates total number of key/value entries</p>
+<h2 class="md-github"><a class="md-github__anchor" name="instance-methods" href="#instance-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instance Methods</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="appendname-string-value-string-void" href="#appendname-string-value-string-void"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>append(name: string, value: string): void</h3>
+<p class="md-github">Appends a new search parameter. Percent-encodes name and value on serialization.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="deletename-string-value-string-void" href="#deletename-string-value-string-void"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>delete(name: string, value?: string): void</h3>
+<p class="md-github">Removes all entries matching name, or only those matching name and value if value is provided.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="getname-string-string--null" href="#getname-string-string--null"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>get(name: string): string | null</h3>
+<p class="md-github">Returns first value for the given name, or null if absent.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="getallname-string-string" href="#getallname-string-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getAll(name: string): string[]</h3>
+<p class="md-github">Returns all values for the given name.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="hasname-string-value-string-boolean" href="#hasname-string-value-string-boolean"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>has(name: string, value?: string): boolean</h3>
+<p class="md-github">Returns true if name exists, or name/value pair exists if value provided.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="setname-string-value-string-void" href="#setname-string-value-string-void"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>set(name: string, value: string): void</h3>
+<p class="md-github">Sets the value for name; deletes other values for same name.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="sort-void" href="#sort-void"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sort(): void</h3>
+<p class="md-github">Sorts entries in place by their names (UTF-8 codepoint order).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="tostring-string" href="#tostring-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>toString(): string</h3>
+<p class="md-github">Serializes entries into &quot;application/x-www-form-urlencoded&quot; string: percent-encodes all except [0-9a-zA-Z*-._], encodes space (U+0020) as '+'</p>
+<h3 class="md-github"><a class="md-github__anchor" name="entries-iterableiteratorstringstring" href="#entries-iterableiteratorstringstring"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>entries(): IterableIterator&lt;[string,string]&gt;</h3>
+<p class="md-github">Iterator over [name,value] in insertion order.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="keys-iterableiteratorstring" href="#keys-iterableiteratorstring"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>keys(): IterableIterator<string></h3>
+<p class="md-github">Iterator over names in insertion order.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="values-iterableiteratorstring" href="#values-iterableiteratorstring"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>values(): IterableIterator<string></h3>
+<p class="md-github">Iterator over values in insertion order.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="foreachcallbackvalue-string-name-string-params-urlsearchparams-void-thisarg-any-void" href="#foreachcallbackvalue-string-name-string-params-urlsearchparams-void-thisarg-any-void"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>forEach(callback(value: string, name: string, params: URLSearchParams): void, thisArg?: any): void</h3>
+<p class="md-github">Iterates over each entry in insertion order.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="symboliterator--iterableiteratorstringstring" href="#symboliterator--iterableiteratorstringstring"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a href="" class="md-github">Symbol.iterator</a> : IterableIterator&lt;[string,string]&gt;</h3>
+<p class="md-github">Alias for entries()</p>
+<h2 class="md-github"><a class="md-github__anchor" name="encoding-behavior" href="#encoding-behavior"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Encoding Behavior</h2>
+<ul class="md-github">
+<li class="md-github">Parsing: percent-decodes input string; '+' is interpreted as space</li>
+<li class="md-github">Serialization: percent-encodes reserved characters; ' ' → '+'</li>
+<li class="md-github">Edge: constructor does not parse full URLs; input containing 'http://' is treated as raw string</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="integration-with-urlsearchparams" href="#integration-with-urlsearchparams"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Integration with URL.searchParams</h2>
+<ul class="md-github">
+<li class="md-github">URL.searchParams returns URLSearchParams instance reflecting URL.search</li>
+<li class="md-github">Mutating searchParams updates URL.search with serialization rules of URLSearchParams, potentially altering space encoding (URL uses '%20')</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="common-pitfalls-and-workarounds" href="#common-pitfalls-and-workarounds"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Common Pitfalls and Workarounds</h2>
+<ul class="md-github">
+<li class="md-github">Plus signs lost when parsing base64 data: use append method instead of dynamic string construction</li>
+<li class="md-github">No distinction between empty value and no '=': both normalize to empty string on get</li>
+<li class="md-github">Percent-encoded keys treated as unencoded on append, causing double-encoding</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Fetch API &amp; URLSearchParams</li>
+<li class="md-github">URL: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams</li>
+<li class="md-github">License: License: CC BY-SA 2.5</li>
+<li class="md-github">Crawl Date: 2025-05-17T18:28:34.986Z</li>
+<li class="md-github">Data Size: 2443004 bytes</li>
+<li class="md-github">Links Found: 18751</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-17</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-18T10:38:34.029Z</p>
+  </footer>
+</body>
+</html>

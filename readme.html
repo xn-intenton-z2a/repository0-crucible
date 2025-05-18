@@ -23,52 +23,75 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
-<p class="md-github"><code class="md-github">@xn-intenton-z2a/repository0-crucible</code> is a simple CLI tool and demo repository showcasing:</p>
-<ul class="md-github">
-<li class="md-github">A mission flag (<code class="md-github">--mission</code> or <code class="md-github">-m</code>) to display the repository mission statement</li>
-<li class="md-github">Default behavior: echoing provided arguments</li>
-</ul>
-<p class="md-github">It also serves as a template demonstrating GitHub workflows imported from <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic-lib</a>.</p>
-<p class="md-github">You can base your own self-evolving agentic coding system on this project: https://github.com/xn-intenton-z2a/agentic-lib</p>
+<p class="md-github">A CLI tool and JavaScript library for calculating π to configurable precision using different algorithms, with optional performance benchmarking and PNG visualization.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
 <p class="md-github">Install via npm:</p>
 <pre class="md-github"><code class="md-github language-bash">npm install @xn-intenton-z2a/repository0-crucible
 </code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<p class="md-github">You can invoke the CLI directly with Node.js:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js [options]
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="options" href="#options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options</h3>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><code class="md-github">--digits, -d &lt;number&gt;</code><br>
+Total significant digits to display (integer ≥ 1). Default: <code class="md-github">100</code>.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--algorithm, -a &lt;leibniz|spigot|montecarlo&gt;</code><br>
+Algorithm to use for π approximation. Default: <code class="md-github">leibniz</code>.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--benchmark, -b</code><br>
+Enable performance benchmarking; prefixes output with execution time. Default: <code class="md-github">false</code>.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--output-format, -f &lt;text|png&gt;</code><br>
+Output format. <code class="md-github">text</code> prints digits to console; <code class="md-github">png</code> writes a PNG image. Default: <code class="md-github">text</code>.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--output, -o &lt;file&gt;</code><br>
+Output file path when using PNG format. Default: <code class="md-github">pi.png</code>.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--help, -h</code><br>
+Display usage information and exit.</p>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="examples" href="#examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h3>
+<h4 class="md-github"><a class="md-github__anchor" name="text-output" href="#text-output"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Text Output</h4>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --digits 5 --algorithm spigot --output-format text
+# Output:
+3.1415
+</code></pre>
+<h4 class="md-github"><a class="md-github__anchor" name="png-output" href="#png-output"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PNG Output</h4>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --digits 20 --output-format png --output mypi.png
+# Writes 'mypi.png' with the π digits rendered on a monospaced canvas
+</code></pre>
+<h4 class="md-github"><a class="md-github__anchor" name="benchmarking" href="#benchmarking"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Benchmarking</h4>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --digits 10 --benchmark
+# Output example:
+[Benchmark] Execution time: 12ms 3.141592653
+</code></pre>
+<h4 class="md-github"><a class="md-github__anchor" name="help" href="#help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Help</h4>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
+</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
-<li class="md-github"><code class="md-github">--mission</code>, <code class="md-github">-m</code>: Display the repository's mission statement.</li>
-<li class="md-github">Default: Echoes the provided arguments.</li>
+<li class="md-github">Customizable precision (<code class="md-github">--digits</code>, <code class="md-github">-d</code>)</li>
+<li class="md-github">Algorithm selection (<code class="md-github">--algorithm</code>, <code class="md-github">-a</code>: leibniz, spigot, montecarlo)</li>
+<li class="md-github">Performance benchmarking (<code class="md-github">--benchmark</code>, <code class="md-github">-b</code>)</li>
+<li class="md-github">Text and PNG output formats (<code class="md-github">--output-format</code>, <code class="md-github">-f</code> and <code class="md-github">--output</code>, <code class="md-github">-o</code>)</li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
-<p class="md-github">Run the CLI tool directly:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --mission
-</code></pre>
-<p class="md-github">Or using the npm script:</p>
-<pre class="md-github"><code class="md-github language-bash">npm run start -- --mission
-</code></pre>
-<p class="md-github">Sample output:</p>
-<pre class="md-github"><code class="md-github language-markdown"># xn-intenton-z2a/repository0-crucible
-Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.
-</code></pre>
-<p class="md-github">Run with custom arguments:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js foo bar
-</code></pre>
-<p class="md-github">Output:</p>
-<pre class="md-github"><code class="md-github language-text">Run with: [&quot;foo&quot;,&quot;bar&quot;]
-</code></pre>
-<p class="md-github">Or via npm script:</p>
-<pre class="md-github"><code class="md-github language-bash">npm run start -- foo bar
-</code></pre>
-<h2 class="md-github"><a class="md-github__anchor" name="incremental-changes-plan" href="#incremental-changes-plan"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Incremental Changes Plan</h2>
-<p class="md-github">TODO: Add forthcoming changes here.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">We welcome contributions! Please review our <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines.</p>
+<p class="md-github">We welcome contributions! Please review our <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines on how to contribute effectively.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
-<p class="md-github">Released under the MIT License (see <a href="./LICENSE" class="md-github">LICENSE</a>).</p>
+<p class="md-github">Released under the Apache-2.0 License. See <a href="./LICENSE" class="md-github">LICENSE</a> for details.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-17T10:38:53.109Z</p>
+    <p>Generated on 2025-05-18T10:38:34.168Z</p>
   </footer>
 </body>
 </html>

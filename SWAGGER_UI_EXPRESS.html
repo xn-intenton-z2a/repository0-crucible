@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="swagger_ui_express" href="#swagger_ui_express"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SWAGGER_UI_EXPRESS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Install via npm install swagger-ui-express@latest. Exposes swagger-ui-dist assets through Express via two exported handlers: serve (Array&lt;express.Handler&gt;) and serveFiles(swaggerDoc?:object|null,options?:SetupOptions):RequestHandler. Initialization via setup(swaggerDoc:object|null,options?:SetupOptions):RequestHandler. SetupOptions: explorer:boolean (default false); swaggerOptions: { validatorUrl:string|null; url:string; urls:Array&lt;{name:string,url:string}&gt; }; customCss:string; customCssUrl:string|string[]; customJs:string|string[]; customJsStr:string|string[]. Supports loading from URL (setup(null,options)), multiple docs dropdown, YAML parsing via yaml.parse, dynamic req.swaggerDoc injection, multiple UI instances via serveFiles, JSON download link. Requirements Node&gt;=0.10.32, Express&gt;=4. Testing via npm install phantom &amp;&amp; npm test.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Installation &amp; Integration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Middleware Functions</p>
+</li>
+<li class="md-github">
+<p class="md-github">SetupOptions Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Router Integration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Remote Swagger Loading</p>
+</li>
+<li class="md-github">
+<p class="md-github">YAML Loading</p>
+</li>
+<li class="md-github">
+<p class="md-github">Dynamic Document Modification</p>
+</li>
+<li class="md-github">
+<p class="md-github">Multiple UI Instances</p>
+</li>
+<li class="md-github">
+<p class="md-github">JSON Download Link</p>
+</li>
+<li class="md-github">
+<p class="md-github">Requirements &amp; Testing</p>
+</li>
+<li class="md-github">
+<p class="md-github">Installation &amp; Integration</p>
+<ul class="md-github">
+<li class="md-github">Run npm install swagger-ui-express@latest</li>
+<li class="md-github">Require in code: const swaggerUi = require('swagger-ui-express')</li>
+<li class="md-github">Mount middleware: app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Middleware Functions</p>
+<ul class="md-github">
+<li class="md-github">serve: Array&lt;express.Handler&gt; serving static assets from swagger-ui-dist</li>
+<li class="md-github">setup(swaggerDoc: object|null, options?: SetupOptions): express.RequestHandler initializes UI</li>
+<li class="md-github">serveFiles(swaggerDoc?: object|null, options?: SetupOptions): express.RequestHandler serves files+UI combo</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">SetupOptions Configuration</p>
+<ul class="md-github">
+<li class="md-github">explorer: boolean default false toggles top-left explorer bar</li>
+<li class="md-github">swaggerOptions.validatorUrl: string|null default null</li>
+<li class="md-github">swaggerOptions.url: string loads spec from URL</li>
+<li class="md-github">swaggerOptions.urls: array of { name:string; url:string } for dropdown</li>
+<li class="md-github">customCss: string inline CSS overrides default</li>
+<li class="md-github">customCssUrl: string or array of strings public CSS URLs</li>
+<li class="md-github">customJs: string or array of strings public JS URLs</li>
+<li class="md-github">customJsStr: string or array of strings inline JS code</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Router Integration</p>
+<ul class="md-github">
+<li class="md-github">For Express.Router: router.use('/api-docs', swaggerUi.serve)</li>
+<li class="md-github">router.get('/api-docs', swaggerUi.setup(swaggerDocument))</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Remote Swagger Loading</p>
+<ul class="md-github">
+<li class="md-github">Pass null to setup first parameter</li>
+<li class="md-github">Use options.swaggerOptions.url or .urls</li>
+<li class="md-github">Enable explorer:true for multi-spec dropdown</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">YAML Loading</p>
+<ul class="md-github">
+<li class="md-github">npm install yaml</li>
+<li class="md-github">const file = fs.readFileSync('./swagger.yaml','utf8')</li>
+<li class="md-github">const swaggerDocument = YAML.parse(file)</li>
+<li class="md-github">app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Dynamic Document Modification</p>
+<ul class="md-github">
+<li class="md-github">Middleware: function(req,res,next){ req.swaggerDoc=modifiedDoc; next() }</li>
+<li class="md-github">Followed by swaggerUi.serveFiles() and swaggerUi.setup()</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Multiple UI Instances</p>
+<ul class="md-github">
+<li class="md-github">Use serveFiles per document: app.use('/api-docs-one', swaggerUi.serveFiles(docOne,opts), swaggerUi.setup(docOne))</li>
+<li class="md-github">Repeat for second doc</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">JSON Download Link</p>
+<ul class="md-github">
+<li class="md-github">Define endpoint: app.get('/api-docs/swagger.json',(req,res)=&gt;res.json(swaggerDocument))</li>
+<li class="md-github">Serve UI pointing to '/api-docs/swagger.json' via swaggerOptions.url</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Requirements &amp; Testing</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Node minimum v0.10.32</li>
+<li class="md-github">Express minimum v4</li>
+<li class="md-github">For testing: npm install phantom; npm test</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default Values and Implementation Steps:</p>
+<p class="md-github">Default SetupOptions:
+explorer: false
+swaggerOptions: {
+validatorUrl: null,
+url: undefined,
+urls: undefined
+}
+customCss: ''
+customCssUrl: undefined
+customJs: undefined
+customJsStr: undefined</p>
+<p class="md-github">Implementation Steps:</p>
+<ol class="md-github">
+<li class="md-github">Lock swagger-ui-dist version in package.json to ensure consistency across environments.</li>
+<li class="md-github">Install dependencies: npm install swagger-ui-express swagger-ui-dist@<version></li>
+<li class="md-github">Require modules: express, swagger-ui-express, fs/yaml if loading YAML.</li>
+<li class="md-github">Mount middleware in correct order: static serve before setup or serveFiles.</li>
+<li class="md-github">For routers, split serve and setup into .use and .get methods.</li>
+<li class="md-github">To load remote specs, pass null to setup and specify options.swaggerOptions.url or urls array.</li>
+<li class="md-github">For dynamic modification, insert middleware that assigns req.swaggerDoc before serveFiles and setup.</li>
+<li class="md-github">To host multiple specs, use serveFiles for each spec path then setup for each.</li>
+<li class="md-github">To provide JSON download, create express GET endpoint for swagger.json and configure swaggerOptions.url to point to it.</li>
+<li class="md-github">Run tests: npm install phantom &amp;&amp; npm test</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Type Definitions and API Specifications:</p>
+<p class="md-github">export interface SetupOptions {
+explorer?: boolean
+swaggerOptions?: {
+validatorUrl?: string | null
+url?: string
+urls?: Array&lt;{ name: string; url: string }&gt;
+}
+customCss?: string
+customCssUrl?: string | string[]
+customJs?: string | string[]
+customJsStr?: string | string[]
+}</p>
+<p class="md-github">export declare const serve: express.Handler[]
+export declare function setup(
+swaggerDoc: object | null,
+options?: SetupOptions
+): express.RequestHandler
+export declare function serveFiles(
+swaggerDoc?: object | null,
+options?: SetupOptions
+): express.RequestHandler</p>
+<p class="md-github">Complete Code Examples:</p>
+<p class="md-github">// Basic Setup
+const express = require('express')
+const app = express()
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))</p>
+<p class="md-github">// Router Example
+const router = require('express').Router()
+router.use('/api-docs', swaggerUi.serve)
+router.get('/api-docs', swaggerUi.setup(swaggerDocument))
+app.use(router)</p>
+<p class="md-github">// Remote Spec Loading
+app.use('/api-docs-remotes', swaggerUi.serve, swaggerUi.setup(null, {
+explorer: true,
+swaggerOptions: {
+urls: [
+{ name: 'Spec1', url: 'http://example.com/spec1.json' },
+{ name: 'Spec2', url: 'http://example.com/spec2.json' }
+]
+}
+}))</p>
+<p class="md-github">// YAML Spec Loading
+const fs = require('fs')
+const YAML = require('yaml')
+const file = fs.readFileSync('./swagger.yaml', 'utf8')
+const swaggerYamlDoc = YAML.parse(file)
+app.use('/api-docs-yaml', swaggerUi.serve, swaggerUi.setup(swaggerYamlDoc))</p>
+<p class="md-github">// Dynamic Doc Middleware
+app.use('/api-docs-dynamic', reqHandler, swaggerUi.serveFiles(), swaggerUi.setup())
+function reqHandler(req, res, next) {
+req.swaggerDoc = { host: req.get('host'), paths: {} }
+next()
+}</p>
+<p class="md-github">// JSON Download Endpoint
+app.get('/api-docs/swagger.json', (req, res) =&gt; res.json(swaggerDocument))
+app.use('/api-docs', swaggerUi.serveFiles(null, { swaggerOptions: { url: '/api-docs/swagger.json' } }), swaggerUi.setup(null, { swaggerOptions: { url: '/api-docs/swagger.json' } }))</p>
+<p class="md-github">Concrete Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Pin swagger-ui-dist version in lock file.</li>
+<li class="md-github">Inject only trusted customCss and customJs.</li>
+<li class="md-github">Separate serve and setup for router contexts.</li>
+<li class="md-github">Use serveFiles when hosting multiple UI instances.</li>
+</ul>
+<p class="md-github">Troubleshooting Procedures:</p>
+<ol class="md-github">
+<li class="md-github">UI returns 404 for assets: verify serve middleware mounting and correct static path.
+Command: app._router.stack.forEach(layer =&gt; console.log(layer.route || layer.name))</li>
+<li class="md-github">Missing swaggerDocument error: ensure req.swaggerDoc assignment before serveFiles or passing document to setup.</li>
+<li class="md-github">Validator failures: set swaggerOptions.validatorUrl to null to disable external validation.</li>
+<li class="md-github">Broken YAML parse: run node -e &quot;console.log(require('yaml').parse(fs.readFileSync('./swagger.yaml','utf8')))&quot; to validate syntax.</li>
+<li class="md-github">JSON endpoint check: curl http://localhost:3000/api-docs/swagger.json | jq .</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">Install swagger-ui-express and lock swagger-ui-dist in package.json. In code: const swaggerUi=require('swagger-ui-express'); mount app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument,{ explorer:true, swaggerOptions:{ validatorUrl:null, url:'<url>', urls:[{name:'Spec1',url:'<url1>'}] }, customCss:'.swagger-ui .topbar{display:none}', customCssUrl:['/custom.css'], customJs:['/custom.js'], customJsStr:['console.log(&quot;hi&quot;)'] })); Function signatures: setup(doc:object|null,opts?:SetupOptions):RequestHandler; serveFiles(doc?:object|null,opts?:SetupOptions):RequestHandler; serve:Array<Handler>. SetupOptions:{ explorer?:boolean; swaggerOptions?:{ validatorUrl?:string|null; url?:string; urls?:{name:string;url:string}[] }; customCss?:string; customCssUrl?:string|string[]; customJs?:string|string[]; customJsStr?:string|string[] }. Load YAML: fs.readFileSync+yaml.parse. Dynamic docs via middleware setting req.swaggerDoc. Multiple UIs via serveFiles per route. JSON download via GET endpoint and swaggerOptions.url. Requirements: Node&gt;=0.10.32, Express&gt;=4. Test: npm install phantom &amp;&amp; npm test.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Installation &amp; Integration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Middleware Functions</p>
+</li>
+<li class="md-github">
+<p class="md-github">SetupOptions Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Router Integration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Remote Swagger Loading</p>
+</li>
+<li class="md-github">
+<p class="md-github">YAML Loading</p>
+</li>
+<li class="md-github">
+<p class="md-github">Dynamic Document Modification</p>
+</li>
+<li class="md-github">
+<p class="md-github">Multiple UI Instances</p>
+</li>
+<li class="md-github">
+<p class="md-github">JSON Download Link</p>
+</li>
+<li class="md-github">
+<p class="md-github">Requirements &amp; Testing</p>
+</li>
+<li class="md-github">
+<p class="md-github">Installation &amp; Integration</p>
+<ul class="md-github">
+<li class="md-github">Run npm install swagger-ui-express@latest</li>
+<li class="md-github">Require in code: const swaggerUi = require('swagger-ui-express')</li>
+<li class="md-github">Mount middleware: app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Middleware Functions</p>
+<ul class="md-github">
+<li class="md-github">serve: Array&lt;express.Handler&gt; serving static assets from swagger-ui-dist</li>
+<li class="md-github">setup(swaggerDoc: object|null, options?: SetupOptions): express.RequestHandler initializes UI</li>
+<li class="md-github">serveFiles(swaggerDoc?: object|null, options?: SetupOptions): express.RequestHandler serves files+UI combo</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">SetupOptions Configuration</p>
+<ul class="md-github">
+<li class="md-github">explorer: boolean default false toggles top-left explorer bar</li>
+<li class="md-github">swaggerOptions.validatorUrl: string|null default null</li>
+<li class="md-github">swaggerOptions.url: string loads spec from URL</li>
+<li class="md-github">swaggerOptions.urls: array of { name:string; url:string } for dropdown</li>
+<li class="md-github">customCss: string inline CSS overrides default</li>
+<li class="md-github">customCssUrl: string or array of strings public CSS URLs</li>
+<li class="md-github">customJs: string or array of strings public JS URLs</li>
+<li class="md-github">customJsStr: string or array of strings inline JS code</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Router Integration</p>
+<ul class="md-github">
+<li class="md-github">For Express.Router: router.use('/api-docs', swaggerUi.serve)</li>
+<li class="md-github">router.get('/api-docs', swaggerUi.setup(swaggerDocument))</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Remote Swagger Loading</p>
+<ul class="md-github">
+<li class="md-github">Pass null to setup first parameter</li>
+<li class="md-github">Use options.swaggerOptions.url or .urls</li>
+<li class="md-github">Enable explorer:true for multi-spec dropdown</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">YAML Loading</p>
+<ul class="md-github">
+<li class="md-github">npm install yaml</li>
+<li class="md-github">const file = fs.readFileSync('./swagger.yaml','utf8')</li>
+<li class="md-github">const swaggerDocument = YAML.parse(file)</li>
+<li class="md-github">app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Dynamic Document Modification</p>
+<ul class="md-github">
+<li class="md-github">Middleware: function(req,res,next){ req.swaggerDoc=modifiedDoc; next() }</li>
+<li class="md-github">Followed by swaggerUi.serveFiles() and swaggerUi.setup()</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Multiple UI Instances</p>
+<ul class="md-github">
+<li class="md-github">Use serveFiles per document: app.use('/api-docs-one', swaggerUi.serveFiles(docOne,opts), swaggerUi.setup(docOne))</li>
+<li class="md-github">Repeat for second doc</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">JSON Download Link</p>
+<ul class="md-github">
+<li class="md-github">Define endpoint: app.get('/api-docs/swagger.json',(req,res)=&gt;res.json(swaggerDocument))</li>
+<li class="md-github">Serve UI pointing to '/api-docs/swagger.json' via swaggerOptions.url</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Requirements &amp; Testing</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Node minimum v0.10.32</li>
+<li class="md-github">Express minimum v4</li>
+<li class="md-github">For testing: npm install phantom; npm test</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">OpenAPI &amp; Interactive Documentation
+https://github.com/scottie1984/swagger-ui-express#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-swagger_ui_express" href="#digest-of-swagger_ui_express"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SWAGGER_UI_EXPRESS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="swagger-ui-express" href="#swagger-ui-express"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SWAGGER UI EXPRESS</h1>
+<p class="md-github">Date Retrieved: 2024-06-17
+Data Size: 770429 bytes
+Links Found: 5126</p>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<p class="md-github">npm install swagger-ui-express@latest</p>
+<h1 class="md-github"><a class="md-github__anchor" name="basic-usage" href="#basic-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic Usage</h1>
+<p class="md-github">const express = require('express')
+const app = express()
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="express-router-usage" href="#express-router-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Express Router Usage</h1>
+<p class="md-github">const router = require('express').Router()
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
+router.use('/api-docs', swaggerUi.serve)
+router.get('/api-docs', swaggerUi.setup(swaggerDocument))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="middleware-function-signatures" href="#middleware-function-signatures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Middleware Function Signatures</h1>
+<p class="md-github">serve  : Array&lt;express.Handler&gt; (serves swagger-ui-dist assets)
+setup  : (swaggerDoc: object|null, options?: SetupOptions) =&gt; express.RequestHandler
+serveFiles : (swaggerDoc?: object|null, options?: SetupOptions) =&gt; express.RequestHandler</p>
+<h1 class="md-github"><a class="md-github__anchor" name="setupoptions-interface" href="#setupoptions-interface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SetupOptions Interface</h1>
+<p class="md-github">explorer       : boolean (default false)
+swaggerOptions : {
+validatorUrl?: string|null (default null),
+url?: string,
+urls?: Array&lt;{ name: string; url: string }&gt;
+}
+customCss      : string
+default ''
+customCssUrl   : string|string[]
+customJs       : string|string[]
+customJsStr    : string|string[]</p>
+<h1 class="md-github"><a class="md-github__anchor" name="customizing-explorer" href="#customizing-explorer"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Customizing Explorer</h1>
+<p class="md-github">app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="passing-swagger-client-options" href="#passing-swagger-client-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Passing Swagger Client Options</h1>
+<p class="md-github">var options = {
+swaggerOptions: {
+validatorUrl: null
+}
+}
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="custom-css-and-css-urls" href="#custom-css-and-css-urls"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom CSS and CSS URLs</h1>
+<p class="md-github">var options = {
+customCss: '.swagger-ui .topbar { display: none }',
+customCssUrl: ['/custom.css', 'https://example.com/other-custom.css']
+}
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="custom-js-and-inline-js" href="#custom-js-and-inline-js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom JS and Inline JS</h1>
+<p class="md-github">var options = {
+customJs: ['/custom.js', 'https://example.com/other-custom.js'],
+customJsStr: ['console.log(&quot;Hello World&quot;)', 'var x = 1; console.log(x)']
+}
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="loading-swagger-from-url" href="#loading-swagger-from-url"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Loading Swagger from URL</h1>
+<p class="md-github">var options = {
+swaggerOptions: {
+url: 'http://petstore.swagger.io/v2/swagger.json'
+}
+}
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, options))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="multiple-documents-dropdown" href="#multiple-documents-dropdown"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Multiple Documents Dropdown</h1>
+<p class="md-github">var options = {
+explorer: true,
+swaggerOptions: {
+urls: [
+{ url: 'http://petstore.swagger.io/v2/swagger.json', name: 'Spec1' },
+{ url: 'http://petstore.swagger.io/v2/swagger.json', name: 'Spec2' }
+]
+}
+}
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, options))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="loading-yaml" href="#loading-yaml"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Loading YAML</h1>
+<p class="md-github">npm install yaml
+const fs = require('fs')
+const YAML = require('yaml')
+const file = fs.readFileSync('./swagger.yaml', 'utf8')
+const swaggerDocument = YAML.parse(file)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="dynamic-modification-before-serve" href="#dynamic-modification-before-serve"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dynamic Modification Before Serve</h1>
+<p class="md-github">app.use('/api-docs', function(req, res, next) {
+swaggerDocument.host = req.get('host')
+req.swaggerDoc = swaggerDocument
+next()
+}, swaggerUi.serveFiles(swaggerDocument, {}), swaggerUi.setup())</p>
+<h1 class="md-github"><a class="md-github__anchor" name="multiple-ui-instances" href="#multiple-ui-instances"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Multiple UI Instances</h1>
+<p class="md-github">app.use('/api-docs-one', swaggerUi.serveFiles(docOne, opts), swaggerUi.setup(docOne))
+app.use('/api-docs-two', swaggerUi.serveFiles(docTwo, opts), swaggerUi.setup(docTwo))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="json-download-link" href="#json-download-link"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON Download Link</h1>
+<p class="md-github">app.get('/api-docs/swagger.json', (req, res) =&gt; res.json(swaggerDocument))
+app.use('/api-docs', swaggerUi.serveFiles(null, { swaggerOptions: { url: '/api-docs/swagger.json' } }), swaggerUi.setup(null, { swaggerOptions: { url: '/api-docs/swagger.json' } }))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="requirements" href="#requirements"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Requirements</h1>
+<p class="md-github">Node &gt;= 0.10.32
+Express &gt;= 4</p>
+<h1 class="md-github"><a class="md-github__anchor" name="testing" href="#testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing</h1>
+<p class="md-github">npm install phantom
+npm test</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: OpenAPI &amp; Interactive Documentation</li>
+<li class="md-github">URL: https://github.com/scottie1984/swagger-ui-express#readme</li>
+<li class="md-github">License: License: CC0 1.0 Universal / Apache-2.0 / MIT</li>
+<li class="md-github">Crawl Date: 2025-05-17T12:29:49.413Z</li>
+<li class="md-github">Data Size: 770429 bytes</li>
+<li class="md-github">Links Found: 5126</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-17</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-18T10:38:33.808Z</p>
+  </footer>
+</body>
+</html>
