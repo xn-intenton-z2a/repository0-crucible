@@ -45,3 +45,8 @@
 
 2025-05-18T06:23:24.688Z - Maintain sources of library content.
 
+2025-05-18T06:28:45.278Z - Digested install: npm install --save yargs
+import yargs from 'yargs'; import { hideBin } from 'yargs/helpers';
+API: yargs(opts?):Yargs; .scriptName(s):Yargs; .usage(u):Yargs; .command(cmd,desc,builder(fn:Yargs=>Yargs),handler(fn:argv=>void)):Yargs; .positional(key, {type:string|number|boolean|array, default?, describe}):Yargs; .option(name,{alias?,type,default,describe}):Yargs; .demandCommand(n,message?):Yargs; .help():Yargs; .parse(args:string[]):Record<string,any>;
+Example: yargs().scriptName('cli').usage('$0 <cmd>').command('run <file>','run file',y=>y.positional('file',{type:'string',describe:'file path'}),(argv)=>console.log(argv)).option('verbose',{alias:'v',type:'boolean',default:false,describe:'verbose'}).demandCommand(1).help().parse(hideBin(process.argv));.
+
