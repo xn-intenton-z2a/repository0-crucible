@@ -66,3 +66,5 @@ Example: yargs().scriptName('cli').usage('$0 <cmd>').command('run <file>','run f
 
 2025-05-18T13:05:28.530Z - Maintained feature ALGORITHM_COMPARISON.
 
+2025-05-18T16:57:09.407Z - Maintained feature JSON_OUTPUT.
+
