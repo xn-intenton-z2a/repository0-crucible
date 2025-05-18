@@ -1,80 +1,49 @@
 # repository0-crucible
 
-A CLI tool and JavaScript library for calculating π to configurable precision using different algorithms, with optional performance benchmarking and PNG visualization.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+
+To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
+
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+
+## Repository Template
+
+The repository is intended as a template that includes:
+* A Template Base: A starting point for new projects.
+* A Running Experiment: An example implementation that demonstrates one way to use the template.
+* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
 
 ## Installation
 
 Install via npm:
 
 ```bash
-npm install @xn-intenton-z2a/repository0-crucible
+npm install repository0-crucible
 ```
+
+## Features
+
+TODO: Add features here.
 
 ## Usage
 
-You can invoke the CLI directly with Node.js:
-
-```bash
-node src/lib/main.js [options]
-```
-
-### Options
-
-- `--digits, -d <number>`  
-  Total significant digits to display (integer ≥ 1). Default: `100`.
-
-- `--algorithm, -a <leibniz|spigot|montecarlo>`  
-  Algorithm to use for π approximation. Default: `leibniz`.
-
-- `--benchmark, -b`  
-  Enable performance benchmarking; prefixes output with execution time. Default: `false`.
-
-- `--output-format, -f <text|png>`  
-  Output format. `text` prints digits to console; `png` writes a PNG image. Default: `text`.
-
-- `--output, -o <file>`  
-  Output file path when using PNG format. Default: `pi.png`.
-
-- `--help, -h`  
-  Display usage information and exit.
-
-### Examples
-
-#### Text Output
-
-```bash
-node src/lib/main.js --digits 5 --algorithm spigot --output-format text
-# Output:
-3.1415
-```
-
-#### PNG Output
-
-```bash
-node src/lib/main.js --digits 20 --output-format png --output mypi.png
-# Writes 'mypi.png' with the π digits rendered on a monospaced canvas
-```
-
-#### Benchmarking
-
-```bash
-node src/lib/main.js --digits 10 --benchmark
-# Output example:
-[Benchmark] Execution time: 12ms 3.141592653
-```
-
-#### Help
+To run the CLI tool and see help instructions:
 
 ```bash
 node src/lib/main.js --help
 ```
 
-## Features
+### Example Commands
 
-- Customizable precision (`--digits`, `-d`)
-- Algorithm selection (`--algorithm`, `-a`: leibniz, spigot, montecarlo)
-- Performance benchmarking (`--benchmark`, `-b`)
-- Text and PNG output formats (`--output-format`, `-f` and `--output`, `-o`)
+- **Default Demo Output:**
+  ```bash
+  npm run start
+  ```
+
+
+## Incremental Changes Plan
+
+TODO: Add forthcoming changes here.
 
 ## Contributing
 
@@ -82,4 +51,4 @@ We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## License
 
-Released under the Apache-2.0 License. See [LICENSE](./LICENSE) for details.
+Released under the MIT License (see [LICENSE](./LICENSE)).
