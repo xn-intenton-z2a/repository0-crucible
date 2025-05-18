@@ -1,70 +1,80 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
-
-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
-
-## Repository Template
-
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+A CLI tool and JavaScript library for calculating π to configurable precision using different algorithms, with optional performance benchmarking and PNG visualization.
 
 ## Installation
 
 Install via npm:
 
 ```bash
-npm install repository0-crucible
+npm install @xn-intenton-z2a/repository0-crucible
 ```
-
-## Project Mission
-
-Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.
-
-## Features
-
-> The following features implement and support our mission of exploration, performance benchmarking, and visual/text-based output for π calculations:
-
-* Customizable π digit precision (`--digits`, `-d`) (supports exploring varying digit lengths)
-* Algorithm selection (`--algorithm`, `-a`, options: `leibniz`, `spigot`, `montecarlo`) (enables evaluation of different computational techniques)
-* Performance benchmarking (`--benchmark`, `-b`) (measures and compares algorithm speed)
-* Output formats: text and PNG (`--output-format`, `-f`, and `--output`, `-o`) (provides both machine-readable and visual results)
 
 ## Usage
 
-Run the CLI tool with flags to control behavior:
+You can invoke the CLI directly with Node.js:
 
-### Text Output
+```bash
+node src/lib/main.js [options]
+```
+
+### Options
+
+- `--digits, -d <number>`  
+  Total significant digits to display (integer ≥ 1). Default: `100`.
+
+- `--algorithm, -a <leibniz|spigot|montecarlo>`  
+  Algorithm to use for π approximation. Default: `leibniz`.
+
+- `--benchmark, -b`  
+  Enable performance benchmarking; prefixes output with execution time. Default: `false`.
+
+- `--output-format, -f <text|png>`  
+  Output format. `text` prints digits to console; `png` writes a PNG image. Default: `text`.
+
+- `--output, -o <file>`  
+  Output file path when using PNG format. Default: `pi.png`.
+
+- `--help, -h`  
+  Display usage information and exit.
+
+### Examples
+
+#### Text Output
 
 ```bash
 node src/lib/main.js --digits 5 --algorithm spigot --output-format text
+# Output:
+3.1415
 ```
 
-### PNG Output
+#### PNG Output
 
 ```bash
-npm run start -- --digits 20 --output-format png --output pi.png
+node src/lib/main.js --digits 20 --output-format png --output mypi.png
+# Writes 'mypi.png' with the π digits rendered on a monospaced canvas
 ```
 
-### Benchmarking
+#### Benchmarking
 
 ```bash
-npm run start -- --digits 10 --benchmark
+node src/lib/main.js --digits 10 --benchmark
+# Output example:
+[Benchmark] Execution time: 12ms 3.141592653
 ```
 
-### Help
+#### Help
 
 ```bash
 node src/lib/main.js --help
 ```
 
-## Incremental Changes Plan
+## Features
 
-TODO: Add forthcoming changes here.
+- Customizable precision (`--digits`, `-d`)
+- Algorithm selection (`--algorithm`, `-a`: leibniz, spigot, montecarlo)
+- Performance benchmarking (`--benchmark`, `-b`)
+- Text and PNG output formats (`--output-format`, `-f` and `--output`, `-o`)
 
 ## Contributing
 
@@ -72,4 +82,4 @@ We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## License
 
-Released under the MIT License (see [LICENSE](./LICENSE)).
+Released under the Apache-2.0 License. See [LICENSE](./LICENSE) for details.

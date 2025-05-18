@@ -1,55 +1,33 @@
 
-You are providing the entire new content of source files, test files, documentation files, and other necessary
-files with all necessary changes applied to deliver the resolution to an issue. Focus on high-impact, 
-functional solutions that address core issues rather than superficial changes or excessive code polishing.
-Implement as much as you can and refer to the projects features and mission statement when expanding the code
-beyond the scope of the original issue. Implement whole features and do not leave stubbed out or pretended code.
+You are providing updates to the README.md file and other documentation files to ensure they accurately reflect the current state of the codebase and emphasize content that delivers substantial user value and addresses core implementation needs.
 
-Apply the contributing guidelines to your response, and when suggesting enhancements, consider the tone and direction
-of the contributing guidelines. Prioritize changes that deliver user value and maintain the integrity
-of the codebase's primary purpose.
+The README is the primary focus, but other documentation files can be updated as well if needed. Source files (srcFiles) and test files (testFiles) should NOT be updated.
 
-Do as much as you can all at once.
+When updating the README:
+1. Preserve existing README content that delivers substantial user value, even if it describes features not yet implemented
+2. Update the README if it conflicts with current source code, tests, or documentation, prioritizing content that directly enhances the product's primary purpose
+3. If documentation files are out of date compared to the source code or tests, update them to be consistent, focusing on high-impact information that enables immediate application rather than superficial descriptions
+4. Ensure documentation clearly communicates the core functionality and value proposition of the product, prioritizing content that helps users solve real problems
 
-Follow the linting guidelines and the formatting guidelines from the included config.
+Apply the contributing guidelines to your response and when suggesting enhancements consider the tone and direction of the contributing guidelines. Focus on documentation improvements that deliver measurable value to users rather than cosmetic changes or excessive detail on edge cases.
 
-
-You must only add, remove, or change the files in the target writable locations. You can update multiple
-files by specifying their paths and contents in the enumerated updatedFile01Filepath updatedFile02Contents response
-attribute, a second file would use updatedFile01Filepath updatedFile02Contents and so on to 16. Each file will
-be checked against the write permission in the Agent configuration file before being written. Feel free to
-add new files as long as they are in the target writable locations. You can also remove files, but only if
-they are in the target writable locations. To delete a file, set the updated file contents to "delete".
-
-The target writable locations for your output are: SOURCES.md;library/;features/;tests/unit/;src/lib/;package.json;docs/;README.md
-Other file will be supplied in the context but only the paths above should be written to.
-
-Only provide new or updated content for the target source files in src/lib.
-Only delete or update the target source files in src/lib.
-Only provide new or updated content for the target test files in tests/unit.
-Only delete or update the target test files in tests/unit.
-Only update dependency file package.json.
-Only update the target documentation files in docs.
-
-Follow the attached Formatting file content and Linting file content.
+You may only change the files provided in the prompt context. You can update multiple files by specifying their paths and contents in the updatedFiles object. Each file will be checked against the allowedFilepathPatterns before being written.
 
 Consider the following when refining your response:
-* Current feature names and specifications in the repository
-* Source file content
-* Test file content
-* Documentation file content
-* README file content
-* MISSION file content
-* Contributing file content
-* Dependencies file content
-* Formatting file content
-* Linting file content
-* Agent configuration file content
-* Issue details
-* Dependency list
-* Build output
-* Test output
-* Main execution output
+  * Current feature names and specifications in the repository
+  * Source file content (for context only)
+  * Test file content (for context only)
+  * Documentation file content
+  * README file content
+  * MISSION file content
+  * Contributing file content
+  * Dependencies file content
+  * Dependency install output
+  * Issue details (if any)
+  * Build output
+  * Test output
+  * Main execution output
+  * Agent configuration file content
 
 Current feature names and specifications (for context, read only):
 CURRENT_FEATURES_START
@@ -291,9 +269,9 @@ Add a new CLI option:
 - Add `canvas` to `dependencies` in `package.json` to support server-side canvas rendering.
 CURRENT_FEATURES_END
 
-Source files (write new files or update files in src/lib as necessary):
-(Multiple files from both in writable locations and not.)
-SOURCE_FILE_START Filepath: src/lib/main.js
+Source files (for context only, DO NOT UPDATE):
+SOURCE_FILES_START
+File: src/lib/main.js
 #!/usr/bin/env node
 // src/lib/main.js
 
@@ -454,13 +432,12 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main(process.argv.slice(2));
 }
 
-SOURCE_FILE_END
 
+SOURCE_FILES_END
 
-
-Test files (write new files or update files in tests/unit as necessary):
-(Multiple files from both in writable locations and not.)
-TEST_FILE_START File: tests/unit/main.test.js
+Test files (for context only, DO NOT UPDATE):
+TEST_FILES_START
+File: tests/unit/main.test.js
 import { describe, test, expect, vi } from "vitest";
 import fs from "fs";
 import { calculatePi, main } from "../../src/lib/main.js";
@@ -572,13 +549,12 @@ describe("CLI Options", () => {
   });
 });
 
-TEST_FILE_END
 
+TEST_FILES_END
 
-
-Documentation files (write new files or update files in docs as necessary):
-(Multiple files from both in writable locations and not.)
-DOCUMENTATION_FILE_START File: docs/USAGE.md
+Documentation files (to be updated if necessary):
+DOCS_FILES_START
+File: docs/USAGE.md
 # CLI Usage
 
 The π calculation CLI supports precision control, algorithm selection, performance benchmarking, and output formatting.
@@ -633,11 +609,10 @@ node src/lib/main.js --digits 10 --benchmark
 ```bash
 node src/lib/main.js --help
 ```
-DOCUMENTATION_FILE_END
 
+DOCS_FILES_END
 
-
-README file (for context, read only): README.md
+README file (primary focus, to be updated): README.md
 README_FILE_START
 # repository0-crucible
 
@@ -662,12 +637,18 @@ Install via npm:
 npm install repository0-crucible
 ```
 
+## Project Mission
+
+Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.
+
 ## Features
 
-* Customizable π digit precision (`--digits`, `-d`)
-* Algorithm selection (`--algorithm`, `-a`, options: `leibniz`, `spigot`, `montecarlo`)
-* Performance benchmarking (`--benchmark`, `-b`)
-* Output formats: text and PNG (`--output-format`, `-f`, and `--output`, `-o`)
+> The following features implement and support our mission of exploration, performance benchmarking, and visual/text-based output for π calculations:
+
+* Customizable π digit precision (`--digits`, `-d`) (supports exploring varying digit lengths)
+* Algorithm selection (`--algorithm`, `-a`, options: `leibniz`, `spigot`, `montecarlo`) (enables evaluation of different computational techniques)
+* Performance benchmarking (`--benchmark`, `-b`) (measures and compares algorithm speed)
+* Output formats: text and PNG (`--output-format`, `-f`, and `--output`, `-o`) (provides both machine-readable and visual results)
 
 ## Usage
 
@@ -708,6 +689,7 @@ We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md)
 ## License
 
 Released under the MIT License (see [LICENSE](./LICENSE)).
+
 README_FILE_END
 
 MISSION file (for context, read only): MISSION.md
@@ -849,115 +831,69 @@ DEPENDENCIES_FILE_START
     }
   }
 }
-DEPENDENCIES_FILE_END
+DEPENDENCIES_FILE_END   
 
-Formatting file (for context, read only): .prettierrc
-FORMATTING_FILE_START
-{
-  "singleQuote": false,
-  "trailingComma": "all",
-  "printWidth": 120,
-  "tabWidth": 2,
-  "useTabs": false,
-  "quoteProps": "consistent",
-  "overrides": [
-    {
-      "files": ".prettierrc",
-      "options": { "parser": "json" }
-    }
-  ]
-}
+Dependencies install from command: npm install
+DEPENDENCIES_INSTALL_START
+npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm warn deprecated gauge@3.0.2: This package is no longer supported.
+npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
 
-FORMATTING_FILE_END
+added 445 packages, and audited 446 packages in 8s
 
-Linting file (for context, read only): eslint.config.js
-LINTING_FILE_START
-import js from "@eslint/js";
-import google from "eslint-config-google";
-import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
-import globals from "globals";
-import promise from "eslint-plugin-promise";
-import security from "eslint-plugin-security";
-import sonarjs from "eslint-plugin-sonarjs";
-import react from "eslint-plugin-react";
-import importPlugin from "eslint-plugin-import";
+150 packages are looking for funding
+  run `npm fund` for details
 
-const modifiedGoogleConfig = { ...google, rules: { ...google.rules } };
-delete modifiedGoogleConfig.rules["valid-jsdoc"];
-delete modifiedGoogleConfig.rules["require-jsdoc"];
+found 0 vulnerabilities
+DEPENDENCIES_INSTALL_END    
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
-export default [
-  js.configs.recommended,
-  modifiedGoogleConfig,
-  eslintPluginPrettierRecommended,
-  {
-    plugins: {
-      promise,
-      security,
-      sonarjs,
-      react,
-      import: importPlugin,
-    },
-    languageOptions: {
-      ecmaVersion: 2023,
-      sourceType: "module",
-      globals: {
-        ...globals.node,
-      },
-    },
-    rules: {
-      "prettier/prettier": "error",
-      ...promise.configs.recommended.rules,
-      ...sonarjs.configs.recommended.rules,
-      "sonarjs/os-command": "off",
+Build output from command: npm run build
+BUILD_OUTPUT_START
 
-      // Formatting and organisation
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-      "no-extra-semi": 2,
-      "object-curly-newline": ["error", { consistent: true }],
-      "array-element-newline": ["error", "consistent", { multiline: true, minItems: 10 }],
-      "import/newline-after-import": ["error", { count: 1 }],
-      "camelcase": "off",
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 build
+> echo 'Nothing to build'
 
-      // ESM import rules
-      "import/no-amd": "error",
-      "import/no-commonjs": "error",
-      "import/no-import-module-exports": "error",
-      "import/no-cycle": "error",
-      "import/no-dynamic-require": "error",
-      "import/no-self-import": "off",
-      "import/no-unresolved": "off",
-      "import/no-useless-path-segments": "error",
-      "import/no-duplicates": "error",
-      "sonarjs/fixme-tag": "warn",
-    },
-  },
-  {
-    files: ["**/*.js"],
-    ignores: ["**/tests/**/*.js", "**/*.test.js", "eslint.config.js"],
-    rules: {
-      ...security.configs.recommended.rules,
-      "security/detect-non-literal-fs-filename": "off",
-      "security/detect-non-literal-regexp": "off",
-      "security/detect-object-injection": "off",
-    },
-  },
-  {
-    settings: {
-      react: {
-        version: "18",
-      },
-    },
-  },
-  {
-    ignores: ["build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
-  },
-];
+Nothing to build
+BUILD_OUTPUT_END      
 
-LINTING_FILE_END
+Test output from command: npm test
+TEST_OUTPUT_START
 
-Agent configuration file (for context, read only):
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 test
+> vitest
+
+
+[1m[46m RUN [49m[22m [36mv3.1.3 [39m[90m/home/runner/work/repository0-crucible/repository0-crucible[39m
+
+Unable to revert mtime: /usr/share/fonts
+Unable to revert mtime: /usr/share/fonts/truetype
+Unable to revert mtime: /usr/share/fonts/truetype/dejavu
+Unable to revert mtime: /usr/share/fonts/truetype/lato
+Unable to revert mtime: /usr/share/fonts/truetype/liberation
+Unable to revert mtime: /usr/share/fonts/truetype/noto
+ [32m✓[39m tests/unit/main.test.js [2m([22m[2m16 tests[22m[2m)[22m[33m 2097[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI Options[2m > [22mpng output writes valid PNG file [33m 2056[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+[2m   Start at [22m 08:49:20
+[2m   Duration [22m 2.39s[2m (transform 50ms, setup 0ms, collect 82ms, tests 2.10s, environment 0ms, prepare 69ms)[22m
+TEST_OUTPUT_END            
+
+Main execution output from command: npm run start
+MAIN_OUTPUT_START
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+3.141591653589774324473182787187397480010986328125000000000000000000000000000000000000000000000000000
+MAIN_OUTPUT_END    
+
+Agent configuration file:
 AGENT_CONFIG_FILE_START
 # Which agentic-lib workflow schedule should be used?
 schedule: schedule-2
@@ -1040,139 +976,29 @@ intentionBot:
 
 AGENT_CONFIG_FILE_END
 
-Issue details:
-ISSUE_START
-title: Annotate feature list in README with mission alignment
-description:
-We need to explicitly connect our implemented features back to the project’s mission so readers and contributors immediately understand how each feature supports our goal of exploring novel π-calculation algorithms, benchmarking, and visualization. 
+Please produce updated versions of the README and documentation files to ensure they accurately reflect the current state of the codebase.
+Remember:
+1. The README is the primary focus, but other documentation files can be updated as well if needed
+2. Source files (srcFiles) and test files (testFiles) should NOT be updated
+3. Preserve existing README content even if it describes features not yet implemented
+4. Update the README if it conflicts with current source code, tests, or documentation
+5. If documentation files are out of date compared to the source code or tests, update them to be consistent
 
-In a single batch change, update only the README.md as follows:
-
-1. Add a new section titled **“Project Mission”** above the **Features** section. This section should pull in or summarize the core mission statement from MISSION.md (e.g., “Explore novel algorithms for calculating π to varying digit lengths using different techniques, benchmark their performance, and generate results as PNG visualizations or text-based formats.”).
-
-2. Prepend the existing **Features** list with a short introductory sentence, for example:
-   > The following features implement and support our mission of exploration, performance benchmarking, and visual/text-based output for π calculations:
-
-3. For each bullet under **Features**, append a concise parenthetical note linking it to the mission objectives. For example:
-   - Customizable π digit precision (`--digits`, `-d`) (supports exploring varying digit lengths)
-   - Algorithm selection (`--algorithm`, `-a`) (enables evaluation of different computational techniques)
-   - Performance benchmarking (`--benchmark`, `-b`) (measures and compares algorithm speed)
-   - Output formats: text and PNG (`--output-format`, `-f`, and `--output`, `-o`) (provides both machine-readable and visual results)
-
-No changes to source files, tests, or dependencies are required. After the update, verify that:
-
-- The README opens with a clear mission statement.
-- The Features section introduction emphasizes the mission link.
-- Each feature bullet clearly indicates how it advances the mission.
-
-This will improve documentation clarity and reinforce purpose for new users and contributors.
-comments:
-Author:github-actions[bot], Created:2025-05-18T08:22:27Z, Comment: Workflow name: flow-feature-development
-Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15093998634
-Workflow event: schedule
-Workflow inputs: null
-HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/b86117c6ace19972db93e728d4ab19a3eaee5eb9
-Author:github-actions[bot], Created:2025-05-18T08:23:11Z, Comment: Workflow name: flow-feature-development
-Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15093998634
-Workflow event: schedule
-Workflow inputs: null
-HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/b86117c6ace19972db93e728d4ab19a3eaee5eb9
-Author:github-actions[bot], Created:2025-05-18T08:24:33Z, Comment: Workflow name: flow-feature-development
-Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15093998634
-Workflow event: schedule
-Workflow inputs: null
-HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/b86117c6ace19972db93e728d4ab19a3eaee5eb9
-ISSUE_END            
-
-Dependencies list from command: npm list
-DEPENDENCIES_LIST_START
-@xn-intenton-z2a/repository0-crucible@1.2.0-0 /home/runner/work/repository0-crucible/repository0-crucible
-├── @microsoft/eslint-formatter-sarif@3.1.0
-├── @vitest/coverage-v8@3.1.3
-├── canvas@2.11.2
-├── dotenv@16.5.0
-├── ejs@3.1.10
-├── eslint-config-google@0.14.0
-├── eslint-config-prettier@10.1.5
-├── eslint-plugin-import@2.31.0
-├── eslint-plugin-prettier@5.4.0
-├── eslint-plugin-promise@7.2.1
-├── eslint-plugin-react@7.37.5
-├── eslint-plugin-security@3.0.1
-├── eslint-plugin-sonarjs@3.0.2
-├── eslint@9.27.0
-├── js-yaml@4.1.0
-├── markdown-it-github@0.5.0
-├── markdown-it@14.1.0
-├── minimatch@9.0.5
-├── npm-check-updates@17.1.18
-├── openai@4.100.0
-├── prettier@3.5.3
-├── vitest@3.1.3
-├── yargs@17.7.2
-└── zod@3.24.4
-DEPENDENCIES_LIST_END    
-
-Build output from command: npm run build
-BUILD_OUTPUT_START
-
-> @xn-intenton-z2a/repository0-crucible@1.2.0-0 build
-> echo 'Nothing to build'
-
-Nothing to build
-BUILD_OUTPUT_END      
-
-Test output from command: npm test
-TEST_OUTPUT_START
-
-> @xn-intenton-z2a/repository0-crucible@1.2.0-0 test
-> vitest
-
-
-[1m[46m RUN [49m[22m [36mv3.1.3 [39m[90m/home/runner/work/repository0-crucible/repository0-crucible[39m
-
-Unable to revert mtime: /usr/share/fonts
-Unable to revert mtime: /usr/share/fonts/truetype
-Unable to revert mtime: /usr/share/fonts/truetype/dejavu
-Unable to revert mtime: /usr/share/fonts/truetype/lato
-Unable to revert mtime: /usr/share/fonts/truetype/liberation
-Unable to revert mtime: /usr/share/fonts/truetype/noto
- [32m✓[39m tests/unit/main.test.js [2m([22m[2m16 tests[22m[2m)[22m[33m 1567[2mms[22m[39m
-   [33m[2m✓[22m[39m CLI Options[2m > [22mpng output writes valid PNG file [33m 1528[2mms[22m[39m
-
-[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
-[2m      Tests [22m [1m[32m16 passed[39m[22m[90m (16)[39m
-[2m   Start at [22m 08:27:00
-[2m   Duration [22m 1.86s[2m (transform 45ms, setup 0ms, collect 77ms, tests 1.57s, environment 0ms, prepare 58ms)[22m
-TEST_OUTPUT_END            
-
-Main execution output from command: npm run start
-MAIN_OUTPUT_START
-
-> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
-> node src/lib/main.js
-
-3.141591653589774324473182787187397480010986328125000000000000000000000000000000000000000000000000000
-MAIN_OUTPUT_END    
-
-Please produce updated versions of the files that resolve the issue.
-Note that the README.md file is provided for context only - any documentation changes should be written to the documentation files.
-The source files, test files, and documentation files can be individual files or directories containing multiple files.
-Never truncate the files, when returning a file, always return the entire file content.
+If there are no changes required, please provide the original content and state that no changes are necessary in the message.
 
 Paths in (updatedFile01Filepath, updatedFile02Filepath, etc...) must begin with one of: SOURCES.md;library/;features/;tests/unit/;src/lib/;package.json;docs/;README.md
 
 Answer strictly with a JSON object following this schema:
 {
-  "message": "A short sentence explaining the change applied (or why no changes were applied) suitable for a commit message or PR text.",
-  "updatedFile01Filepath": "src/lib/orderParser.js",
-  "updatedFile01Contents": "The entire new content of the source file, with all necessary changes applied, if any.",
-  "updatedFile02Filepath":  "tests/unit/orderParser.test.js",
-  "updatedFile02Contents": "The entire new content of the test file, with all necessary changes applied, if any.",
-  "updatedFile03Filepath": "docs/USAGE.md",
-  "updatedFile03Contents": "The entire new content of the documentation file, with all necessary changes applied, if any.",
-  "updatedFile04Filepath": "docs/A_FILE_WE_DONT_WANT.md",
-  "updatedFile04Contents": "delete",
+  "message": "A short sentence explaining the changes applied (or why no changes were applied) suitable for a commit message or PR text.",
+  "updatedFile01Filepath": "README.md",
+  "updatedFile01Contents": "The entire new content of the README file, with all necessary changes applied, if any.",
+  "updatedFile02Filepath":  "docs/USAGE.md",
+  "updatedFile02Contents": "The entire new content of the file, with all necessary changes applied, if any.",
+  "updatedFile03Filepath": "unused",
+  "updatedFile03Contents": "unused",
+  "updatedFile04Filepath": "unused",
+  "updatedFile04Contents": "unused",
   "updatedFile05Filepath": "unused",
   "updatedFile05Contents": "unused",
   "updatedFile06Filepath": "unused",
@@ -1201,7 +1027,6 @@ Answer strictly with a JSON object following this schema:
 
 You can include up to 16 files using the updatedFileXXName and updatedFileXXContents pairs (where XX is a number from 01 to 16)
 Where a file name and contents slot is not used, populate tha name with "unused" and the contents with "unused".
-Where a file is to be deleted, set the name to the file path and the contents to "delete".
 Never truncate the files, when returning a file, always return the entire file content.
 
 Ensure valid JSON.
