@@ -103,3 +103,15 @@ LLM API Usage:
 
 ---
 
+## Activity at 2025-05-19T00:43:06.039Z
+
+Digested Decimal: decimal.Decimal(value, context=None) immutable fixed-point/arithmetic IEEE754; exact decimal; default prec=28; eight rounding modes; nine signals; strict traps via context.traps[]. Context: decimal.Context(prec:int, rounding:mode, Emin:int, Emax:int, capitals:0|1, clamp:0|1, flags:list, traps:list); global getcontext(), setcontext(), localcontext() manager. Predefined: DefaultContext, BasicContext, ExtendedContext. Methods: Decimal ops (+,-,*,/,//,%,**), fma, exp, ln, log10, sqrt, quantize, normalize, compare variants, logical ops, next_plus/minus/toward; Context methods mirror. Construction: int, str syntax, float exact conversion, tuple(sign,digits,exp). quantize returns exponent-matched result; exception if coefficient length>prec. Rounding constants: ROUND_CEILING,DOWN,FLOOR,HALF_DOWN,HALF_EVEN,HALF_UP,UP,05UP. Signals: Clamped,Inexact,Rounded,Subnormal,Overflow,Underflow,DivisionByZero,InvalidOperation,FloatOperation. Set context once at start; use Decimal(str(x)); use localcontext for temporaries; clear_flags() before monitoring; traps to exception-enable signals..
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":14128,"completion_tokens":2821,"total_tokens":16949,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
+
