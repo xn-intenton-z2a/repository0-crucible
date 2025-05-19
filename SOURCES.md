@@ -5,7 +5,7 @@ The Chudnovsky algorithm is a fast-converging infinite series for calculating π
 
 # Node.js BigInt Documentation
 ## https://nodejs.org/api/bigint.html
-Official Node.js reference for the built-in BigInt type, explaining syntax, operations, and performance characteristics. This documentation provides essential information on how to manipulate large integers efficiently in JavaScript, including pitfalls and best practices for high-precision algorithms like the Chudnovsky formula.
+Official Node.js reference for the built-in BigInt type, explaining syntax, operations, and performance characteristics. This documentation provides essential information on how to manipulate large integers efficiently in JavaScript, including pitfalls and best practices for high-precision algorithms like the Chudnovsky formula. Last updated April 2024.
 ## License: CC BY-4.0
 
 # Canvas (node-canvas)
@@ -30,7 +30,7 @@ Modern, fast testing framework for Vite and Node.js. Documentation describes uni
 
 # Node.js Performance Hooks API
 ## https://nodejs.org/api/perf_hooks.html
-Describes Node’s built-in performance measurement APIs (PerformanceObserver, performance.now), which are essential for implementing the `--benchmark` feature and accurately reporting execution time and memory usage.
+Describes Node’s built-in performance measurement APIs (PerformanceObserver, performance.now), which are essential for implementing the `--benchmark` feature and accurately reporting execution time and memory usage. Last updated April 2024.
 ## License: CC BY-4.0
 
 # PNG (Portable Network Graphics) Specification
@@ -46,9 +46,34 @@ While in Python, this covers arbitrary-precision decimal arithmetic implementati
 # Matplotlib Colormap Reference
 ## https://matplotlib.org/stable/tutorials/colors/colormaps.html
 Documentation of Matplotlib’s colormaps, including perceptual uniformity ratings, palette selection guidance, and implementation snippets. Useful for understanding the theory behind effective color schemes, which can inform custom schemes in Node.js.
-## License: PSF
+## License: PSF License
 
 # pi-visualizer (Python)
 ## https://pypi.org/project/pi-visualizer/
 A standalone Python package demonstrating digit-to-pixel visualization of π using the Pillow imaging library. Provides implementation examples for mapping numeric values to color matrices and exporting high-resolution PNGs, offering practical patterns transferable to the Node.js ecosystem.
 ## License: MIT
+
+# Node.js HTTP Module
+## https://nodejs.org/api/http.html
+The official Node.js documentation for the built-in HTTP module, covering server and client APIs, request/response handling, status codes, headers, and performance considerations. Essential for implementing the `--serve` feature, creating endpoints (`/pi`, `/visualize`, `/distribution`), and streaming large payloads.
+## License: CC BY-4.0
+
+# Node.js URL Module
+## https://nodejs.org/api/url.html
+Details the WHATWG-compliant URL class and legacy URL API for parsing and formatting URLs. Crucial for extracting query parameters (`digits`, `algorithm`, `width`, `scheme`) reliably in HTTP request handlers.
+## License: CC BY-4.0
+
+# Node.js Streams API
+## https://nodejs.org/api/stream.html
+Documenting the Stream interface for efficient, backpressure-aware handling of binary data. Vital for piping Canvas PNG output directly to HTTP responses or file streams without buffering the entire image in memory.
+## License: CC BY-4.0
+
+# Bailey–Borwein–Plouffe (BBP) Formula – Wikipedia
+## https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
+Describes the BBP digit-extraction algorithm for π that computes hexadecimal (or binary) digits without needing prior digits. Offers a contrasting approach to the Chudnovsky series with trade-offs in convergence and implementation complexity. Last revised May 2024.
+## License: CC BY-SA 3.0
+
+# Machin-like Formulas – Wikipedia
+## https://en.wikipedia.org/wiki/Machin-like_formula
+Covers the family of Machin-like arctangent-based formulas for π, detailing specific coefficient choices and convergence rates. Provides alternative high-precision methods and insight into combining arctan identities for efficient computation.
+## License: CC BY-SA 3.0
