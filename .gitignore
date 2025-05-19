@@ -289,3 +289,12 @@ fabric.properties
 /output.*
 /ontology.json
 /CONTRIBUTING.md.bak
+/prompt.txt
+/plot.png
+/plot.svg
+/plot.json
+/output.png
+/output.json
+/request.json
+/response.json
+/result.json
