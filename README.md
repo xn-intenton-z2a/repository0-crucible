@@ -1,49 +1,65 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+`repository0-crucible` is a demo repository that showcases reusable GitHub workflows imported from the intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to serve as a template for building customized CI/CD workflows and a minimal CLI framework.
 
-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+To learn how to build your own self-evolving agentic coding system based on this template, see https://github.com/xn-intenton-z2a/agentic-lib
 
 ## Repository Template
 
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+This repository provides:
+
+* **Workflow Templates** – Example CI/CD workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib).
+* **Demo CLI** – A minimal command-line interface that prints the arguments you pass in.
+* **NPM Scripts** – Common tasks like build, test, start, serve, formatting, and linting.
 
 ## Installation
 
-Install via npm:
+Install dependencies via npm:
 
 ```bash
-npm install repository0-crucible
+npm install
 ```
 
 ## Features
 
-TODO: Add features here.
+- **Workflow Templates**: Preconfigured CI/CD workflows demonstrating best practices.
+- **Demo CLI**: A placeholder CLI (`src/lib/main.js`) that logs provided arguments for extension.
+- **NPM Scripts**: Ready-to-use scripts for building, testing, formatting, linting, and more.
 
 ## Usage
 
-To run the CLI tool and see help instructions:
+Detailed usage instructions are available in the [docs/USAGE.md](./docs/USAGE.md) file.
+
+### Quick Start
+
+Run the demo CLI without arguments (logs an empty array):
 
 ```bash
-node src/lib/main.js --help
+npm run start
+# or:
+node src/lib/main.js
 ```
 
-### Example Commands
+Pass custom arguments to the CLI:
 
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
+```bash
+npm run start -- --exampleFlag value1 value2
+# or:
+node src/lib/main.js --foo bar baz
+```
 
+List of useful npm scripts:
+
+- `npm run build`        – Placeholder build command.
+- `npm run test`         – Run unit tests with Vitest.
+- `npm run start`        – Invoke the CLI demo.
+- `npm run serve`        – Invoke the CLI demo with a `--serve` flag.
+- `npm run linting`      – Check code style with ESLint.
+- `npm run formatting`   – Check formatting with Prettier.
 
 ## Incremental Changes Plan
 
-TODO: Add forthcoming changes here.
+This template is a living document. Future sections will expand with real CLI commands, HTTP APIs, and feature implementations.
 
 ## Contributing
 
