@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="machin_like" href="#machin_like"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MACHIN_LIKE</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">General form: c₀·π/4 = ∑ cₙ arctan(aₙ/bₙ) with c₀∈ℤ⁺, cₙ∈ℤ∖{0}, 0&lt;aₙ&lt;bₙ∈ℤ. arctan series: arctan(x)=∑(-1)ᵏx^(2k+1)/(2k+1). Angle addition: arctan(a₁/b₁)+arctan(a₂/b₂)=arctan((a₁b₂+a₂b₁)/(b₁b₂−a₁a₂)), valid if sum in (−π/2,π/2). Complex mapping: multiplication of b+ai adds arctan(a/b) angles. Lehmer measure λ=∑1/log₁₀(bₙ/aₙ); lower λ yields faster convergence. Known formulas: Euler, Hermann, Hutton, Machin. Construction: factor bₙ²+1, apply LLL to derive cₙ. Used in high-precision π computations.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1  Formula Definition
+2  Arctan Series Expansion
+3  Angle Addition Identity
+4  Complex Number Mapping
+5  Lehmer Measure Calculation
+6  Known Two-Term Formulas
+7  Multi-Term Record Formulas
+8  Construction via LLL
+9  Implementation Pattern</p>
+<p class="md-github">1  Formula Definition
+c₀·π/4 = ∑ₙ₌₁ᴺ cₙ·arctan(aₙ/bₙ)
+c₀ ∈ ℤ⁺; cₙ ∈ ℤ∖{0}; aₙ,bₙ ∈ ℤ⁺; aₙ &lt; bₙ</p>
+<p class="md-github">2  Arctan Series Expansion
+arctan(x) = ∑ₖ₌₀ᵀ (-1)ᵏ·x^(2k+1)/(2k+1)
+Terms needed Tₙ = ceil((precision·log(10))/log(bₙ/aₙ))</p>
+<p class="md-github">3  Angle Addition Identity
+arctan(a₁/b₁)+arctan(a₂/b₂)
+= arctan((a₁b₂+a₂b₁)/(b₁b₂−a₁a₂))
+Domain: result ∈ (−π/2,π/2)</p>
+<p class="md-github">4  Complex Number Mapping
+For each term (bₙ + aₙ·i)^{cₙ}, argument = cₙ·arctan(aₙ/bₙ)
+Multiply complex factors to sum angles</p>
+<p class="md-github">5  Lehmer Measure Calculation
+λ = ∑ₙ₌₁ᴺ 1/log₁₀(bₙ/aₙ)
+Optimize: minimize N and maximize bₙ/aₙ</p>
+<p class="md-github">6  Known Two-Term Formulas
+Euler: {c₀=1,N=2; c={1,1}; a={1,1}; b={2,3}}
+Hermann: {c₀=1,N=2; c={2,−1}; a={1,1}; b={2,7}}
+Hutton: {c₀=1,N=2; c={2,1}; a={1,1}; b={3,7}}
+Machin: {c₀=1,N=2; c={4,−1}; a={1,1}; b={5,239}}</p>
+<p class="md-github">7  Multi-Term Record Formulas
+Kanada 2002: N=4; c={12,32,−5,12}; a={1,1,1,1}; b={49,57,239,110443}
+Størmer 1896: N=4; c={44,7,−12,24}; a={1,1,1,1}; b={57,239,682,12943}</p>
+<p class="md-github">8  Construction via LLL
+Input: vector of exponent vectors of primes dividing bₙ²+1
+Solve for integer combination cₙ s.t. ∑ cₙ·(ln(bₙ + i)/i) = constant·π/4</p>
+<p class="md-github">9  Implementation Pattern
+Steps:
+1  Select formula coefficients {cₙ,aₙ,bₙ,c₀}
+2  Determine Tₙ per term
+3  Compute each arctan(aₙ/bₙ) via series to Tₙ
+4  Multiply each by cₙ and sum
+5  Multiply result by 4/c₀ and output π</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Parameter Selection:
+aₙ = 1 common; choose bₙ such that bₙ/aₙ large to lower λ
+Tₙ = ceil((digits·log(10))/log(bₙ/aₙ)) terms
+Use high-precision library (Decimal.js, Python decimal) set precision = digits + guard digits</p>
+<p class="md-github">Construction Steps:
+1  Pre-factor bₙ²+1; ensure prime factors ≤ m for set size m
+2  Build integer matrix of exponents for each bₙ
+3  Apply LLL to find minimal cₙ coefficients
+4  Verify ∑ cₙ·arctan(aₙ/bₙ) = c₀·π/4</p>
+<p class="md-github">Precision Handling:
+Use binary splitting to evaluate series faster: group k to k+M blocks, apply recurrence</p>
+<p class="md-github">Performance:
+Terms count ~ O(digits / log(bₙ)) per term, overall O(N·digits)
+Memory: O(digits)</p>
+<p class="md-github">Library Configuration:
+Node.js: install decimal.js; set Decimal.set({ precision: digits+10, rounding: 4 });
+Python: from decimal import Decimal, getcontext; getcontext().prec = digits+10</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">JavaScript Reference Implementation:</p>
+<p class="md-github">// Signature
+// computePiMachin(formula: {c0:number, c:number[], a:number[], b:number[]}, digits:number): string</p>
+<p class="md-github">const Decimal = require('decimal.js');
+function arctan(x, terms) {
+let sum = new Decimal(0);
+let xpow = new Decimal(x);
+for (let k = 0; k &lt; terms; k++) {
+const term = xpow.dividedBy(2*k+1).times(k % 2 === 0 ? 1 : -1);
+sum = sum.plus(term);
+xpow = xpow.times(x).times(x);
+}
+return sum;
+}</p>
+<p class="md-github">function computePiMachin(formula, digits) {
+Decimal.set({ precision: digits + 10, rounding: Decimal.ROUND_FLOOR });
+const { c0, c, a, b } = formula;
+let total = new Decimal(0);
+for (let i = 0; i &lt; c.length; i++) {
+const terms = Math.ceil(digits * Math.LOG10E / Math.log10(b[i]/a[i]));
+const x = new Decimal(a[i]).dividedBy(b[i]);
+const ar = arctan(x, terms);
+total = total.plus(ar.times(c[i]));
+}
+return total.times(4).dividedBy(c0).toString();
+}</p>
+<p class="md-github">// Usage Example
+const machinFormula = { c0:1, c:[4,-1], a:[1,1], b:[5,239] };
+console.log(computePiMachin(machinFormula, 1000));</p>
+<p class="md-github">// Configuration Options:
+// precision: number of decimal digits (default: 1000)
+// formula: predefined formula object or custom
+// rounding: Decimal.js rounding mode</p>
+<p class="md-github">Best Practices:
+• Use binary splitting for arctan series when digits &gt; 10000
+• Add guard digits = 10% of requested digits to avoid rounding errors
+• Cross-check with two independent formulas sharing some b values</p>
+<p class="md-github">Troubleshooting:
+$ node compute_pi.js --precision 5000
+Expected output length: ≥5001 characters (including &quot;3.&quot;)
+If output shorter, increase guard digits or terms formula
+Error: DivisionByZero: check b[i] ≠ 0
+Error: InvalidPrecision: set Decimal.prec correctly</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">c₀·π/4=∑cₙ·arctan(aₙ/bₙ); arctan(x)=∑(-1)ᵏ x^(2k+1)/(2k+1); addition: arctan(a₁/b₁)+arctan(a₂/b₂)=arctan((a₁b₂+a₂b₁)/(b₁b₂−a₁a₂)); λ=∑1/log₁₀(bₙ/aₙ); two-term: {1,1,2,3},{2,−1,2,7},{2,1,3,7},{4,−1,5,239}; multi-term records: Kanada N=4 {12,32,−5,12}/{49,57,239,110443}; Størmer N=4 {44,7,−12,24}/{57,239,682,12943}; Tₙ=ceil(d·log(10)/log(bₙ/aₙ)); implement arctan via binary splitting; computePiMachin(formula,digits) uses Decimal.set precision, computes per-term arctan, sums cₙ·arctan, multiplies 4/c₀; config: precision, rounding, formula; troubleshoot by verifying length, guard digits, independent formula check.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1  Formula Definition
+2  Arctan Series Expansion
+3  Angle Addition Identity
+4  Complex Number Mapping
+5  Lehmer Measure Calculation
+6  Known Two-Term Formulas
+7  Multi-Term Record Formulas
+8  Construction via LLL
+9  Implementation Pattern</p>
+<p class="md-github">1  Formula Definition
+c/4 =  carctan(a/b)
+c  ; c  {0}; a,b  ; a &lt; b</p>
+<p class="md-github">2  Arctan Series Expansion
+arctan(x) =  (-1)x^(2k+1)/(2k+1)
+Terms needed T = ceil((precisionlog(10))/log(b/a))</p>
+<p class="md-github">3  Angle Addition Identity
+arctan(a/b)+arctan(a/b)
+= arctan((ab+ab)/(bbaa))
+Domain: result  (/2,/2)</p>
+<p class="md-github">4  Complex Number Mapping
+For each term (b + ai)^{c}, argument = carctan(a/b)
+Multiply complex factors to sum angles</p>
+<p class="md-github">5  Lehmer Measure Calculation
+=  1/log(b/a)
+Optimize: minimize N and maximize b/a</p>
+<p class="md-github">6  Known Two-Term Formulas
+Euler: {c=1,N=2; c={1,1}; a={1,1}; b={2,3}}
+Hermann: {c=1,N=2; c={2,1}; a={1,1}; b={2,7}}
+Hutton: {c=1,N=2; c={2,1}; a={1,1}; b={3,7}}
+Machin: {c=1,N=2; c={4,1}; a={1,1}; b={5,239}}</p>
+<p class="md-github">7  Multi-Term Record Formulas
+Kanada 2002: N=4; c={12,32,5,12}; a={1,1,1,1}; b={49,57,239,110443}
+Strmer 1896: N=4; c={44,7,12,24}; a={1,1,1,1}; b={57,239,682,12943}</p>
+<p class="md-github">8  Construction via LLL
+Input: vector of exponent vectors of primes dividing b+1
+Solve for integer combination c s.t.  c(ln(b + i)/i) = constant/4</p>
+<p class="md-github">9  Implementation Pattern
+Steps:
+1  Select formula coefficients {c,a,b,c}
+2  Determine T per term
+3  Compute each arctan(a/b) via series to T
+4  Multiply each by c and sum
+5  Multiply result by 4/c and output</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Machin-like Formulas – Wikipedia
+https://en.wikipedia.org/wiki/Machin-like_formula</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-machin_like" href="#digest-of-machin_like"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of MACHIN_LIKE</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="machin-like-formulas" href="#machin-like-formulas"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Machin-like Formulas</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="general-form" href="#general-form"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>General Form</h2>
+<p class="md-github">c₀ · π/4 = ∑ₙ₌₁ᴺ cₙ · arctan(aₙ/bₙ)</p>
+<p class="md-github">• c₀: positive integer
+• cₙ: nonzero signed integer
+• aₙ, bₙ: positive integers, aₙ &lt; bₙ</p>
+<h2 class="md-github"><a class="md-github__anchor" name="arctan-taylor-series" href="#arctan-taylor-series"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Arctan Taylor Series</h2>
+<p class="md-github">arctan(x) = ∑ₖ₌₀^∞ (-1)ᵏ x^(2k+1)/(2k+1)</p>
+<p class="md-github">Convergence error after T terms: ≤ x^(2T+3)/(2T+3)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="angle-addition-identity" href="#angle-addition-identity"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Angle Addition Identity</h2>
+<p class="md-github">arctan(a₁/b₁) + arctan(a₂/b₂) = arctan((a₁b₂ + a₂b₁)/(b₁b₂ – a₁a₂))
+Valid if sum ∈ (–π/2, +π/2)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="complex-number-interpretation" href="#complex-number-interpretation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Complex Number Interpretation</h2>
+<p class="md-github">Angle of (b + a·i) = arctan(a/b)
+Multiplying (b₁ + a₁·i)(b₂ + a₂·i) adds angles</p>
+<h2 class="md-github"><a class="md-github__anchor" name="lehmer-measure" href="#lehmer-measure"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Lehmer Measure</h2>
+<p class="md-github">λ = ∑ₙ₌₁ᴺ 1/log₁₀(bₙ/aₙ)
+Minimize λ by maximizing bₙ/aₙ and minimizing N</p>
+<h2 class="md-github"><a class="md-github__anchor" name="known-two-term-formulas" href="#known-two-term-formulas"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Known Two-Term Formulas</h2>
+<p class="md-github">Euler (1737): π/4 = arctan(1/2) + arctan(1/3)
+Hermann (1706): π/4 = 2·arctan(1/2) – arctan(1/7)
+Hutton  (1706): π/4 = 2·arctan(1/3) + arctan(1/7)
+Machin  (1706): π/4 = 4·arctan(1/5) – arctan(1/239)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="general-construction" href="#general-construction"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>General Construction</h2>
+<p class="md-github">Choose bₙ such that all prime factors of bₙ²+1 come from a small set ≤ m; use LLL or linear algebra to find integer cₙ</p>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieval--attribution" href="#retrieval--attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieval &amp; Attribution</h2>
+<p class="md-github">Source: Machin-like formula – Wikipedia (CC BY-SA 3.0)
+Retrieved: 2024-07-01
+Data Size: 9857772 bytes</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Machin-like Formulas – Wikipedia</li>
+<li class="md-github">URL: https://en.wikipedia.org/wiki/Machin-like_formula</li>
+<li class="md-github">License: License: CC BY-SA 3.0</li>
+<li class="md-github">Crawl Date: 2025-05-19T06:29:24.312Z</li>
+<li class="md-github">Data Size: 9857772 bytes</li>
+<li class="md-github">Links Found: 23732</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-19</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-19T10:41:08.277Z</p>
+  </footer>
+</body>
+</html>
