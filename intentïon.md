@@ -84,3 +84,56 @@ LLM API Usage:
 
 ---
 
+## Feature to enhanced Issue at 2025-05-19T15:15:08.961Z
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2705 with enhanced description:
+
+Title: Add PI_CALCULATION API and CLI support with text and PNG output
+
+Overview:
+Implement the PI_CALCULATION feature as defined in features/PI_CALCULATION.md. Provide a programmatic API (`calculatePi`) and a CLI interface to compute π to a requested number of decimal places using two algorithms (Gauss–Legendre and Spigot), and render results either as text or as a PNG image.
+
+Acceptance Criteria:
+1. Functionality:
+   a. The library exports an async function `calculatePi(options)` accepting:
+      - `digits` (integer, 1–10000)
+      - `algorithm` ("gauss-legendre" or "spigot")
+      - `format` ("text" or "png")
+      - `outputFile` (optional file path)
+   b. The CLI parses flags `--digits`, `--algorithm`, `--output-format`, and `--output-file` (defaults: 10, "gauss-legendre", "text").
+   c. For text output, the π string (with trailing newline) is written to stdout or file.
+   d. For PNG output, the π string is rendered on a monospaced canvas, serialized as a valid PNG (check PNG header), and written to stdout or file.
+
+2. Correctness:
+   a. For any `digits` ≤ 20, the first 20 digits of computed π must match "3.1415926535897932384".
+   b. Both algorithms produce identical output for digits ≤ 100 when `format` is "text".
+   c. The PNG output Buffer must start with the standard PNG signature (0x89, 'P','N','G','\r','\n','\x1A','\n').
+
+3. Validation and Error Handling:
+   a. Invalid `digits` (<1 or >10000, non-integer): CLI exits with nonzero code and clear error message.
+   b. Unsupported `algorithm` or `format`: CLI exits with nonzero code and clear error message.
+
+4. Testing:
+   a. Unit tests cover:
+      - `calculatePi` for both algorithms and both formats, including numeric and PNG-header assertions.
+      - CLI flag parsing, capturing stdout or writing to a temp file.
+      - Error cases for out-of-range digits, unsupported algorithm, unsupported format.
+
+5. Documentation:
+   a. README.md updated under "Features" to describe PI_CALCULATION.
+   b. README.md includes example CLI commands and API usage snippet.
+
+Scope of work (files to modify):
+- src/lib/main.js
+- tests/unit/main.test.js
+- README.md
+- package.json
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":5501,"completion_tokens":951,"total_tokens":6452,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":320,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
+
