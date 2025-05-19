@@ -235,3 +235,15 @@ LLM API Usage:
 
 ---
 
+## Activity at 2025-05-19T08:52:39.421Z
+
+Worked to update README with: Update README to reflect current demo features and add detailed usage documentation.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":7048,"completion_tokens":2355,"total_tokens":9403,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":960,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
+
