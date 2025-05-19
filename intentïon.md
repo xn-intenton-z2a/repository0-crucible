@@ -223,3 +223,15 @@ LLM API Usage:
 
 ---
 
+## Activity at 2025-05-19T06:29:54.831Z
+
+Digested c₀·π/4=∑cₙ·arctan(aₙ/bₙ); arctan(x)=∑(-1)ᵏ x^(2k+1)/(2k+1); addition: arctan(a₁/b₁)+arctan(a₂/b₂)=arctan((a₁b₂+a₂b₁)/(b₁b₂−a₁a₂)); λ=∑1/log₁₀(bₙ/aₙ); two-term: {1,1,2,3},{2,−1,2,7},{2,1,3,7},{4,−1,5,239}; multi-term records: Kanada N=4 {12,32,−5,12}/{49,57,239,110443}; Størmer N=4 {44,7,−12,24}/{57,239,682,12943}; Tₙ=ceil(d·log(10)/log(bₙ/aₙ)); implement arctan via binary splitting; computePiMachin(formula,digits) uses Decimal.set precision, computes per-term arctan, sums cₙ·arctan, multiplies 4/c₀; config: precision, rounding, formula; troubleshoot by verifying length, guard digits, independent formula check..
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":12302,"completion_tokens":5341,"total_tokens":17643,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":2624,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
+
