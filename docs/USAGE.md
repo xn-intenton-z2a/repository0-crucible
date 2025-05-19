@@ -19,7 +19,7 @@ npm install
 
 ## Demo CLI
 
-The core script is `src/lib/main.js`, which currently logs the arguments passed to it. You can run it directly or via npm scripts.
+The core script is `src/lib/main.js`, which now supports generating π digit distributions as well as echoing arguments. You can run it directly or via npm scripts.
 
 ### Running without Arguments
 
@@ -37,39 +37,59 @@ npm run start -- --foo bar baz
 # Run with: ["--foo","bar","baz"]
 ```
 
+### Digit Distribution
+
+Compute the frequency distribution of the first N π digits (pseudo-π for illustration):
+
+```bash
+npm run start -- --digits 1000 --distribution
+# Output:
+# {"0":100,"1":100,...,"9":100}
+```
+
 Or directly:
 
 ```bash
-node src/lib/main.js arg1 arg2
+node src/lib/main.js --digits 1000 --distribution
 # Output:
-# Run with: ["arg1","arg2"]
+# {"0":100,"1":100,...,"9":100}
+```
+
+## HTTP Server
+
+Start the HTTP server to serve endpoints for distribution analysis:
+
+```bash
+npm run serve -- --port 8080
+# Output:
+# Server listening on port 8080
+```
+
+### Distribution Endpoint
+
+Fetch the digit distribution over HTTP:
+
+```bash
+curl "http://localhost:8080/distribution?digits=500"
+# Response:
+# {"digits":500,"distribution":{...}}
 ```
 
 ## NPM Scripts
 
 A selection of useful scripts is available under the `scripts` section of `package.json`. Key scripts include:
 
-| Script          | Description                                          |
-|-----------------|------------------------------------------------------|
-| `npm run build` | Placeholder build command (does nothing currently)   |
-| `npm run test`  | Run unit tests using Vitest                         |
-| `npm run start` | Invoke the demo CLI without additional flags         |
-| `npm run serve` | Invoke the demo CLI with a `--serve` flag            |
-| `npm run linting`       | Run ESLint to check code style                 |
-| `npm run formatting`    | Run Prettier to check code formatting         |
+| Script          | Description                                                     |
+|-----------------|-----------------------------------------------------------------|
+| `npm run build` | Placeholder build command (does nothing currently)             |
+| `npm run test`  | Run unit tests using Vitest                                   |
+| `npm run start` | Invoke the demo CLI without additional flags                   |
+| `npm run serve` | Invoke the demo CLI in server mode (`--serve`)                 |
+| `npm run linting`       | Run ESLint to check code style                       |
+| `npm run formatting`    | Run Prettier to check code formatting                 |
 
 To run any npm script with additional flags, use:
 
 ```bash
 npm run <script> -- --yourFlag value
 ```
-
-## Further Development
-
-This template is intended to be extended with real functionality. Future enhancements might include:
-
-- Support for computing π to arbitrary precision.
-- HTTP endpoints for serving π data and visualizations.
-- Plugin system for adding new algorithms and features.
-
-Contributions to expand these areas are welcome. Please consult [CONTRIBUTING.md](../CONTRIBUTING.md) for details.
