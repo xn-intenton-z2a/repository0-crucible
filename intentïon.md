@@ -291,3 +291,105 @@ LLM API Usage:
 
 ---
 
+## Maintain Feature at 2025-05-19T16:58:26.589Z
+
+Maintained feature PI_CALCULATION.
+
+Git diff:
+
+```
+diff --git a/features/PI_CALCULATION.md b/features/PI_CALCULATION.md
+index 74db1f5b..8b672655 100644
+--- a/features/PI_CALCULATION.md
++++ b/features/PI_CALCULATION.md
+@@ -1,49 +1,50 @@
+ # Overview
+ 
+-Add a core library and CLI feature to calculate the value of π to a specified number of decimal places using one or more algorithms. This feature will allow users to request π to any reasonable digit count directly from the command line or programmatically via the exported API, and output the result in text or PNG format.
++Implement a core library function and CLI subcommand to calculate the numeric value of π to a specified number of decimal places using two algorithms. Allow users to retrieve results in plain text or PNG image form.
+ 
+-# CLI Interface
++# Implementation
++
++- Create an exported function `calculatePi(options)` in src/lib/main.js.
++- Support two algorithms:
++  - gauss-legendre: Iterative Gauss–Legendre convergence using BigInt for arbitrary precision.
++  - spigot: The spigot algorithm for digit-by-digit extraction of π.
++- Internally use native BigInt for high precision arithmetic; no external big-number library needed.
++- For PNG output, integrate the `canvas` package. Render the digits on a 24px monospaced canvas and output as PNG buffer.
++- Add `canvas` to dependencies in package.json.
+ 
+-- Introduce new flags to main.js:
+-  • --digits <number>   : Number of decimal places of π to compute (default 10).
+-  • --algorithm <name>  : Algorithm choice (options: "gauss-legendre", "spigot"). Default "gauss-legendre".
+-  • --output-format <type> : "text" or "png". Default "text".
+-  • --output-file <path> : File path to write the result; stdout if omitted.
++# CLI Interface
+ 
+-- Example: node src/lib/main.js --digits 100 --algorithm spigot --output-format png --output-file pi100.png
++- Extend main(args) to parse additional flags:
++  • --digits <number>        : Positive integer decimal places (default 10).
++  • --algorithm <name>       : gauss-legendre or spigot (default gauss-legendre).
++  • --output-format <type>   : text or png (default text).
++  • --output-file <path>     : Path to write output; stdout if omitted.
++- On invocation, parse flags into an options object, call calculatePi, and write results to file or stdout.
+ 
+ # API Interface
+ 
+-- Export a new function `calculatePi(options)` in src/lib/main.js:
+-  • options.digits      : number
+-  • options.algorithm   : string
+-  • options.format      : string
+-  • options.outputFile? : string
++Export `calculatePi(options)` as part of module exports. Options shape:
+ 
+-- The `main` function will parse CLI args, construct an options object, call calculatePi, and handle writing to stdout or file.
++- digits      : number
++- algorithm   : "gauss-legendre" | "spigot"
++- format      : "text" | "png"
++- outputFile? : string
+ 
+-# Output Formats
++Returns a Promise that resolves to either a string (text) or Buffer (PNG).
+ 
+-1. Text: a UTF-8 string representing π with the requested decimal places and a trailing newline.
+-2. PNG: Render the numeric representation as a legible monospaced text image using a canvas or SVG library. Produce a valid PNG binary.
+-
+-# Dependencies
++# Output Formats
+ 
+-- Use a pure JavaScript big number library (for example, built-in BigInt or add dependency if required).
+-- For PNG output, utilize a lightweight canvas or SVG-to-PNG package (add to package.json).
++1. Text: UTF-8 string with π to requested digits and trailing newline.
++2. PNG: Valid PNG binary rendering the digits.
+ 
+ # Error Handling and Validation
+ 
+-- Validate that digits is a positive integer less than a configurable max (e.g., 10000).
+-- Validate algorithm choice against supported list.
+-- Validate format against supported list.
+-- On invalid input, exit with a nonzero code and print a clear message.
++- Validate digits is an integer between 1 and 10000.
++- Reject unsupported algorithm or format choices with clear messages and nonzero exit code.
+ 
+ # Testing
+ 
+-- Unit tests in tests/unit/main.test.js for:
+-  • calculatePi produces correct prefix of digits (compare first 20 digits).
+-  • CLI option parsing and invocation of calculatePi.
+-  • Error cases: invalid digits, unknown algorithm, unknown format.
+-
+-- No external API calls; all logic runs locally.
++- Add unit tests in tests/unit/main.test.js:
++  • compare first 20 digits of calculatePi for both algorithms.
++  • test CLI end-to-end: parsing, file output, edge cases.
++- No external network calls; all computation local.
+```
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":5039,"completion_tokens":1527,"total_tokens":6566,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":960,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
