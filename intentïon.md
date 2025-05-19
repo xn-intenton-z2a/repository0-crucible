@@ -164,3 +164,130 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Code at 2025-05-19T16:28:59.383Z
+
+fixApplied: true
+
+Add --mission and --features flags to CLI update tests and add CLI documentation
+
+Git Diff:
+
+```diff --git a/src/lib/main.js b/src/lib/main.js
+index 3cdd4e2a..c8ab9a11 100755
+--- a/src/lib/main.js
++++ b/src/lib/main.js
+@@ -1,10 +1,44 @@
+ #!/usr/bin/env node
+ // src/lib/main.js
+ 
+-import { fileURLToPath } from "url";
++import fs from 'fs';
++import path from 'path';
++import { fileURLToPath } from 'url';
+ 
+ export function main(args) {
+-  console.log(`Run with: ${JSON.stringify(args)}`);
++  const cliArgs = Array.isArray(args) ? args : process.argv.slice(2);
++
++  let handled = false;
++
++  if (cliArgs.includes('--mission')) {
++    const missionPath = path.join(process.cwd(), 'MISSION.md');
++    try {
++      const content = fs.readFileSync(missionPath, 'utf8');
++      console.log(content);
++    } catch (err) {
++      console.error(`Error reading mission file: ${err.message}`);
++      process.exit(1);
++    }
++    handled = true;
++  }
++
++  if (cliArgs.includes('--features')) {
++    const featuresDir = path.join(process.cwd(), 'features');
++    try {
++      const files = fs.readdirSync(featuresDir).filter((file) => file.endsWith('.md'));
++      files.forEach((file) => console.log(file));
++    } catch (err) {
++      console.error(`Error reading features directory: ${err.message}`);
++      process.exit(1);
++    }
++    handled = true;
++  }
++
++  if (handled) {
++    return;
++  }
++
++  console.log(`Run with: ${JSON.stringify(cliArgs)}`);
+ }
+ 
+ if (process.argv[1] === fileURLToPath(import.meta.url)) {
+diff --git a/tests/unit/main.test.js b/tests/unit/main.test.js
+index 6ea3d264..7f01e2d2 100644
+--- a/tests/unit/main.test.js
++++ b/tests/unit/main.test.js
+@@ -1,16 +1,38 @@
+-import { describe, test, expect } from "vitest";
+-import * as mainModule from "@src/lib/main.js";
+-import { main } from "@src/lib/main.js";
++import { describe, test, expect, vi } from 'vitest';
++import * as mainModule from '@src/lib/main.js';
++import { main } from '@src/lib/main.js';
+ 
+-describe("Main Module Import", () => {
+-  test("should be non-null", () => {
++describe('Main Module Import', () => {
++  test('should be non-null', () => {
+     expect(mainModule).not.toBeNull();
+   });
+ });
+ 
+-describe("Main Output", () => {
+-  test("should terminate without error", () => {
+-    process.argv = ["node", "src/lib/main.js"];
++describe('Main Output', () => {
++  test('should terminate without error', () => {
++    process.argv = ['node', 'src/lib/main.js'];
+     main();
+   });
+ });
++
++describe('Mission Flag', () => {
++  test('prints mission content', () => {
++    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
++    main(['--mission']);
++    expect(logSpy).toHaveBeenCalled();
++    const calledArg = logSpy.mock.calls[0][0];
++    expect(calledArg).toMatch(/^# xn-intenton-z2a\/repository0-crucible/);
++    logSpy.mockRestore();
++  });
++});
++
++describe('Features Flag', () => {
++  test('prints feature filenames', () => {
++    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
++    main(['--features']);
++    expect(logSpy).toHaveBeenCalled();
++    const logged = logSpy.mock.calls.map(call => call[0]);
++    expect(logged).toContain('PI_CALCULATION.md');
++    logSpy.mockRestore();
++  });
++});```
+
+mainOutput:```
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+Run with: []```
+
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2706 with title: ""]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":7851,"completion_tokens":3456,"total_tokens":11307,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":2304,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
+
