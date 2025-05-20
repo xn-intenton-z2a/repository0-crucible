@@ -127,3 +127,66 @@ LLM API Usage:
 ```
 ---
 
+## Issue to enhanced Issue at 2025-05-20T01:38:06.590Z
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/ with enhanced description:
+
+## Objective
+
+Implement a new CLI option `--compute-pi <digits>` to compute π to the specified number of decimal places using high-precision arithmetic.
+
+## Acceptance Criteria
+
+1. **Dependency**
+   - `decimal.js` is added to `dependencies` in `package.json`.
+   - Running `npm install` resolves `decimal.js`.
+
+2. **CLI Behavior**
+   - `node src/lib/main.js --compute-pi <digits>` prints exactly π to `<digits>` decimals and exits with code 0.
+   - If `<digits>` is missing, non-integer, negative, or greater than 1000, the CLI prints a clear error message to stderr and exits with a non-zero code.
+
+3. **Implementation Details**
+   - The flag `--compute-pi` is parsed from `args` in `main(args)`.  
+   - Input validation ensures `<digits>` is an integer in [0, 1000].  
+   - Use `Decimal.set({ precision: digits + 5 })` before calculation.  
+   - Compute π using a Machin-like formula, e.g.:  
+     ```js
+     // Machin-like identity:
+     pi = Decimal(16).times(arctan(Decimal(1).div(5)))
+          .minus(Decimal(4).times(arctan(Decimal(1).div(239))));
+     function arctan(x) {
+       // Taylor series until |term| < 10**(-digits-5)
+     }
+     ```
+   - Return the formatted string from `main()` (`pi.toFixed(digits)`).
+
+4. **Testing**
+   - Add unit tests in `tests/unit/main.test.js` asserting:
+     ```js
+     expect(main(["--compute-pi","1"]).trim()).toBe("3.1");
+     expect(main(["--compute-pi","2"]).trim()).toBe("3.14");
+     expect(main(["--compute-pi","5"]).trim()).toBe("3.14159");
+     ```
+   - Test invalid inputs (e.g., `-1`, `foo`, `1001`) produce errors and non-zero exit codes.
+
+5. **Documentation**
+   - Update **Features** section in `README.md` to list `--compute-pi <digits>`.
+   - Add usage example under **Usage**:
+     ```bash
+     node src/lib/main.js --compute-pi 10
+     # => 3.1415926535
+     ```
+
+## Verification Steps
+
+- Run `npm install` to install `decimal.js`.
+- Run `npm test` and confirm all new and existing tests pass.
+- Run `node src/lib/main.js --compute-pi 5` to confirm CLI prints exactly `3.14159`.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":4880,"completion_tokens":1323,"total_tokens":6203,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":640,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
