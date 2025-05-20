@@ -17,7 +17,6 @@ export function computePi(digits) {
   const extra = 5;
   Decimal.set({ precision: digits + extra, rounding: Decimal.ROUND_HALF_UP });
   const one = new Decimal(1);
-  const x2Cache = {};
 
   function arctanInverse(n) {
     const x = one.dividedBy(n);
@@ -37,12 +36,12 @@ export function computePi(digits) {
     }
     return sum;
   }
+
   // Machin-like formula: π = 4 * (4*arctan(1/5) - arctan(1/239))
   const ar5 = arctanInverse(5);
   const ar239 = arctanInverse(239);
   const pi = new Decimal(4)
-    .times(ar5.times(4).minus(ar239))
-    .times(4);
+    .times(ar5.times(4).minus(ar239));
   return pi.toFixed(digits);
 }
 
