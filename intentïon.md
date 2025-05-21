@@ -583,3 +583,165 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Code at 2025-05-21T04:52:12.492Z
+
+fixApplied: true
+
+Ignore archive directory in linting and update Compute Pi CLI feature documentation
+
+Git Diff:
+
+```
+diff --git a/README.md b/README.md
+index 618a07f8..b1286dae 100644
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,6 @@
+ # repository0-crucible
+ 
+-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
++`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](nhttps://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+ 
+ To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
+ 
+@@ -11,7 +11,7 @@ This readme shall evolve into a JavaScript library based on of the seed CONTRIBU
+ The repository is intended as a template that includes:
+ * A Template Base: A starting point for new projects.
+ * A Running Experiment: An example implementation that demonstrates one way to use the template.
+-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
++* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+ 
+ ## Installation
+ 
+@@ -23,7 +23,7 @@ npm install repository0-crucible
+ 
+ ## Features
+ 
+-TODO: Add features here.
++* Compute Pi: Compute π to a specified number of decimal places using `--compute-pi <digits>`.
+ 
+ ## Usage
+ 
+@@ -35,12 +35,18 @@ node src/lib/main.js --help
+ 
+ ### Example Commands
+ 
++- **Compute π (pi) to 5 decimal places:**
++  ```bash
++  node src/lib/main.js --compute-pi 5
++  # Output:
++  3.14159
++  ```
++
+ - **Default Demo Output:**
+   ```bash
+   npm run start
+   ```
+ 
+-
+ ## Incremental Changes Plan
+ 
+ TODO: Add forthcoming changes here.
+@@ -51,4 +57,4 @@ We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md)
+ 
+ ## License
+ 
+-Released under the MIT License (see [LICENSE](./LICENSE)).
++Released under the MIT License (see [LICENSE](./LICENSE)).
+\ No newline at end of file
+diff --git a/package.json b/package.json
+index a8b21a93..ac530669 100644
+--- a/package.json
++++ b/package.json
+@@ -8,9 +8,9 @@
+     "build": "echo 'Nothing to build'",
+     "formatting": "prettier --check .",
+     "formatting-fix": "prettier --write .",
+-    "linting": "eslint .",
++    "linting": "eslint . --ignore-pattern archive/**",
+     "linting-json": "eslint --format=@microsoft/eslint-formatter-sarif .",
+-    "linting-fix": "eslint --fix .",
++    "linting-fix": "eslint . --ignore-pattern archive/** --fix",
+     "update-to-minor": "npx ncu --upgrade --enginesNode --target minor --verbose --install always",
+     "update-to-greatest": "npx ncu --upgrade --enginesNode --target greatest --verbose --install always --reject 'alpha'",
+     "test": "vitest",
+@@ -67,7 +67,15 @@
+   "publishConfig": {
+     "registry": "https://npm.pkg.github.com"
+   },
+-  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
++  "eslintIgnore": [
++    "archive/**",
++    "build/",
++    "coverage/",
++    "dist/",
++    "exports/",
++    "node_modules/",
++    "eslint.config.js"
++  ],
+   "eslintConfig": {
+     "rules": {
+       "sonarjs/cognitive-complexity": "off"
+diff --git a/src/lib/main.js b/src/lib/main.js
+index 93516d08..454535d0 100755
+--- a/src/lib/main.js
++++ b/src/lib/main.js
+@@ -13,6 +13,7 @@ export function computePi(digits) {
+   if (!Number.isInteger(digits) || digits < 1) {
+     throw new Error("Digits must be a positive integer");
+   }
++
+   // extra precision to reduce rounding errors
+   const extra = 5;
+   Decimal.set({ precision: digits + extra, rounding: Decimal.ROUND_HALF_UP });
+@@ -27,7 +28,6 @@ export function computePi(digits) {
+     let k = 0;
+     while (true) {
+       k += 1;
+-      // term_{k} = -term_{k-1} * x^2 * (2k-1)/(2k+1)
+       term = term.times(x2.negated()).times((2 * k - 1) / (2 * k + 1));
+       if (term.abs().lt(cutoff)) {
+         break;
+@@ -40,8 +40,7 @@ export function computePi(digits) {
+   // Machin-like formula: π = 4 * (4*arctan(1/5) - arctan(1/239))
+   const ar5 = arctanInverse(5);
+   const ar239 = arctanInverse(239);
+-  const pi = new Decimal(4)
+-    .times(ar5.times(4).minus(ar239));
++  const pi = new Decimal(4).times(ar5.times(4).minus(ar239));
+   return pi.toFixed(digits);
+ }
+ 
+@@ -67,11 +66,11 @@ export function main(args = process.argv.slice(2)) {
+     }
+     return;
+   }
++
+   // default behavior: echo received arguments
+   console.log(`Run with: ${JSON.stringify(args)}`);
+ }
+ 
+ if (process.argv[1] === fileURLToPath(import.meta.url)) {
+-  const args = process.argv.slice(2);
+-  main(args);
++  main();
+ }
+```
+mainOutput:
+```
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+Run with: []
+
+```
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2712 with title: ""]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":16462,"completion_tokens":5172,"total_tokens":21634,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":2752,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
