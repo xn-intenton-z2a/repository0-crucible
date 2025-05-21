@@ -8,9 +8,9 @@
     "build": "echo 'Nothing to build'",
     "formatting": "prettier --check .",
     "formatting-fix": "prettier --write .",
-    "linting": "eslint . --ignore-pattern archive/**",
+    "linting": "eslint .",
     "linting-json": "eslint --format=@microsoft/eslint-formatter-sarif .",
-    "linting-fix": "eslint . --ignore-pattern archive/** --fix",
+    "linting-fix": "eslint --fix .",
     "update-to-minor": "npx ncu --upgrade --enginesNode --target minor --verbose --install always",
     "update-to-greatest": "npx ncu --upgrade --enginesNode --target greatest --verbose --install always --reject 'alpha'",
     "test": "vitest",
@@ -33,13 +33,12 @@
     "ejs": "^3.1.10",
     "js-yaml": "^4.1.0",
     "minimatch": "^9.0.5",
-    "zod": "^3.24.4",
-    "decimal.js": "^10.4.3"
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "eslint": "^9.24.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^10.1.5",
+    "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-promise": "^7.2.1",
@@ -50,8 +49,8 @@
     "markdown-it": "^14.1.0",
     "markdown-it-github": "^0.5.0",
     "prettier": "^3.5.3",
-    "vitest": "^3.1.4",
-    "@vitest/coverage-v8": "^3.1.4",
+    "vitest": "^3.1.2",
+    "@vitest/coverage-v8": "^3.1.2",
     "npm-check-updates": "^17.1.18"
   },
   "overrides": {
@@ -67,15 +66,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "eslintIgnore": [
-    "archive/**",
-    "build/",
-    "coverage/",
-    "dist/",
-    "exports/",
-    "node_modules/",
-    "eslint.config.js"
-  ],
+  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
   "eslintConfig": {
     "rules": {
       "sonarjs/cognitive-complexity": "off"
