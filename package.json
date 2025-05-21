@@ -8,9 +8,9 @@
     "build": "echo 'Nothing to build'",
     "formatting": "prettier --check .",
     "formatting-fix": "prettier --write .",
-    "linting": "eslint .",
+    "linting": "eslint . --ignore-pattern archive/**",
     "linting-json": "eslint --format=@microsoft/eslint-formatter-sarif .",
-    "linting-fix": "eslint --fix .",
+    "linting-fix": "eslint . --ignore-pattern archive/** --fix",
     "update-to-minor": "npx ncu --upgrade --enginesNode --target minor --verbose --install always",
     "update-to-greatest": "npx ncu --upgrade --enginesNode --target greatest --verbose --install always --reject 'alpha'",
     "test": "vitest",
@@ -67,7 +67,15 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
+  "eslintIgnore": [
+    "archive/**",
+    "build/",
+    "coverage/",
+    "dist/",
+    "exports/",
+    "node_modules/",
+    "eslint.config.js"
+  ],
   "eslintConfig": {
     "rules": {
       "sonarjs/cognitive-complexity": "off"

@@ -13,6 +13,7 @@ export function computePi(digits) {
   if (!Number.isInteger(digits) || digits < 1) {
     throw new Error("Digits must be a positive integer");
   }
+
   // extra precision to reduce rounding errors
   const extra = 5;
   Decimal.set({ precision: digits + extra, rounding: Decimal.ROUND_HALF_UP });
@@ -27,7 +28,6 @@ export function computePi(digits) {
     let k = 0;
     while (true) {
       k += 1;
-      // term_{k} = -term_{k-1} * x^2 * (2k-1)/(2k+1)
       term = term.times(x2.negated()).times((2 * k - 1) / (2 * k + 1));
       if (term.abs().lt(cutoff)) {
         break;
@@ -40,8 +40,7 @@ export function computePi(digits) {
   // Machin-like formula: π = 4 * (4*arctan(1/5) - arctan(1/239))
   const ar5 = arctanInverse(5);
   const ar239 = arctanInverse(239);
-  const pi = new Decimal(4)
-    .times(ar5.times(4).minus(ar239));
+  const pi = new Decimal(4).times(ar5.times(4).minus(ar239));
   return pi.toFixed(digits);
 }
 
@@ -67,11 +66,11 @@ export function main(args = process.argv.slice(2)) {
     }
     return;
   }
+
   // default behavior: echo received arguments
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2);
-  main(args);
+  main();
 }
