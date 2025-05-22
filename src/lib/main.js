@@ -42,7 +42,6 @@ export function computePiSpigot(digits) {
     }
   }
   result += predigit.toString();
-  // Remove extra leading zero if present
   if (result[0] === "0") {
     result = result.slice(1);
   }
@@ -88,28 +87,20 @@ export function computePiChudnovsky(digits) {
   return pi.toFixed(digits - 1);
 }
 
-/**
- * Compute the hexadecimal digit of π at the given index.
- * Index 0 returns the integer part (3), index>=1 returns fractional hex digits.
- */
 export function computePiBBP(index) {
   if (!Number.isInteger(index) || index < 0) {
     throw new Error("Index must be a non-negative integer");
   }
-  // Integer part
   if (index === 0) {
     return "3";
   }
-  // Fractional hex digits via BBP formula
   const n = index - 1;
   function modPow(a, e, mod) {
     let result = 1;
     let base = a % mod;
     let exp = e;
     while (exp > 0) {
-      if (exp % 2 === 1) {
-        result = (result * base) % mod;
-      }
+      if (exp % 2 === 1) result = (result * base) % mod;
       base = (base * base) % mod;
       exp = Math.floor(exp / 2);
     }
@@ -119,11 +110,9 @@ export function computePiBBP(index) {
     let sum = 0;
     for (let k = 0; k <= n; k++) {
       const denom = 8 * k + j;
-      const num = modPow(16, n - k, denom);
-      sum += num / denom;
+      sum += modPow(16, n - k, denom) / denom;
     }
-    sum = sum - Math.floor(sum);
-    // tail
+    sum -= Math.floor(sum);
     for (let k = n + 1; k <= n + 100; k++) {
       sum += Math.pow(16, n - k) / (8 * k + j);
     }
@@ -134,7 +123,7 @@ export function computePiBBP(index) {
   const t3 = series(5, n);
   const t4 = series(6, n);
   let x = 4 * t1 - 2 * t2 - t3 - t4;
-  x = x - Math.floor(x);
+  x -= Math.floor(x);
   const digit = Math.floor(x * 16);
   return digit.toString(16).toUpperCase();
 }
@@ -160,7 +149,6 @@ export function main(args) {
   });
   const algorithm = argv.algorithm.toLowerCase();
 
-  // BBP mode
   if (algorithm === "bbp") {
     const idx = parseInt(argv["hex-index"], 10);
     if (isNaN(idx) || idx < 0) {
@@ -168,21 +156,14 @@ export function main(args) {
       process.exit(1);
     }
     const hexChar = computePiBBP(idx);
-    if (argv.file) {
-      fs.writeFileSync(argv.file, hexChar);
-    } else {
-      console.log(hexChar);
-    }
+    if (argv.file) fs.writeFileSync(argv.file, hexChar);
+    else console.log(hexChar);
     return;
   }
 
-  // Benchmarking mode
   const benchArg = argv["benchmark-sizes"];
   if (benchArg) {
-    const sizes = benchArg
-      .split(",")
-      .map((s) => parseInt(s, 10))
-      .filter((n) => !isNaN(n));
+    const sizes = benchArg.split(",").map((s) => parseInt(s, 10)).filter((n) => !isNaN(n));
     const results = sizes.map((size) => {
       const start1 = process.hrtime();
       computePiSpigot(size);
@@ -192,30 +173,36 @@ export function main(args) {
       computePiChudnovsky(size);
       const d2 = process.hrtime(start2);
       const chudTimeMs = d2[0] * 1000 + d2[1] / 1e6;
-      return { size, spigotTimeMs, chudnovskyTimeMs: chudTimeMs };
+      const start3 = process.hrtime();
+      computePiBBP(size);
+      const d3 = process.hrtime(start3);
+      const bbpTimeMs = d3[0] * 1000 + d3[1] / 1e6;
+      return { size, spigotTimeMs, chudnovskyTimeMs: chudTimeMs, bbpTimeMs };
     });
     const outType = (argv["benchmark-output"] || "text").toLowerCase();
     const outFile = argv["benchmark-file"];
 
     if (outType === "text") {
-      const header = ["size", "spigotTimeMs", "chudnovskyTimeMs"];
+      const header = ["size", "spigotTimeMs", "chudnovskyTimeMs", "bbpTimeMs"];
       const rows = [header];
       results.forEach((r) => {
-        rows.push([r.size.toString(), r.spigotTimeMs.toFixed(3), r.chudnovskyTimeMs.toFixed(3)]);
+        rows.push([
+          r.size.toString(),
+          r.spigotTimeMs.toFixed(3),
+          r.chudnovskyTimeMs.toFixed(3),
+          r.bbpTimeMs.toFixed(3)
+        ]);
       });
       const colWidths = header.map((_, i) => Math.max(...rows.map((r) => r[i].length)));
-      const lines = rows.map((r) =>
-        r.map((cell, i) => cell.padStart(colWidths[i])).join(" | ")
-      );
+      const lines = rows.map((r) => r.map((cell, i) => cell.padStart(colWidths[i])).join(" | "));
       const outputStr = lines.join("\n");
       if (outFile) fs.writeFileSync(outFile, outputStr);
       else console.log(outputStr);
     } else if (outType === "csv") {
-      const lines = [];
-      lines.push("size,spigotTimeMs,chudnovskyTimeMs");
+      const lines = ["size,spigotTimeMs,chudnovskyTimeMs,bbpTimeMs"];
       results.forEach((r) => {
         lines.push(
-          `${r.size},${r.spigotTimeMs.toFixed(3)},${r.chudnovskyTimeMs.toFixed(3)}`
+          `${r.size},${r.spigotTimeMs.toFixed(3)},${r.chudnovskyTimeMs.toFixed(3)},${r.bbpTimeMs.toFixed(3)}`
         );
       });
       const outputStr = lines.join("\n");
@@ -239,47 +226,35 @@ export function main(args) {
 
       const times1 = results.map((r) => r.spigotTimeMs);
       const times2 = results.map((r) => r.chudnovskyTimeMs);
-      const minTime = Math.min(...times1, ...times2);
-      const maxTime = Math.max(...times1, ...times2);
-      function getX(i) {
-        return sizes.length > 1
-          ? margin + (width - 2 * margin) * (i / (sizes.length - 1))
-          : margin + (width - 2 * margin) / 2;
-      }
-      function getY(t) {
-        if (maxTime === minTime) return height - margin;
-        return (
-          margin +
-          (height - 2 * margin) * (1 - (t - minTime) / (maxTime - minTime))
-        );
-      }
-      // Spigot line
+      const times3 = results.map((r) => r.bbpTimeMs);
+      const minTime = Math.min(...times1, ...times2, ...times3);
+      const maxTime = Math.max(...times1, ...times2, ...times3);
+      function getX(i) { return sizes.length > 1 ? margin + (width - 2*margin)*(i/(sizes.length-1)) : margin + (width-2*margin)/2; }
+      function getY(t) { return maxTime===minTime ? height-margin : margin + (height-2*margin)*(1 - (t-minTime)/(maxTime-minTime)); }
+
       ctx.strokeStyle = "red";
       ctx.beginPath();
       results.forEach((r, i) => {
         const x = getX(i);
         const y = getY(r.spigotTimeMs);
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
       });
       ctx.stroke();
-      // Chudnovsky line
+
       ctx.strokeStyle = "blue";
       ctx.beginPath();
-      results.forEach((r, i) => {
-        const x = getX(i);
-        const y = getY(r.chudnovskyTimeMs);
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      });
+      results.forEach((r, i) => { const x=getX(i), y=getY(r.chudnovskyTimeMs); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
       ctx.stroke();
+
+      ctx.strokeStyle = "green";
+      ctx.beginPath();
+      results.forEach((r, i) => { const x=getX(i), y=getY(r.bbpTimeMs); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+      ctx.stroke();
+
       // Legend
-      ctx.fillStyle = "red";
-      ctx.fillRect(width - margin - 100, margin, 10, 10);
-      ctx.fillStyle = "black";
-      ctx.fillText("Spigot", width - margin - 85, margin + 10);
-      ctx.fillStyle = "blue";
-      ctx.fillRect(width - margin - 100, margin + 20, 10, 10);
-      ctx.fillStyle = "black";
-      ctx.fillText("Chudnovsky", width - margin - 85, margin + 30);
+      ctx.fillStyle = "red"; ctx.fillRect(width-margin-150, margin, 10,10); ctx.fillStyle="black"; ctx.fillText("Spigot", width-margin-135, margin+10);
+      ctx.fillStyle = "blue"; ctx.fillRect(width-margin-150, margin+20, 10,10); ctx.fillStyle="black"; ctx.fillText("Chudnovsky", width-margin-135, margin+30);
+      ctx.fillStyle = "green"; ctx.fillRect(width-margin-150, margin+40, 10,10); ctx.fillStyle="black"; ctx.fillText("BBP", width-margin-135, margin+50);
 
       const buffer = canvas.toBuffer("image/png");
       const out = outFile || "benchmark.png";
@@ -291,42 +266,36 @@ export function main(args) {
     return;
   }
 
-  // Single-run mode
   const digits = parseInt(argv.digits, 10);
   const output = argv.output.toLowerCase();
   const file = argv.file;
   const diagnostics = argv.diagnostics;
   let pi;
   if (diagnostics) console.time("Compute time");
-  if (algorithm === "spigot") {
-    pi = computePiSpigot(digits);
-  } else if (algorithm === "chudnovsky") {
-    pi = computePiChudnovsky(digits);
-  } else {
+  if (algorithm === "spigot") pi = computePiSpigot(digits);
+  else if (algorithm === "chudnovsky") pi = computePiChudnovsky(digits);
+  else {
     console.error(`Unknown algorithm: ${algorithm}`);
     process.exit(1);
   }
   if (diagnostics) console.timeEnd("Compute time");
 
   if (output === "text") {
-    if (file) {
-      fs.writeFileSync(file, pi);
-    } else {
-      console.log(pi);
-    }
+    if (file) fs.writeFileSync(file, pi);
+    else console.log(pi);
   } else if (output === "png") {
     if (diagnostics) console.time("Render time");
     const fontSize = 20;
     const padding = 10;
-    const width = pi.length * (fontSize * 0.6) + padding * 2;
-    const height = fontSize + padding * 2;
+    const width = pi.length * (fontSize * 0.6) + padding*2;
+    const height = fontSize + padding*2;
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, width, height);
     ctx.fillStyle = "black";
     ctx.font = `${fontSize}px sans-serif`;
-    ctx.fillText(pi, padding, fontSize + padding / 2);
+    ctx.fillText(pi, padding, fontSize + padding/2);
     const buffer = canvas.toBuffer("image/png");
     const outFile = file || "pi.png";
     fs.writeFileSync(outFile, buffer);
