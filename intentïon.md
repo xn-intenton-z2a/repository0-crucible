@@ -2694,3 +2694,44 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Ready Issue at 2025-05-22T06:46:52.078Z
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2724 with action close and updated description:
+
+Background:
+Currently, the CLI supports two π algorithms (Spigot and Chudnovsky) that generate decimals to a given number of digits. To explore a novel π algorithm and fulfill our mission of investigating different techniques, we want to add support for the Bailey–Borwein–Plouffe (BBP) formula. The BBP algorithm can compute an individual hexadecimal digit of π at an arbitrary position without generating preceding digits.
+
+Goals:
+1. Implement a new function `computePiBBP(index)` in `src/lib/main.js` that returns the hexadecimal digit of π at the 0-based position `index` using the BBP formula.
+2. Extend CLI parsing in `src/lib/main.js` to support:
+   * A new algorithm value: `bbp`.
+   * A new option `--hex-index <n>` (integer) for BBP mode. When `--algorithm bbp` is used, `--hex-index` is required and other digit/count options are ignored.
+3. Modify the `main(args)` logic:
+   * When `argv.algorithm === 'bbp'`, call `computePiBBP(argv['hex-index'])` and output the resulting single hex character (0–F) to stdout or to `--file` if provided.
+   * Validate that `hex-index` is a non-negative integer; otherwise print an error and exit with code 1.
+4. Add unit and CLI tests in `tests/unit/main.test.js`:
+   * Unit tests that verify `computePiBBP(0) === '3'`, `computePiBBP(1) === '2'`, and a couple of other known positions (e.g., index 2 → 'F', index 3 → 'C').
+   * CLI tests: invoking `node src/lib/main.js --algorithm bbp --hex-index 1` prints `2` to stdout; with `--file hex1.txt` writes `2` into that file.
+5. Update `README.md`:
+   * Under CLI Options, document the new `bbp` algorithm, the `--hex-index <n>` flag, and usage examples.
+
+Files to update:
+- `src/lib/main.js` (add `computePiBBP`, extend CLI parsing)
+- `tests/unit/main.test.js` (unit and CLI tests for BBP)
+- `README.md` (CLI documentation and examples)
+- `package.json` (no new dependencies required)
+
+How to verify:
+1. Run `npm test` and ensure all new and existing tests pass.
+2. Smoke-test:
+   - `node src/lib/main.js --algorithm bbp --hex-index 0` should output `3`.
+   - `node src/lib/main.js --algorithm bbp --hex-index 3 --file hex3.txt` should create `hex3.txt` containing `C`.
+3. Confirm that existing Spigot and Chudnovsky modes continue to work unchanged.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":11001,"completion_tokens":1409,"total_tokens":12410,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":704,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
