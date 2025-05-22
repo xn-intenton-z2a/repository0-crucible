@@ -11,6 +11,9 @@ Introduce a core π calculation engine with multiple algorithm options, digit-le
 * `--output <type>` Output format: `text` or `png` (default: `text`).
 * `--file <path>` Optional file path to save output.
 * `--diagnostics` Emit benchmark timings for compute and render phases.
+* `--benchmark-sizes <list>` Comma-separated list of digit counts to benchmark. When provided, single-run options are ignored and benchmarking mode is entered.
+* `--benchmark-output <type>` Benchmark report output format: `text`, `csv`, or `png` (default: `text`).
+* `--benchmark-file <path>` File path to save benchmark report or chart. If omitted, `text` is printed to stdout; `csv` and `png` use default filenames `benchmark.csv` or `benchmark.png`.
 
 ## Examples
 
@@ -35,4 +38,13 @@ node src/lib/main.js --digits 30 --diagnostics
 # Output:
 # Compute time: 10ms
 # Render time: 5ms
+
+# Benchmark sizes with default text output
+node src/lib/main.js --benchmark-sizes 10,100
+
+# Benchmark and output CSV to file
+node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output csv --benchmark-file benchmark.csv
+
+# Benchmark and output PNG chart
+node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output png --benchmark-file benchmark.png
 ```

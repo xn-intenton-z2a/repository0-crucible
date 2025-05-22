@@ -41,7 +41,6 @@ export function computePiSpigot(digits) {
     }
   }
   result += predigit.toString();
-  // Remove extra leading zero if present
   if (result[0] === "0") {
     result = result.slice(1);
   }
@@ -85,7 +84,14 @@ export function computePiChudnovsky(digits) {
 
 export function main(args) {
   const argv = minimist(args, {
-    string: ["algorithm", "output", "file"],
+    string: [
+      "algorithm",
+      "output",
+      "file",
+      "benchmark-sizes",
+      "benchmark-output",
+      "benchmark-file",
+    ],
     boolean: ["diagnostics"],
     default: {
       algorithm: "spigot",
@@ -94,6 +100,123 @@ export function main(args) {
       diagnostics: false,
     },
   });
+
+  // Benchmarking mode
+  const benchArg = argv["benchmark-sizes"];
+  if (benchArg) {
+    const sizes = benchArg
+      .split(",")
+      .map((s) => parseInt(s, 10))
+      .filter((n) => !isNaN(n));
+    const results = sizes.map((size) => {
+      const start1 = process.hrtime();
+      computePiSpigot(size);
+      const d1 = process.hrtime(start1);
+      const spigotTimeMs = d1[0] * 1000 + d1[1] / 1e6;
+      const start2 = process.hrtime();
+      computePiChudnovsky(size);
+      const d2 = process.hrtime(start2);
+      const chudTimeMs = d2[0] * 1000 + d2[1] / 1e6;
+      return { size, spigotTimeMs, chudnovskyTimeMs: chudTimeMs };
+    });
+    const outType = (argv["benchmark-output"] || "text").toLowerCase();
+    const outFile = argv["benchmark-file"];
+
+    if (outType === "text") {
+      const header = ["size", "spigotTimeMs", "chudnovskyTimeMs"];
+      const rows = [header];
+      results.forEach((r) => {
+        rows.push([r.size.toString(), r.spigotTimeMs.toFixed(3), r.chudnovskyTimeMs.toFixed(3)]);
+      });
+      const colWidths = header.map((_, i) => Math.max(...rows.map((r) => r[i].length)));
+      const lines = rows.map((r) =>
+        r.map((cell, i) => cell.padStart(colWidths[i])).join(" | ")
+      );
+      const outputStr = lines.join("\n");
+      if (outFile) fs.writeFileSync(outFile, outputStr);
+      else console.log(outputStr);
+    } else if (outType === "csv") {
+      const lines = [];
+      lines.push("size,spigotTimeMs,chudnovskyTimeMs");
+      results.forEach((r) => {
+        lines.push(
+          `${r.size},${r.spigotTimeMs.toFixed(3)},${r.chudnovskyTimeMs.toFixed(3)}`
+        );
+      });
+      const outputStr = lines.join("\n");
+      if (outFile) fs.writeFileSync(outFile, outputStr);
+      else console.log(outputStr);
+    } else if (outType === "png") {
+      const width = 800;
+      const height = 600;
+      const margin = 50;
+      const canvas = createCanvas(width, height);
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, width, height);
+      ctx.strokeStyle = "black";
+      ctx.beginPath();
+      ctx.moveTo(margin, margin);
+      ctx.lineTo(margin, height - margin);
+      ctx.moveTo(margin, height - margin);
+      ctx.lineTo(width - margin, height - margin);
+      ctx.stroke();
+
+      const times1 = results.map((r) => r.spigotTimeMs);
+      const times2 = results.map((r) => r.chudnovskyTimeMs);
+      const minTime = Math.min(...times1, ...times2);
+      const maxTime = Math.max(...times1, ...times2);
+      function getX(i) {
+        return sizes.length > 1
+          ? margin + (width - 2 * margin) * (i / (sizes.length - 1))
+          : margin + (width - 2 * margin) / 2;
+      }
+      function getY(t) {
+        if (maxTime === minTime) return height - margin;
+        return (
+          margin +
+          (height - 2 * margin) * (1 - (t - minTime) / (maxTime - minTime))
+        );
+      }
+      // Spigot line
+      ctx.strokeStyle = "red";
+      ctx.beginPath();
+      results.forEach((r, i) => {
+        const x = getX(i);
+        const y = getY(r.spigotTimeMs);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+      // Chudnovsky line
+      ctx.strokeStyle = "blue";
+      ctx.beginPath();
+      results.forEach((r, i) => {
+        const x = getX(i);
+        const y = getY(r.chudnovskyTimeMs);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+      // Legend
+      ctx.fillStyle = "red";
+      ctx.fillRect(width - margin - 100, margin, 10, 10);
+      ctx.fillStyle = "black";
+      ctx.fillText("Spigot", width - margin - 85, margin + 10);
+      ctx.fillStyle = "blue";
+      ctx.fillRect(width - margin - 100, margin + 20, 10, 10);
+      ctx.fillStyle = "black";
+      ctx.fillText("Chudnovsky", width - margin - 85, margin + 30);
+
+      const buffer = canvas.toBuffer("image/png");
+      const out = outFile || "benchmark.png";
+      fs.writeFileSync(out, buffer);
+    } else {
+      console.error(`Unknown benchmark output type: ${outType}`);
+      process.exit(1);
+    }
+    return;
+  }
+
+  // Single-run mode
   const algorithm = argv.algorithm.toLowerCase();
   const digits = parseInt(argv.digits, 10);
   const output = argv.output.toLowerCase();
