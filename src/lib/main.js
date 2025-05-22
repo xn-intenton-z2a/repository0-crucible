@@ -41,6 +41,10 @@ export function computePiSpigot(digits) {
     }
   }
   result += predigit.toString();
+  // Remove extra leading zero if present
+  if (result[0] === "0") {
+    result = result.slice(1);
+  }
   return result[0] + "." + result.slice(1, digits);
 }
 
@@ -87,8 +91,8 @@ export function main(args) {
       algorithm: "spigot",
       digits: 100,
       output: "text",
-      diagnostics: false
-    }
+      diagnostics: false,
+    },
   });
   const algorithm = argv.algorithm.toLowerCase();
   const digits = parseInt(argv.digits, 10);
