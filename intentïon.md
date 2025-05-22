@@ -1742,3 +1742,98 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Code at 2025-05-22T04:48:07.476Z
+
+fixApplied: true
+
+Fix Prettier formatting issues in srclibmain.js and testsunitmain.test.js
+
+Git Diff:
+
+```
+diff --git a/src/lib/main.js b/src/lib/main.js
+index 24cae196..cc940709 100755
+--- a/src/lib/main.js
++++ b/src/lib/main.js
+@@ -21,6 +21,7 @@ export function computePiSpigot(digits) {
+       A[i] = x % (2 * i + 1);
+       carry = Math.floor(x / (2 * i + 1)) * i;
+     }
++
+     const x = A[0] * 10 + carry;
+     A[0] = x % 10;
+     carry = Math.floor(x / 10);
+@@ -63,22 +64,26 @@ export function computePiChudnovsky(digits) {
+   let sum = new Decimal(0);
+   let k = 0;
+   const tolerance = new Decimal(10).pow(-digits);
++
+   while (true) {
+     const numFact = factorialBig(6n * BigInt(k));
+     const denFact1 = factorialBig(3n * BigInt(k));
+     const denFact2 = factorialBig(BigInt(k));
+-    const numerator = new Decimal(numFact.toString())
+-      .times(new Decimal(13591409).plus(new Decimal(545140134).times(k)));
++    const numerator = new Decimal(numFact.toString()).times(
++      new Decimal(13591409).plus(new Decimal(545140134).times(k))
++    );
+     const denominator = new Decimal(denFact1.toString())
+       .times(new Decimal(denFact2.toString()).pow(3))
+       .times(new Decimal(-262537412640768000).pow(k));
+     const term = numerator.div(denominator);
+     sum = sum.plus(term);
++
+     if (term.abs().lt(tolerance)) {
+       break;
+     }
+     k++;
+   }
++
+   const pi = C.div(sum);
+   return pi.toFixed(digits - 1);
+ }
+@@ -110,6 +115,7 @@ export function main(args) {
+     process.exit(1);
+   }
+   if (diagnostics) console.timeEnd("Compute time");
++
+   if (output === "text") {
+     if (file) {
+       fs.writeFileSync(file, pi);
+@@ -141,4 +147,4 @@ export function main(args) {
+ 
+ if (process.argv[1] === fileURLToPath(import.meta.url)) {
+   main(process.argv.slice(2));
+-}
+\ No newline at end of file
++}
+diff --git a/tests/unit/main.test.js b/tests/unit/main.test.js
+index f5ab5a87..766259c3 100644
+--- a/tests/unit/main.test.js
++++ b/tests/unit/main.test.js
+@@ -46,4 +46,4 @@ describe("CLI", () => {
+     execSync(`node ${mainPath} --algorithm spigot --digits 20 --output png --file ${pngFile}`);
+     expect(fs.existsSync(pngFile)).toBe(true);
+   });
+-});
+\ No newline at end of file
++});
+```
+mainOutput:
+```
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067
+
+```
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2720 with title: ""]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":42015,"completion_tokens":5319,"total_tokens":47334,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":3072,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
