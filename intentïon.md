@@ -179,3 +179,41 @@ LLM API Usage:
 ```
 ---
 
+## Issue to enhanced Issue at 2025-05-22T01:06:15.286Z
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/ with enhanced description:
+
+Implement the core π calculation engine with configurable CLI options, two algorithm implementations (Spigot and Chudnovsky), benchmark reporting, and dual output modes (text and PNG).  
+
+Acceptance Criteria:  
+1. CLI Behavior  
+   - Running `node src/lib/main.js --algorithm spigot --digits 10` prints exactly the first 10 digits of π (`3.141592653`) to stdout and exits with code 0.  
+   - Running `node src/lib/main.js --algorithm chudnovsky --digits 15` prints the first 15 digits of π (`3.14159265358979`) to stdout and exits with code 0.  
+   - When `--file <path>` is provided with `--output=text`, the digits are written to the given file instead of stdout.  
+2. PNG Output  
+   - Running `node src/lib/main.js --algorithm spigot --digits 20 --output=png --file=pi20.png` produces a valid PNG at `pi20.png`.  
+   - The PNG can be opened in any standard image viewer and visibly contains the computed digits.  
+3. Diagnostics  
+   - Including `--diagnostics` logs lines prefixed `Compute time:` and `Render time:` (if PNG) to the console.  
+4. Unit Tests  
+   - `tests/unit/main.test.js` includes tests verifying the first ten digits returned by `computePiSpigot(10)` and `computePiChudnovsky(10)`.  
+   - Tests simulate CLI invocations for text and PNG outputs and assert exit status 0 and expected side effects (stdout content or file creation).  
+5. Documentation  
+   - `README.md` is updated with examples for all CLI options: algorithm selection, digit count, output mode, file path, and diagnostics.  
+6. Dependencies  
+   - `package.json` is updated to include `decimal.js`, `canvas`, and `minimist` as dependencies.  
+
+Implementation Tasks:  
+- Add and import `minimist` for CLI parsing, `decimal.js` for high-precision arithmetic, and `canvas` for PNG rendering.  
+- Implement `computePiSpigot(digits)` and `computePiChudnovsky(digits)` functions.  
+- Enhance `main(args)` in `src/lib/main.js` to parse options, compute π, render output, and measure timings with `console.time()`/`console.timeEnd()`.  
+- Write and update unit tests in `tests/unit/main.test.js` to cover all acceptance criteria.  
+- Update `README.md` under Features and Usage sections with CLI command examples and expected outcomes.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":5169,"completion_tokens":2039,"total_tokens":7208,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1408,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
