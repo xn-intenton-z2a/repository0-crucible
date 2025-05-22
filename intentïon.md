@@ -2914,3 +2914,28 @@ LLM API Usage:
 
 2025-05-22T07:02:18Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-22T01-30Z
 
+## Issue to enhanced Issue at 2025-05-22T07:03:41.380Z
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2726 with enhanced description:
+
+Background:
+The repository now supports benchmarking the Spigot, Chudnovsky, and BBP π algorithms across multiple digit counts, producing text, CSV, and PNG reports.
+
+Acceptance Criteria:
+1. Given `node src/lib/main.js --benchmark-sizes 10,20`, the CLI text output prints a table with header `size | spigotTimeMs | chudnovskyTimeMs | bbpTimeMs` and two data rows, each containing four padded columns.
+2. Given `node src/lib/main.js --benchmark-sizes 5,10 --benchmark-output csv --benchmark-file report.csv`, the generated `report.csv` file has a header line `size,spigotTimeMs,chudnovskyTimeMs,bbpTimeMs` and two data lines with exactly four comma-separated values each.
+3. Given `node src/lib/main.js --benchmark-sizes 5,10 --benchmark-output png --benchmark-file perf.png`, a file `perf.png` is created, has size > 0 bytes, and visually includes three colored lines (red for Spigot, blue for Chudnovsky, green for BBP) and an updated legend entry for BBP.
+4. Tests in `tests/unit/main.test.js` are updated to assert the presence of `bbpTimeMs` in the header and data rows for both text and CSV modes, and to verify the creation of a non-empty PNG file for BBP benchmarking.
+5. Documentation is updated to include BBP benchmarking support:
+   - `README.md` under **Features** notes that benchmarking mode includes BBP algorithm timing.
+   - **Benchmarking Mode Examples** in the README and `docs/PI_CALCULATOR.md` show sample commands and expected output headers including the `bbpTimeMs` column.
+
+No new dependencies are required.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":11256,"completion_tokens":1960,"total_tokens":13216,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1536,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
