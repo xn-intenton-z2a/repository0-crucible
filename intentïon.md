@@ -1837,3 +1837,264 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Code at 2025-05-22T04:49:36.365Z
+
+fixApplied: true
+
+Add benchmarking mode with text CSV and PNG reports include tests and docs
+
+Git Diff:
+
+```
+diff --git a/docs/PI_CALCULATOR.md b/docs/PI_CALCULATOR.md
+index 77eb563c..11609559 100644
+--- a/docs/PI_CALCULATOR.md
++++ b/docs/PI_CALCULATOR.md
+@@ -11,6 +11,9 @@ Introduce a core π calculation engine with multiple algorithm options, digit-le
+ * `--output <type>` Output format: `text` or `png` (default: `text`).
+ * `--file <path>` Optional file path to save output.
+ * `--diagnostics` Emit benchmark timings for compute and render phases.
++* `--benchmark-sizes <list>` Comma-separated list of digit counts to benchmark. When provided, single-run options are ignored and benchmarking mode is entered.
++* `--benchmark-output <type>` Benchmark report output format: `text`, `csv`, or `png` (default: `text`).
++* `--benchmark-file <path>` File path to save benchmark report or chart. If omitted, `text` is printed to stdout; `csv` and `png` use default filenames `benchmark.csv` or `benchmark.png`.
+ 
+ ## Examples
+ 
+@@ -35,4 +38,13 @@ node src/lib/main.js --digits 30 --diagnostics
+ # Output:
+ # Compute time: 10ms
+ # Render time: 5ms
++
++# Benchmark sizes with default text output
++node src/lib/main.js --benchmark-sizes 10,100
++
++# Benchmark and output CSV to file
++node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output csv --benchmark-file benchmark.csv
++
++# Benchmark and output PNG chart
++node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output png --benchmark-file benchmark.png
+ ```
+\ No newline at end of file
+diff --git a/src/lib/main.js b/src/lib/main.js
+index 24cae196..f24750bb 100755
+--- a/src/lib/main.js
++++ b/src/lib/main.js
+@@ -41,7 +41,6 @@ export function computePiSpigot(digits) {
+     }
+   }
+   result += predigit.toString();
+-  // Remove extra leading zero if present
+   if (result[0] === "0") {
+     result = result.slice(1);
+   }
+@@ -85,7 +84,14 @@ export function computePiChudnovsky(digits) {
+ 
+ export function main(args) {
+   const argv = minimist(args, {
+-    string: ["algorithm", "output", "file"],
++    string: [
++      "algorithm",
++      "output",
++      "file",
++      "benchmark-sizes",
++      "benchmark-output",
++      "benchmark-file",
++    ],
+     boolean: ["diagnostics"],
+     default: {
+       algorithm: "spigot",
+@@ -94,6 +100,123 @@ export function main(args) {
+       diagnostics: false,
+     },
+   });
++
++  // Benchmarking mode
++  const benchArg = argv["benchmark-sizes"];
++  if (benchArg) {
++    const sizes = benchArg
++      .split(",")
++      .map((s) => parseInt(s, 10))
++      .filter((n) => !isNaN(n));
++    const results = sizes.map((size) => {
++      const start1 = process.hrtime();
++      computePiSpigot(size);
++      const d1 = process.hrtime(start1);
++      const spigotTimeMs = d1[0] * 1000 + d1[1] / 1e6;
++      const start2 = process.hrtime();
++      computePiChudnovsky(size);
++      const d2 = process.hrtime(start2);
++      const chudTimeMs = d2[0] * 1000 + d2[1] / 1e6;
++      return { size, spigotTimeMs, chudnovskyTimeMs: chudTimeMs };
++    });
++    const outType = (argv["benchmark-output"] || "text").toLowerCase();
++    const outFile = argv["benchmark-file"];
++
++    if (outType === "text") {
++      const header = ["size", "spigotTimeMs", "chudnovskyTimeMs"];
++      const rows = [header];
++      results.forEach((r) => {
++        rows.push([r.size.toString(), r.spigotTimeMs.toFixed(3), r.chudnovskyTimeMs.toFixed(3)]);
++      });
++      const colWidths = header.map((_, i) => Math.max(...rows.map((r) => r[i].length)));
++      const lines = rows.map((r) =>
++        r.map((cell, i) => cell.padStart(colWidths[i])).join(" | ")
++      );
++      const outputStr = lines.join("\n");
++      if (outFile) fs.writeFileSync(outFile, outputStr);
++      else console.log(outputStr);
++    } else if (outType === "csv") {
++      const lines = [];
++      lines.push("size,spigotTimeMs,chudnovskyTimeMs");
++      results.forEach((r) => {
++        lines.push(
++          `${r.size},${r.spigotTimeMs.toFixed(3)},${r.chudnovskyTimeMs.toFixed(3)}`
++        );
++      });
++      const outputStr = lines.join("\n");
++      if (outFile) fs.writeFileSync(outFile, outputStr);
++      else console.log(outputStr);
++    } else if (outType === "png") {
++      const width = 800;
++      const height = 600;
++      const margin = 50;
++      const canvas = createCanvas(width, height);
++      const ctx = canvas.getContext("2d");
++      ctx.fillStyle = "white";
++      ctx.fillRect(0, 0, width, height);
++      ctx.strokeStyle = "black";
++      ctx.beginPath();
++      ctx.moveTo(margin, margin);
++      ctx.lineTo(margin, height - margin);
++      ctx.moveTo(margin, height - margin);
++      ctx.lineTo(width - margin, height - margin);
++      ctx.stroke();
++
++      const times1 = results.map((r) => r.spigotTimeMs);
++      const times2 = results.map((r) => r.chudnovskyTimeMs);
++      const minTime = Math.min(...times1, ...times2);
++      const maxTime = Math.max(...times1, ...times2);
++      function getX(i) {
++        return sizes.length > 1
++          ? margin + (width - 2 * margin) * (i / (sizes.length - 1))
++          : margin + (width - 2 * margin) / 2;
++      }
++      function getY(t) {
++        if (maxTime === minTime) return height - margin;
++        return (
++          margin +
++          (height - 2 * margin) * (1 - (t - minTime) / (maxTime - minTime))
++        );
++      }
++      // Spigot line
++      ctx.strokeStyle = "red";
++      ctx.beginPath();
++      results.forEach((r, i) => {
++        const x = getX(i);
++        const y = getY(r.spigotTimeMs);
++        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
++      });
++      ctx.stroke();
++      // Chudnovsky line
++      ctx.strokeStyle = "blue";
++      ctx.beginPath();
++      results.forEach((r, i) => {
++        const x = getX(i);
++        const y = getY(r.chudnovskyTimeMs);
++        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
++      });
++      ctx.stroke();
++      // Legend
++      ctx.fillStyle = "red";
++      ctx.fillRect(width - margin - 100, margin, 10, 10);
++      ctx.fillStyle = "black";
++      ctx.fillText("Spigot", width - margin - 85, margin + 10);
++      ctx.fillStyle = "blue";
++      ctx.fillRect(width - margin - 100, margin + 20, 10, 10);
++      ctx.fillStyle = "black";
++      ctx.fillText("Chudnovsky", width - margin - 85, margin + 30);
++
++      const buffer = canvas.toBuffer("image/png");
++      const out = outFile || "benchmark.png";
++      fs.writeFileSync(out, buffer);
++    } else {
++      console.error(`Unknown benchmark output type: ${outType}`);
++      process.exit(1);
++    }
++    return;
++  }
++
++  // Single-run mode
+   const algorithm = argv.algorithm.toLowerCase();
+   const digits = parseInt(argv.digits, 10);
+   const output = argv.output.toLowerCase();
+diff --git a/tests/unit/main.test.js b/tests/unit/main.test.js
+index f5ab5a87..49fe6cf1 100644
+--- a/tests/unit/main.test.js
++++ b/tests/unit/main.test.js
+@@ -46,4 +46,46 @@ describe("CLI", () => {
+     execSync(`node ${mainPath} --algorithm spigot --digits 20 --output png --file ${pngFile}`);
+     expect(fs.existsSync(pngFile)).toBe(true);
+   });
++});
++
++// Benchmarking mode tests
++
++describe("Benchmarking Mode", () => {
++  const mainPath = fileURLToPath(new URL("../../src/lib/main.js", import.meta.url));
++  const csvFile = "test_report.csv";
++  const pngBench = "test_perf.png";
++
++  afterAll(() => {
++    [csvFile, pngBench].forEach((f) => {
++      if (fs.existsSync(f)) {
++        fs.unlinkSync(f);
++      }
++    });
++  });
++
++  test("default text output table", () => {
++    const output = execSync(`node ${mainPath} --benchmark-sizes 5,10`).toString();
++    const lines = output.trim().split(/\r?\n/);
++    expect(lines[0]).toBe("size | spigotTimeMs | chudnovskyTimeMs");
++    // header + 2 rows for sizes
++    expect(lines.length).toBe(3);
++  });
++
++  test("csv output to file", () => {
++    execSync(
++      `node ${mainPath} --benchmark-sizes 5,10 --benchmark-output csv --benchmark-file ${csvFile}`
++    );
++    const content = fs.readFileSync(csvFile, "utf8").trim().split(/\r?\n/);
++    expect(content[0]).toBe("size,spigotTimeMs,chudnovskyTimeMs");
++    expect(content.length).toBe(3);
++  });
++
++  test("png chart output creates file", () => {
++    execSync(
++      `node ${mainPath} --benchmark-sizes 5,10 --benchmark-output png --benchmark-file ${pngBench}`
++    );
++    expect(fs.existsSync(pngBench)).toBe(true);
++    const stats = fs.statSync(pngBench);
++    expect(stats.size).toBeGreaterThan(0);
++  });
+ });
+\ No newline at end of file
+```
+mainOutput:
+```
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067
+
+```
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2719 with title: ""]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":33929,"completion_tokens":9277,"total_tokens":43206,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":4672,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
