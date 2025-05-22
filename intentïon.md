@@ -1601,3 +1601,61 @@ LLM API Usage:
 ```
 ---
 
+## Feature to Issue at 2025-05-22T04:39:38.767Z
+
+Created issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2719 with title Implement Benchmarking Mode for PI Algorithms with Comparison Reports and body:
+
+ Background:
+The repository currently supports single-run π calculations with Spigot and Chudnovsky algorithms and text/PNG output. To complete the PERFORMANCE_COMPARISON feature, we need to add a dedicated benchmarking mode that automates performance measurements across multiple digit lengths and generates comparison reports in text, CSV, or PNG chart formats.
+
+Goals:
+1. Extend CLI in `src/lib/main.js` to recognize new options:
+   - `--benchmark-sizes <list>`: comma-separated list of digit counts (e.g., 10,100,1000). When present, skip single-run and enter benchmarking.
+   - `--benchmark-output <text|csv|png>`: report format, default `text`.
+   - `--benchmark-file <path>`: optional output file path (defaults to `benchmark.txt`, `benchmark.csv`, or `benchmark.png` based on format).
+2. When `--benchmark-sizes` is provided:
+   - Parse the list into an integer array.
+   - For each size, measure execution time for both `computePiSpigot` and `computePiChudnovsky`. Use `console.time`/`console.timeEnd` or `process.hrtime` for high-resolution timing.
+   - Collect results as objects `{ size, spigotTimeMs, chudnovskyTimeMs }`.
+3. Based on `--benchmark-output`:
+   - **text**: format a fixed-width table with headers (`size`, `spigotTimeMs`, `chudnovskyTimeMs`) and either print to console or write to file.
+   - **csv**: write a CSV with header `size,spigotTimeMs,chudnovskyTimeMs`, and rows for each size.
+   - **png**: use the `canvas` library to draw a line chart (X-axis: size, Y-axis: time) showing two lines (Spigot and Chudnovsky), label axes and legend, then save PNG.
+4. Add unit and CLI tests in `tests/unit/main.test.js`:
+   - Verify that `node main.js --benchmark-sizes 10,20 --benchmark-output text` produces a table header and two rows.
+   - Verify that using `--benchmark-output csv --benchmark-file report.csv` creates `report.csv` with correct header and line count.
+   - Verify that `--benchmark-output png --benchmark-file perf.png` creates `perf.png` of nonzero size.
+5. Update `README.md`:
+   - Under **Features**, document the new benchmarking mode.
+   - Under **Usage**, provide examples:
+     ```bash
+     node src/lib/main.js --benchmark-sizes 10,100,1000
+     node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv
+     node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png
+     ```
+
+Verification:
+- Run `npm install` (no new dependencies required).
+- `npm test` should pass all existing and new unit tests.
+- Manual smoke tests:
+  ```bash
+  node src/lib/main.js --benchmark-sizes 10,50
+  node src/lib/main.js --benchmark-sizes 20,40 --benchmark-output csv --benchmark-file demo.csv
+  node src/lib/main.js --benchmark-sizes 20,40 --benchmark-output png --benchmark-file demo.png
+  ```
+- Inspect console or files for correct formatting and chart generation.
+
+Files to update:
+- `package.json` (if needed: ensure `canvas` and `decimal.js` remain available, no new deps)
+- `src/lib/main.js`
+- `tests/unit/main.test.js`
+- `README.md`
+.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":29133,"completion_tokens":1095,"total_tokens":30228,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":256,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
