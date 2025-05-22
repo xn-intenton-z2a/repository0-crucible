@@ -24,7 +24,7 @@ npm install repository0-crucible
 ## Features
 
 * PI Calculator: compute π digits via two algorithms (Spigot, Chudnovsky), output as text or PNG, and diagnostics.
-* Benchmarking Mode: measure performance of both algorithms over multiple digit sizes with text, CSV, or PNG reports.
+* Benchmarking Mode: measure performance of both algorithms over multiple digit sizes with text, CSV, or PNG reports, including BBP algorithm timing (`bbpTimeMs`).
 
 ## Usage
 
@@ -62,16 +62,19 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --benchmark-sizes 10,100,1000
   ```
+  - Produces a table with columns: `size | spigotTimeMs | chudnovskyTimeMs | bbpTimeMs`
 
 - **CSV Report to File:**
   ```bash
   node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv
   ```
+  - `benchmark.csv` includes header `size,spigotTimeMs,chudnovskyTimeMs,bbpTimeMs`
 
 - **PNG Chart to File:**
   ```bash
   node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png
   ```
+  - Chart plots red=Spigot, blue=Chudnovsky, green=BBP lines with legend.
 
 ## Incremental Changes Plan
 

@@ -72,3 +72,44 @@ describe("CLI", () => {
     if (fs.existsSync(hexFile)) fs.unlinkSync(hexFile);
   });
 });
+
+// Benchmarking mode tests
+
+describe("Benchmarking Mode", () => {
+  const mainPath = fileURLToPath(new URL("../../src/lib/main.js", import.meta.url));
+  const csvFile = "test_report.csv";
+  const pngBench = "test_perf.png";
+
+  afterAll(() => {
+    [csvFile, pngBench].forEach((f) => {
+      if (fs.existsSync(f)) {
+        fs.unlinkSync(f);
+      }
+    });
+  });
+
+  test("default text output table", () => {
+    const output = execSync(`node ${mainPath} --benchmark-sizes 5,10`).toString();
+    const lines = output.trim().split(/\r?\n/);
+    expect(lines[0]).toBe("size | spigotTimeMs | chudnovskyTimeMs | bbpTimeMs");
+    expect(lines.length).toBe(3); // header + 2 rows
+  });
+
+  test("csv output to file", () => {
+    execSync(
+      `node ${mainPath} --benchmark-sizes 5,10 --benchmark-output csv --benchmark-file ${csvFile}`
+    );
+    const content = fs.readFileSync(csvFile, "utf8").trim().split(/\r?\n/);
+    expect(content[0]).toBe("size,spigotTimeMs,chudnovskyTimeMs,bbpTimeMs");
+    expect(content.length).toBe(3);
+  });
+
+  test("png chart output creates file", () => {
+    execSync(
+      `node ${mainPath} --benchmark-sizes 5,10 --benchmark-output png --benchmark-file ${pngBench}`
+    );
+    expect(fs.existsSync(pngBench)).toBe(true);
+    const stats = fs.statSync(pngBench);
+    expect(stats.size).toBeGreaterThan(0);
+  });
+});
