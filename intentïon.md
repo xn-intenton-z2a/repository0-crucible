@@ -3301,3 +3301,116 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Code at 2025-05-22T10:48:35.047Z
+
+fixApplied: true
+
+Add Vitest tests for BBP benchmarking in text CSV and PNG modes and update documentation examples.
+
+Git Diff:
+
+```
+diff --git a/README.md b/README.md
+index 4235e393..e9794ee3 100644
+--- a/README.md
++++ b/README.md
+@@ -24,7 +24,7 @@ npm install repository0-crucible
+ ## Features
+ 
+ * PI Calculator: compute π digits via two algorithms (Spigot, Chudnovsky), output as text or PNG, and diagnostics.
+-* Benchmarking Mode: measure performance of both algorithms over multiple digit sizes with text, CSV, or PNG reports.
++* Benchmarking Mode: measure performance of both algorithms over multiple digit sizes with text, CSV, or PNG reports, including BBP algorithm timing (`bbpTimeMs`).
+ 
+ ## Usage
+ 
+@@ -62,16 +62,19 @@ node src/lib/main.js --help
+   ```bash
+   node src/lib/main.js --benchmark-sizes 10,100,1000
+   ```
++  - Produces a table with columns: `size | spigotTimeMs | chudnovskyTimeMs | bbpTimeMs`
+ 
+ - **CSV Report to File:**
+   ```bash
+   node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv
+   ```
++  - `benchmark.csv` includes header `size,spigotTimeMs,chudnovskyTimeMs,bbpTimeMs`
+ 
+ - **PNG Chart to File:**
+   ```bash
+   node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png
+   ```
++  - Chart plots red=Spigot, blue=Chudnovsky, green=BBP lines with legend.
+ 
+ ## Incremental Changes Plan
+ 
+diff --git a/tests/unit/main.test.js b/tests/unit/main.test.js
+index 9415cc84..6cbb5eb3 100644
+--- a/tests/unit/main.test.js
++++ b/tests/unit/main.test.js
+@@ -71,4 +71,45 @@ describe("CLI", () => {
+   afterAll(() => {
+     if (fs.existsSync(hexFile)) fs.unlinkSync(hexFile);
+   });
+-});
+\ No newline at end of file
++});
++
++// Benchmarking mode tests
++
++describe("Benchmarking Mode", () => {
++  const mainPath = fileURLToPath(new URL("../../src/lib/main.js", import.meta.url));
++  const csvFile = "test_report.csv";
++  const pngBench = "test_perf.png";
++
++  afterAll(() => {
++    [csvFile, pngBench].forEach((f) => {
++      if (fs.existsSync(f)) {
++        fs.unlinkSync(f);
++      }
++    });
++  });
++
++  test("default text output table", () => {
++    const output = execSync(`node ${mainPath} --benchmark-sizes 5,10`).toString();
++    const lines = output.trim().split(/\r?\n/);
++    expect(lines[0]).toBe("size | spigotTimeMs | chudnovskyTimeMs | bbpTimeMs");
++    expect(lines.length).toBe(3); // header + 2 rows
++  });
++
++  test("csv output to file", () => {
++    execSync(
++      `node ${mainPath} --benchmark-sizes 5,10 --benchmark-output csv --benchmark-file ${csvFile}`
++    );
++    const content = fs.readFileSync(csvFile, "utf8").trim().split(/\r?\n/);
++    expect(content[0]).toBe("size,spigotTimeMs,chudnovskyTimeMs,bbpTimeMs");
++    expect(content.length).toBe(3);
++  });
++
++  test("png chart output creates file", () => {
++    execSync(
++      `node ${mainPath} --benchmark-sizes 5,10 --benchmark-output png --benchmark-file ${pngBench}`
++    );
++    expect(fs.existsSync(pngBench)).toBe(true);
++    const stats = fs.statSync(pngBench);
++    expect(stats.size).toBeGreaterThan(0);
++  });
++});
+```
+mainOutput:
+```
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067
+
+```
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2726 with title: ""]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":56582,"completion_tokens":3097,"total_tokens":59679,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
