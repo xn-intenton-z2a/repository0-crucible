@@ -2306,3 +2306,377 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Code at 2025-05-22T06:30:06.452Z
+
+fixApplied: true
+
+Add BBP algorithm support with CLI parsing tests and docs
+
+Git Diff:
+
+```
+diff --git a/docs/PI_CALCULATOR.md b/docs/PI_CALCULATOR.md
+index 77eb563c..7d836aac 100644
+--- a/docs/PI_CALCULATOR.md
++++ b/docs/PI_CALCULATOR.md
+@@ -2,15 +2,19 @@
+ 
+ ## Overview
+ 
+-Introduce a core π calculation engine with multiple algorithm options, digit-length control, benchmark reporting, and flexible output modes (text and PNG).
++Introduce a core π calculation engine with multiple algorithm options, digit-length control, benchmark reporting, and flexible output modes (text, PNG, and BBP hex extraction).
+ 
+ ## CLI Options
+ 
+-* `--algorithm <name>` Choose from supported algorithms: `spigot`, `chudnovsky`. Default: `spigot`.
+-* `--digits <n>` Number of π digits to generate (default: 100). Number of total digits (including the "3").
++* `--algorithm <name>` Choose from supported algorithms: `spigot`, `chudnovsky`, `bbp`. Default: `spigot`.
++* `--digits <n>` Number of π digits to generate (decimal mode, default: 100). Number of total digits (including the "3").
++* `--hex-index <n>` Index for BBP mode (hexadecimal digit extraction, 0-based). Required when `--algorithm bbp` is used.
+ * `--output <type>` Output format: `text` or `png` (default: `text`).
+ * `--file <path>` Optional file path to save output.
+ * `--diagnostics` Emit benchmark timings for compute and render phases.
++* `--benchmark-sizes <list>` Comma-separated list of digit counts to benchmark. When provided, single-run options are ignored and benchmarking mode is entered.
++* `--benchmark-output <type>` Benchmark report output format: `text`, `csv`, or `png` (default: `text`).
++* `--benchmark-file <path>` File path to save benchmark report or chart. If omitted, `text` is printed to stdout; `csv` and `png` use default filenames `benchmark.csv` or `benchmark.png`.
+ 
+ ## Examples
+ 
+@@ -23,6 +27,14 @@ node src/lib/main.js --algorithm spigot --digits 10
+ node src/lib/main.js --algorithm chudnovsky --digits 15
+ # Output: 3.14159265358979
+ 
++# Extract hex digit at index 0 (integer part)
++node src/lib/main.js --algorithm bbp --hex-index 0
++# Output: 3
++
++# Extract hex digit at index 1 (first fractional)
++node src/lib/main.js --algorithm bbp --hex-index 1
++# Output: 2
++
+ # Save 50 digits to file
+ node src/lib/main.js --digits 50 --file pi50.txt
+ # File pi50.txt contains: 3.....
+@@ -35,4 +47,13 @@ node src/lib/main.js --digits 30 --diagnostics
+ # Output:
+ # Compute time: 10ms
+ # Render time: 5ms
++
++# Benchmark sizes with default text output
++node src/lib/main.js --benchmark-sizes 10,100
++
++# Benchmark and output CSV to file
++node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output csv --benchmark-file benchmark.csv
++
++# Benchmark and output PNG chart
++node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output png --benchmark-file benchmark.png
+ ```
+\ No newline at end of file
+diff --git a/src/lib/main.js b/src/lib/main.js
+index cc940709..f9676ac5 100755
+--- a/src/lib/main.js
++++ b/src/lib/main.js
+@@ -88,18 +88,210 @@ export function computePiChudnovsky(digits) {
+   return pi.toFixed(digits - 1);
+ }
+ 
++/**
++ * Compute the hexadecimal digit of π at the given index.
++ * Index 0 returns the integer part (3), index>=1 returns fractional hex digits.
++ */
++export function computePiBBP(index) {
++  if (!Number.isInteger(index) || index < 0) {
++    throw new Error("Index must be a non-negative integer");
++  }
++  // Integer part
++  if (index === 0) {
++    return "3";
++  }
++  // Fractional hex digits via BBP formula
++  const n = index - 1;
++  function modPow(a, e, mod) {
++    let result = 1;
++    let base = a % mod;
++    let exp = e;
++    while (exp > 0) {
++      if (exp % 2 === 1) {
++        result = (result * base) % mod;
++      }
++      base = (base * base) % mod;
++      exp = Math.floor(exp / 2);
++    }
++    return result;
++  }
++  function series(j, n) {
++    let sum = 0;
++    for (let k = 0; k <= n; k++) {
++      const denom = 8 * k + j;
++      const num = modPow(16, n - k, denom);
++      sum += num / denom;
++    }
++    sum = sum - Math.floor(sum);
++    // tail
++    for (let k = n + 1; k <= n + 100; k++) {
++      sum += Math.pow(16, n - k) / (8 * k + j);
++    }
++    return sum - Math.floor(sum);
++  }
++  const t1 = series(1, n);
++  const t2 = series(4, n);
++  const t3 = series(5, n);
++  const t4 = series(6, n);
++  let x = 4 * t1 - 2 * t2 - t3 - t4;
++  x = x - Math.floor(x);
++  const digit = Math.floor(x * 16);
++  return digit.toString(16).toUpperCase();
++}
++
+ export function main(args) {
+   const argv = minimist(args, {
+-    string: ["algorithm", "output", "file"],
++    string: [
++      "algorithm",
++      "output",
++      "file",
++      "benchmark-sizes",
++      "benchmark-output",
++      "benchmark-file",
++      "hex-index"
++    ],
+     boolean: ["diagnostics"],
+     default: {
+       algorithm: "spigot",
+       digits: 100,
+       output: "text",
+-      diagnostics: false,
+-    },
++      diagnostics: false
++    }
+   });
+   const algorithm = argv.algorithm.toLowerCase();
++
++  // BBP mode
++  if (algorithm === "bbp") {
++    const idx = parseInt(argv["hex-index"], 10);
++    if (isNaN(idx) || idx < 0) {
++      console.error("Invalid or missing hex-index for BBP algorithm");
++      process.exit(1);
++    }
++    const hexChar = computePiBBP(idx);
++    if (argv.file) {
++      fs.writeFileSync(argv.file, hexChar);
++    } else {
++      console.log(hexChar);
++    }
++    return;
++  }
++
++  // Benchmarking mode
++  const benchArg = argv["benchmark-sizes"];
++  if (benchArg) {
++    const sizes = benchArg
++      .split(",")
++      .map((s) => parseInt(s, 10))
++      .filter((n) => !isNaN(n));
++    const results = sizes.map((size) => {
++      const start1 = process.hrtime();
++      computePiSpigot(size);
++      const d1 = process.hrtime(start1);
++      const spigotTimeMs = d1[0] * 1000 + d1[1] / 1e6;
++      const start2 = process.hrtime();
++      computePiChudnovsky(size);
++      const d2 = process.hrtime(start2);
++      const chudTimeMs = d2[0] * 1000 + d2[1] / 1e6;
++      return { size, spigotTimeMs, chudnovskyTimeMs: chudTimeMs };
++    });
++    const outType = (argv["benchmark-output"] || "text").toLowerCase();
++    const outFile = argv["benchmark-file"];
++
++    if (outType === "text") {
++      const header = ["size", "spigotTimeMs", "chudnovskyTimeMs"];
++      const rows = [header];
++      results.forEach((r) => {
++        rows.push([r.size.toString(), r.spigotTimeMs.toFixed(3), r.chudnovskyTimeMs.toFixed(3)]);
++      });
++      const colWidths = header.map((_, i) => Math.max(...rows.map((r) => r[i].length)));
++      const lines = rows.map((r) =>
++        r.map((cell, i) => cell.padStart(colWidths[i])).join(" | ")
++      );
++      const outputStr = lines.join("\n");
++      if (outFile) fs.writeFileSync(outFile, outputStr);
++      else console.log(outputStr);
++    } else if (outType === "csv") {
++      const lines = [];
++      lines.push("size,spigotTimeMs,chudnovskyTimeMs");
++      results.forEach((r) => {
++        lines.push(
++          `${r.size},${r.spigotTimeMs.toFixed(3)},${r.chudnovskyTimeMs.toFixed(3)}`
++        );
++      });
++      const outputStr = lines.join("\n");
++      if (outFile) fs.writeFileSync(outFile, outputStr);
++      else console.log(outputStr);
++    } else if (outType === "png") {
++      const width = 800;
++      const height = 600;
++      const margin = 50;
++      const canvas = createCanvas(width, height);
++      const ctx = canvas.getContext("2d");
++      ctx.fillStyle = "white";
++      ctx.fillRect(0, 0, width, height);
++      ctx.strokeStyle = "black";
++      ctx.beginPath();
++      ctx.moveTo(margin, margin);
++      ctx.lineTo(margin, height - margin);
++      ctx.moveTo(margin, height - margin);
++      ctx.lineTo(width - margin, height - margin);
++      ctx.stroke();
++
++      const times1 = results.map((r) => r.spigotTimeMs);
++      const times2 = results.map((r) => r.chudnovskyTimeMs);
++      const minTime = Math.min(...times1, ...times2);
++      const maxTime = Math.max(...times1, ...times2);
++      function getX(i) {
++        return sizes.length > 1
++          ? margin + (width - 2 * margin) * (i / (sizes.length - 1))
++          : margin + (width - 2 * margin) / 2;
++      }
++      function getY(t) {
++        if (maxTime === minTime) return height - margin;
++        return (
++          margin +
++          (height - 2 * margin) * (1 - (t - minTime) / (maxTime - minTime))
++        );
++      }
++      // Spigot line
++      ctx.strokeStyle = "red";
++      ctx.beginPath();
++      results.forEach((r, i) => {
++        const x = getX(i);
++        const y = getY(r.spigotTimeMs);
++        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
++      });
++      ctx.stroke();
++      // Chudnovsky line
++      ctx.strokeStyle = "blue";
++      ctx.beginPath();
++      results.forEach((r, i) => {
++        const x = getX(i);
++        const y = getY(r.chudnovskyTimeMs);
++        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
++      });
++      ctx.stroke();
++      // Legend
++      ctx.fillStyle = "red";
++      ctx.fillRect(width - margin - 100, margin, 10, 10);
++      ctx.fillStyle = "black";
++      ctx.fillText("Spigot", width - margin - 85, margin + 10);
++      ctx.fillStyle = "blue";
++      ctx.fillRect(width - margin - 100, margin + 20, 10, 10);
++      ctx.fillStyle = "black";
++      ctx.fillText("Chudnovsky", width - margin - 85, margin + 30);
++
++      const buffer = canvas.toBuffer("image/png");
++      const out = outFile || "benchmark.png";
++      fs.writeFileSync(out, buffer);
++    } else {
++      console.error(`Unknown benchmark output type: ${outType}`);
++      process.exit(1);
++    }
++    return;
++  }
++
++  // Single-run mode
+   const digits = parseInt(argv.digits, 10);
+   const output = argv.output.toLowerCase();
+   const file = argv.file;
+@@ -147,4 +339,4 @@ export function main(args) {
+ 
+ if (process.argv[1] === fileURLToPath(import.meta.url)) {
+   main(process.argv.slice(2));
+-}
++}
+\ No newline at end of file
+diff --git a/tests/unit/main.test.js b/tests/unit/main.test.js
+index 766259c3..9415cc84 100644
+--- a/tests/unit/main.test.js
++++ b/tests/unit/main.test.js
+@@ -3,7 +3,7 @@ import { execSync } from "child_process";
+ import fs from "fs";
+ import { fileURLToPath } from "url";
+ 
+-import { computePiSpigot, computePiChudnovsky } from "@src/lib/main.js";
++import { computePiSpigot, computePiChudnovsky, computePiBBP } from "@src/lib/main.js";
+ 
+ describe("computePiSpigot", () => {
+   test("first 10 digits", () => {
+@@ -17,6 +17,18 @@ describe("computePiChudnovsky", () => {
+   });
+ });
+ 
++describe("computePiBBP", () => {
++  test("index 0 returns integer part", () => {
++    expect(computePiBBP(0)).toBe("3");
++  });
++  test("index 1 returns first hex fraction digit", () => {
++    expect(computePiBBP(1)).toBe("2");
++  });
++  test("index 4 returns fourth hex fraction digit (F)", () => {
++    expect(computePiBBP(4)).toBe("F");
++  });
++});
++
+ describe("CLI", () => {
+   const mainPath = fileURLToPath(new URL("../../src/lib/main.js", import.meta.url));
+ 
+@@ -37,13 +49,26 @@ describe("CLI", () => {
+ 
+   const pngFile = "test_pi.png";
+   afterAll(() => {
+-    if (fs.existsSync(pngFile)) {
+-      fs.unlinkSync(pngFile);
+-    }
++    if (fs.existsSync(pngFile)) fs.unlinkSync(pngFile);
+   });
+ 
+   test("png output creates file", () => {
+     execSync(`node ${mainPath} --algorithm spigot --digits 20 --output png --file ${pngFile}`);
+     expect(fs.existsSync(pngFile)).toBe(true);
+   });
+-});
++
++  test("bbp index to stdout", () => {
++    const output = execSync(`node ${mainPath} --algorithm bbp --hex-index 1`).toString().trim();
++    expect(output).toBe("2");
++  });
++
++  const hexFile = "test_hex.txt";
++  test("bbp index to file", () => {
++    execSync(`node ${mainPath} --algorithm bbp --hex-index 3 --file ${hexFile}`);
++    const content = fs.readFileSync(hexFile, "utf8").trim();
++    expect(content).toBe("3");
++  });
++  afterAll(() => {
++    if (fs.existsSync(hexFile)) fs.unlinkSync(hexFile);
++  });
++});
+\ No newline at end of file
+```
+mainOutput:
+```
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067
+
+```
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2724 with title: ""]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":40233,"completion_tokens":9965,"total_tokens":50198,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":4736,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
