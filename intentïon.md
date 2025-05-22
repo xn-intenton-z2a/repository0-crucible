@@ -2161,3 +2161,108 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Code at 2025-05-22T05:47:10.287Z
+
+fixApplied: true
+
+Update README features to include benchmarking mode usage
+
+Git Diff:
+
+```
+diff --git a/README.md b/README.md
+index 618a07f8..4235e393 100644
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,6 @@
+ # repository0-crucible
+ 
+-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
++`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+ 
+ To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
+ 
+@@ -11,7 +11,7 @@ This readme shall evolve into a JavaScript library based on of the seed CONTRIBU
+ The repository is intended as a template that includes:
+ * A Template Base: A starting point for new projects.
+ * A Running Experiment: An example implementation that demonstrates one way to use the template.
+-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
++* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+ 
+ ## Installation
+ 
+@@ -23,7 +23,8 @@ npm install repository0-crucible
+ 
+ ## Features
+ 
+-TODO: Add features here.
++* PI Calculator: compute π digits via two algorithms (Spigot, Chudnovsky), output as text or PNG, and diagnostics.
++* Benchmarking Mode: measure performance of both algorithms over multiple digit sizes with text, CSV, or PNG reports.
+ 
+ ## Usage
+ 
+@@ -33,13 +34,44 @@ To run the CLI tool and see help instructions:
+ node src/lib/main.js --help
+ ```
+ 
+-### Example Commands
++### PI Calculator Examples
+ 
+ - **Default Demo Output:**
+   ```bash
+   npm run start
+   ```
+ 
++- **Compute π Digits (Text):**
++  ```bash
++  node src/lib/main.js --algorithm spigot --digits 10
++  ```
++
++- **Compute π Digits (PNG):**
++  ```bash
++  node src/lib/main.js --algorithm chudnovsky --digits 100 --output png --file pi100.png
++  ```
++
++- **Diagnostics:**
++  ```bash
++  node src/lib/main.js --algorithm spigot --digits 50 --diagnostics
++  ```
++
++### Benchmarking Mode Examples
++
++- **Text Report (stdout):**
++  ```bash
++  node src/lib/main.js --benchmark-sizes 10,100,1000
++  ```
++
++- **CSV Report to File:**
++  ```bash
++  node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv
++  ```
++
++- **PNG Chart to File:**
++  ```bash
++  node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png
++  ```
+ 
+ ## Incremental Changes Plan
+ 
+```
+mainOutput:
+```
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067
+
+```
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2719 with title: ""]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":39208,"completion_tokens":939,"total_tokens":40147,"prompt_tokens_details":{"cached_tokens":26112,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
