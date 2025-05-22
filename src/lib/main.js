@@ -21,6 +21,7 @@ export function computePiSpigot(digits) {
       A[i] = x % (2 * i + 1);
       carry = Math.floor(x / (2 * i + 1)) * i;
     }
+
     const x = A[0] * 10 + carry;
     A[0] = x % 10;
     carry = Math.floor(x / 10);
@@ -63,22 +64,26 @@ export function computePiChudnovsky(digits) {
   let sum = new Decimal(0);
   let k = 0;
   const tolerance = new Decimal(10).pow(-digits);
+
   while (true) {
     const numFact = factorialBig(6n * BigInt(k));
     const denFact1 = factorialBig(3n * BigInt(k));
     const denFact2 = factorialBig(BigInt(k));
-    const numerator = new Decimal(numFact.toString())
-      .times(new Decimal(13591409).plus(new Decimal(545140134).times(k)));
+    const numerator = new Decimal(numFact.toString()).times(
+      new Decimal(13591409).plus(new Decimal(545140134).times(k))
+    );
     const denominator = new Decimal(denFact1.toString())
       .times(new Decimal(denFact2.toString()).pow(3))
       .times(new Decimal(-262537412640768000).pow(k));
     const term = numerator.div(denominator);
     sum = sum.plus(term);
+
     if (term.abs().lt(tolerance)) {
       break;
     }
     k++;
   }
+
   const pi = C.div(sum);
   return pi.toFixed(digits - 1);
 }
@@ -110,6 +115,7 @@ export function main(args) {
     process.exit(1);
   }
   if (diagnostics) console.timeEnd("Compute time");
+
   if (output === "text") {
     if (file) {
       fs.writeFileSync(file, pi);
