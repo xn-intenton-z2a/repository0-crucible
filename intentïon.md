@@ -1692,3 +1692,53 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Ready Issue at 2025-05-22T04:44:33.032Z
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2719 with action enhance and updated description:
+
+Title: Implement Benchmarking Mode for PI Algorithms with Comparison Reports
+
+Description:
+Extend the existing π calculator CLI to support a dedicated benchmarking mode that automates performance measurement of both the Spigot and Chudnovsky algorithms across a series of digit lengths, and generates comparison reports in text, CSV, or PNG formats.
+
+Acceptance Criteria:
+1. **Default Text Output**
+   - Given: `node src/lib/main.js --benchmark-sizes 10,100` (no `--benchmark-output` or `--benchmark-file`)
+   - Then: A fixed-width table is printed to stdout with header `size | spigotTimeMs | chudnovskyTimeMs` and exactly two rows for sizes 10 and 100.
+   - And: All reported times are numeric values in milliseconds.
+
+2. **CSV Output to File**
+   - Given: `node src/lib/main.js --benchmark-sizes 10,50 --benchmark-output csv --benchmark-file report.csv`
+   - Then: A file `report.csv` is created in the working directory.
+   - And: The file contains a header line `size,spigotTimeMs,chudnovskyTimeMs` followed by exactly two data rows with comma-separated numeric values.
+
+3. **PNG Chart Output**
+   - Given: `node src/lib/main.js --benchmark-sizes 20,40 --benchmark-output png --benchmark-file perf.png`
+   - Then: A file `perf.png` is created in the working directory.
+   - And: The file size is greater than zero bytes.
+   - And: The PNG visually plots two lines (Spigot vs Chudnovsky) with labeled axes and legend.
+
+4. **Automated Tests**
+   - Add unit tests in `tests/unit/main.test.js` to programmatically verify the above behaviors (text output presence, CSV file contents & row count, PNG file existence & non-zero size).
+   - Ensure running `npm test` passes all existing and new tests without errors.
+
+5. **Documentation**
+   - Update `README.md` to document the new `--benchmark-sizes`, `--benchmark-output`, and `--benchmark-file` options under "Features" and "Usage".
+   - Provide three usage examples covering text, CSV, and PNG modes.
+
+6. **No New Dependencies**
+   - Confirm that no additional dependencies beyond existing `minimist`, `decimal.js`, and `canvas` are required.
+
+Files to Update:
+- `src/lib/main.js`
+- `tests/unit/main.test.js`
+- `README.md`
+
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":8111,"completion_tokens":1241,"total_tokens":9352,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":640,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
