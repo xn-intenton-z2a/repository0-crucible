@@ -2850,3 +2850,65 @@ LLM API Usage:
 ```
 ---
 
+## Feature to Issue at 2025-05-22T07:01:45.137Z
+
+Generated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2726 with title:
+
+Extend Benchmarking Mode to Include BBP Algorithm Performance
+
+And description:
+
+Background:
+The repository now supports benchmarking the Spigot and Chudnovsky π algorithms across multiple digit counts, producing text, CSV, and PNG reports. With the recent addition of the BBP hexadecimal digit extraction feature, we should also measure and compare the performance of `computePiBBP` across varying positions alongside the other algorithms.
+
+Goals:
+1. Update the benchmarking logic in `src/lib/main.js` so that when `--benchmark-sizes` is provided, in addition to timing `computePiSpigot` and `computePiChudnovsky`, we also time `computePiBBP` for each specified index (using the same numeric values as indices).
+2. In the text and CSV reports, add a third column `bbpTimeMs`; for PNG charts, plot a third line (e.g., green) representing BBP timing.
+3. Adjust unit and CLI tests in `tests/unit/main.test.js` to verify:
+   - The header line includes `bbpTimeMs`.
+   - The text table contains three columns and correct row count.
+   - The CSV file header and rows include the new column.
+   - The PNG report is generated with nonzero size (visual validation is manual).
+4. Update `README.md` under **Benchmarking Mode Examples** and **Features** to document the addition of BBP benchmarking, showing sample commands and expected output headers (including the new column).
+
+Tasks:
+- **src/lib/main.js**
+  • Import `computePiBBP` if not already.  
+  • In the benchmarking branch (`if (argv['benchmark-sizes'])`):
+    - After computing `spigotTimeMs` and `chudnovskyTimeMs`, call `computePiBBP(size)` and measure its execution time via `process.hrtime`, storing as `bbpTimeMs`.
+    - Include `bbpTimeMs` in the `results` array objects.
+    - In the `text` output mode: add `bbpTimeMs` to headers and rows, adjust padding logic to accommodate the extra column.
+    - In `csv` mode: emit a header `size,spigotTimeMs,chudnovskyTimeMs,bbpTimeMs` and include the new values in each row.
+    - In `png` mode: draw a third line in a distinct color (e.g., green) for BBP times, and update the legend accordingly.
+- **tests/unit/main.test.js**
+  • Add expectations for the new header and column presence in text and CSV tests.  
+  • Ensure cleanup of any temporary files created by the BBP benchmarking tests.
+- **README.md**
+  • Under **Features**, note that benchmarking mode now supports BBP algorithm timing.  
+  • Under **Benchmarking Mode Examples**, provide an example that produces the three-column text table and mention the extra column name.
+
+Verification:
+1. Run `npm test` — all existing and new tests should pass.  
+2. Manual smoke test:
+   ```bash
+   node src/lib/main.js --benchmark-sizes 5,10 
+   # Should print a table with columns: size | spigotTimeMs | chudnovskyTimeMs | bbpTimeMs
+   ```
+   ```bash
+   node src/lib/main.js --benchmark-sizes 5,10 --benchmark-output csv --benchmark-file report.csv
+   # report.csv should have header and two data rows with four comma-separated values each
+   ```
+   ```bash
+   node src/lib/main.js --benchmark-sizes 5,10 --benchmark-output png --benchmark-file perf.png
+   # perf.png should be created and >0 bytes, containing three colored lines
+   ```
+
+_No new dependencies are required._
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":44955,"completion_tokens":3149,"total_tokens":48104,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":2304,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
