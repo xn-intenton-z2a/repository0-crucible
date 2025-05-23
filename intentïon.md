@@ -5166,3 +5166,14 @@ LLM API Usage:
 ```
 ---
 
+## Feature to Issue at 2025-05-23T06:22:28.129Z
+
+Generated feature development issue with title Refine CLI Help Output to Include New BBP and Benchmarking Flags.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":81776,"completion_tokens":583,"total_tokens":82359,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
