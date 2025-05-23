@@ -5152,3 +5152,17 @@ LLM API Usage:
 
 2025-05-23T06:02:03Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-22T01-30Z
 
+## Discussions activity at 2025-05-23T06:14:10.675Z
+
+Since our last update, we’ve added a detailed CLI help (`--help`/`-h`) that documents all modes and flags (spigot, Chudnovsky, BBP, benchmarking), grouped by category, with examples. All tests pass and the build remains green. Next: gather feedback on the new help output and chart styling for benchmarking PNGs.
+
+[Posted on "https://github.com/xn-intenton-z2a/repository0-crucible/discussions/2538#discussioncomment-13227616""""""""""""""""""""""""""""""""""""""""""""""""""" by the repository bot which took the action "reply-without-action" with the detail "".]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":100764,"completion_tokens":101,"total_tokens":100865,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+
+```
+---
+
