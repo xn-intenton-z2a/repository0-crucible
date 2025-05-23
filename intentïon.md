@@ -6418,3 +6418,39 @@ LLM API Usage:
 ```
 ---
 
+## Updated Readme at 2025-05-23T08:52:52.321Z
+
+Updated README: Update README and PI calculator docs to reflect current CLI options and usage
+
+```
+diff --git a/docs/PI_CALCULATOR.md b/docs/PI_CALCULATOR.md
+index 36020913..6f5a0513 100644
+--- a/docs/PI_CALCULATOR.md
++++ b/docs/PI_CALCULATOR.md
+@@ -46,12 +46,10 @@ node src/lib/main.js --digits 30 --diagnostics
+ # Compute time: Xms
+ # Render time: Yms
+ 
+-# Benchmark decimal algorithms
++# Benchmark decimal algorithms (text report)
+ node src/lib/main.js --benchmark-sizes 10,100
+ 
+-# Benchmark and CSV output
+-node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output csv --benchmark-file benchmark.csv
++# Benchmark and CSV output\nnode src/lib/main.js --benchmark-sizes 20,50 --benchmark-output csv --benchmark-file benchmark.csv
+ 
+-# Benchmark and PNG chart
+-node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output png --benchmark-file benchmark.png
+-```
+\ No newline at end of file
++# Benchmark and PNG chart\nnode src/lib/main.js --benchmark-sizes 20,50 --benchmark-output png --benchmark-file benchmark.png
++```
+```
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":98320,"completion_tokens":1293,"total_tokens":99613,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
