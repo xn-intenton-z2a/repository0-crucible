@@ -5624,3 +5624,62 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Ready Issue at 2025-05-23T06:46:49.811Z
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2734 with action enhance and updated description:
+
+Title: Refine CLI Help Output to Include New BBP and Benchmarking Flags
+
+Background:
+The CLI currently supports diverse π calculation modes (Spigot, Chudnovsky, BBP) and benchmarking options, but the built-in help (`--help`/`-h`) groups flags in a way that is not intuitive. We need to enhance the help output to guide users effectively by organizing flags into clearly named sections and including examples for all key modes.
+
+Acceptance Criteria:
+1. When running `node src/lib/main.js --help` or `-h`:
+   - The first line must be exactly: `Usage: node src/lib/main.js [options]`.
+   - Five distinct section headers must appear in order:
+     * `General Options:`
+     * `Algorithm Modes:`
+     * `Output Modes:`
+     * `Diagnostics Options:`
+     * `Benchmarking Options:`
+   - Under `General Options:`, list:
+     - `-h, --help                      Show this help message and exit`
+     - `--file <path>                   File path to save output (default: stdout)`
+   - Under `Algorithm Modes:`, list:
+     - `--algorithm <spigot|chudnovsky|bbp>  Choose π algorithm (default: spigot)`
+     - `--digits <n>                    Number of decimal digits (default: 100)`
+     - `--hex-index <n>                 Zero-based index for BBP mode (required for bbp)`
+   - Under `Output Modes:`, list:
+     - `--output <text|png>             Output format (default: text)`
+   - Under `Diagnostics Options:`, list:
+     - `--diagnostics                   Emit compute and render timing diagnostics`
+   - Under `Benchmarking Options:`, list:
+     - `--benchmark-sizes <list>        Comma-separated list of digit counts to benchmark`
+     - `--benchmark-output <text|csv|png>  Benchmark report format (default: text)`
+     - `--benchmark-file <path>         File path to save benchmark report or chart`
+   - After listing flags, include an `Examples:` section showing at least one invocation for each mode:
+     1. Decimal computation with spigot: `node src/lib/main.js --algorithm spigot --digits 20`
+     2. Decimal computation with Chudnovsky + PNG output: `node src/lib/main.js --algorithm chudnovsky --digits 50 --output png --file pi.png`
+     3. BBP hex-digit extraction: `node src/lib/main.js --algorithm bbp --hex-index 1`
+     4. Benchmark text mode: `node src/lib/main.js --benchmark-sizes 10,100`
+     5. Benchmark CSV output: `node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file report.csv`
+     6. Benchmark PNG chart: `node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png`
+   - The process must exit immediately after printing help.
+
+2. Update `tests/unit/main.test.js` to assert the presence and correct ordering of:
+   - The usage line.
+   - Each of the five section headers.
+   - Representative flags under each section.
+   - The `Examples:` section and at least three example invocations as shown above.
+
+Files to Update:
+- `src/lib/main.js` (enhance the `printHelpAndExit` function to satisfy the new grouping and content requirements)
+- `tests/unit/main.test.js` (add or modify tests to validate the enhanced help output)
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":12790,"completion_tokens":1551,"total_tokens":14341,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":704,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
