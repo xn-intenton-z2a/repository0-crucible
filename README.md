@@ -23,8 +23,8 @@ npm install repository0-crucible
 
 ## Features
 
-* PI Calculator: compute π digits via two algorithms (Spigot, Chudnovsky), output as text or PNG, and diagnostics.
-* Benchmarking Mode: measure performance of both algorithms over multiple digit sizes with text, CSV, or PNG reports, including BBP algorithm timing (`bbpTimeMs`).
+* **PI Calculator**: compute π digits via two algorithms (Spigot, Chudnovsky) or extract hex digits (BBP), output as text or PNG, and diagnostics.
+* **Benchmarking Mode**: measure performance of Spigot, Chudnovsky, and BBP algorithms over multiple digit sizes with text, CSV, or PNG reports.
 
 ## Usage
 
@@ -34,47 +34,7 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
-### PI Calculator Examples
-
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
-
-- **Compute π Digits (Text):**
-  ```bash
-  node src/lib/main.js --algorithm spigot --digits 10
-  ```
-
-- **Compute π Digits (PNG):**
-  ```bash
-  node src/lib/main.js --algorithm chudnovsky --digits 100 --output png --file pi100.png
-  ```
-
-- **Diagnostics:**
-  ```bash
-  node src/lib/main.js --algorithm spigot --digits 50 --diagnostics
-  ```
-
-### Benchmarking Mode Examples
-
-- **Text Report (stdout):**
-  ```bash
-  node src/lib/main.js --benchmark-sizes 10,100,1000
-  ```
-  - Produces a table with columns: `size | spigotTimeMs | chudnovskyTimeMs | bbpTimeMs`
-
-- **CSV Report to File:**
-  ```bash
-  node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv
-  ```
-  - `benchmark.csv` includes header `size,spigotTimeMs,chudnovskyTimeMs,bbpTimeMs`
-
-- **PNG Chart to File:**
-  ```bash
-  node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png
-  ```
-  - Chart plots red=Spigot, blue=Chudnovsky, green=BBP lines with legend.
+Refer to [docs/PI_CALCULATOR.md](docs/PI_CALCULATOR.md) for detailed usage and examples.
 
 ## Incremental Changes Plan
 

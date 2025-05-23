@@ -32,6 +32,16 @@ describe("computePiBBP", () => {
 describe("CLI", () => {
   const mainPath = fileURLToPath(new URL("../../src/lib/main.js", import.meta.url));
 
+  test("--help shows usage and sections", () => {
+    const out = execSync(`node ${mainPath} --help`).toString();
+    expect(out).toMatch(/Usage:/);
+    expect(out).toMatch(/General Options:/);
+    expect(out).toMatch(/Algorithm Modes:/);
+    expect(out).toMatch(/Output Modes:/);
+    expect(out).toMatch(/Diagnostics Options:/);
+    expect(out).toMatch(/Examples:/);
+  });
+
   test("spigot 10 digits to stdout", () => {
     const output = execSync(`node ${mainPath} --algorithm spigot --digits 10`).toString().trim();
     expect(output).toBe("3.141592653");
