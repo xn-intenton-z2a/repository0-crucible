@@ -5833,3 +5833,59 @@ LLM API Usage:
 ```
 ---
 
+## Feature to Issue at 2025-05-23T07:01:12.107Z
+
+Generated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2735 with title:
+
+Refine CLI Help Output to Clearly Document New Flags and Usage
+
+And description:
+
+Currently, the built-in help (`--help` or `-h`) lists flags but does not group or format them optimally for discoverability. We’ve added many new options (BBP hex-index, benchmarking flags) and need to refine the help output so users can immediately understand all supported flags, their types, defaults, and example invocations.
+
+Tasks:
+1. Update printHelpAndExit in `src/lib/main.js` to:
+   • Print the first line exactly: `Usage: node src/lib/main.js [options]`.
+   • Group flags under five sections in this order:
+     - General Options
+     - Algorithm Modes
+     - Output Modes
+     - Diagnostics Options
+     - Benchmarking Options
+   • Under each section, list flags with:
+     - Flag name (with alias if any)
+     - Expected data type or allowed values
+     - Default value (if applicable)
+     - Brief description
+   • After flag listings, add an `Examples:` section with at least these six invocations:
+     1. `node src/lib/main.js --algorithm spigot --digits 20`
+     2. `node src/lib/main.js --algorithm chudnovsky --digits 50 --output png --file pi.png`
+     3. `node src/lib/main.js --algorithm bbp --hex-index 1`
+     4. `node src/lib/main.js --benchmark-sizes 10,100`
+     5. `node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file report.csv`
+     6. `node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png`
+   • Exit the process immediately after printing help.
+
+2. Add or update tests in `tests/unit/main.test.js`:
+   • A test that `node src/lib/main.js --help` (and `-h`) outputs:
+     - The usage line exactly as specified.
+     - The five section headers in the correct order.
+     - Representative flag lines under each section (e.g., `--hex-index <n>` under Algorithm Modes, `--benchmark-sizes <list>` under Benchmarking Options).
+     - The `Examples:` section and at least three of the example commands.
+   • Assert that process exits with code 0 after help output.
+
+3. Verify manually by running:
+```bash
+node src/lib/main.js --help
+``` 
+Inspect that sections, flags, defaults, types, and examples appear as specified.
+
+No changes to README, docs, or dependencies are required. This issue closes when the help output fully meets the acceptance criteria and all related tests pass under `npm test`.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":90248,"completion_tokens":618,"total_tokens":90866,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
