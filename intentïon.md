@@ -4060,3 +4060,32 @@ LLM API Usage:
 ```
 ---
 
+## Feature to Issue at 2025-05-23T04:39:27.286Z
+
+Created issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2731 with title Refine CLI Help to Document New BBP and Benchmarking Flags and body:
+
+ The CLI currently supports `--help`, but it needs enhancement to clearly list and explain the newly added flags (`--hex-index`, `--benchmark-sizes`, `--benchmark-output`, `--benchmark-file`) along with existing options. Improve the built-in help output to group options by category, show default values and types, and provide example invocations.
+
+Tasks:
+1. In `src/lib/main.js`, detect `--help` or `-h` early and invoke a help generator that:
+   - Prints usage syntax and a brief description.
+   - Groups flags under headers: General, Algorithm Modes, Output Modes, Diagnostics, Benchmarking.
+   - Lists each flag with its name, type (string/integer/boolean), default value, and description.
+   - Includes examples for spigot/chudnovsky runs, BBP hex extraction, and benchmarking in text/CSV/PNG modes.
+   - Exits the process after printing help.
+2. Update `tests/unit/main.test.js` to add a suite verifying:
+   - `node src/lib/main.js --help` outputs lines covering each new flag (e.g., `--hex-index`, `--benchmark-sizes`).
+   - The help text contains section headers (e.g., "Benchmarking Options") and shows an example command.
+3. No changes to README.md or dependencies are required.
+
+Verification:
+- Run `node src/lib/main.js --help` and inspect that all flags and examples appear correctly.
+- Execute `npm test` to ensure new help tests pass and existing tests remain green..
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":66269,"completion_tokens":366,"total_tokens":66635,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
