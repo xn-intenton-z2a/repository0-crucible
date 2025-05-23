@@ -5891,3 +5891,54 @@ LLM API Usage:
 
 2025-05-23T07:01:58Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-22T01-30Z
 
+## Issue to enhanced Issue at 2025-05-23T07:02:51.631Z
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2735 with enhanced description:
+
+Title: Refine and Standardize CLI Help Output
+
+Description:
+The built-in help output (`--help` or `-h`) must be refactored to present all supported flags in a clear, consistent, and discoverable format. This includes grouping flags into five distinct sections, showing flag names (and aliases), expected data types, default values, and succinct descriptions. Finally, an Examples section should demonstrate common usage patterns.
+
+Testable Acceptance Criteria:
+1. When invoking `node src/lib/main.js --help` (or `-h`):
+   - The very first line is exactly:
+     ```
+     Usage: node src/lib/main.js [options]
+     ```
+   - Five section headers appear in this exact order:
+     1. General Options
+     2. Algorithm Modes
+     3. Output Modes
+     4. Diagnostics Options
+     5. Benchmarking Options
+   - Under each section, flag entries include:
+     - Flag name and alias (if any)
+     - Parameter placeholder (e.g., `<n>`, `<list>`, `<type>`)
+     - Default value (if applicable)
+     - Brief one-line description of purpose
+   - An `Examples:` section follows, listing at least these six invocations verbatim:
+     1. `node src/lib/main.js --algorithm spigot --digits 20`
+     2. `node src/lib/main.js --algorithm chudnovsky --digits 50 --output png --file pi.png`
+     3. `node src/lib/main.js --algorithm bbp --hex-index 1`
+     4. `node src/lib/main.js --benchmark-sizes 10,100`
+     5. `node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file report.csv`
+     6. `node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png`
+   - The process exits immediately with code `0` after printing help.
+
+2. Update or add CLI tests in `tests/unit/main.test.js` to assert:
+   - Exact match of the usage line.
+   - Presence and correct ordering of the five section headers.
+   - Representative flag entries under each section (e.g., `--hex-index <n>` under Algorithm Modes, `--benchmark-sizes <list>` under Benchmarking Options).
+   - The `Examples:` section contains at least three of the required example commands.
+   - The process exit code after printing help is `0`.
+
+No changes are required elsewhere (README, docs, dependencies).
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":12422,"completion_tokens":1507,"total_tokens":13929,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":896,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
