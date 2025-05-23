@@ -115,8 +115,12 @@ export function computePiChudnovsky(digits) {
 }
 
 export function computePiBBP(index) {
-  if (!Number.isInteger(index) || index < 0) throw new Error("Index must be a non-negative integer");
-  if (index === 0) return "3";
+  if (!Number.isInteger(index) || index < 0) {
+    throw new Error("Index must be a non-negative integer");
+  }
+  if (index === 0) {
+    return "3";
+  }
   const n = index - 1;
   function modPow(a, e, mod) {
     let res = 1;
@@ -136,8 +140,10 @@ export function computePiBBP(index) {
     for (let k = n + 1; k <= n + 100; k++) sum += Math.pow(16, n - k) / (8 * k + j);
     return sum - Math.floor(sum);
   }
-  const x = (4 * series(1) - 2 * series(4) - series(5) - series(6)) % 1;
-  return Math.floor(x * 16).toString(16).toUpperCase();
+  const raw = 4 * series(1) - 2 * series(4) - series(5) - series(6);
+  const frac = raw - Math.floor(raw);
+  const digit = Math.floor(frac * 16);
+  return digit.toString(16).toUpperCase();
 }
 
 export function main(args) {
