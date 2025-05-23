@@ -1,37 +1,49 @@
 # Overview
 
-Enhance the CLI help output to clearly document and expose the newly added flags for BBP and benchmarking modes. Improve user guidance by detailing options, default values, and usage examples within the built-in `--help` output.
+Improve the built-in help output to clearly document all supported flags, including BBP and benchmarking modes, grouped into sections with defaults, types, and examples.
 
-# CLI Help Enhancements
+# CLI Help Structure
 
-* Add descriptions for the following new flags:
-  * `--hex-index <n>`: Zero-based index for BBP mode (extract individual hexadecimal digits).
-  * `--benchmark-sizes <list>`: Comma-separated list of digit counts to benchmark.
-  * `--benchmark-output <text|csv|png>`: Format for benchmark report.
-  * `--benchmark-file <path>`: File path to save the benchmark report or chart.
-
-* Include default values and data types in help lines.
-* Group options into categories: General, Algorithm Modes, Output Modes, Diagnostics, Benchmarking.
-* Provide example commands in help output.
+* Show detailed usage on `--help` or `-h` and exit immediately.
+* Usage line: `Usage: node src/lib/main.js [options]`.
+* Sections in order:
+  * General Options
+  * Algorithm Modes
+  * Output Modes
+  * Diagnostics Options
+  * Benchmarking Options
+* Each flag entry includes:
+  * Flag name and alias
+  * Expected data type
+  * Default value (if applicable)
+  * Brief description
+* Examples section with at least six invocations covering:
+  1. Spigot decimal run
+  2. Chudnovsky decimal run with PNG output
+  3. BBP hex-digit extraction
+  4. Benchmark text mode
+  5. Benchmark CSV
+  6. Benchmark PNG chart
 
 # Source File Changes
 
-Enhance `src/lib/main.js`:
-
-1. Integrate a simple help generator that prints detailed usage when `--help` or `-h` is passed.
-2. Organize options into sections, listing flags, descriptions, defaults, and example invocations.
-3. Exit after help is displayed.
+Enhance `printHelpAndExit` in `src/lib/main.js`:
+1. Construct help lines matching the required grouping and formatting.
+2. Trigger help display when `argv.help` or `argv.h` is true, then exit.
 
 # Test File Changes
 
-Update `tests/unit/main.test.js` to verify:
-
-* Running `node main.js --help` outputs lines covering each new flag and example usages.
-* The help text contains section headers and description for `--hex-index` and `--benchmark-*` flags.
+Update `tests/unit/main.test.js` with:
+* A test that running `node src/lib/main.js --help` outputs:
+  - The exact usage line.
+  - Each of the five section headers in order.
+  - Representative flag descriptions under each section (e.g., `--hex-index` under Algorithm Modes).
+  - The Examples header and at least three example commands.
+* Ensure tests assert the process exits with code 0 after help.
 
 # README Updates
 
-No changes required to README; this is an internal CLI improvement.
+None required: help improvements are internal.
 
 # Dependencies
 
