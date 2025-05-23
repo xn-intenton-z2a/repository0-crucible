@@ -4128,3 +4128,51 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Ready Issue at 2025-05-23T04:43:41.676Z
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2731 with action enhance and updated description:
+
+Title: Refine CLI Help to Document New BBP and Benchmarking Flags
+
+Description:
+Enhance the built-in CLI help output in `src/lib/main.js` to clearly document all supported flags, including the newly added BBP and benchmarking options. The help output should be user-friendly, grouping flags by category, showing default values and data types, and providing usage examples.
+
+Acceptance Criteria:
+1. Running `node src/lib/main.js --help` or `node src/lib/main.js -h` prints a help message that:
+   a. Includes a "Usage" line showing syntax.
+   b. Contains grouped sections with headers: **General Options**, **Algorithm Modes**, **Output Modes**, **Diagnostics Options**, **Benchmarking Options**.
+   c. Lists each flag under the correct section with:
+      - Flag name (e.g., `--hex-index <n>`)
+      - Data type (string/integer/boolean)
+      - Default value (if any)
+      - Brief description.
+2. The following new flags must be documented under appropriate sections:
+   - `--hex-index <n>` (integer, default: none) – Zero-based index for BBP hexadecimal digit extraction.
+   - `--benchmark-sizes <list>` (string, default: none) – Comma-separated list of digit counts to benchmark.
+   - `--benchmark-output <text|csv|png>` (string, default: `text`) – Format for benchmark report.
+   - `--benchmark-file <path>` (string, default: none) – File path to save benchmark report or chart.
+3. Existing flags (`--algorithm`, `--digits`, `--output`, `--file`, `--diagnostics`, etc.) must remain documented with their default values and types.
+4. Provide at least three example invocations at the end of the help output:
+   - `node src/lib/main.js --algorithm bbp --hex-index 1`
+   - `node src/lib/main.js --benchmark-sizes 10,100 --benchmark-output csv --benchmark-file report.csv`
+   - `node src/lib/main.js --algorithm spigot --digits 20 --output png --file pi.png`
+5. After printing the help message, the process should immediately exit with code 0 without running any other code paths.
+
+Tasks:
+- Implement a help generator in `src/lib/main.js` that triggers on `--help` or `-h`, constructs the help message according to the criteria above, and exits.
+- Add new tests in `tests/unit/main.test.js` to verify:
+  * The help output contains each section header and flag name (`--hex-index`, `--benchmark-sizes`, etc.).
+  * The example commands appear in the output.
+  * The process exits successfully after printing help.
+
+Verification:
+- Execute `node src/lib/main.js --help` and ensure all sections, flags and examples are present.
+- Run `npm test` and confirm that new tests pass alongside existing ones.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":11972,"completion_tokens":1260,"total_tokens":13232,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":576,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
