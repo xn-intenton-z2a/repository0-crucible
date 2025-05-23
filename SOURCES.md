@@ -1,49 +1,59 @@
 # Spigot Algorithm (Rabinowitz–Wagon)
 ## https://en.wikipedia.org/wiki/Spigot_algorithm
-The spigot algorithm generates digits of π sequentially without requiring large intermediate factorials or arbitrary-precision divisions. This Wikipedia entry, last updated April 2024, details the algorithmic steps, memory complexity O(n), and pseudocode crucial for implementing computePiSpigot in JavaScript. It highlights carry-handling optimizations and digit-extraction logic directly informing core implementation and performance tuning.
+The spigot algorithm generates digits of π sequentially with O(n) memory and no need for large intermediate divisions. This page (last updated April 2024) provides detailed pseudocode, carry‐handling optimizations, and digit‐extraction logic that directly inform the `computePiSpigot` implementation in JavaScript, including memory layout and per‐digit streaming considerations.
 ## License: CC BY-SA 3.0
 
 # Chudnovsky Algorithm
 ## https://en.wikipedia.org/wiki/Chudnovsky_algorithm
-Presents the fast-converging series by the Chudnovsky brothers for π, offering a convergence rate of ~14 digits per series term. Includes mathematical derivation, error bounds, and pseudocode examples. Last revised March 2023, this authoritative source underpins computePiChudnovsky implementation, guiding precision configuration and loop termination criteria.
+The Chudnovsky series offers rapid convergence (~14 digits per term) for π computation. This authoritative entry (revised March 2023) covers mathematical derivation, rigorous error bounds, and reference pseudocode. It underpins the `computePiChudnovsky` implementation, guiding the choice of precision, series‐termination criteria, and big‐integer factorial optimizations.
 ## License: CC BY-SA 3.0
 
 # Bailey–Borwein–Plouffe (BBP) Formula
 ## https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
-Introduces the BBP formula for computing binary/hex digits of π at arbitrary positions, enabling non-sequential digit extraction. Covers mathematical derivation and sample code snippets, offering a pathway for future algorithmic extensions in direct digit access. Last updated January 2024.
+Describes an algorithm to compute individual hexadecimal digits of π at arbitrary positions without sequential computation. This February 2024 revision includes derivation of series terms, modular arithmetic requirements, and sample code patterns critical for implementing `computePiBBP`. Highlights practical convergence strategies and series remainder estimation.
 ## License: CC BY-SA 3.0
 
 # Unbounded Spigot Algorithms for the Digits of π (Rabinowitz & Wagon)
 ## https://arxiv.org/abs/cs/0004013
-Peer-reviewed paper providing rigorous proofs for unbounded spigot algorithms that stream π digits with O(1) extra memory per digit. The arXiv version (April 2000) includes full algorithm analysis, complexity proofs, and pseudocode vital for advanced, production-grade implementations.
+Peer-reviewed paper detailing unbounded spigot methods that stream π digits with only O(1) extra memory per digit. Includes formal proofs, complexity analysis, and production‐grade pseudocode—vital for high‐throughput or low‐memory applications. arXiv version (April 2000) available under Open Access.
 ## License: Open Access (arXiv)
 
 # decimal.js Documentation
 ## http://mikemcl.github.io/decimal.js/
-Official documentation for decimal.js library (v10+), covering configuration, arithmetic methods, rounding modes, and performance considerations. Latest published (2024) under MIT license, this source is essential for configuring high-precision contexts and understanding internal operations in computePiChudnovsky.
+The official `decimal.js` reference (v10.5.0, 2024) covers API methods, configuration options, rounding modes, performance trade-offs, and internal numeric representation. Essential for setting up high-precision contexts in `computePiChudnovsky` and understanding rounding behavior in final output.
 ## License: MIT
 
 # node-canvas (canvas) README
 ## https://github.com/Automattic/node-canvas#readme
-Comprehensive README for node-canvas library (v2+), detailing installation nuances across platforms, an HTML5-compatible canvas API, PNG encoding, and performance tuning. Updated June 2023, MIT licensed. Guides rendering logic and resource management for PNG output in the CLI tool.
+Comprehensive guide to the `node-canvas` library (v2.11.2, June 2023), including installation across platforms, HTML5‐compatible canvas API, PNG encoding options, and performance tuning tips. Crucial for rendering π output and performance charts to PNG.
 ## License: MIT
 
 # minimist Argument Parser README
 ## https://github.com/substack/minimist#readme
-Minimalist argument parser for Node.js CLI tools. This README (last updated February 2024) explains parsing strategies, option definitions, and security considerations for untrusted inputs. Informs the CLI option handling and default behaviors in main.js.
+Lightweight CLI argument parser documentation (v1.2.8, February 2024) explaining option definitions, boolean flags, and security considerations for untrusted input. Informs CLI handling of `--algorithm`, `--digits`, `--benchmark-*`, and `--hex-index` parameters.
 ## License: MIT
 
 # Node.js Official API Reference
 ## https://nodejs.org/api/
-Central reference for Node.js built-in modules including fs (file I/O), console (timing/logging), ESM module loader, and performance hooks. Current LTS v20 docs (2024) provide method signatures, usage examples, and deprecation notes critical for implementing reliable file operations, diagnostics, and module imports.
-## License: MIT
-
-# big.js Arbitrary-Precision Decimal Arithmetic
-## https://github.com/MikeMcl/big.js#readme
-Documentation for big.js (v6+), a compact library for arbitrary-precision decimal arithmetic in JavaScript. Compares API design and performance trade-offs with decimal.js. Updated May 2023, MIT licensed. Useful for evaluating alternative big-number packages in high-precision contexts.
+Central reference for Node.js v20+ built-in modules (fs, console, process, perf_hooks). Includes function signatures, timing utilities (`process.hrtime`), file I/O, and deprecation notices. Critical for reliable implementation of file writes, performance measurements, and module loading.
 ## License: MIT
 
 # agentic-lib GitHub Workflows
 ## https://github.com/xn-intenton-z2a/agentic-lib#readme
-The agentic-lib repository provides reusable GitHub Actions workflows for CI/CD automation, including scheduling, parameterization, and container-based tasks. This README (last updated April 2024) explains workflow inputs, outputs, and best practices used in this template, essential for understanding and extending automated build, test, and deployment processes.
+Documents reusable GitHub Actions workflows for CI/CD automation, covering inputs, outputs, container tasks, and scheduling. Updated April 2024, these templates illustrate best practices for build, test, and deployment pipelines used by this project.
 ## License: Apache-2.0
+
+# JavaScript BigInt (Native Arbitrary-Precision Integer)
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+MDN documentation on native `BigInt` support in ES2020+ (last updated May 2024). Covers syntax, operations, limitations, and performance characteristics of JavaScript’s built-in arbitrary-precision integers—used for factorial computations in the Chudnovsky implementation.
+## License: CC BY-SA 2.5
+
+# Modular Exponentiation
+## https://en.wikipedia.org/wiki/Modular_exponentiation
+This entry provides pseudocode and complexity analysis for modular exponentiation algorithms (e.g., binary exponentiation, sliding-window methods). Fundamental for implementing the `modPow` function in the BBP series, ensuring both correctness and performance for large exponents.
+## License: CC BY-SA 3.0
+
+# Portable Network Graphics (PNG) Specification
+## https://www.w3.org/TR/PNG/
+The official W3C Recommendation (Second Edition, January 2017) detailing PNG file structure, chunk types (IHDR, IDAT), compression schemes, and color models. Understanding these internals enables fine-tuning of `node-canvas` output for optimized file sizes and compatibility.
+## License: Public Domain (W3C Recommendation)
