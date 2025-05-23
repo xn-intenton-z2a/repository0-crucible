@@ -34,11 +34,12 @@ describe("CLI", () => {
 
   test("--help shows usage and sections", () => {
     const out = execSync(`node ${mainPath} --help`).toString();
-    expect(out).toMatch(/Usage:/);
+    expect(out).toMatch(/^Usage: node src\/lib\/main\.js \[options\]$/m);
     expect(out).toMatch(/General Options:/);
     expect(out).toMatch(/Algorithm Modes:/);
     expect(out).toMatch(/Output Modes:/);
     expect(out).toMatch(/Diagnostics Options:/);
+    expect(out).toMatch(/Benchmarking Options:/);
     expect(out).toMatch(/Examples:/);
   });
 
@@ -102,7 +103,7 @@ describe("Benchmarking Mode", () => {
     const output = execSync(`node ${mainPath} --benchmark-sizes 5,10`).toString();
     const lines = output.trim().split(/\r?\n/);
     expect(lines[0]).toBe("size | spigotTimeMs | chudnovskyTimeMs | bbpTimeMs");
-    expect(lines.length).toBe(3); // header + 2 rows
+    expect(lines.length).toBe(3);
   });
 
   test("csv output to file", () => {
