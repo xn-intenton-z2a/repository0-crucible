@@ -7195,3 +7195,32 @@ LLM API Usage:
 ```
 ---
 
+## Maintenance Activity to Issue at 2025-05-24T05:00:05.574Z
+
+Created issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2740 with title [Test] Enhance CLI test coverage for error handling and default file outputs and body:
+
+ Add targeted unit tests in tests/unit/main.test.js to cover key CLI error paths and default file naming behaviors, ensuring robust core functionality.
+
+Changes:
+1. BBP mode without hex-index: verify invoking `node src/lib/main.js --algorithm bbp` exits with code 1 and prints an appropriate error message to stderr.
+2. Unknown algorithm: test that `node src/lib/main.js --algorithm foobar` exits code 1 with `Unknown algorithm: foobar` error output.
+3. Unknown output type: test that `node src/lib/main.js --algorithm spigot --output xml` exits code 1 with `Unknown output type: xml` error output.
+4. Default PNG output filename for decimal mode: ensure running `node src/lib/main.js --algorithm spigot --digits 10 --output png` without `--file` creates `pi.png` in the working directory.
+5. Default benchmark PNG filename: ensure running `node src/lib/main.js --benchmark-sizes 5,10 --benchmark-output png` without `--benchmark-file` creates `benchmark.png`.
+
+How to apply:
+- In tests/unit/main.test.js, import `spawnSync` from `child_process` alongside existing imports.
+- Add new test cases using `spawnSync` so exit codes and stderr can be asserted without throwing.
+- Use `fs.existsSync` in afterAll hooks to clean up generated `pi.png` and `benchmark.png` files.
+
+How to verify:
+- Run `npm test` and confirm all new tests pass.
+- Locally execute the specified CLI commands to manually confirm file creations and error behaviors prior to automated testing..
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":17351,"completion_tokens":1412,"total_tokens":18763,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1024,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
