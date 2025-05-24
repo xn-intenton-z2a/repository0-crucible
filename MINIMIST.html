@@ -24,229 +24,214 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="minimist" href="#minimist"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MINIMIST</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">parseArgs signature parseArgs(args: string[], opts?: MinimistOptions): MinimistParsedArgs; opts.string:string|string[]; opts.boolean:boolean|string|string[] or true; opts.alias:Record&lt;string,string|string[]&gt;; opts.default:Record&lt;string,any&gt;; opts.stopEarly:boolean; opts['--']:boolean; opts.unknown:(string)=&gt;boolean; parsed result contains _ array, optional '--' array, and properties typed as number, string or boolean; numeric auto conversion; prototype pollution fixed in &gt;=1.2.6.</p>
+<p class="md-github">minimist parses CLI arguments into an object with <code class="md-github">_</code> array for positional args. Supports alias mapping, boolean and string coercion, default values, unknown handler, stopEarly flag, and '--' to treat rest as positionals. Exposes a single function minimist(args, opts) returning ParsedArgs.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
-<p class="md-github">Table of Contents
-1 Method Signature
-2 Parsing Rules
-3 Option Definitions
-4 Example Usages</p>
-<p class="md-github">1 Method Signature
-parseArgs(args, opts)
-args: array of strings
-opts: object with keys string, boolean, alias, default, stopEarly, '--', unknown
-returns object with keys _ (array of non-options), optional '--', and parsed options</p>
-<p class="md-github">2 Parsing Rules
-a) Numeric auto conversion: convert 0-9 characters to number unless overridden
-b) Strings: any name in opts.string always string
-c) Booleans: any name in opts.boolean always boolean; if opts.boolean===true then all double-hyphen no-equals args are true
-d) Aliases: map names and populate both primary and alias keys
-e) Defaults: missing options take opts.default values
-f) stopEarly: when true, on first non-hyphen argument, push rest into _ and stop
-g) '--': when true, split arguments at first '--', assign before to _, after to '--'
-h) unknown: invoked per unknown option; returning false excludes the option</p>
-<p class="md-github">3 Option Definitions
-opts.string: string or array of strings. Always treat specified names as strings
-opts.boolean: boolean or string or array. true means treat all double-hyphened no-equals as boolean. Specified names as boolean
-opts.alias: map key to string or array of strings for alternate names
-table alias mapping: both original and aliases reference same value
-opts.default: map key to default value used when omitted
-opts.stopEarly: boolean, default false
-opts['--']: boolean, default false
-opts.unknown: callback, return false to skip unknown</p>
-<p class="md-github">4 Example Usages
-node script.js -x 3 --name=alice foo bar
-results in x:3 name:'alice' _: ['foo','bar']
-with opts.string:['x'], x remains '3'
-with opts.boolean:true, any '--flag' yields flag:true
-fn = require('minimist'); argv=fn(args, {alias:{v:['version']}, default:{v:1}, '--':true})</p>
+<p class="md-github">Table of Contents:
+1 Installation
+2 parse signature
+3 Options
+3.1 alias
+3.2 boolean
+3.3 string
+3.4 default
+3.5 unknown
+3.6 stopEarly
+3.7 '--'
+4 ParsedArgs structure</p>
+<p class="md-github">1 Installation
+Install via npm: npm install minimist</p>
+<p class="md-github">2 parse signature
+minimist(args: string[], opts?: MinimistOptions): ParsedArgs</p>
+<p class="md-github">3 Options
+3.1 alias
+Map each flag name to one or more alias strings. Type: { [key: string]: string | string[] }</p>
+<p class="md-github">3.2 boolean
+List flags always as booleans. Type: boolean | string[]; if true, all flags without string definitions are booleans.</p>
+<p class="md-github">3.3 string
+List flags always as strings. Type: string | string[]</p>
+<p class="md-github">3.4 default
+Specify default values for flags. Type: { [key: string]: any }</p>
+<p class="md-github">3.5 unknown
+Function invoked for each unknown arg: (name: string, value: any) =&gt; boolean. Return false to omit from output.</p>
+<p class="md-github">3.6 stopEarly
+If true, stop parsing when first non-option argument is reached.</p>
+<p class="md-github">3.7 '--'
+If true, everything after '--' goes into ParsedArgs._ without parsing.</p>
+<p class="md-github">4 ParsedArgs structure
+ParsedArgs is an object mapping each flag to its value, with all positionals in ParsedArgs._ array.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">Parameter Types</p>
+<p class="md-github">MinimistOptions parameter details:</p>
 <ul class="md-github">
-<li class="md-github">args: string[] required</li>
-<li class="md-github">opts.string: string|string[] default []</li>
-<li class="md-github">opts.boolean: boolean|string|string[] default []</li>
-<li class="md-github">opts.alias: Record&lt;string,string|string[]&gt; default {}</li>
-<li class="md-github">opts.default: Record&lt;string,any&gt; default {}</li>
-<li class="md-github">opts.stopEarly: boolean default false</li>
-<li class="md-github">opts['--']: boolean default false</li>
-<li class="md-github">opts.unknown: (optName:string)=&gt;boolean default undefined</li>
+<li class="md-github">alias: default undefined; maps keys to alias(es); merging keys populates both.</li>
+<li class="md-github">boolean: default false; if array, flags in it coerced to boolean; if true, all non-string flags are boolean.</li>
+<li class="md-github">string: default undefined; flags in it coerced to string.</li>
+<li class="md-github">default: default {}; defines fallback values if flag absent.</li>
+<li class="md-github">unknown: default undefined; handles custom validation; returning false drops flag.</li>
+<li class="md-github">stopEarly: default false; when true, stops at first non-flag.</li>
+<li class="md-github">'--': default false; preserves all args after separator.</li>
 </ul>
-<p class="md-github">Implementation Steps
-1 require minimist: const parseArgs = require('minimist')
-2 define opts object with the keys above
-3 invoke parseArgs(process.argv.slice(2), opts)
-4 handle parsed argv fields _ and '--'</p>
-<p class="md-github">Configuration Effects</p>
+<p class="md-github">Parsing steps:
+1 Slice process.argv
+2 Iterate each token
+3 If token starts '--' or '-', apply parsing rules
+4 Populate result object and _ array</p>
+<p class="md-github">Integration steps:</p>
 <ul class="md-github">
-<li class="md-github">Numeric conversion: fastest built-in, no regexp</li>
-<li class="md-github">Aliases: one-pass assignment, both keys updated</li>
-<li class="md-github">stopEarly: skip internal parsing, minimal overhead</li>
-<li class="md-github">unknown: filter unrecognized</li>
-</ul>
-<p class="md-github">Version Constraints</p>
-<ul class="md-github">
-<li class="md-github">use version&gt;=1.2.6 to avoid prototype pollution</li>
+<li class="md-github">require minimist</li>
+<li class="md-github">define opts as MinimistOptions</li>
+<li class="md-github">call minimist with args and opts</li>
+<li class="md-github">destructure returned object</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<p class="md-github">Type Definitions
-interface MinimistOptions {
-string?: string | string[];
-boolean?: boolean | string | string[];
-alias?: { [key: string]: string | string[] };
-default?: { [key: string]: any };
-stopEarly?: boolean;
-&quot;--&quot;?: boolean;
-unknown?: (optionName: string) =&gt; boolean;
-}</p>
-<p class="md-github">interface MinimistParsedArgs {
-_: string[];
-&quot;--&quot;?: string[];
-[argName: string]: any;
-}</p>
-<p class="md-github">Method Signature
-const parseArgs: (args: string[], opts?: MinimistOptions) =&gt; MinimistParsedArgs;</p>
-<p class="md-github">Code Example
-const parseArgs = require('minimist');
-const opts = {
-string: ['id'],
-boolean: ['verbose'],
-alias: { v: ['version'], h: ['help'] },
-default: { timeout: 5000 },
+<p class="md-github">API Signature:
+function minimist(
+args: string[],
+opts?: {
+alias?: { [key: string]: string | string[] },
+boolean?: boolean | string[],
+string?: string | string[],
+default?: { [key: string]: any },
+unknown?: (argName: string, argValue: any) =&gt; boolean,
+stopEarly?: boolean,
+'--'?: boolean
+}
+): { [key: string]: any; _?: string[] }</p>
+<p class="md-github">ParsedArgs:</p>
+<ul class="md-github">
+<li class="md-github">_ : string[]      # positional args</li>
+<li class="md-github">[flag: string]: string | number | boolean | any[]</li>
+</ul>
+<p class="md-github">Example Full Implementation:</p>
+<p class="md-github">const minimist = require('minimist')</p>
+<p class="md-github">const opts = {
+alias: { v: 'version', h: 'help' },
+boolean: ['v', 'h'],
+string: ['config'],
+default: { config: 'default.json' },
+unknown: (name, val) =&gt; { if(name.startsWith('-X')) return true; return false },
 stopEarly: false,
-'--': true,
-unknown: (opt) =&gt; !opt.startsWith('no-')
-};
-const argv = parseArgs(process.argv.slice(2), opts);
-console.log(argv);</p>
-<p class="md-github">Implementation Pattern
-1 Validate opts structure: ensure arrays where required
-2 Preprocess alias: flatten all keys
-3 Call parseArgs with args and opts
-4 Destructure argv: const { _, '--': rest, ...flags } = argv;</p>
-<p class="md-github">Configuration Options and Effects</p>
+'--': true
+}</p>
+<p class="md-github">function main() {
+const argv = minimist(process.argv.slice(2), opts)
+if(argv.help) {
+console.log('Usage: app [options]')
+process.exit(0)
+}
+console.log('Flags:', argv)
+}</p>
+<p class="md-github">// CLI invocation
+// node app.js -v --config=prod.json --unknownFlag foo -- -bar baz</p>
+<p class="md-github">Best Practices:</p>
 <ul class="md-github">
-<li class="md-github">string: prevents numeric conversion</li>
-<li class="md-github">boolean:true: treat --foo as true</li>
-<li class="md-github">stopEarly:true: no further parsing after first non-option</li>
-<li class="md-github">'--': true: separate pre and post arguments</li>
-<li class="md-github">unknown callback: selective inclusion</li>
+<li class="md-github">Always slice process.argv</li>
+<li class="md-github">Define alias to group flags</li>
+<li class="md-github">Use boolean array to enforce flag types</li>
+<li class="md-github">Provide default values to avoid undefined</li>
+<li class="md-github">Handle unknown to validate input</li>
 </ul>
-<p class="md-github">Best Practice Code
-const safeParse = (rawArgs) =&gt; {
-const defaultOpts = { boolean:true, alias:{}};
-return parseArgs(rawArgs, defaultOpts);
-};</p>
-<p class="md-github">Troubleshooting
-1 Unexpected numeric conversion
-Command: node app.js 012
-Expected: '012'
-Fix: opts.string:['012']</p>
-<p class="md-github">2 Unknown option filtered
-Command: node app.js --foo=bar
-Output: foo:'bar'
-With unknown: opt=&gt;false, foo omitted</p>
-<p class="md-github">3 Parsing stops too early
-Command: node app.js --foo baz --bar
-Without stopEarly: bar:true
-With stopEarly:true, baz instead of --bar processing</p>
+<p class="md-github">Troubleshooting:
+Command: node script.js --foo
+Expected: unknown handler invoked or foo stored in _
+Verify process.argv.slice(2) output:
+console.log(process.argv.slice(2))
+If options missing, check spelling and opts object types.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">parseArgs(args:string[],opts?:{string?:string|string[];boolean?:boolean|string|string[];alias?:Record&lt;string,string|string[]&gt;;default?:Record&lt;string,any&gt;;stopEarly?:boolean;'--'?:boolean;unknown?:(opt:string)=&gt;boolean;}):{_:string[];'--'?:string[];[key:string]:any} auto convert numeric strings; opts.string override to string; opts.boolean override to boolean or all flags if true; opts.alias maps names bidirectionally; opts.default fills missing; stopEarly breaks at first non-hyphen; '--' splits at '--'; unknown callback filters; fixed prototype pollution &gt;=1.2.6; example: parseArgs(['-a','1','foo'],{string:['a'],boolean:true}) yields a:'1', foo in _, all flags true.</p>
+<p class="md-github">minimist(args:string[],opts?:MinimistOptions):ParsedArgs. MinimistOptions: alias:{[k:string]:string|string[]},boolean:boolean|string[],string:string|string[],default:{[k:string]:any},unknown:(name:string,val:any)=&gt;boolean,stopEarly:boolean,'--':boolean. ParsedArgs: flag-&gt;value, _-&gt;string[]. Install: npm install minimist. Usage: const argv=minimist(process.argv.slice(2),opts). Core: slice argv, iterate tokens, coerce types, apply defaults and aliases, handle unknown, stopEarly, '--'. Best practices: slice argv, define alias, enforce flag types, set defaults, validate unknown. Troubleshoot: log slice, verify opts types.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
-<p class="md-github">Table of Contents
-1 Method Signature
-2 Parsing Rules
-3 Option Definitions
-4 Example Usages</p>
-<p class="md-github">1 Method Signature
-parseArgs(args, opts)
-args: array of strings
-opts: object with keys string, boolean, alias, default, stopEarly, '--', unknown
-returns object with keys _ (array of non-options), optional '--', and parsed options</p>
-<p class="md-github">2 Parsing Rules
-a) Numeric auto conversion: convert 0-9 characters to number unless overridden
-b) Strings: any name in opts.string always string
-c) Booleans: any name in opts.boolean always boolean; if opts.boolean===true then all double-hyphen no-equals args are true
-d) Aliases: map names and populate both primary and alias keys
-e) Defaults: missing options take opts.default values
-f) stopEarly: when true, on first non-hyphen argument, push rest into _ and stop
-g) '--': when true, split arguments at first '--', assign before to _, after to '--'
-h) unknown: invoked per unknown option; returning false excludes the option</p>
-<p class="md-github">3 Option Definitions
-opts.string: string or array of strings. Always treat specified names as strings
-opts.boolean: boolean or string or array. true means treat all double-hyphened no-equals as boolean. Specified names as boolean
-opts.alias: map key to string or array of strings for alternate names
-table alias mapping: both original and aliases reference same value
-opts.default: map key to default value used when omitted
-opts.stopEarly: boolean, default false
-opts['--']: boolean, default false
-opts.unknown: callback, return false to skip unknown</p>
-<p class="md-github">4 Example Usages
-node script.js -x 3 --name=alice foo bar
-results in x:3 name:'alice' _: ['foo','bar']
-with opts.string:['x'], x remains '3'
-with opts.boolean:true, any '--flag' yields flag:true
-fn = require('minimist'); argv=fn(args, {alias:{v:['version']}, default:{v:1}, '--':true})</p>
+<p class="md-github">Table of Contents:
+1 Installation
+2 parse signature
+3 Options
+3.1 alias
+3.2 boolean
+3.3 string
+3.4 default
+3.5 unknown
+3.6 stopEarly
+3.7 '--'
+4 ParsedArgs structure</p>
+<p class="md-github">1 Installation
+Install via npm: npm install minimist</p>
+<p class="md-github">2 parse signature
+minimist(args: string[], opts?: MinimistOptions): ParsedArgs</p>
+<p class="md-github">3 Options
+3.1 alias
+Map each flag name to one or more alias strings. Type: { [key: string]: string | string[] }</p>
+<p class="md-github">3.2 boolean
+List flags always as booleans. Type: boolean | string[]; if true, all flags without string definitions are booleans.</p>
+<p class="md-github">3.3 string
+List flags always as strings. Type: string | string[]</p>
+<p class="md-github">3.4 default
+Specify default values for flags. Type: { [key: string]: any }</p>
+<p class="md-github">3.5 unknown
+Function invoked for each unknown arg: (name: string, value: any) =&gt; boolean. Return false to omit from output.</p>
+<p class="md-github">3.6 stopEarly
+If true, stop parsing when first non-option argument is reached.</p>
+<p class="md-github">3.7 '--'
+If true, everything after '--' goes into ParsedArgs._ without parsing.</p>
+<p class="md-github">4 ParsedArgs structure
+ParsedArgs is an object mapping each flag to its value, with all positionals in ParsedArgs._ array.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
-<p class="md-github">Configuration Management &amp; Argument Parsing
-https://www.npmjs.com/package/minimist</p>
+<p class="md-github">minimist Argument Parser README
+https://github.com/substack/minimist#readme</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-minimist" href="#digest-of-minimist"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of MINIMIST</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="minimist-128-retrieved-2024-06-19" href="#minimist-128-retrieved-2024-06-19"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>minimist 1.2.8 (Retrieved 2024-06-19)</h1>
+<h1 class="md-github"><a class="md-github__anchor" name="minimist-argument-parser" href="#minimist-argument-parser"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>minimist Argument Parser</h1>
+<p class="md-github">Retrieved: 2024-06-05
+Data Size: 0 bytes | Links Found: 0 | Error: None</p>
 <h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
-<p class="md-github">With npm do:</p>
-<p class="md-github">npm install minimist</p>
+<p class="md-github">Install via npm:</p>
+<pre class="md-github"><code class="md-github">npm install minimist
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="basic-usage" href="#basic-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic Usage</h1>
+<p class="md-github">Import and parse CLI arguments:</p>
+<pre class="md-github"><code class="md-github">const minimist = require('minimist')
+const argv = minimist(process.argv.slice(2), opts)
+</code></pre>
 <h1 class="md-github"><a class="md-github__anchor" name="api" href="#api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API</h1>
-<h2 class="md-github"><a class="md-github__anchor" name="parseargsargs-opts" href="#parseargsargs-opts"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>parseArgs(args, opts)</h2>
-<p class="md-github">Signature
-parseArgs(args: string[], opts?: MinimistOptions): MinimistParsedArgs</p>
-<h3 class="md-github"><a class="md-github__anchor" name="minimistoptions" href="#minimistoptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MinimistOptions</h3>
+<h2 class="md-github"><a class="md-github__anchor" name="minimistargs-string-opts-minimistoptions-parsedargs" href="#minimistargs-string-opts-minimistoptions-parsedargs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>minimist(args: string[], opts?: MinimistOptions): ParsedArgs</h2>
 <ul class="md-github">
-<li class="md-github">string: string | string[] (always treat named args as strings)</li>
-<li class="md-github">boolean: boolean | string | string[] (named args as booleans; if true treat all double hyphens without equal signs as boolean)</li>
-<li class="md-github">alias: { [key: string]: string | string[] }</li>
-<li class="md-github">default: { [key: string]: any }</li>
-<li class="md-github">stopEarly: boolean</li>
-<li class="md-github">&quot;--&quot;: boolean</li>
-<li class="md-github">unknown: (optionName: string) =&gt; boolean</li>
+<li class="md-github">args: array of strings to parse (e.g., process.argv.slice(2)).</li>
+<li class="md-github">opts: configuration object (see Options).</li>
+<li class="md-github">returns: ParsedArgs object containing parsed flags and positional arguments under <code class="md-github">_</code>.</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="minimistparsedargs" href="#minimistparsedargs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MinimistParsedArgs</h3>
+<h1 class="md-github"><a class="md-github__anchor" name="options-minimistoptions" href="#options-minimistoptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options (MinimistOptions)</h1>
 <ul class="md-github">
-<li class="md-github">_: string[] (non-option arguments)</li>
-<li class="md-github">'--'?: string[] (args after -- if opts['--'] is true)</li>
-<li class="md-github">other properties: any parsed option values</li>
+<li class="md-github">alias:     { [key: string]: string | string[] }  # Map of flag to alias(es).</li>
+<li class="md-github">boolean:   boolean | string[]                    # Flags to always treat as booleans.</li>
+<li class="md-github">string:    string | string[]                    # Flags to always treat as strings.</li>
+<li class="md-github">default:   { [key: string]: any }               # Default values for flags.</li>
+<li class="md-github">unknown:   (argName: string, argValue: any) =&gt; boolean   # Function to handle unknown flags; return false to omit.</li>
+<li class="md-github">stopEarly: boolean                              # Stop parsing on first unknown flag.</li>
+<li class="md-github">'--':      boolean                              # Populate all subsequent args into <code class="md-github">_</code> array.</li>
 </ul>
-<h1 class="md-github"><a class="md-github__anchor" name="options-details" href="#options-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options Details</h1>
-<ul class="md-github">
-<li class="md-github">opts.string: names to always parse as strings</li>
-<li class="md-github">opts.boolean: names to always parse as boolean or true to treat all double hyphens without equal signs as boolean</li>
-<li class="md-github">opts.alias: mapping from name to alias names</li>
-<li class="md-github">opts.default: mapping from names to default values</li>
-<li class="md-github">opts.stopEarly: if true, stop parsing on first non-option and include rest in _</li>
-<li class="md-github">opts['--']: if true, separate args before and after -- into _ and '--'</li>
-<li class="md-github">opts.unknown: callback invoked for unknown options, return false to skip adding</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="parsing-behavior" href="#parsing-behavior"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parsing Behavior</h1>
-<ul class="md-github">
-<li class="md-github">Numeric-looking arguments returned as numbers unless overridden by opts.string or opts.boolean</li>
-<li class="md-github">After -- parsing stops and remaining args go to _ or '--'</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="security-advisory" href="#security-advisory"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Security Advisory</h1>
-<p class="md-github">Prototype pollution vulnerability fixed in versions &gt;=1.2.6. Use minimist versions 1.2.6 or later.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="examples" href="#examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h1>
+<p class="md-github">Parsing flags with defaults and aliases:</p>
+<pre class="md-github"><code class="md-github">const argv = minimist(
+  ['-x', '1', '--no-debug', 'file.txt'],
+  {
+    alias: { x: 'execute', d: 'debug' },
+    boolean: ['d'],
+    default: { debug: true }
+  }
+)
+// argv =&gt; { x: 1, execute: 1, debug: false, d: false, _: ['file.txt'] }
+</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
-<li class="md-github">Source: Configuration Management &amp; Argument Parsing</li>
-<li class="md-github">URL: https://www.npmjs.com/package/minimist</li>
+<li class="md-github">Source: minimist Argument Parser README</li>
+<li class="md-github">URL: https://github.com/substack/minimist#readme</li>
 <li class="md-github">License: License: MIT</li>
-<li class="md-github">Crawl Date: 2025-05-16T06:28:41.079Z</li>
-<li class="md-github">Data Size: 230047 bytes</li>
-<li class="md-github">Links Found: 1785</li>
+<li class="md-github">Crawl Date: 2025-05-24T03:32:05.964Z</li>
+<li class="md-github">Data Size: 0 bytes</li>
+<li class="md-github">Links Found: 0</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
-<p class="md-github">2025-05-16</p>
+<p class="md-github">2025-05-24</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-16T10:40:11.771Z</p>
+    <p>Generated on 2025-05-24T04:39:22.430Z</p>
   </footer>
 </body>
 </html>
