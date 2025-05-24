@@ -8211,3 +8211,17 @@ LLM API Usage:
 ```
 ---
 
+## Discussions activity at 2025-05-24T13:41:46.029Z
+
+Since our last update, we’ve polished the CLI help to group flags under clear sections (General, Algorithm, Output, Diagnostics, Benchmarking), added detailed usage examples, and validated chart rendering for performance benchmarks. All core features (Spigot, Chudnovsky, BBP, diagnostics, benchmarking) remain solid—tests are green, build is passing, and documentation is in sync. Next: gather your feedback on help clarity (sections, descriptions, defaults) and benchmark chart styling (color contrast, legend placement, axis readability).
+
+[Posted on "https://github.com/xn-intenton-z2a/repository0-crucible/discussions/2538#discussioncomment-13227616"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" by the repository bot which took the action "reply-without-action" with the detail "".]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":149994,"completion_tokens":134,"total_tokens":150128,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+
+```
+---
+
