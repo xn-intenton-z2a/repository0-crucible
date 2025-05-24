@@ -118,9 +118,7 @@ export function computePiBBP(index) {
   if (!Number.isInteger(index) || index < 0) {
     throw new Error("Index must be a non-negative integer");
   }
-  if (index === 0) {
-    return "3";
-  }
+  if (index === 0) return "3";
   const n = index - 1;
   function modPow(a, e, mod) {
     let res = 1;
