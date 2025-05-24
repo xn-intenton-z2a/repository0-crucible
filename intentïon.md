@@ -8025,3 +8025,53 @@ LLM API Usage:
 ```
 ---
 
+## Updated Readme at 2025-05-24T08:50:43.189Z
+
+Updated README: Update README and PI_CALCULATOR docs to match current CLI surface and link detailed docs
+
+```
+diff --git a/README.md b/README.md
+index 216974db..2de7d8ae 100644
+--- a/README.md
++++ b/README.md
+@@ -23,7 +23,7 @@ npm install repository0-crucible
+ 
+ ## Features
+ 
+-* **PI Calculator**: compute π digits via two algorithms (Spigot, Chudnovsky) or extract hex digits (BBP), output as text or PNG, and diagnostics.
++* **PI Calculator**: compute π digits via two algorithms (Spigot, Chudnovsky) or extract hex digits (BBP), output as text or PNG, with diagnostics and high-precision support.
+ * **Benchmarking Mode**: measure performance of Spigot, Chudnovsky, and BBP algorithms over multiple digit sizes with text, CSV, or PNG reports.
+ 
+ ## Usage
+diff --git a/docs/PI_CALCULATOR.md b/docs/PI_CALCULATOR.md
+index e3980b74..ae0fd72a 100644
+--- a/docs/PI_CALCULATOR.md
++++ b/docs/PI_CALCULATOR.md
+@@ -7,14 +7,14 @@ Introduce a core π calculation engine with multiple algorithm options, digit-le
+ ## CLI Options
+ 
+ * `-h`, `--help`                  Show help message and exit
+-* `--algorithm <name>`           Choose from supported algorithms: `spigot`, `chudnovsky`, `bbp`. Default: `spigot`.
++* `--algorithm <spigot|chudnovsky|bbp>`  Choose π algorithm (default: spigot)
+ * `--digits <n>`                 Number of decimal digits to generate (default: 100).
+-* `--hex-index <n>`              Index for BBP hexadecimal digit extraction (0-based).
+-* `--output <type>`              Output format: `text` or `png` (default: `text`).
++* `--hex-index <n>`              Zero-based hex digit index for BBP mode (required for bbp).
++* `--output <text|png>`          Output format (default: text).
+ * `--file <path>`                File path to save output (default: stdout).
+ * `--diagnostics`                Emit compute and render timing diagnostics.
+ * `--benchmark-sizes <list>`     Comma-separated list of digit counts to benchmark.
+-* `--benchmark-output <type>`    Benchmark report format: `text`, `csv`, or `png` (default: `text`).
++* `--benchmark-output <text|csv|png>`  Benchmark report format (default: text).
+ * `--benchmark-file <path>`      File path to save benchmark report or chart.
+ 
+ ## Examples
+```
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":122904,"completion_tokens":1277,"total_tokens":124181,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
