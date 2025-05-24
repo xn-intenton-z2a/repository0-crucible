@@ -7898,3 +7898,59 @@ LLM API Usage:
 
 2025-05-24T07:02:04Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-22T01-30Z
 
+## Issue to enhanced Issue at 2025-05-24T07:02:47.518Z
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2744 with enhanced description:
+
+Background:
+The π calculator CLI now fully supports Spigot, Chudnovsky, and BBP modes, text/png/hex outputs, diagnostics, and benchmarking (text/CSV/PNG with BBP timing). The built-in help (`--help`/`-h`) groups and documents all flags in clear sections with examples. We need user feedback to validate the clarity of the help output and the visual styling of the generated benchmark charts.
+
+Scope:
+This issue is for review and feedback only—no code changes are required until we collect suggestions. We want to ensure that:
+
+1. CLI Help Clarity:
+   - Section headers (General Options, Algorithm Modes, Output Modes, Diagnostics Options, Benchmarking Options) are intuitive and correctly ordered.
+   - Flag names, parameter placeholders, default values, and descriptions are clear and complete.
+   - Example invocations in the help are helpful and representative.
+2. Benchmark Chart Styling:
+   - Color choices (Spigot=red, Chudnovsky=blue, BBP=green) are distinguishable and accessible.
+   - Legend placement and font size are legible and do not overlap chart data.
+   - Axis labels, tick marks, and margins provide readability and context.
+
+How to Review:
+
+1. Run the help output:
+   ```bash
+   node src/lib/main.js --help
+   ```
+   • Verify each section header appears exactly as defined.
+   • Scan flag entries for accuracy of names, types, defaults, and descriptions.
+   • Note any unclear or missing information.
+2. Generate a benchmark chart:
+   ```bash
+   node src/lib/main.js --benchmark-sizes 20,100,500 --benchmark-output png --benchmark-file review.png
+   ```
+   • Open `review.png` in an image viewer.
+   • Assess color contrast, legend placement, axis labeling, and overall readability.
+
+Feedback Goals:
+- List any suggestions for rewording, grouping, or formatting help text.
+- Propose adjustments to chart styles (alternative colors, legend location, axis formatting).
+- Provide screenshots or annotated excerpts if helpful.
+
+Next Steps:
+- Collect feedback in comments on this issue.
+- Based on consensus, plan specific refinements to `printHelpAndExit` formatting or chart rendering in a follow-up issue.
+
+Files to Reference:
+- `src/lib/main.js` (help generator and chart code)
+- `docs/PI_CALCULATOR.md` (CLI documentation)
+- `tests/unit/main.test.js` (help tests)
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":12083,"completion_tokens":1967,"total_tokens":14050,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1344,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
