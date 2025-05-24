@@ -49,7 +49,9 @@ node src/lib/main.js --digits 30 --diagnostics
 # Benchmark decimal algorithms (text report)
 node src/lib/main.js --benchmark-sizes 10,100
 
-# Benchmark and CSV output\nnode src/lib/main.js --benchmark-sizes 20,50 --benchmark-output csv --benchmark-file benchmark.csv
+# Benchmark and CSV output
+node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output csv --benchmark-file benchmark.csv
 
-# Benchmark and PNG chart\nnode src/lib/main.js --benchmark-sizes 20,50 --benchmark-output png --benchmark-file benchmark.png
+# Benchmark and PNG chart
+node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output png --benchmark-file benchmark.png
 ```
