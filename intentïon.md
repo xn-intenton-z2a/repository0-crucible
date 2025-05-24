@@ -7087,3 +7087,50 @@ LLM API Usage:
 ```
 ---
 
+## Feature to Issue at 2025-05-24T04:38:48.302Z
+
+Created issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2739 with title Add Documentation of New CLI Help Flags and Examples and body:
+
+ Currently, the CLIs built-in help (`--help` or `-h`) outlines major options but omits clear descriptions of the recently added BBP and benchmarking flags. To further improve discoverability and ease of use, we need to refine the help output in `src/lib/main.js` to group and document all flags, data types, defaults, and usage examples.
+
+Tasks:
+1. In `src/lib/main.js`, enhance `printHelpAndExit()` to:
+   - Print the exact first line: `Usage: node src/lib/main.js [options]`.
+   - Organize flags into five ordered sections with headers:
+     • **General Options:** `-h, --help`, `--file <path>`
+     • **Algorithm Modes:** `--algorithm <spigot|chudnovsky|bbp>`, `--digits <n>`, `--hex-index <n>`
+     • **Output Modes:** `--output <text|png>`
+     • **Diagnostics Options:** `--diagnostics`
+     • **Benchmarking Options:** `--benchmark-sizes <list>`, `--benchmark-output <text|csv|png>`, `--benchmark-file <path>`
+   - Under each flag, include: name (and alias), parameter placeholder, default value, and brief description.
+   - Append an **Examples:** section listing exactly six invocations:
+     1. `node src/lib/main.js --algorithm spigot --digits 20`
+     2. `node src/lib/main.js --algorithm chudnovsky --digits 50 --output png --file pi.png`
+     3. `node src/lib/main.js --algorithm bbp --hex-index 1`
+     4. `node src/lib/main.js --benchmark-sizes 10,100`
+     5. `node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file report.csv`
+     6. `node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png`
+   - Exit immediately with code 0 after printing help.
+
+2. Update `tests/unit/main.test.js` to add tests verifying:
+   - The usage line exactly matches the first help line.
+   - The five section headers appear in the correct order.
+   - Representative flag entries under each section.
+   - The Examples section includes at least three of the specified example commands.
+   - The process exit code after `--help` is 0.
+
+Verification:
+- Run `node src/lib/main.js --help` and inspect the output.
+- Execute `npm test` to ensure all new and existing tests pass.
+
+Files to update:
+- `src/lib/main.js`
+- `tests/unit/main.test.js`.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":111100,"completion_tokens":635,"total_tokens":111735,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
