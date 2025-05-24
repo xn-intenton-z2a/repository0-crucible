@@ -38,11 +38,6 @@ Lightweight CLI argument parser documentation (v1.2.8, February 2024) explaining
 Central reference for Node.js v20+ built-in modules (fs, console, process, perf_hooks). Includes function signatures, timing utilities (`process.hrtime`), file I/O, and deprecation notices. Critical for reliable implementation of file writes, performance measurements, and module loading.
 ## License: MIT
 
-# agentic-lib GitHub Workflows
-## https://github.com/xn-intenton-z2a/agentic-lib#readme
-Documents reusable GitHub Actions workflows for CI/CD automation, covering inputs, outputs, container tasks, and scheduling. Updated April 2024, these templates illustrate best practices for build, test, and deployment pipelines used by this project.
-## License: Apache-2.0
-
 # JavaScript BigInt (Native Arbitrary-Precision Integer)
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 MDN documentation on native `BigInt` support in ES2020+ (last updated May 2024). Covers syntax, operations, limitations, and performance characteristics of JavaScript’s built-in arbitrary-precision integers—used for factorial computations in the Chudnovsky implementation.
@@ -57,3 +52,23 @@ This entry provides pseudocode and complexity analysis for modular exponentiatio
 ## https://www.w3.org/TR/PNG/
 The official W3C Recommendation (Second Edition, January 2017) detailing PNG file structure, chunk types (IHDR, IDAT), compression schemes, and color models. Understanding these internals enables fine-tuning of `node-canvas` output for optimized file sizes and compatibility.
 ## License: Public Domain (W3C Recommendation)
+
+# Node.js ECMAScript Modules (ESM)
+## https://nodejs.org/api/esm.html
+Official Node.js documentation on ECMAScript Modules support in Node.js v20, covering import/export syntax, module resolution, package.json configuration, interop with CommonJS, and file extensions. Essential for ensuring the pi calculator CLI's ESM usage is correctly configured, avoiding runtime errors, and understanding dynamic import mechanics. Updated January 2024, authoritative as official Node.js docs.
+## License: MIT
+
+# Node.js Performance Hooks API
+## https://nodejs.org/api/perf_hooks.html
+Detailed reference for Node.js Perf Hooks module, including PerformanceObserver, marks, and measures for high-resolution timing. Complements `process.hrtime` usage by providing insights into event loop lag, accurate performance measurements, and recommended patterns for microbenchmarking in JavaScript. Last updated February 2024; official Node.js documentation.
+## License: MIT
+
+# GitHub Actions Reusable Workflows
+## https://docs.github.com/en/actions/using-workflows/reusing-workflows
+Comprehensive guide to reusing GitHub Actions workflows, defining inputs, outputs, and secrets, and best practices for composition. Provides actionable insights on how agentic-lib's reusable workflows can be integrated into the CI/CD pipeline, optimizing maintainability and consistency across projects. Published March 2024; authoritative GitHub documentation.
+## License: GitHub Terms of Service
+
+# Vitest CLI and API Reference
+## https://vitest.dev/api/cli.html
+Official documentation for Vitest command-line interface and API, detailing test runner options, configuration, matchers, and coverage reporting. Critical for writing and executing the repository's unit and E2E tests reliably and configuring coverage thresholds. Last updated April 2024; authoritative Vitest documentation.
+## License: MIT
