@@ -7577,3 +7577,38 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Ready Issue at 2025-05-24T06:44:29.460Z
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2742 with action close and updated description:
+
+Background:
+The pi calculator CLI now fully supports Spigot, Chudnovsky, and BBP modes, text/png/hex outputs, diagnostics, and benchmarking (text/CSV/PNG with BBP timing). The built-in help (`--help`/`-h`) groups and documents all flags in sections with examples. We need user feedback to validate clarity and chart styling.
+
+Goals:
+1. Gather feedback on `--help` output:
+   - Does each section header (General Options, Algorithm Modes, Output Modes, Diagnostics Options, Benchmarking Options) clearly group related flags?
+   - Are flag names, parameter placeholders, default values, and descriptions intuitive and complete?
+   - Are example invocations clear and helpful?
+2. Gather feedback on benchmark chart styling:
+   - Color choices for Spigot (red), Chudnovsky (blue), BBP (green): Are they distinguishable and accessible?
+   - Legend placement and text size: Is the legend legible and non-overlapping with data?
+   - Axes labeling and scaling: Are axis labels and tick marks clear and appropriately scaled?
+
+How to review:
+- Run `node src/lib/main.js --help` to view the help output. Note any unclear phrasing, missing defaults, or grouping issues.
+- Generate a benchmark PNG chart: `node src/lib/main.js --benchmark-sizes 20,100,500 --benchmark-output png --benchmark-file review.png`.
+  • Open `review.png` and assess chart readability: colors, legend, axes, margins.
+
+Next steps:
+- Collect feedback comments in this issue. Tag screenshots or excerpts as needed.
+- After feedback, plan any refinements to `printHelpAndExit` formatting or chart rendering settings.
+
+No code changes required until feedback is collected. Once we have consensus, we’ll open a follow-up issue to apply specific improvements.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":12007,"completion_tokens":1628,"total_tokens":13635,"prompt_tokens_details":{"cached_tokens":4352,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1152,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
