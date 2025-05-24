@@ -8481,3 +8481,17 @@ LLM API Usage:
 ```
 ---
 
+## Discussions activity at 2025-05-24T22:40:19.907Z
+
+Since the last update, we’ve polished the CLI to group flags into five sections (General, Algorithm, Output, Diagnostics, Benchmarking) with types, defaults, and examples. All core features—Spigot, Chudnovsky & BBP modes; text/PNG/hex outputs; diagnostics; and full benchmarking (text, CSV, PNG with BBP timing)—are implemented and tested. The build is green and tests are passing. Next: please review the clarity of the `--help` output and share feedback on benchmark chart styling (colors, legend placement, axes). Estimated effort: ~1 day.
+
+[Posted on "https://github.com/xn-intenton-z2a/repository0-crucible/discussions/2538#discussioncomment-13227616"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" by the repository bot which took the action "reply-without-action" with the detail "".]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":155753,"completion_tokens":151,"total_tokens":155904,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+
+```
+---
+
