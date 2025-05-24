@@ -7,14 +7,14 @@ Introduce a core π calculation engine with multiple algorithm options, digit-le
 ## CLI Options
 
 * `-h`, `--help`                  Show help message and exit
-* `--algorithm <name>`           Choose from supported algorithms: `spigot`, `chudnovsky`, `bbp`. Default: `spigot`.
+* `--algorithm <spigot|chudnovsky|bbp>`  Choose π algorithm (default: spigot)
 * `--digits <n>`                 Number of decimal digits to generate (default: 100).
-* `--hex-index <n>`              Index for BBP hexadecimal digit extraction (0-based).
-* `--output <type>`              Output format: `text` or `png` (default: `text`).
+* `--hex-index <n>`              Zero-based hex digit index for BBP mode (required for bbp).
+* `--output <text|png>`          Output format (default: text).
 * `--file <path>`                File path to save output (default: stdout).
 * `--diagnostics`                Emit compute and render timing diagnostics.
 * `--benchmark-sizes <list>`     Comma-separated list of digit counts to benchmark.
-* `--benchmark-output <type>`    Benchmark report format: `text`, `csv`, or `png` (default: `text`).
+* `--benchmark-output <text|csv|png>`  Benchmark report format (default: text).
 * `--benchmark-file <path>`      File path to save benchmark report or chart.
 
 ## Examples
