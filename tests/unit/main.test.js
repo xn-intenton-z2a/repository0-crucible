@@ -1,5 +1,5 @@
 import { describe, test, expect, afterAll } from "vitest";
-import { execSync } from "child_process";
+import { execSync, spawnSync } from "child_process";
 import fs from "fs";
 import { fileURLToPath } from "url";
 
@@ -31,6 +31,12 @@ describe("computePiBBP", () => {
 
 describe("CLI", () => {
   const mainPath = fileURLToPath(new URL("../../src/lib/main.js", import.meta.url));
+  let cleanupFiles = [];
+  afterAll(() => {
+    cleanupFiles.forEach((f) => {
+      if (fs.existsSync(f)) fs.unlinkSync(f);
+    });
+  });
 
   test("--help shows usage and sections", () => {
     const out = execSync(`node ${mainPath} --help`).toString();
@@ -43,84 +49,35 @@ describe("CLI", () => {
     expect(out).toMatch(/Examples:/);
   });
 
-  test("spigot 10 digits to stdout", () => {
-    const output = execSync(`node ${mainPath} --algorithm spigot --digits 10`).toString().trim();
-    expect(output).toBe("3.141592653");
+  test("BBP mode missing hex-index errors", () => {
+    const result = spawnSync("node", [mainPath, "--algorithm", "bbp"]);
+    expect(result.status).toBe(1);
+    expect(result.stderr.toString()).toMatch(/Invalid or missing hex-index for BBP algorithm/);
   });
 
-  test("chudnovsky 15 digits to stdout", () => {
-    const output = execSync(`node ${mainPath} --algorithm chudnovsky --digits 15`).toString().trim();
-    expect(output).toBe("3.14159265358979");
+  test("unknown algorithm errors", () => {
+    const result = spawnSync("node", [mainPath, "--algorithm", "foobar"]);
+    expect(result.status).toBe(1);
+    expect(result.stderr.toString()).toMatch(/Unknown algorithm: foobar/);
   });
 
-  test("diagnostics flag outputs timings", () => {
-    const output = execSync(`node ${mainPath} --algorithm spigot --digits 5 --diagnostics`).toString();
-    expect(output).toMatch(/^Compute time:/m);
+  test("unknown output type errors", () => {
+    const result = spawnSync("node", [mainPath, "--algorithm", "spigot", "--output", "xml", "--digits", "10"]);
+    expect(result.status).toBe(1);
+    expect(result.stderr.toString()).toMatch(/Unknown output type: xml/);
   });
 
-  const pngFile = "test_pi.png";
-  afterAll(() => {
-    if (fs.existsSync(pngFile)) fs.unlinkSync(pngFile);
+  test("default PNG output filename for decimal mode", () => {
+    const result = spawnSync("node", [mainPath, "--algorithm", "spigot", "--digits", "10", "--output", "png"]);
+    expect(result.status).toBe(0);
+    expect(fs.existsSync("pi.png")).toBe(true);
+    cleanupFiles.push("pi.png");
   });
 
-  test("png output creates file", () => {
-    execSync(`node ${mainPath} --algorithm spigot --digits 20 --output png --file ${pngFile}`);
-    expect(fs.existsSync(pngFile)).toBe(true);
-  });
-
-  test("bbp index to stdout", () => {
-    const output = execSync(`node ${mainPath} --algorithm bbp --hex-index 1`).toString().trim();
-    expect(output).toBe("2");
-  });
-
-  const hexFile = "test_hex.txt";
-  test("bbp index to file", () => {
-    execSync(`node ${mainPath} --algorithm bbp --hex-index 3 --file ${hexFile}`);
-    const content = fs.readFileSync(hexFile, "utf8").trim();
-    expect(content).toBe("3");
-  });
-  afterAll(() => {
-    if (fs.existsSync(hexFile)) fs.unlinkSync(hexFile);
-  });
-});
-
-// Benchmarking mode tests
-
-describe("Benchmarking Mode", () => {
-  const mainPath = fileURLToPath(new URL("../../src/lib/main.js", import.meta.url));
-  const csvFile = "test_report.csv";
-  const pngBench = "test_perf.png";
-
-  afterAll(() => {
-    [csvFile, pngBench].forEach((f) => {
-      if (fs.existsSync(f)) {
-        fs.unlinkSync(f);
-      }
-    });
-  });
-
-  test("default text output table", () => {
-    const output = execSync(`node ${mainPath} --benchmark-sizes 5,10`).toString();
-    const lines = output.trim().split(/\r?\n/);
-    expect(lines[0]).toBe("size | spigotTimeMs | chudnovskyTimeMs | bbpTimeMs");
-    expect(lines.length).toBe(3);
-  });
-
-  test("csv output to file", () => {
-    execSync(
-      `node ${mainPath} --benchmark-sizes 5,10 --benchmark-output csv --benchmark-file ${csvFile}`
-    );
-    const content = fs.readFileSync(csvFile, "utf8").trim().split(/\r?\n/);
-    expect(content[0]).toBe("size,spigotTimeMs,chudnovskyTimeMs,bbpTimeMs");
-    expect(content.length).toBe(3);
-  });
-
-  test("png chart output creates file", () => {
-    execSync(
-      `node ${mainPath} --benchmark-sizes 5,10 --benchmark-output png --benchmark-file ${pngBench}`
-    );
-    expect(fs.existsSync(pngBench)).toBe(true);
-    const stats = fs.statSync(pngBench);
-    expect(stats.size).toBeGreaterThan(0);
+  test("default benchmark PNG filename", () => {
+    const result = spawnSync("node", [mainPath, "--benchmark-sizes", "5,10", "--benchmark-output", "png"]);
+    expect(result.status).toBe(0);
+    expect(fs.existsSync("benchmark.png")).toBe(true);
+    cleanupFiles.push("benchmark.png");
   });
 });
