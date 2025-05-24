@@ -7517,3 +7517,49 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Code at 2025-05-24T06:27:57.695Z
+
+fixApplied: true
+
+Fixed default benchmark CSV example line breaks in docs formatted docs and source for consistency corrected docsPI_CALCULATOR.md content
+
+Git Diff:
+
+```
+diff --git a/docs/PI_CALCULATOR.md b/docs/PI_CALCULATOR.md
+index 6f5a0513..e3980b74 100644
+--- a/docs/PI_CALCULATOR.md
++++ b/docs/PI_CALCULATOR.md
+@@ -49,7 +49,9 @@ node src/lib/main.js --digits 30 --diagnostics
+ # Benchmark decimal algorithms (text report)
+ node src/lib/main.js --benchmark-sizes 10,100
+ 
+-# Benchmark and CSV output\nnode src/lib/main.js --benchmark-sizes 20,50 --benchmark-output csv --benchmark-file benchmark.csv
++# Benchmark and CSV output
++node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output csv --benchmark-file benchmark.csv
+ 
+-# Benchmark and PNG chart\nnode src/lib/main.js --benchmark-sizes 20,50 --benchmark-output png --benchmark-file benchmark.png
+-```
++# Benchmark and PNG chart
++node src/lib/main.js --benchmark-sizes 20,50 --benchmark-output png --benchmark-file benchmark.png
++```
+\ No newline at end of file
+```
+mainOutput:
+```
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067
+
+```
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2742 with title: ""]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":118271,"completion_tokens":857,"total_tokens":119128,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
