@@ -8377,3 +8377,17 @@ LLM API Usage:
 
 2025-05-24T19:01:53Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-22T01-30Z
 
+## Discussions activity at 2025-05-24T19:09:40.430Z
+
+Since the last update, we’ve polished the CLI help (`--help`/`-h`) to group all flags into five clear sections (General Options, Algorithm Modes, Output Modes, Diagnostics Options, Benchmarking Options) with type hints, defaults, and examples. We also finalized Spigot, Chudnovsky, and BBP modes; text/PNG/hex outputs; diagnostics; and comprehensive benchmarking with text/CSV/PNG charts (including BBP timing). All tests pass and the build is green. Next: please review the help output clarity and share feedback on benchmark chart styling (colors, legend placement, axes). Estimated effort: ~1 day.
+
+[Posted on "https://github.com/xn-intenton-z2a/repository0-crucible/discussions/2538#discussioncomment-13227616""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" by the repository bot which took the action "reply-without-action" with the detail "".]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":153454,"completion_tokens":161,"total_tokens":153615,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+
+```
+---
+
