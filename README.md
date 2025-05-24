@@ -23,7 +23,7 @@ npm install repository0-crucible
 
 ## Features
 
-* **PI Calculator**: compute π digits via two algorithms (Spigot, Chudnovsky) or extract hex digits (BBP), output as text or PNG, and diagnostics.
+* **PI Calculator**: compute π digits via two algorithms (Spigot, Chudnovsky) or extract hex digits (BBP), output as text or PNG, with diagnostics and high-precision support.
 * **Benchmarking Mode**: measure performance of Spigot, Chudnovsky, and BBP algorithms over multiple digit sizes with text, CSV, or PNG reports.
 
 ## Usage
