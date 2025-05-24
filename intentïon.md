@@ -7254,3 +7254,51 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Ready Issue at 2025-05-24T05:42:03.321Z
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2740 with action enhance and updated description:
+
+Enhance CLI test coverage for error handling and default file outputs in tests/unit/main.test.js
+
+Acceptance Criteria:
+
+1. BBP Mode Missing Hex-Index:
+   - Invoke: `spawnSync(node, [mainPath, '--algorithm', 'bbp'])`
+   - Expect exit code `1`.
+   - Expect stderr to match `/Invalid or missing hex-index for BBP algorithm/`.
+
+2. Unknown Algorithm:
+   - Invoke: `spawnSync(node, [mainPath, '--algorithm', 'foobar'])`
+   - Expect exit code `1`.
+   - Expect stderr to include `Unknown algorithm: foobar`.
+
+3. Unknown Output Type:
+   - Invoke: `spawnSync(node, [mainPath, '--algorithm', 'spigot', '--output', 'xml', '--digits', '10'])`
+   - Expect exit code `1`.
+   - Expect stderr to include `Unknown output type: xml`.
+
+4. Default PNG Output Filename:
+   - Invoke: `spawnSync(node, [mainPath, '--algorithm', 'spigot', '--digits', '10', '--output', 'png'])`
+   - Expect exit code `0`.
+   - After run, assert `fs.existsSync('pi.png')` is `true`.
+   - Clean up `pi.png` in afterAll hook.
+
+5. Default Benchmark PNG Filename:
+   - Invoke: `spawnSync(node, [mainPath, '--benchmark-sizes', '5,10', '--benchmark-output', 'png'])`
+   - Expect exit code `0`.
+   - After run, assert `fs.existsSync('benchmark.png')` is `true`.
+   - Clean up `benchmark.png` in afterAll hook.
+
+Implementation Notes:
+- Import `spawnSync` from `child_process` and `fs` at top of test file.
+- Use `afterAll` teardown hooks to remove `pi.png` and `benchmark.png`.
+- Ensure tests do not throw on non-zero exits by using `spawnSync` rather than `execSync`.
+
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":11972,"completion_tokens":1078,"total_tokens":13050,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":576,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
