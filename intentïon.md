@@ -9272,3 +9272,43 @@ LLM API Usage:
 
 2025-05-25T07:01:56Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-22T01-30Z
 
+## Issue to enhanced Issue at 2025-05-25T07:02:18.080Z
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2749 with enhanced description:
+
+Summary:
+Refresh README.md to remove template boilerplate and showcase the PI Calculator CLI tool, its core functionality, and usage.
+
+Acceptance Criteria:
+1. The README no longer contains any references to "Repository Template", agentic-lib seeds, or incremental plan placeholders.
+2. A **Project Overview** section is present and describes the PI Calculator CLI, including supported algorithms (Spigot, Chudnovsky, BBP).
+3. An **Installation** section specifies Node.js ≥20 requirement and includes `npm install @xn-intenton-z2a/repository0-crucible` (or `npm install` after cloning).
+4. A **Features** section lists:
+   - Spigot and Chudnovsky decimal digit generation
+   - BBP hexadecimal digit extraction
+   - Text and PNG output modes with default filenames
+   - Diagnostics timing output
+   - Benchmark mode (text, CSV, PNG reports)
+5. A **Usage Examples** section contains at least these six commands, each validated:
+   a. `node src/lib/main.js --algorithm spigot --digits 20`
+   b. `node src/lib/main.js --algorithm chudnovsky --digits 50 --output png --file pi50.png`
+   c. `node src/lib/main.js --algorithm bbp --hex-index 1`
+   d. `node src/lib/main.js --benchmark-sizes 10,100`
+   e. `node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv`
+   f. `node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png`
+6. A link to `docs/PI_CALCULATOR.md` for detailed instructions.
+7. A **Contributing & License** section linking to CONTRIBUTING.md and LICENSE.
+
+Verification:
+- GitHub file view of README.md shows updated sections and no boilerplate text.
+- Running each example command in a terminal produces the expected output or file creation.
+- `npm test` passes with no test failures.
+
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":12388,"completion_tokens":936,"total_tokens":13324,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":448,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
