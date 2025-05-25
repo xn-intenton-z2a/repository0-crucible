@@ -8573,3 +8573,64 @@ LLM API Usage:
 ```
 ---
 
+## Maintained Library Sources at 2025-05-25T02:54:06.792Z
+
+Updated library sources with the following git diff:
+
+```
+diff --git a/SOURCES.md b/SOURCES.md
+index dc927d7a..e1105563 100644
+--- a/SOURCES.md
++++ b/SOURCES.md
+@@ -55,20 +55,35 @@ The official W3C Recommendation (Second Edition, January 2017) detailing PNG fil
+ 
+ # Node.js ECMAScript Modules (ESM)
+ ## https://nodejs.org/api/esm.html
+-Official Node.js documentation on ECMAScript Modules support in Node.js v20, covering import/export syntax, module resolution, package.json configuration, interop with CommonJS, and file extensions. Essential for ensuring the pi calculator CLI's ESM usage is correctly configured, avoiding runtime errors, and understanding dynamic import mechanics. Updated January 2024, authoritative as official Node.js docs.
++Official Node.js documentation on ECMAScript Modules support in Node.js v20, covering import/export syntax, module resolution, package.json configuration, interop with CommonJS, and file extensions. Essential for ensuring the pi calculator CLI's ESM usage is correctly configured, avoiding runtime errors, and understanding dynamic import mechanics.
+ ## License: MIT
+ 
+ # Node.js Performance Hooks API
+ ## https://nodejs.org/api/perf_hooks.html
+-Detailed reference for Node.js Perf Hooks module, including PerformanceObserver, marks, and measures for high-resolution timing. Complements `process.hrtime` usage by providing insights into event loop lag, accurate performance measurements, and recommended patterns for microbenchmarking in JavaScript. Last updated February 2024; official Node.js documentation.
++Detailed reference for Node.js Perf Hooks module, including PerformanceObserver, marks, and measures for high-resolution timing. Complements `process.hrtime` usage by providing insights into event loop lag, accurate performance measurements, and recommended patterns for microbenchmarking in JavaScript.
+ ## License: MIT
+ 
+ # GitHub Actions Reusable Workflows
+ ## https://docs.github.com/en/actions/using-workflows/reusing-workflows
+-Comprehensive guide to reusing GitHub Actions workflows, defining inputs, outputs, and secrets, and best practices for composition. Provides actionable insights on how agentic-lib's reusable workflows can be integrated into the CI/CD pipeline, optimizing maintainability and consistency across projects. Published March 2024; authoritative GitHub documentation.
++Comprehensive guide to reusing GitHub Actions workflows, defining inputs, outputs, and secrets, and best practices for composition. Provides actionable insights on how agentic-lib's reusable workflows can be integrated into the CI/CD pipeline, optimizing maintainability and consistency across projects.
+ ## License: GitHub Terms of Service
+ 
+ # Vitest CLI and API Reference
+ ## https://vitest.dev/api/cli.html
+-Official documentation for Vitest command-line interface and API, detailing test runner options, configuration, matchers, and coverage reporting. Critical for writing and executing the repository's unit and E2E tests reliably and configuring coverage thresholds. Last updated April 2024; authoritative Vitest documentation.
+-## License: MIT
+\ No newline at end of file
++Official documentation for Vitest command-line interface and API, detailing test runner options, configuration, matchers, and coverage reporting. Critical for writing and executing the repository's unit and E2E tests reliably and configuring coverage thresholds.
++## License: MIT
++
++# Node.js Streams API
++## https://nodejs.org/api/stream.html
++Comprehensive guide to Node.js Streams, covering Readable, Writable, Duplex, and Transform streams, backpressure management, piping, and object mode. Essential for implementing streaming output of π digits for memory-efficient, real-time use cases and integrating with other stream-based APIs.
++## License: MIT
++
++# Benchmark.js Microbenchmark Suite
++## https://benchmarkjs.com/
++Benchmark.js provides a robust framework for microbenchmarking JavaScript code, including suite construction, asynchronous tests, statistical analysis, and event hooks. Useful for advanced performance comparison of `computePiSpigot`, `computePiChudnovsky`, and `computePiBBP`, going beyond simple timing APIs to deliver statistically significant results.
++## License: MIT
++
++# V8 JavaScript Engine Developer Guide
++## https://v8.dev/docs
++Official V8 documentation offering performance tips, optimization strategies, and insights into engine internals such as hidden classes and inlining. Valuable for optimizing compute-intensive loops and numeric algorithms in the pi calculator, guiding choices that can yield measurable speedups.
++## License: Public Domain
+\ No newline at end of file
+```
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":11907,"completion_tokens":6025,"total_tokens":17932,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":4352,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
