@@ -8717,3 +8717,44 @@ LLM API Usage:
 ```
 ---
 
+## Maintenance Activity to Issue at 2025-05-25T05:00:08.376Z
+
+Created issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2747 with title [Documenter] Refresh README to Showcase PI Calculator Usage and Remove Template Boilerplate and body:
+
+ **Context:**
+The existing README.md primarily describes this repository as a template for GitHub workflows and includes references to agentic-lib seeds. It does not reflect the PI Calculator CLI tool, its core functionality, installation, or usage. Users looking for guidance on running the PI Calculator must jump to docs/PI_CALCULATOR.md, creating friction and reducing discoverability.
+
+**Proposed Changes (README.md only):**
+1. **Remove template/boilerplate sections:**
+   - Delete references to "repository0-crucible" as a GitHub workflow demo, seeds directory, and agentic-lib templates.
+   - Remove sections titled "Repository Template" and "Incremental Changes Plan" or replace with relevant project roadmap.
+2. **Add project overview:**
+   - Concise description of the PI Calculator tool: supported algorithms (Spigot, Chudnovsky, BBP), output formats (text, PNG), diagnostics, and benchmarking mode.
+3. **Installation instructions:**
+   - npm install steps and requirements (Node.js ≥20).
+4. **Features:**
+   - Bullet list of core capabilities: decimal digits, hex extraction, PNG rendering, diagnostics, benchmarking (text/CSV/PNG).
+5. **Usage examples:**
+   - Show at least six commands covering:
+     - Basic decimal output
+     - Chudnovsky with PNG file
+     - BBP hex digit extraction
+     - Benchmark text report
+     - Benchmark CSV to file
+     - Benchmark PNG chart
+6. **Link to detailed docs:**
+   - Point to docs/PI_CALCULATOR.md for in-depth usage and examples.
+7. **Contributing & License:**
+   - Retain or adjust links to CONTRIBUTING.md and LICENSE, ensuring accuracy.
+
+**Verification:**
+- Review the updated README in GitHub’s file view—confirm it clearly presents the PI Calculator’s purpose, installation, features, and examples without leftover template content.
+- Run the example commands from the README locally to ensure they match the actual CLI behavior..
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":22240,"completion_tokens":1698,"total_tokens":23938,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1216,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
