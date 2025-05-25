@@ -9219,3 +9219,54 @@ LLM API Usage:
 ```
 ---
 
+## Feature to Issue at 2025-05-25T07:00:53.467Z
+
+Generated issue 2749 for feature "refresh-readme-pi-calculator" with URL https://github.com/xn-intenton-z2a/repository0-crucible/issues/2749
+
+title:
+
+Refresh README to Showcase PI Calculator and Remove Template Boilerplate
+
+And description:
+
+Background:
+The existing README.md still describes this repository as a template for GitHub workflows and agentic-lib seeds. It does not reflect the PI Calculator CLI tool, its core functionality, installation steps, or usage examples. Users currently need to navigate to docs/PI_CALCULATOR.md for details, which reduces discoverability and creates friction.
+
+Goals:
+1. Remove all template/boilerplate references in README.md, including "Repository Template", agentic-lib seeds links, and incremental plan placeholders.
+2. Add a concise **Project Overview** describing the PI Calculator CLI and its supported algorithms: Spigot, Chudnovsky, and BBP.
+3. Create an **Installation** section with Node.js ≥20 requirement and `npm install` instructions.
+4. Expand the **Features** section to list:
+   - Spigot and Chudnovsky decimal digit generation
+   - BBP hexadecimal digit extraction
+   - Text and PNG output modes with default filenames
+   - Diagnostics timing output
+   - Benchmark mode (text, CSV, PNG reports)
+5. Introduce a **Usage Examples** section with at least six commands:
+   a. `node src/lib/main.js --algorithm spigot --digits 20`
+   b. `node src/lib/main.js --algorithm chudnovsky --digits 50 --output png --file pi50.png`
+   c. `node src/lib/main.js --algorithm bbp --hex-index 1`
+   d. `node src/lib/main.js --benchmark-sizes 10,100`
+   e. `node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv`
+   f. `node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png`
+6. Link to `docs/PI_CALCULATOR.md` for in-depth usage documentation.
+7. Retain a **Contributing & License** section linking CONTRIBUTING.md and LICENSE.
+
+How to Apply:
+- Update README.md only. Remove irrelevant boilerplate text and replace with PI Calculator-focused sections as outlined.
+
+How to Verify:
+1. Inspect README.md in GitHub’s file view to confirm:
+   - No template or agentic-lib references remain.
+   - Presence of Overview, Installation, Features, Usage Examples, Contributing & License sections.
+   - Examples match actual CLI behavior.
+2. Copy each example command into a terminal to ensure correct behavior (exit codes, output, and file creation).
+3. Run `npm test` to confirm no tests are broken by README changes (documentation-only update).
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":143712,"completion_tokens":600,"total_tokens":144312,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
