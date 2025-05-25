@@ -8800,3 +8800,44 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Ready Issue at 2025-05-25T05:41:52.707Z
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2747 with action enhance and updated description:
+
+**Context:**
+The existing README.md still describes this repository as a template for GitHub workflows and agentic-lib seeds. It does not showcase the PI Calculator CLI tool, its core features, installation, or usage examples. This creates friction for users who want to quickly understand and run the PI Calculator.
+
+**Proposed Changes (README.md only):**
+Update README.md to reflect the PI Calculator’s functionality and remove template boilerplate. Apply the following **Acceptance Criteria** to validate the changes:
+
+**Acceptance Criteria:**
+1. README no longer contains the "Repository Template" and "Incremental Changes Plan" sections or any references to agentic-lib seeds.  
+2. A new **Project Overview** section clearly describes the PI Calculator and lists supported algorithms: Spigot, Chudnovsky, BBP.  
+3. An **Installation** section specifies Node.js ≥20 and provides npm install instructions.  
+4. A **Features** section enumerates core capabilities:  
+   - Generate decimal digits via Spigot and Chudnovsky algorithms  
+   - Extract individual hexadecimal digits via BBP formula  
+   - Produce text and PNG outputs with default file names  
+   - Emit diagnostics (compute and render timing)  
+   - Run benchmarks with text, CSV, and PNG reports  
+5. A **Usage Examples** section with at least six commands, demonstrating:  
+   a. Basic decimal output (Spigot)  
+   b. Decimal PNG output (Chudnovsky)  
+   c. Hex-digit extraction (BBP)  
+   d. Benchmark text report  
+   e. Benchmark CSV output to file  
+   f. Benchmark PNG chart to file  
+6. A link to the detailed docs in `docs/PI_CALCULATOR.md`.  
+7. A **Contributing & License** section with correct links to CONTRIBUTING.md and LICENSE.  
+
+**Verification Steps:**
+- Render the updated README in GitHub’s file view and confirm each acceptance criterion is met.  
+- Copy each example command into a shell and verify the CLI behavior (exit code, output format, and file creation) matches the README instructions.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":12285,"completion_tokens":1031,"total_tokens":13316,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":512,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
