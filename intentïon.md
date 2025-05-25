@@ -9146,3 +9146,55 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Ready Issue at 2025-05-25T06:45:11.030Z
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2748 with action close and updated description:
+
+Background:
+The PI Calculator CLI has matured into a robust tool supporting Spigot, Chudnovsky, and BBP algorithms. It offers text, PNG, and hex outputs, diagnostic timings, and benchmarking reports in text, CSV, and PNG (including BBP timing). The built-in help (`--help`/`-h`) now groups flags into five sections—General Options, Algorithm Modes, Output Modes, Diagnostics Options, and Benchmarking Options—with defaults and examples.
+
+Goal:
+Gather user feedback on two key areas to ensure usability and readability:
+
+1. CLI Help Clarity
+   • Verify the five help sections appear in the correct order with clear headings.
+   • Confirm flag entries under each section show the right name, placeholder, default value, and succinct description.
+   • Assess if the provided example commands are helpful and representative of typical use cases.
+
+2. Benchmark Chart Styling
+   • Evaluate color choices (Spigot=red, Chudnovsky=blue, BBP=green) for accessibility and contrast.
+   • Check legend placement and font size for legibility without overlapping chart data.
+   • Review axis labels, tick marks, and margins to ensure the chart conveys performance data clearly.
+
+How to Review:
+
+1. Help Output
+   ```bash
+   node src/lib/main.js --help
+   ```
+   - Verify each of the five section headers appears exactly as specified.
+   - Check representative flags under each section (e.g., `--hex-index <n>` under Algorithm Modes).
+   - Note any unclear phrasing, missing default values, or grouping issues.
+
+2. Benchmark PNG Chart
+   ```bash
+   node src/lib/main.js --benchmark-sizes 20,100,500 --benchmark-output png --benchmark-file review.png
+   ```
+   - Open `review.png` in an image viewer.
+   - Assess color contrast, legend placement, axis labeling, and overall readability.
+
+Feedback:
+- Comment on this issue with suggestions for rewording, regrouping, or formatting help text.
+- Propose chart styling improvements (alternative colors, legend position, axis formatting).
+- Include annotated screenshots or excerpts if helpful.
+
+Next Steps:
+Once feedback is collected and consensus reached, we will prioritize specific refinements in follow-up issues.
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":12688,"completion_tokens":835,"total_tokens":13523,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":256,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
