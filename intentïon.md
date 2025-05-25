@@ -9928,3 +9928,23 @@ LLM API Usage:
 ```
 ---
 
+## Discussions activity at 2025-05-25T13:41:32.926Z
+
+Reply Posted on "https://github.com/xn-intenton-z2a/repository0-crucible/discussions/2538#discussioncomment-13227616""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" by the repository bot which took the action "reply-without-action":
+
+We’ve finalized core features and docs: Spigot, Chudnovsky & BBP modes; text/PNG/hex outputs; diagnostics; and benchmarking with text/CSV/PNG (including BBP timing). All tests pass, build is green, and `--help` now groups flags into General, Algorithm, Output, Diagnostics & Benchmarking sections with defaults & examples (see src/lib/main.js). Next: please review the clarity of the help output and share any feedback on benchmark chart styling (colors, legend placement, axes). Estimated effort: ~1 day.
+
+with the detail:
+
+""
+
+and outcome ""
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":176949,"completion_tokens":142,"total_tokens":177091,"prompt_tokens_details":{"cached_tokens":1408,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+
+```
+---
+
