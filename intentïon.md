@@ -8841,3 +8841,208 @@ LLM API Usage:
 ```
 ---
 
+## Issue to Code at 2025-05-25T05:48:11.200Z
+
+fixApplied: true
+
+Refresh README to showcase PI Calculator and remove template boilerplate
+
+Git Diff:
+
+```
+diff --git a/README.md b/README.md
+index 2de7d8ae..42675684 100644
+--- a/README.md
++++ b/README.md
+@@ -1,49 +1,55 @@
+-# repository0-crucible
++# PI Calculator CLI Tool
+ 
+-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
++`pi-calculator-cli` is a command-line application for calculating digits of π using multiple algorithms, benchmarking performance, and generating visual outputs.
+ 
+-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
++## Project Overview
+ 
+-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+-
+-## Repository Template
+-
+-The repository is intended as a template that includes:
+-* A Template Base: A starting point for new projects.
+-* A Running Experiment: An example implementation that demonstrates one way to use the template.
+-* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
++The PI Calculator CLI supports three algorithms:
++- **Spigot**: sequential decimal digit generation.
++- **Chudnovsky**: high-precision series-based decimal calculation.
++- **BBP**: direct hexadecimal digit extraction at arbitrary positions.
+ 
+ ## Installation
+ 
+-Install via npm:
++Requires Node.js >=20.0.0.
+ 
+ ```bash
+-npm install repository0-crucible
++npm install
+ ```
+ 
+ ## Features
+ 
+-* **PI Calculator**: compute π digits via two algorithms (Spigot, Chudnovsky) or extract hex digits (BBP), output as text or PNG, with diagnostics and high-precision support.
+-* **Benchmarking Mode**: measure performance of Spigot, Chudnovsky, and BBP algorithms over multiple digit sizes with text, CSV, or PNG reports.
+-
+-## Usage
++* Generate decimal digits via **Spigot** and **Chudnovsky** algorithms.
++* Extract individual hexadecimal digits via **BBP** formula.
++* Output results as **text** or **PNG** visualizations (default filenames when not specified).
++* Emit **diagnostics** for compute and render timings.
++* Run **benchmarks** across multiple digit sizes with **text**, **CSV**, or **PNG** reports.
+ 
+-To run the CLI tool and see help instructions:
++## Usage Examples
+ 
+ ```bash
+-node src/lib/main.js --help
+-```
++# Basic decimal output (Spigot)
++node src/lib/main.js --algorithm spigot --digits 20
++
++# Decimal PNG output (Chudnovsky)
++node src/lib/main.js --algorithm chudnovsky --digits 50 --output png --file pi50.png
+ 
+-Refer to [docs/PI_CALCULATOR.md](docs/PI_CALCULATOR.md) for detailed usage and examples.
++# Hex-digit extraction (BBP)
++node src/lib/main.js --algorithm bbp --hex-index 1
+ 
+-## Incremental Changes Plan
++# Benchmark text report (sizes 10,100)
++node src/lib/main.js --benchmark-sizes 10,100
+ 
+-TODO: Add forthcoming changes here.
++# Benchmark CSV output to file
++node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv
+ 
+-## Contributing
++# Benchmark PNG chart to file
++node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png
++```
+ 
+-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
++Refer to [Detailed CLI Documentation](docs/PI_CALCULATOR.md) for full option descriptions, defaults, and examples.
+ 
+-## License
++## Contributing & License
+ 
+-Released under the MIT License (see [LICENSE](./LICENSE)).
+\ No newline at end of file
++Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.  
++Released under the MIT License ([LICENSE](LICENSE)).
+diff --git a/docs/PI_CALCULATOR.md b/docs/PI_CALCULATOR.md
+index ae0fd72a..e8714d33 100644
+--- a/docs/PI_CALCULATOR.md
++++ b/docs/PI_CALCULATOR.md
+@@ -41,8 +41,7 @@ node src/lib/main.js --digits 50 --file pi50.txt
+ # Render 20 digits to PNG
+ node src/lib/main.js --output png --digits 20 --file pi20.png
+ 
+-# Show diagnostics
+-node src/lib/main.js --digits 30 --diagnostics
++# Show diagnostics\nnode src/lib/main.js --digits 30 --diagnostics
+ # Compute time: Xms
+ # Render time: Yms
+ 
+diff --git a/src/lib/main.js b/src/lib/main.js
+index d0ad4da5..ca7713f8 100755
+--- a/src/lib/main.js
++++ b/src/lib/main.js
+@@ -35,7 +35,7 @@ function printHelpAndExit() {
+   help.push("  node src/lib/main.js --algorithm chudnovsky --digits 50 --output png --file pi.png");
+   help.push("  node src/lib/main.js --algorithm bbp --hex-index 1");
+   help.push("  node src/lib/main.js --benchmark-sizes 10,100");
+-  help.push("  node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file report.csv");
++  help.push("  node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv");
+   help.push("  node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png");
+   console.log(help.join("\n"));
+   process.exit(0);
+@@ -98,26 +98,23 @@ export function computePiChudnovsky(digits) {
+     const numFact = factorialBig(6n * BigInt(k));
+     const denFact1 = factorialBig(3n * BigInt(k));
+     const denFact2 = factorialBig(BigInt(k));
+-    const numerator = new Decimal(numFact.toString()).times(
+-      new Decimal(13591409).plus(new Decimal(545140134).times(k))
+-    );
+-    const denominator = new Decimal(denFact1.toString())
+-      .times(new Decimal(denFact2.toString()).pow(3))
+-      .times(new Decimal(-262537412640768000).pow(k));
+-    const term = numerator.div(denominator);
++    const term = new Decimal(numFact.toString())
++      .times(new Decimal(13591409).plus(new Decimal(545140134).times(k)))
++      .div(
++        new Decimal(denFact1.toString())
++          .times(new Decimal(denFact2.toString()).pow(3))
++          .times(new Decimal(-262537412640768000).pow(k))
++      );
+     sum = sum.plus(term);
+     if (term.abs().lt(tolerance)) break;
+     k++;
+   }
+ 
+-  const pi = C.div(sum);
+-  return pi.toFixed(digits - 1);
++  return C.div(sum).toFixed(digits - 1);
+ }
+ 
+ export function computePiBBP(index) {
+-  if (!Number.isInteger(index) || index < 0) {
+-    throw new Error("Index must be a non-negative integer");
+-  }
++  if (!Number.isInteger(index) || index < 0) throw new Error("Index must be a non-negative integer");
+   if (index === 0) return "3";
+   const n = index - 1;
+   function modPow(a, e, mod) {
+@@ -138,10 +135,8 @@ export function computePiBBP(index) {
+     for (let k = n + 1; k <= n + 100; k++) sum += Math.pow(16, n - k) / (8 * k + j);
+     return sum - Math.floor(sum);
+   }
+-  const raw = 4 * series(1) - 2 * series(4) - series(5) - series(6);
+-  const frac = raw - Math.floor(raw);
+-  const digit = Math.floor(frac * 16);
+-  return digit.toString(16).toUpperCase();
++  const x = (4 * series(1) - 2 * series(4) - series(5) - series(6)) % 1;
++  return Math.floor(x * 16).toString(16).toUpperCase();
+ }
+ 
+ export function main(args) {
+diff --git a/tests/unit/main.test.js b/tests/unit/main.test.js
+index 0d6eb11a..eca17a2c 100644
+--- a/tests/unit/main.test.js
++++ b/tests/unit/main.test.js
+@@ -31,7 +31,7 @@ describe("computePiBBP", () => {
+ 
+ describe("CLI", () => {
+   const mainPath = fileURLToPath(new URL("../../src/lib/main.js", import.meta.url));
+-  let cleanupFiles = [];
++  const cleanupFiles = [];
+   afterAll(() => {
+     cleanupFiles.forEach((f) => {
+       if (fs.existsSync(f)) fs.unlinkSync(f);
+```
+mainOutput:
+```
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 start
+> node src/lib/main.js
+
+3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067
+
+```
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2747 with title: ""]
+
+LLM API Usage:
+
+```json
+{"prompt_tokens":140488,"completion_tokens":5692,"total_tokens":146180,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+---
+
