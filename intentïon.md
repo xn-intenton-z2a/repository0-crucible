@@ -10570,4 +10570,33 @@ LLM API Usage:
 {"prompt_tokens":162087,"completion_tokens":314,"total_tokens":162401,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
 ```
 
+---## Maintenance Activity to Issue at 2025-05-26T05:00:09.928Z
+
+Activity:
+
+Created issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2752 with title Pruner: Remove unused dependencies to streamline package.json and reduce install footprint and body:
+
+ Context:
+The current package.json includes several dependencies that are not used in the source code (src/lib/main.js) or tests. These extraneous dependencies increase install size and maintenance burden without delivering value to core functionality. 
+
+Change:
+- In package.json (dependencies section), remove the following unused packages:
+  - openai
+  - dotenv
+  - ejs
+  - js-yaml
+  - minimatch
+  - zod
+- In package.json (devDependencies section), remove any linters related to React or unrelated to Node CLI functionality (e.g., eslint-plugin-react) unless explicitly used. 
+
+Verification:
+1. Run `npm install` to update the lockfile and confirm a reduced dependency tree.
+2. Run `npm test` (or `vitest`) and ensure all tests still pass.
+3. Confirm no import errors occur when running the CLI (e.g., `node src/lib/main.js --help`)..
+
+LLM API Usage:
+```json
+{"prompt_tokens":22254,"completion_tokens":1841,"total_tokens":24095,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1600,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
 ---
