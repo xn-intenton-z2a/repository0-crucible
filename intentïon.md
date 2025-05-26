@@ -10649,3 +10649,41 @@ LLM API Usage:
 ```
 ---
 
+## Feature to Issue at 2025-05-26T06:23:10.432Z
+
+Activity:
+
+Generated issue 2753 for feature "prune-unused-dependencies" with URL https://github.com/xn-intenton-z2a/repository0-crucible/issues/2753
+
+title:
+
+Prune Unused Dependencies and Clean up package.json
+
+And description:
+
+## Background
+The current `package.json` includes dependencies and devDependencies that are not utilized in the source code or tests, increasing install size and maintenance overhead.
+
+## Goals
+1. Remove unused dependencies from `dependencies`: `openai`, `dotenv`, `ejs`, `js-yaml`, `minimatch`, and `zod`.
+2. Remove unused devDependencies related to unrelated tooling (e.g., `eslint-plugin-react`, `eslint-plugin-security`, `markdown-it`, `markdown-it-github`, `npm-check-updates`, etc.) that are not in use by the CLI or tests.
+
+## Tasks
+- Edit `package.json`:
+  - In the `dependencies` section, delete entries for `openai`, `dotenv`, `ejs`, `js-yaml`, `minimatch`, and `zod`.
+  - In the `devDependencies` section, remove any ESLint plugins or other packages that are not referenced in code or tests (e.g., `eslint-plugin-react`, `eslint-plugin-security`, `markdown-it`, `markdown-it-github`, `npm-check-updates`).
+- Run `npm install` to update `package-lock.json` accordingly.
+
+## Verification
+1. Run `npm install` and confirm the lockfile is updated without errors.
+2. Run `npm test` and ensure all existing tests pass.
+3. Run `node src/lib/main.js --help` to verify the CLI still works as expected without import errors.
+4. Check `npm ls` shows only relevant dependencies.
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":164561,"completion_tokens":369,"total_tokens":164930,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
