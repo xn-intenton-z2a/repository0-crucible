@@ -31,7 +31,7 @@ describe("computePiBBP", () => {
 
 describe("CLI", () => {
   const mainPath = fileURLToPath(new URL("../../src/lib/main.js", import.meta.url));
-  let cleanupFiles = [];
+  const cleanupFiles = [];
   afterAll(() => {
     cleanupFiles.forEach((f) => {
       if (fs.existsSync(f)) fs.unlinkSync(f);
@@ -62,20 +62,42 @@ describe("CLI", () => {
   });
 
   test("unknown output type errors", () => {
-    const result = spawnSync("node", [mainPath, "--algorithm", "spigot", "--output", "xml", "--digits", "10"]);
+    const result = spawnSync("node", [
+      mainPath,
+      "--algorithm",
+      "spigot",
+      "--output",
+      "xml",
+      "--digits",
+      "10"
+    ]);
     expect(result.status).toBe(1);
     expect(result.stderr.toString()).toMatch(/Unknown output type: xml/);
   });
 
   test("default PNG output filename for decimal mode", () => {
-    const result = spawnSync("node", [mainPath, "--algorithm", "spigot", "--digits", "10", "--output", "png"]);
+    const result = spawnSync("node", [
+      mainPath,
+      "--algorithm",
+      "spigot",
+      "--digits",
+      "10",
+      "--output",
+      "png"
+    ]);
     expect(result.status).toBe(0);
     expect(fs.existsSync("pi.png")).toBe(true);
     cleanupFiles.push("pi.png");
   });
 
   test("default benchmark PNG filename", () => {
-    const result = spawnSync("node", [mainPath, "--benchmark-sizes", "5,10", "--benchmark-output", "png"]);
+    const result = spawnSync("node", [
+      mainPath,
+      "--benchmark-sizes",
+      "5,10",
+      "--benchmark-output",
+      "png"
+    ]);
     expect(result.status).toBe(0);
     expect(fs.existsSync("benchmark.png")).toBe(true);
     cleanupFiles.push("benchmark.png");
