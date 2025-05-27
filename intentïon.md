@@ -4069,3 +4069,70 @@ LLM API Usage:
 ```
 
 ---
+## Issue to enhanced Issue at 2025-05-27T10:27:39.469Z
+
+Activity:
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/ with enhanced description:
+
+## Overview
+
+Enhance the existing `--fetch-source <url>` CLI command by adding an optional `--output-file <filePath>` argument. When provided, the fetched JSON data should be written to the specified file instead of printed to stdout, giving users flexibility to persist live data to disk.
+
+## Acceptance Criteria
+
+1. **Persist to File**
+   - Given a valid URL and an output path, running:  
+     ```bash
+     npm run start -- --fetch-source <validUrl> --output-file out.json
+     ```
+   - Results in:
+     - A file at `out.json` containing the fetched JSON data formatted with 2-space indentation.
+     - No JSON printed to stdout.
+     - `process.exit(0)` is called.
+
+2. **Default Behavior Maintained**
+   - Given a valid URL without `--output-file`, running:
+     ```bash
+     npm run start -- --fetch-source <validUrl>
+     ```
+   - Results in:
+     - JSON printed to stdout via `console.log(JSON.stringify(data, null, 2))`.
+     - `process.exit(0)` is called.
+
+3. **Error Handling**
+   - When `writeFile` rejects (e.g., permission denied), running with `--output-file`:
+     - Prints the error message to stderr via `console.error`.
+     - Calls `process.exit(1)`.
+
+4. **Tests**
+   - **Unit Tests**:
+     - Mock `fs/promises.writeFile` to resolve: assert it is called with the correct file path and formatted JSON.
+     - Mock `writeFile` to reject: assert `console.error` is called with the error and `process.exit(1)`.
+   - **CLI Integration Tests**:
+     - Spy on `writeFile`, `console.log`, and `process.exit` when using `--output-file`:
+       - Assert `writeFile` invocation, no stdout printed, and exit code `0`.
+     - Simulate write error: assert error printed to stderr and exit code `1`.
+
+## Implementation Notes
+
+- In `src/lib/main.js`: 
+  1. Import `writeFile` from `fs/promises`.
+  2. In the `--fetch-source` handling block:
+     - Detect `--output-file <filePath>` argument after the URL.
+     - If provided, use `await writeFile(filePath, JSON.stringify(data, null, 2))` and exit `0`.
+     - On write failure, call `console.error(error.message)` and exit `1`.
+     - Otherwise, preserve existing behavior: `console.log(JSON.stringify(data, null, 2))` and exit `0`.
+
+## Documentation
+
+- Update `features/FETCH_SOURCE.md` to describe the new `--output-file` option with examples.
+- Update `README.md` under **Features > Fetch Source** with the `--output-file` usage example and expected output.
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":8762,"completion_tokens":1791,"total_tokens":10553,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1088,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
