@@ -4004,3 +4004,68 @@ LLM API Usage:
 ```
 
 ---
+## Feature to Issue at 2025-05-27T10:26:33.382Z
+
+Activity:
+
+Generated issue 2768 for feature "fetch-source" with URL https://github.com/xn-intenton-z2a/repository0-crucible/issues/2768
+
+title:
+
+Add --output-file option to --fetch-source CLI flag
+
+And description:
+
+## Overview
+
+Enhance the existing `--fetch-source <url>` command by adding an optional `--output-file <filePath>` argument. When provided, the fetched JSON data should be written to the specified file instead of printed to stdout. This gives users the flexibility to persist live data to disk.
+
+## Changes Required
+
+1. **src/lib/main.js**
+   - Import `writeFile` from `fs/promises`.
+   - In the `--fetch-source` block, after validating and fetching `data`:
+     - Detect if `--output-file <filePath>` follows the URL.
+     - If provided:
+       1. Call `await writeFile(filePath, JSON.stringify(data, null, 2));`
+       2. Exit with code `0` without calling `console.log`.
+       3. On write error, print the error message to `console.error` and `process.exit(1)`.
+     - If `--output-file` is not provided, preserve the existing behavior: print JSON to stdout and `process.exit(0)`.
+
+2. **tests/unit/main.test.js**
+   - **Unit tests for writeFile**:
+     - Mock `fs/promises.writeFile` to resolve and reject.
+     - Assert that `writeFile` is called with the correct file path and formatted JSON when `--output-file` is used.
+     - Simulate rejection and assert that `console.error` is called with the error and `process.exit(1)`.
+   - **CLI integration tests**:
+     - **With `--output-file`**:
+       - Spy on `writeFile` and `process.exit`, suppress `console.log`.
+       - Run `await main(["--fetch-source", validUrl, "--output-file", "out.json"]);`
+       - Assert `writeFile` invocation and exit code `0`.
+       - Confirm no JSON printed to stdout.
+     - **Write error**:
+       - Mock `writeFile` to reject.
+       - Assert error printed to stderr and exit code `1`.
+
+3. **Documentation**
+   - **features/FETCH_SOURCE.md**: Add sections describing the `--output-file` flag usage and examples.
+   - **README.md**: Under **Features > Fetch Source**, note the optional `--output-file` flag and include an example:
+     ```bash
+     npm run start -- --fetch-source https://restcountries.com/v3.1/all --output-file data.json
+     ```
+
+## Verification
+
+1. Run `npm test` to ensure all new and existing tests pass.
+2. Execute CLI scenarios:
+   - Without `--output-file`: JSON printed to stdout and exit `0`.
+   - With `--output-file`: `out.json` created containing formatted JSON and exit `0`.
+   - On file write error: error message printed to stderr and exit `1`.
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":44175,"completion_tokens":1515,"total_tokens":45690,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":832,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
