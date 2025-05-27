@@ -65,3 +65,62 @@ LLM API Usage:
 ```
 
 ---
+## Feature to Issue at 2025-05-27T02:47:20.280Z
+
+Activity:
+
+Generated issue 2757 for feature "list-sources" with URL https://github.com/xn-intenton-z2a/repository0-crucible/issues/2757
+
+title:
+
+Implement --list-sources CLI flag and getSupportedDataSources API
+
+And description:
+
+## Overview
+
+Add a new `--list-sources` CLI flag and a programmatic API to expose the list of public data source URLs supported by the library. This will allow users to discover available data sources without peeking into code.
+
+## Changes Required
+
+1. **src/lib/main.js**
+   - Define a constant `supportedDataSources` as an array of URL strings (e.g., World Bank, REST Countries).
+   - Export a function `getSupportedDataSources()` that returns `supportedDataSources`.
+   - In the entrypoint `main(args)`, detect if `args` includes `"--list-sources"`. If so:
+     - Print `JSON.stringify(supportedDataSources, null, 2)` to stdout.
+     - Exit the process with code `0` immediately.
+   - Preserve all existing behavior for other flags.
+
+2. **tests/unit/main.test.js**
+   - Add a unit test for `getSupportedDataSources()` that asserts it returns the defined array exactly.
+   - Add a CLI test that simulates `process.argv = ['node','src/lib/main.js','--list-sources']`, captures `console.log`, parses the output as JSON, and asserts it matches `getSupportedDataSources()`.
+
+3. **README.md**
+   - Under **Features**, document the new **List Sources** feature.
+   - In **Usage**, add an example:
+     ```bash
+     # List all supported public data source URLs
+     npm run start -- --list-sources
+     # Sample output:
+     [
+       "https://api.worldbank.org/v2/country",
+       "https://restcountries.com/v3.1/all"
+     ]
+     ```
+
+4. **package.json**
+   - No changes needed: the existing `start` script already calls `node src/lib/main.js`.
+
+## Verification
+
+- Run `npm test` to ensure all unit and CLI tests pass.
+- Execute `npm run start -- --list-sources` (or `node src/lib/main.js --list-sources`) and confirm the JSON output matches the array from `getSupportedDataSources()`.
+
+Once these changes are merged, users will have a discoverable list of supported data sources via both CLI and API.
+
+LLM API Usage:
+```json
+{"prompt_tokens":5131,"completion_tokens":1822,"total_tokens":6953,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1280,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
