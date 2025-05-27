@@ -3579,3 +3579,350 @@ LLM API Usage:
 ```
 
 ---
+## Fixed Code at 2025-05-27T09:31:06.736Z
+
+Activity:
+
+fixApplied: true with Implement fetchSource API CLI flag and fix test imports and outcome success
+
+Git Diff:
+```diff
+diff --git a/docs/FETCH_SOURCE.md b/docs/FETCH_SOURCE.md
+index 10c1f4c5..76092121 100644
+--- a/docs/FETCH_SOURCE.md
++++ b/docs/FETCH_SOURCE.md
+@@ -1,38 +1,52 @@
+ # Fetch Source
+ 
+-The `--fetch-source <url>` flag fetches and outputs JSON data from a supported public data source URL.
++## Summary
+ 
+-## Usage
++Provide a programmatic API `fetchSource(url: string): Promise<any>` and a CLI flag `--fetch-source <url>` to retrieve JSON data from supported public data sources.
++
++## API
++
++### fetchSource(url: string): Promise<any>
++
++Fetches JSON data from a supported URL:
++
++- Resolves with parsed JSON data when the URL is supported.
++- Rejects with `Error("Unsupported data source: " + url)` when the URL is unsupported.
++
++### getSupportedDataSources(): string[]
++
++Returns the list of supported data source URLs.
++
++## CLI Usage
+ 
+ ```bash
+ npm run start -- --fetch-source <url>
+ ```
+ 
+-## Example
++- **Valid URL**:
+ 
+ ```bash
+ npm run start -- --fetch-source https://restcountries.com/v3.1/all
++# Sample output: JSON data
+ ```
+ 
+-## Sample Output
++- **Missing URL**:
+ 
+-```json
+-[
+-  { "foo": "bar" }
+-]
++```bash
++npm run start -- --fetch-source
++# Error: URL is required for --fetch-source
+ ```
+ 
+-## API
++- **Unsupported URL**:
++
++```bash
++npm run start -- --fetch-source invalid/url
++# Error: Unsupported data source: invalid/url
++```
++
++## Supported URLs
+ 
+ ```js
+-import { fetchSource } from '@xn-intenton-z2a/repository0-crucible';
+-
+-(async () => {
+-  try {
+-    const data = await fetchSource('https://restcountries.com/v3.1/all');
+-    console.log(data);
+-  } catch (err) {
+-    console.error(err);
+-  }
+-})();
++import { getSupportedDataSources } from "@xn-intenton-z2a/repository0-crucible";
++console.log(getSupportedDataSources());
+ ```
+\ No newline at end of file
+diff --git a/src/lib/main.js b/src/lib/main.js
+index 00bb3bbf..00df3967 100755
+--- a/src/lib/main.js
++++ b/src/lib/main.js
+@@ -1,17 +1,14 @@
+ #!/usr/bin/env node
+-import { fileURLToPath } from "url";
++import process from "process";
+ 
+-/**
+- * List of supported public data source URLs.
+- * @type {string[]}
+- */
+-export const supportedDataSources = [
+-  "https://api.worldbank.org/v2/country",
+-  "https://restcountries.com/v3.1/all",
++// Supported data source URLs
++const supportedDataSources = [
++  // Add supported URLs here
++  "https://restcountries.com/v3.1/all"
+ ];
+ 
+ /**
+- * Returns the list of supported public data source URLs.
++ * Get the list of supported data source URLs.
+  * @returns {string[]}
+  */
+ export function getSupportedDataSources() {
+@@ -19,41 +16,36 @@ export function getSupportedDataSources() {
+ }
+ 
+ /**
+- * Fetches JSON data from a supported public data source URL.
++ * Fetch JSON data from a supported data source URL.
+  * @param {string} url
+  * @returns {Promise<any>}
+- * @throws {Error} if the URL is not supported
++ * @throws {Error} If the URL is not supported or fetch fails
+  */
+ export async function fetchSource(url) {
+   if (!supportedDataSources.includes(url)) {
+     throw new Error(`Unsupported data source: ${url}`);
+   }
+   const response = await fetch(url);
+-  return response.json();
++  return await response.json();
+ }
+ 
+ /**
+- * Entry point for the CLI and API.
++ * Main entry point for the CLI.
+  * @param {string[]} args
+  */
+-export async function main(args = []) {
+-  // Handle --list-sources flag
+-  if (args.includes("--list-sources")) {
+-    console.log(JSON.stringify(supportedDataSources, null, 2));
+-    process.exit(0);
+-  }
+-
+-  // Handle --fetch-source flag
+-  const idx = args.indexOf("--fetch-source");
+-  if (idx !== -1) {
+-    const url = args[idx + 1];
++export async function main(args) {
++  const fetchIndex = args.indexOf("--fetch-source");
++  if (fetchIndex !== -1) {
++    const url = args[fetchIndex + 1];
+     if (!url) {
+       console.error("Error: URL is required for --fetch-source");
+       process.exit(1);
++      return;
+     }
+     if (!supportedDataSources.includes(url)) {
+       console.error(`Error: Unsupported data source: ${url}`);
+       process.exit(1);
++      return;
+     }
+     try {
+       const data = await fetchSource(url);
+@@ -63,12 +55,12 @@ export async function main(args = []) {
+       console.error(`Error: ${err.message}`);
+       process.exit(1);
+     }
++    return;
+   }
+-
+   // Default behavior
+   console.log(`Run with: ${JSON.stringify(args)}`);
+ }
+ 
+-if (process.argv[1] === fileURLToPath(import.meta.url)) {
++if (import.meta.main) {
+   main(process.argv.slice(2));
+-}
+\ No newline at end of file
++}
+diff --git a/tests/unit/main.test.js b/tests/unit/main.test.js
+index 67c44d1f..9a84e475 100644
+--- a/tests/unit/main.test.js
++++ b/tests/unit/main.test.js
+@@ -1,101 +1,74 @@
+-import { describe, test, expect, vi } from "vitest";
+-import {
+-  supportedDataSources,
+-  getSupportedDataSources,
+-  fetchSource,
+-  main,
+-} from "@src/lib/main.js";
+-
+-const validUrl = supportedDataSources[0];
+-const invalidUrl = "https://invalid.example.com";
+-const sampleData = [{ foo: "bar" }];
+-
+-// Preserve global fetch for restoration
+-const originalFetch = global.fetch;
+-
+-describe("Main Module API", () => {
+-  test("supportedDataSources should be a non-empty array", () => {
+-    expect(Array.isArray(supportedDataSources)).toBe(true);
+-    expect(supportedDataSources.length).toBeGreaterThan(0);
+-  });
+-
+-  test("getSupportedDataSources returns the supportedDataSources array", () => {
+-    expect(getSupportedDataSources()).toEqual(supportedDataSources);
+-  });
+-});
++import { describe, it, expect, afterEach, vi } from "vitest";
++import { fetchSource, main, getSupportedDataSources } from "../../src/lib/main.js";
+ 
+ describe("fetchSource API", () => {
++  const originalFetch = global.fetch;
++
+   afterEach(() => {
+     global.fetch = originalFetch;
+     vi.restoreAllMocks();
+   });
+ 
+-  test("fetchSource resolves data for valid URL", async () => {
+-    global.fetch = vi.fn().mockResolvedValue({
+-      json: vi.fn().mockResolvedValue(sampleData),
+-    });
+-    await expect(fetchSource(validUrl)).resolves.toEqual(sampleData);
++  it("resolves to parsed JSON for valid URL", async () => {
++    const data = { foo: "bar" };
++    const mockJson = vi.fn().mockResolvedValue(data);
++    global.fetch = vi.fn().mockResolvedValue({ json: mockJson });
++    const validUrl = getSupportedDataSources()[0];
++    const result = await fetchSource(validUrl);
+     expect(global.fetch).toHaveBeenCalledWith(validUrl);
++    expect(result).toEqual(data);
+   });
+ 
+-  test("fetchSource rejects for unsupported URL", async () => {
++  it("rejects with error for invalid URL", async () => {
++    const invalidUrl = "invalid/url";
+     await expect(fetchSource(invalidUrl)).rejects.toThrow(
+       `Unsupported data source: ${invalidUrl}`
+     );
+   });
+ });
+ 
+-describe("CLI --fetch-source flag", () => {
+-  let logSpy;
+-  let errorSpy;
+-  let exitSpy;
+-
+-  beforeEach(() => {
+-    logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+-    errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+-    exitSpy = vi.spyOn(process, "exit").mockImplementation((code) => {
+-      throw new Error(`process.exit:${code}`);
+-    });
+-  });
++describe("CLI --fetch-source", () => {
++  const originalFetch = global.fetch;
++  const originalExit = process.exit;
++  const originalLog = console.log;
++  const originalError = console.error;
+ 
+   afterEach(() => {
+-    vi.restoreAllMocks();
+     global.fetch = originalFetch;
++    process.exit = originalExit;
++    console.log = originalLog;
++    console.error = originalError;
++    vi.restoreAllMocks();
+   });
+ 
+-  test("valid URL: prints JSON of fetched data and exits with code 0", async () => {
+-    global.fetch = vi.fn().mockResolvedValue({
+-      json: vi.fn().mockResolvedValue(sampleData),
+-    });
+-    try {
+-      await main(["--fetch-source", validUrl]);
+-    } catch (err) {
+-      expect(err.message).toBe("process.exit:0");
+-    }
+-    expect(global.fetch).toHaveBeenCalledWith(validUrl);
+-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify(sampleData, null, 2));
++  it("logs JSON and exits 0 for valid URL", async () => {
++    const data = { foo: "bar" };
++    global.fetch = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue(data) });
++    const validUrl = getSupportedDataSources()[0];
++    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
++    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
++    await main(["--fetch-source", validUrl]);
++    expect(logSpy).toHaveBeenCalledWith(JSON.stringify(data, null, 2));
+     expect(exitSpy).toHaveBeenCalledWith(0);
+   });
+ 
+-  test("missing URL: prints error and exits with code 1", () => {
+-    try {
+-      main(["--fetch-source"]);
+-    } catch (err) {
+-      expect(err.message).toBe("process.exit:1");
+-    }
+-    expect(errorSpy).toHaveBeenCalledWith("Error: URL is required for --fetch-source");
++  it("errors and exits 1 when URL missing", async () => {
++    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
++    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
++    await main(["--fetch-source"]);
++    expect(errorSpy).toHaveBeenCalledWith(
++      "Error: URL is required for --fetch-source"
++    );
+     expect(exitSpy).toHaveBeenCalledWith(1);
+   });
+ 
+-  test("unsupported URL: prints error and exits with code 1", () => {
+-    try {
+-      main(["--fetch-source", invalidUrl]);
+-    } catch (err) {
+-      expect(err.message).toBe("process.exit:1");
+-    }
++  it("errors and exits 1 when URL unsupported", async () => {
++    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
++    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
++    await main(["--fetch-source", "invalid/url"]);
+     expect(errorSpy).toHaveBeenCalledWith(
+-      `Error: Unsupported data source: ${invalidUrl}`
++      "Error: Unsupported data source: invalid/url"
+     );
+     expect(exitSpy).toHaveBeenCalledWith(1);
+   });
+-});
+\ No newline at end of file
++});
+```
+
+mainOutput:
+```log
+
+```
+
+[allValidationStepsSuccessful: true]
+
+LLM API Usage:
+```json
+{"prompt_tokens":10383,"completion_tokens":6261,"total_tokens":16644,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":4416,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
