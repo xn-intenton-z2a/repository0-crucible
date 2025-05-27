@@ -2822,3 +2822,83 @@ LLM API Usage:
 ```
 
 ---
+## Issue to Code at 2025-05-27T07:45:25.126Z
+
+Activity:
+
+fixApplied: true with message Refresh README with List Sources feature and usage examples
+
+Git Diff:
+```diff
+diff --git a/README.md b/README.md
+index 618a07f8..59eca1f5 100644
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,6 @@
+ # repository0-crucible
+ 
+-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
++`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+ 
+ To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
+ 
+@@ -11,7 +11,7 @@ This readme shall evolve into a JavaScript library based on of the seed CONTRIBU
+ The repository is intended as a template that includes:
+ * A Template Base: A starting point for new projects.
+ * A Running Experiment: An example implementation that demonstrates one way to use the template.
+-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
++* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+ 
+ ## Installation
+ 
+@@ -23,23 +23,27 @@ npm install repository0-crucible
+ 
+ ## Features
+ 
+-TODO: Add features here.
++- **List Sources**: Expose the list of supported public data source URLs via the `--list-sources` CLI flag and the `getSupportedDataSources()` API.
+ 
+ ## Usage
+ 
+-To run the CLI tool and see help instructions:
++List supported data sources:
+ 
+ ```bash
+-node src/lib/main.js --help
++node src/lib/main.js --list-sources
+ ```
+ 
+-### Example Commands
++Run the default demo:
+ 
+-- **Default Demo Output:**
+-  ```bash
+-  npm run start
+-  ```
++```bash
++npm run start
++# Prints: Run with: [] (or Run with: ["foo","bar"] when args provided)
++```
++
++### Example Commands
+ 
++- **List Sources:** `npm run start -- --list-sources`
++- **Default Demo:** `npm run start`
+ 
+ ## Incremental Changes Plan
+ 
+```
+
+mainOutput:
+```log
+
+```
+
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2763 with title: ""]
+
+LLM API Usage:
+```json
+{"prompt_tokens":39068,"completion_tokens":2140,"total_tokens":41208,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1408,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
