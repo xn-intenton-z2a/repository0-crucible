@@ -1,53 +1,74 @@
-import { describe, test, expect, vi } from "vitest";
-import {
-  supportedDataSources,
-  getSupportedDataSources,
-  main,
-} from "@src/lib/main.js";
+import { describe, it, expect, afterEach, vi } from "vitest";
+import { fetchSource, main, getSupportedDataSources } from "../../src/lib/main.js";
 
-describe("Main Module API", () => {
-  test("supportedDataSources should be a non-empty array", () => {
-    expect(Array.isArray(supportedDataSources)).toBe(true);
-    expect(supportedDataSources.length).toBeGreaterThan(0);
+describe("fetchSource API", () => {
+  const originalFetch = global.fetch;
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+    vi.restoreAllMocks();
   });
 
-  test("getSupportedDataSources returns the supportedDataSources array", () => {
-    expect(getSupportedDataSources()).toEqual(supportedDataSources);
+  it("resolves to parsed JSON for valid URL", async () => {
+    const data = { foo: "bar" };
+    const mockJson = vi.fn().mockResolvedValue(data);
+    global.fetch = vi.fn().mockResolvedValue({ json: mockJson });
+    const validUrl = getSupportedDataSources()[0];
+    const result = await fetchSource(validUrl);
+    expect(global.fetch).toHaveBeenCalledWith(validUrl);
+    expect(result).toEqual(data);
   });
-});
 
-describe("CLI --list-sources flag", () => {
-  test("prints JSON of supportedDataSources and exits with code 0", () => {
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const exitSpy = vi.spyOn(process, "exit").mockImplementation(code => {
-      throw new Error(`process.exit:${code}`);
-    });
-    try {
-      main(["--list-sources"]);
-    } catch (err) {
-      expect(err.message).toBe("process.exit:0");
-    }
-    expect(logSpy).toHaveBeenCalledWith(
-      JSON.stringify(supportedDataSources, null, 2)
+  it("rejects with error for invalid URL", async () => {
+    const invalidUrl = "invalid/url";
+    await expect(fetchSource(invalidUrl)).rejects.toThrow(
+      `Unsupported data source: ${invalidUrl}`
     );
-    expect(exitSpy).toHaveBeenCalledWith(0);
-    logSpy.mockRestore();
-    exitSpy.mockRestore();
   });
 });
 
-describe("CLI default behavior", () => {
-  test("prints default Run with message for provided args", () => {
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["foo", "bar"]);
-    expect(logSpy).toHaveBeenCalledWith("Run with: [\"foo\",\"bar\"]");
-    logSpy.mockRestore();
+describe("CLI --fetch-source", () => {
+  const originalFetch = global.fetch;
+  const originalExit = process.exit;
+  const originalLog = console.log;
+  const originalError = console.error;
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+    process.exit = originalExit;
+    console.log = originalLog;
+    console.error = originalError;
+    vi.restoreAllMocks();
   });
 
-  test("prints default Run with message for no args", () => {
+  it("logs JSON and exits 0 for valid URL", async () => {
+    const data = { foo: "bar" };
+    global.fetch = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue(data) });
+    const validUrl = getSupportedDataSources()[0];
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main();
-    expect(logSpy).toHaveBeenCalledWith("Run with: []");
-    logSpy.mockRestore();
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+    await main(["--fetch-source", validUrl]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify(data, null, 2));
+    expect(exitSpy).toHaveBeenCalledWith(0);
+  });
+
+  it("errors and exits 1 when URL missing", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+    await main(["--fetch-source"]);
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Error: URL is required for --fetch-source"
+    );
+    expect(exitSpy).toHaveBeenCalledWith(1);
+  });
+
+  it("errors and exits 1 when URL unsupported", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+    await main(["--fetch-source", "invalid/url"]);
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Error: Unsupported data source: invalid/url"
+    );
+    expect(exitSpy).toHaveBeenCalledWith(1);
   });
 });
