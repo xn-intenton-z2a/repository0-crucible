@@ -45,10 +45,6 @@ npm run start
 - **List Sources:** `npm run start -- --list-sources`
 - **Default Demo:** `npm run start`
 
-## Incremental Changes Plan
-
-TODO: Add forthcoming changes here.
-
 ## Contributing
 
 We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
