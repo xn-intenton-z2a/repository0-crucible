@@ -1004,3 +1004,59 @@ and outcome "success"
 
 ---
 
+
+## Issue to Ready Issue at 2025-05-27T03:52:01.237Z
+
+Activity:
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2757 with action enhance and updated description:
+
+## Overview
+
+Implement a new `--list-sources` CLI flag and a programmatic API function `getSupportedDataSources()` to expose the array of supported public data source URLs.
+
+## Acceptance Criteria
+
+1. In `src/lib/main.js`:
+   - Define a constant `supportedDataSources` as an array of URL strings, including at minimum:
+     - "https://api.worldbank.org/v2/country"
+     - "https://restcountries.com/v3.1/all"
+   - Export a function `getSupportedDataSources()` that returns the `supportedDataSources` array.
+   - Modify the `main(args)` entrypoint so that if `args` includes `"--list-sources"`, it:
+     - Prints `JSON.stringify(supportedDataSources, null, 2)` to stdout.
+     - Exits the process with code `0` immediately.
+   - Ensure behavior for all other flags remains unchanged.
+
+2. In `tests/unit/main.test.js`:
+   - Add a unit test verifying `getSupportedDataSources()` returns the exact `supportedDataSources` array.
+   - Add a CLI integration test that:
+     - Calls `main(["--list-sources"])`.
+     - Captures console output and process exit.
+     - Asserts the output parses as JSON matching `getSupportedDataSources()`.
+     - Verifies the process exits with code `0`.
+
+3. Documentation updates:
+   - docs/LIST_SOURCES.md:
+     - Ensure it describes the `--list-sources` flag, sample output, and programmatic API correctly.
+   - README.md:
+     - Under **Features**, add a **List Sources** section with a brief summary.
+     - Under **Usage**, add an example invocation:
+       ```bash
+       npm run start -- --list-sources
+       # Sample output:
+       [
+         "https://api.worldbank.org/v2/country",
+         "https://restcountries.com/v3.1/all"
+       ]
+       ```
+
+4. Verification:
+   - Running `npm test` should pass all tests.
+   - Running `npm run start -- --list-sources` should output the JSON array matching `getSupportedDataSources()` and exit with code `0`.
+
+LLM API Usage:
+```json
+{"prompt_tokens":7086,"completion_tokens":1438,"total_tokens":8524,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":896,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
