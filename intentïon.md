@@ -178,3 +178,169 @@ LLM API Usage:
 ```
 
 ---
+## Issue to Code at 2025-05-27T02:50:08.509Z
+
+Activity:
+
+fixApplied: true to branch agentic-lib-issue-2757 with message Add --list-sources CLI flag and getSupportedDataSources API with tests and docs and outcome success
+
+Git Diff:
+```diff
+diff --git a/src/lib/main.js b/src/lib/main.js
+index 3cdd4e2a..17b92a4e 100755
+--- a/src/lib/main.js
++++ b/src/lib/main.js
+@@ -3,7 +3,28 @@
+ 
+ import { fileURLToPath } from "url";
+ 
+-export function main(args) {
++export const supportedDataSources = [
++  "https://api.worldbank.org/v2/country",
++  "https://restcountries.com/v3.1/all",
++];
++
++/**
++ * Returns the list of supported public data source URLs.
++ * @returns {string[]}
++ */
++export function getSupportedDataSources() {
++  return supportedDataSources;
++}
++
++/**
++ * Entry point for the CLI and API.
++ * @param {string[]} args
++ */
++export function main(args = []) {
++  if (args.includes("--list-sources")) {
++    console.log(JSON.stringify(supportedDataSources, null, 2));
++    process.exit(0);
++  }
+   console.log(`Run with: ${JSON.stringify(args)}`);
+ }
+ 
+diff --git a/tests/unit/main.test.js b/tests/unit/main.test.js
+index 6ea3d264..64c2cc3e 100644
+--- a/tests/unit/main.test.js
++++ b/tests/unit/main.test.js
+@@ -1,16 +1,53 @@
+-import { describe, test, expect } from "vitest";
+-import * as mainModule from "@src/lib/main.js";
+-import { main } from "@src/lib/main.js";
++import { describe, test, expect, vi } from "vitest";
++import {
++  supportedDataSources,
++  getSupportedDataSources,
++  main,
++} from "@src/lib/main.js";
+ 
+-describe("Main Module Import", () => {
+-  test("should be non-null", () => {
+-    expect(mainModule).not.toBeNull();
++describe("Main Module API", () => {
++  test("supportedDataSources should be a non-empty array", () => {
++    expect(Array.isArray(supportedDataSources)).toBe(true);
++    expect(supportedDataSources.length).toBeGreaterThan(0);
++  });
++
++  test("getSupportedDataSources returns the supportedDataSources array", () => {
++    expect(getSupportedDataSources()).toEqual(supportedDataSources);
+   });
+ });
+ 
+-describe("Main Output", () => {
+-  test("should terminate without error", () => {
+-    process.argv = ["node", "src/lib/main.js"];
++describe("CLI --list-sources flag", () => {
++  test("prints JSON of supportedDataSources and exits with code 0", () => {
++    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
++    const exitSpy = vi.spyOn(process, "exit").mockImplementation(code => {
++      throw new Error(`process.exit:${code}`);
++    });
++    try {
++      main(["--list-sources"]);
++    } catch (err) {
++      expect(err.message).toBe("process.exit:0");
++    }
++    expect(logSpy).toHaveBeenCalledWith(
++      JSON.stringify(supportedDataSources, null, 2)
++    );
++    expect(exitSpy).toHaveBeenCalledWith(0);
++    logSpy.mockRestore();
++    exitSpy.mockRestore();
++  });
++});
++
++describe("CLI default behavior", () => {
++  test("prints default Run with message for provided args", () => {
++    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
++    main(["foo", "bar"]);
++    expect(logSpy).toHaveBeenCalledWith("Run with: [\"foo\",\"bar\"]");
++    logSpy.mockRestore();
++  });
++
++  test("prints default Run with message for no args", () => {
++    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+     main();
++    expect(logSpy).toHaveBeenCalledWith("Run with: []");
++    logSpy.mockRestore();
+   });
+ });\n\n// New [docs/LIST_SOURCES.md]:\n# List Sources
+
+The `--list-sources` flag outputs a JSON array of supported public data source URLs.
+
+## Usage
+
+```bash
+npm run start -- --list-sources
+```
+
+## Sample Output
+
+```json
+[
+  "https://api.worldbank.org/v2/country",
+  "https://restcountries.com/v3.1/all"
+]
+```
+
+## API
+
+Programmatic access to the list of supported sources:
+
+```js
+import { getSupportedDataSources } from '@xn-intenton-z2a/repository0-crucible';
+
+const sources = getSupportedDataSources();
+console.log(sources);
+```
+```
+
+mainOutput:
+```log
+
+```
+
+installAfterUpdateOutcome: success
+
+ciAfterUpdateOutcome: success
+
+testAfterUpdateOutcome: success
+
+mainAfterUpdateOutcome: success
+
+commitOutcome: success
+
+postResolutionCommentOutcome: success
+
+allValidationStepsSuccessful: true
+
+[for issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2757 with title: ""]
+
+LLM API Usage:
+```json
+{"prompt_tokens":9133,"completion_tokens":3971,"total_tokens":13104,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":2752,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
