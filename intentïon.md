@@ -1124,3 +1124,95 @@ LLM API Usage:
 ```
 
 ---
+## Feature to Issue at 2025-05-27T04:27:23.608Z
+
+Activity:
+
+Generated issue 2761 for feature "transform-to-owl" with URL https://github.com/xn-intenton-z2a/repository0-crucible/issues/2761
+
+title:
+
+Implement --transform-to-owl CLI flag and transformToOwl API
+
+And description:
+
+## Overview
+
+Enable transformation of JSON data from supported sources into OWL ontology JSON. This issue will add a programmatic `transformToOwl(data, options?)` API and a new `--transform-to-owl <url>` CLI flag with optional `--base-uri <uri>`, allowing users to fetch raw JSON and output a minimal OWL JSON representation.
+
+## Changes Required
+
+1. **src/lib/main.js**
+   - Export a new function:
+     ```js
+     /**
+      * Transforms raw JSON data into a minimal OWL JSON structure.
+      * @param {any} data
+      * @param {{ baseUri?: string }} [options]
+      * @returns {any}
+      */
+     export function transformToOwl(data, options = {}) {
+       const base = options.baseUri || "http://example.org/ontology";
+       // Wrap data into @context and @graph with classes and individuals
+       // ...implementation...
+     }
+     ```
+   - Extend `main(args)` to detect:
+     - `--transform-to-owl <url>` (required)
+     - Optional `--base-uri <uri>`
+   - Workflow in `main` when flags are present:
+     1. Validate that `<url>` is in `supportedDataSources`. If not, print `Error: Unsupported data source: <url>` to stderr and `process.exit(1)`.
+     2. Fetch raw JSON via `fetchSource(url)`.
+     3. Call `transformToOwl(fetchedData, { baseUri })`.
+     4. Print `JSON.stringify(ontology, null, 2)` to stdout and `process.exit(0)`.
+     5. On any error (fetch or transform), print the error message to stderr and `process.exit(1)`.
+   - Ensure existing flags (`--list-sources`, `--fetch-source`) remain unchanged.
+
+2. **tests/unit/main.test.js**
+   - **Unit tests for `transformToOwl`**:
+     - Provide a sample data object or array (e.g., `[{ id: "1", name: "Alice" }]`) and a custom base URI. Assert the returned object has:
+       - An `@context` key containing the base URI mapping.
+       - An `@graph` array with the same number of individuals.
+       - Each individual has an `@id` prefixed by the base URI and an `@type` or property reflecting the source data fields.
+     - Test default behavior when `options.baseUri` is omitted (uses fixed default).
+   - **CLI integration tests for `--transform-to-owl`**:
+     - **Valid URL and base URI**:
+       - Spy on `console.log` and `process.exit`, call `await main(["--transform-to-owl", validUrl, "--base-uri", testUri])`.
+       - Assert `console.log` was called with a properly stringified OWL JSON and `process.exit(0)`.
+     - **Missing URL or unsupported URL**:
+       - Spy on `console.error` and `process.exit`, call `await main(["--transform-to-owl"])` or with an invalid URL.
+       - Assert the correct error message and `process.exit(1)`.
+
+3. **README.md**
+   - Under **Features**, add a **Transform to OWL** section describing:
+     - The purpose of `--transform-to-owl` and the `transformToOwl(data, options)` API.
+   - Under **Usage**, include an example:
+     ```bash
+     # Transform fetched JSON into OWL
+     npm run start -- \
+       --transform-to-owl https://restcountries.com/v3.1/all \
+       --base-uri http://example.org/ontology
+     # Sample output:
+     {
+       "@context": { "@vocab": "http://example.org/ontology#" },
+       "@graph": [ /* individuals here */ ]
+     }
+     ```
+
+## Verification Steps
+
+1. Run `npm test` to ensure all new and existing tests pass.
+2. Execute:
+   ```bash
+   npm run start -- --transform-to-owl https://restcountries.com/v3.1/all --base-uri http://example.org/ontology
+   ```
+   Confirm that a valid OWL JSON structure is printed and the process exits with code `0`.
+3. Execute with missing or unsupported URL to confirm correct error handling and exit code `1`.
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":16458,"completion_tokens":2520,"total_tokens":18978,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1472,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
