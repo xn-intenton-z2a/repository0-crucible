@@ -2407,3 +2407,55 @@ LLM API Usage:
 ```
 
 ---
+## Issue to Ready Issue at 2025-05-27T05:43:09.498Z
+
+Activity:
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2763 with action enhance and updated description:
+
+Title: Documenter: Refresh README with List Sources feature and accurate usage examples
+
+Description:
+The current README.md contains placeholder TODOs and does not reflect the functionality already implemented in src/lib/main.js (namely the `--list-sources` flag and default demo output). This update will make the README accurate and user-friendly.
+
+Changes to Apply (only modify README.md):
+1. Remove the `TODO: Add features here.` placeholder in the **Features** section.
+2. Add a **List Sources** entry under **Features**:
+   - Brief description: "Expose the list of supported public data source URLs via the `--list-sources` CLI flag and the `getSupportedDataSources()` API."
+   - Example invocation and output:
+     ```bash
+     npm run start -- --list-sources
+     // Prints JSON array of supported URLs
+     ```
+3. Update the **Usage** section:
+   - Replace the `--help` example with:
+     ```bash
+     node src/lib/main.js --list-sources
+     ```
+   - Document default invocation:
+     ```bash
+     npm run start
+     // Prints: Run with: [] (or Run with: ["foo","bar"] when args provided)
+     ```
+4. Under **Example Commands**, include:
+   - **List Sources:** `npm run start -- --list-sources`
+   - **Default Demo:** `npm run start`
+
+Acceptance Criteria:
+- README.md no longer contains the `TODO: Add features here.` placeholder in **Features**.
+- **Features** section includes a **List Sources** entry with description and CLI invocation example.
+- **Usage** section shows correct commands for listing sources and default demo, with sample outputs.
+- **Example Commands** section lists both List Sources and Default Demo commands.
+- Rendering README.md in a Markdown previewer shows the updated sections accurately.
+
+Verification:
+- View the updated README.md in a Markdown previewer or via GitHub UI.
+- Run `npm run start -- --list-sources` and verify the sample output matches the documented example.
+- Run `npm run start` and verify the default demo output matches the documented example.
+
+LLM API Usage:
+```json
+{"prompt_tokens":6828,"completion_tokens":835,"total_tokens":7663,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":320,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
