@@ -1216,3 +1216,53 @@ LLM API Usage:
 ```
 
 ---
+## Issue to enhanced Issue at 2025-05-27T04:28:10.405Z
+
+Activity:
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/ with enhanced description:
+
+## Overview
+
+Enable transformation of JSON data from supported sources into OWL ontology JSON by adding a programmatic `transformToOwl(data, options?)` API and a new `--transform-to-owl <url>` CLI flag with optional `--base-uri <uri>`. This will allow users to fetch raw JSON and output a minimal OWL JSON representation.
+
+## Testable Acceptance Criteria
+
+### transformToOwl API
+1. Given sample input data (e.g., `[{ id: "1", name: "Alice" }]`) and a custom base URI, calling `transformToOwl(data, { baseUri: testUri })` returns an object containing:
+   - An `@context` key mapping to `{ "@vocab": "<testUri>#" }`.
+   - An `@graph` array of the same length as the input array.
+   - Each element in `@graph` has an `@id` prefixed by `<testUri>#<id>` and properties matching the original fields.
+2. When `transformToOwl(data)` is called without `options.baseUri`, it uses the default base URI (`http://example.org/ontology`) in the output context and IDs.
+
+### CLI Integration (`main(args)`) for --transform-to-owl
+1. Running `await main(["--transform-to-owl", validUrl, "--base-uri", testUri])`:
+   - Calls `fetchSource(validUrl)` and then `transformToOwl(...)`.
+   - Prints the OWL JSON to stdout via `console.log(JSON.stringify(ontology, null, 2))`.
+   - Exits with code `0`.
+2. Running `await main(["--transform-to-owl", unsupportedUrl])`:
+   - Prints `Error: Unsupported data source: <unsupportedUrl>` to stderr.
+   - Exits with code `1`.
+3. Running `await main(["--transform-to-owl"])` (missing URL):
+   - Prints a usage or error message to stderr indicating the URL is required.
+   - Exits with code `1`.
+
+### Backward Compatibility
+- Existing flags (`--list-sources`, `--fetch-source`) continue to behave unchanged.
+
+## Verification Steps
+1. Run `npm test` to ensure all unit and CLI tests pass.
+2. Execute:
+   ```bash
+   npm run start -- --transform-to-owl https://restcountries.com/v3.1/all --base-uri http://example.org/ontology
+   ```
+   - Observe a valid OWL JSON structure printed and process exit code `0`.
+3. Execute with missing or invalid URL to confirm correct error handling and exit code `1`.
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":7025,"completion_tokens":901,"total_tokens":7926,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":256,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
