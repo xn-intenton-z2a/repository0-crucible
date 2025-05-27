@@ -1,55 +1,54 @@
-# PI Calculator CLI Tool
+# repository0-crucible
 
-`pi-calculator-cli` is a command-line application for calculating digits of π using multiple algorithms, benchmarking performance, and generating visual outputs.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
 
-## Project Overview
+To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
 
-The PI Calculator CLI supports three algorithms:
-- **Spigot**: sequential decimal digit generation.
-- **Chudnovsky**: high-precision series-based decimal calculation.
-- **BBP**: direct hexadecimal digit extraction at arbitrary positions.
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+
+## Repository Template
+
+The repository is intended as a template that includes:
+* A Template Base: A starting point for new projects.
+* A Running Experiment: An example implementation that demonstrates one way to use the template.
+* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
 
 ## Installation
 
-Requires Node.js ≥20.0.0.
+Install via npm:
 
 ```bash
-npm install
+npm install repository0-crucible
 ```
 
 ## Features
 
-* Generate decimal digits via **Spigot** and **Chudnovsky** algorithms.
-* Extract individual hexadecimal digits via **BBP** formula.
-* Output results as **text** or **PNG** visualizations (uses default filenames when none specified).
-* Emit **diagnostics** for compute and render timings.
-* Run **benchmarks** across multiple digit sizes with **text**, **CSV**, or **PNG** reports.
+TODO: Add features here.
 
-## Usage Examples
+## Usage
+
+To run the CLI tool and see help instructions:
 
 ```bash
-# Basic decimal output (Spigot)
-node src/lib/main.js --algorithm spigot --digits 20
-
-# Decimal PNG output (Chudnovsky)
-node src/lib/main.js --algorithm chudnovsky --digits 50 --output png --file pi50.png
-
-# Hex-digit extraction (BBP)
-node src/lib/main.js --algorithm bbp --hex-index 1
-
-# Benchmark text report (sizes 10,100)
-node src/lib/main.js --benchmark-sizes 10,100
-
-# Benchmark CSV output to file
-node src/lib/main.js --benchmark-sizes 50,200 --benchmark-output csv --benchmark-file benchmark.csv
-
-# Benchmark PNG chart to file
-node src/lib/main.js --benchmark-sizes 100,500 --benchmark-output png --benchmark-file performance.png
+node src/lib/main.js --help
 ```
 
-Refer to [Detailed CLI Documentation](docs/PI_CALCULATOR.md) for full option descriptions, defaults, and examples.
+### Example Commands
 
-## Contributing & License
+- **Default Demo Output:**
+  ```bash
+  npm run start
+  ```
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.  
-Released under the MIT License ([LICENSE](LICENSE)).
+
+## Incremental Changes Plan
+
+TODO: Add forthcoming changes here.
+
+## Contributing
+
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
+
+## License
+
+Released under the MIT License (see [LICENSE](./LICENSE)).
