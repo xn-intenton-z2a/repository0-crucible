@@ -3251,3 +3251,52 @@ LLM API Usage:
 ```
 
 ---
+## Issue to enhanced Issue at 2025-05-27T09:27:25.563Z
+
+Activity:
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/ with enhanced description:
+
+## Description
+
+Implement a programmatic API `fetchSource(url: string): Promise<any>` and a CLI flag `--fetch-source <url>` in `src/lib/main.js` that retrieves live JSON data from supported public data sources without requiring custom HTTP code.
+
+### Acceptance Criteria
+
+1. Programmatic API:
+   - **Export**: `export async function fetchSource(url: string): Promise<any>` is exported from `src/lib/main.js`.
+   - **Valid URL**: When `url` is in `supportedDataSources`, `fetchSource(url)` resolves to the parsed JSON. 
+     *Test:* Stub `global.fetch` to return an object with `json()` resolving to `{ foo: "bar" }` and assert that `await fetchSource(validUrl)` returns `{ foo: "bar" }` and `fetch` was called with `validUrl`.
+   - **Invalid URL**: When `url` is not in `supportedDataSources`, `fetchSource(url)` rejects with `Error("Unsupported data source: " + url)`. 
+     *Test:* Call `await fetchSource(invalidUrl)` and expect a rejection with the exact error message.
+
+2. CLI Flag Handling:
+   - **Valid Invocation**: Running `node src/lib/main.js --fetch-source <validUrl>` logs the JSON result (using `console.log(JSON.stringify(data, null, 2))`) and exits with code `0`. 
+     *Integration Test:* Spy on `console.log` and `process.exit`, call `await main(["--fetch-source", validUrl])`, and assert the correct JSON output and exit code `0`.
+   - **Missing URL**: Running `node src/lib/main.js --fetch-source` prints `Error: URL is required for --fetch-source` to stderr and exits with code `1`. 
+     *Integration Test:* Spy on `console.error` and `process.exit`, call `await main(["--fetch-source"])`, and assert the correct error message and exit code `1`.
+   - **Unsupported URL**: Running `node src/lib/main.js --fetch-source <invalidUrl>` prints `Error: Unsupported data source: <invalidUrl>` to stderr and exits with code `1`. 
+     *Integration Test:* Spy on `console.error` and `process.exit`, call `await main(["--fetch-source", invalidUrl])`, and assert the correct error message and exit code `1`.
+
+3. Documentation:
+   - **README.md**: Under **Features**, add a **Fetch Source** section summarizing the feature and a CLI usage example:
+     ```bash
+     npm run start -- --fetch-source <url>
+     # Sample output: JSON data
+     ```
+   - **docs/FETCH_SOURCE.md**: Create a new file in `docs/` mirroring README content, including:
+     - API reference for `fetchSource`.
+     - CLI usage examples and sample outputs for valid and error cases.
+     - Notes on supported URLs and error messages.
+
+### Verification
+
+- Run `npm test` to ensure all unit and integration tests pass.
+- Execute the CLI with both valid and invalid URLs to confirm behavior matches acceptance criteria.
+
+LLM API Usage:
+```json
+{"prompt_tokens":8992,"completion_tokens":1818,"total_tokens":10810,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":1088,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
