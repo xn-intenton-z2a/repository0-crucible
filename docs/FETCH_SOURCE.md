@@ -1,38 +1,52 @@
 # Fetch Source
 
-The `--fetch-source <url>` flag fetches and outputs JSON data from a supported public data source URL.
+## Summary
 
-## Usage
+Provide a programmatic API `fetchSource(url: string): Promise<any>` and a CLI flag `--fetch-source <url>` to retrieve JSON data from supported public data sources.
+
+## API
+
+### fetchSource(url: string): Promise<any>
+
+Fetches JSON data from a supported URL:
+
+- Resolves with parsed JSON data when the URL is supported.
+- Rejects with `Error("Unsupported data source: " + url)` when the URL is unsupported.
+
+### getSupportedDataSources(): string[]
+
+Returns the list of supported data source URLs.
+
+## CLI Usage
 
 ```bash
 npm run start -- --fetch-source <url>
 ```
 
-## Example
+- **Valid URL**:
 
 ```bash
 npm run start -- --fetch-source https://restcountries.com/v3.1/all
+# Sample output: JSON data
 ```
 
-## Sample Output
+- **Missing URL**:
 
-```json
-[
-  { "foo": "bar" }
-]
+```bash
+npm run start -- --fetch-source
+# Error: URL is required for --fetch-source
 ```
 
-## API
+- **Unsupported URL**:
+
+```bash
+npm run start -- --fetch-source invalid/url
+# Error: Unsupported data source: invalid/url
+```
+
+## Supported URLs
 
 ```js
-import { fetchSource } from '@xn-intenton-z2a/repository0-crucible';
-
-(async () => {
-  try {
-    const data = await fetchSource('https://restcountries.com/v3.1/all');
-    console.log(data);
-  } catch (err) {
-    console.error(err);
-  }
-})();
+import { getSupportedDataSources } from "@xn-intenton-z2a/repository0-crucible";
+console.log(getSupportedDataSources());
 ```
