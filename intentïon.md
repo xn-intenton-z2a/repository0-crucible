@@ -67,3 +67,40 @@ LLM API Usage:
 ```
 
 ---
+## Feature to Issue at 2025-05-27T02:29:25.194Z
+
+Activity:
+
+Generated issue 2756 for feature "pi-digit-calculator" with URL https://github.com/xn-intenton-z2a/repository0-crucible/issues/2756
+
+title:
+
+Implement PI Digit Calculator core functions, CLI integration, and documentation
+
+And description:
+
+**Goal**
+Add core PI digit calculation functionality (Chudnovsky algorithm) to `src/lib/main.js`, wire up a CLI interface with flags `--digits`, `--format`, `--output`, `--benchmark`, and provide programmatic exports `calculatePi`, `generatePiImage`, and `runBenchmark`. Update tests, dependencies, and README to deliver `PI_DIGIT_CALCULATOR` feature.
+
+**Changes to source files**
+1. **src/lib/main.js**
+   - Implement `async function calculatePi(digits: number): Promise<string>` using the Chudnovsky series with BigInt arithmetic.
+   - Implement `async function generatePiImage(digits: number, filepath: string): Promise<void>` using a lightweight PNG library (e.g. `pngjs`) to render the digits in grayscale.
+   - Implement `async function runBenchmark(digits: number): Promise<{durationMs:number,memoryMB:number}>` to time and measure memory usage.
+   - Expose these three functions via `export { calculatePi, generatePiImage, runBenchmark }`.
+   - Enhance `main(args)` to parse flags using a small CLI parser (e.g. `commander`), dispatch to API functions based on flags, and write text or image output to stdout or file.
+
+2. **package.json**
+   - Add dependencies:
+     ```json
+     "commander": "^10.0.0",
+     "pngjs": "^7.0.0"
+     ```
+   - Ensure `
+
+LLM API Usage:
+```json
+{"prompt_tokens":4995,"completion_tokens":1393,"total_tokens":6388,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":768,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
