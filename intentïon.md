@@ -104,3 +104,41 @@ LLM API Usage:
 ```
 
 ---
+## Issue to enhanced Issue at 2025-05-27T02:30:24.003Z
+
+Activity:
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/ with enhanced description:
+
+**Goal**
+Add core PI digit calculation functionality to `src/lib/main.js`, wire up a CLI interface with flags `--digits`, `--format`, `--output`, `--benchmark`, and provide programmatic exports `calculatePi`, `generatePiImage`, and `runBenchmark`. Update tests, dependencies, and README to deliver the `PI_DIGIT_CALCULATOR` feature.
+
+**Acceptance Criteria**
+1. Programmatic API:
+   - `calculatePi(digits: number): Promise<string>` returns a string of π digits. e.g. for `digits = 10`, the returned string starts with `3.1415926535`.
+   - `generatePiImage(digits: number, filepath: string): Promise<void>` creates a valid PNG file at `filepath` containing a grayscale visualization of π digits. The file exists and its size is >0 bytes.
+   - `runBenchmark(digits: number): Promise<{durationMs: number, memoryMB: number}>` returns an object with numeric `durationMs > 0` and `memoryMB > 0` for any `digits >= 1`.
+   - All three functions are exported from `src/lib/main.js` and pass static import checks.
+
+2. CLI Interface:
+   - `node src/lib/main.js --digits <n>` prints the first `<n>` digits of π to stdout, matching known values.
+   - `--format png --output <path>` writes a PNG file at `<path>` containing the visualization; the file must exist after execution.
+   - `--benchmark` prints a JSON string that includes `durationMs` and `memoryMB` keys with numeric values.
+   - Invalid flags or missing arguments result in a non-zero exit code with a descriptive error message.
+
+3. Documentation & Testing:
+   - `package.json` includes `commander` and `pngjs` as dependencies.
+   - README is updated with usage examples for each CLI flag and examples of the API functions.
+   - Unit tests verify API functions against known π prefix values and image file creation.
+   - Integration tests validate CLI parsing, outputs, and error conditions.
+
+4. Performance & Quality:
+   - Implementation uses BigInt arithmetic and streams output to handle large digit counts without excessive memory use.
+   - Code adheres to existing linting and formatting rules, and all new tests pass under `npm test`.
+
+LLM API Usage:
+```json
+{"prompt_tokens":4807,"completion_tokens":1321,"total_tokens":6128,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":768,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
