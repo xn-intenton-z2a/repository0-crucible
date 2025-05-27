@@ -5819,3 +5819,66 @@ LLM API Usage:
 
 ---2025-05-27T17:21:55Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-27T03-33Z
 
+
+## Maintain Feature at 2025-05-27T17:23:45.035Z
+
+Activity:
+
+Maintained feature NONE with
+
+Feature spec:
+
+# Summary
+Improve the existing List Sources feature by adding a CLI flag --refresh-sources and API function refreshSupportedDataSources to update the local supportedDataSources list from a remote configuration endpoint. This allows dynamic configuration of data source URLs without changing code.
+
+# Functional Requirements
+
+- In `src/lib/main.js`:
+  - Export an async function `refreshSupportedDataSources(configUrl: string): Promise<void>` that:
+    - Fetches JSON from `configUrl` (an array of URL strings).
+    - Validates that each URL is well-formed.
+    - Replaces the in-memory `supportedDataSources` array with the fetched list.
+  - Extend the `main(args)` entrypoint to detect:
+    - `--refresh-sources <configUrl>` flag:
+      1. Validate `configUrl` is provided.
+      2. Call `refreshSupportedDataSources(configUrl)`.
+      3. Print `"Sources refreshed"` on success and exit code `0`.
+      4. On fetch or validation errors, print the error message and exit code `1`.
+  - Ensure existing `--list-sources` and other flags work with the updated `supportedDataSources` after refresh.
+
+# API
+
+- `refreshSupportedDataSources(configUrl: string): Promise<void>` — Update the list of supported data source URLs by fetching from a remote JSON endpoint.
+
+# CLI Usage
+
+```bash
+npm run start -- --refresh-sources https://example.com/sources.json
+```
+
+# Testing
+
+- In `tests/unit/main.test.js`:
+  - Unit tests for `refreshSupportedDataSources`:
+    - Stub `global.fetch` to return a valid JSON array of URLs and assert `supportedDataSources` is updated.
+    - Stub `fetch` to return invalid data (e.g. non-array) and assert it throws a validation error.
+  - CLI integration test for `--refresh-sources`:
+    - Spy on `console.log` and `process.exit`.
+    - Simulate `main(["--refresh-sources", validConfigUrl])` and assert success.
+    - Simulate missing URL and assert error.
+
+# Documentation
+
+- Update `README.md`:
+  - Under **Features**, add **Refresh Sources** describing the `--refresh-sources` flag and `refreshSupportedDataSources` API.
+  - Under **Usage**, include an example invocation and expected output.
+- Create `docs/REFRESH_SOURCES.md` mirroring README guidance with full details and examples.
+
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":60024,"completion_tokens":584,"total_tokens":60608,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
