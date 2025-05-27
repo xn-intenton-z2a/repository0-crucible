@@ -533,3 +533,84 @@ LLM API Usage:
 ```
 
 ---
+## Issue to enhanced Issue at 2025-05-27T03:38:50.732Z
+
+Activity:
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/ with enhanced description:
+
+# Implement `--fetch-source` CLI flag and `fetchSource` API
+
+## Summary
+Provide a programmatic API and CLI flag that fetches and outputs raw JSON from a supported public data source URL, enabling users to retrieve live data without writing custom fetch logic.
+
+## Acceptance Criteria
+
+### 1. API: `fetchSource(url: string): Promise<any>`
+- When called with a URL in `supportedDataSources`, it:
+  - Uses the global `fetch` API to retrieve data.
+  - Returns the parsed JSON object.
+- When called with a URL not in `supportedDataSources`, it:
+  - Throws or rejects with an error message `Unsupported data source: <url>`.
+
+### 2. CLI Behavior (`main(args: string[])`)
+- Detect the flag `--fetch-source <url>`:
+  - If `<url>` is one of `supportedDataSources`:
+    - Calls `fetchSource(url)`.
+    - Prints `JSON.stringify(data, null, 2)` to **stdout**.
+    - Exits with code `0`.
+  - If `<url>` is **not** supported:
+    - Prints `Error: Unsupported data source: <url>` to **stderr**.
+    - Exits with code `1`.
+- Ensure existing `--list-sources` behavior and default behaviors remain unchanged.
+
+### 3. Tests
+- **Unit tests** for `fetchSource(url)`:
+  - Stub `global.fetch` to return a mock `Response` with a `json()` method returning sample data.
+  - Assert that calling `fetchSource(validUrl)` resolves to the sample data object.
+  - Assert that calling `fetchSource(invalidUrl)` rejects with the correct error.
+- **CLI integration tests** for `main(args)`:
+  - **Valid URL** scenario:
+    - Spy on `console.log` and `process.exit`.
+    - Invoke `await main(["--fetch-source", validUrl])`.
+    - Assert correct JSON output to **stdout** and exit code `0`.
+  - **Invalid URL** scenario:
+    - Spy on `console.error` and `process.exit`.
+    - Invoke `await main(["--fetch-source", invalidUrl])`.
+    - Assert error message to **stderr** and exit code `1`.
+
+### 4. Documentation
+- **README.md**:
+  - Under **Features**, add a **Fetch Source** section describing:
+    - The purpose of `--fetch-source` flag.
+    - The `fetchSource(url)` API signature.
+  - Under **Usage**, include:
+    ```bash
+    npm run start -- --fetch-source https://restcountries.com/v3.1/all
+    # Sample output:
+    [
+      { /* country objects... */ }
+    ]
+    ```
+- **docs/FETCH_SOURCE.md**:
+  - Provide full details and examples mirroring README.
+
+## Verification Steps
+1. Run `npm test` to verify all new and existing tests pass.
+2. Execute:
+   ```bash
+   npm run start -- --fetch-source https://restcountries.com/v3.1/all
+   ```
+   - Confirm JSON data prints correctly and process exits with code `0`.
+3. Execute:
+   ```bash
+   npm run start -- --fetch-source https://example.com/invalid
+   ```
+   - Confirm error prints to stderr and process exits with code `1`.
+
+LLM API Usage:
+```json
+{"prompt_tokens":6147,"completion_tokens":1766,"total_tokens":7913,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":960,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
