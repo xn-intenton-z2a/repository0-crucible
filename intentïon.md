@@ -124,3 +124,57 @@ LLM API Usage:
 ```
 
 ---
+## Issue to enhanced Issue at 2025-05-27T02:48:12.328Z
+
+Activity:
+
+Updated feature development issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/ with enhanced description:
+
+## Overview
+
+Implement a new `--list-sources` CLI flag and a programmatic API function `getSupportedDataSources()` to expose the array of supported public data source URLs.
+
+## Acceptance Criteria
+
+1. In `src/lib/main.js`:
+   - Define a constant `supportedDataSources` as an array of URL strings, including at minimum:
+     - "https://api.worldbank.org/v2/country"
+     - "https://restcountries.com/v3.1/all"
+   - Export a function `getSupportedDataSources()` that returns the `supportedDataSources` array.
+   - Modify the `main(args)` entrypoint so that if `args` includes `"--list-sources"`, it:
+     - Prints `JSON.stringify(supportedDataSources, null, 2)` to stdout.
+     - Exits the process with code `0` immediately.
+   - Ensure behavior for all other flags remains unchanged.
+
+2. In `tests/unit/main.test.js`:
+   - Add a unit test verifying `getSupportedDataSources()` returns the exact `supportedDataSources` array.
+   - Add a CLI integration test that:
+     - Sets `process.argv` to include `"--list-sources"`.
+     - Captures console output.
+     - Parses the output as JSON.
+     - Asserts the parsed output matches `getSupportedDataSources()`.
+     - Verifies the process exits with code `0`.
+
+3. In `README.md`:
+   - Under **Features**, add a **List Sources** section describing the new flag.
+   - Under **Usage**, include an example:
+     ```bash
+     npm run start -- --list-sources
+     # Sample output:
+     [
+       "https://api.worldbank.org/v2/country",
+       "https://restcountries.com/v3.1/all"
+     ]
+     ```
+
+4. Verification:
+   - Running `npm test` should pass all new and existing tests.
+   - Running `npm run start -- --list-sources` should output the JSON array matching `getSupportedDataSources()` and exit with code 0.
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":5000,"completion_tokens":1231,"total_tokens":6231,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":704,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
