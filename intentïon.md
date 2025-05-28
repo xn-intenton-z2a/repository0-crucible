@@ -7203,3 +7203,57 @@ LLM API Usage:
 ```
 
 ---
+## Maintenance Activity to Issue at 2025-05-28T05:00:01.117Z
+
+Activity:
+
+Created issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2772 with title [Refactor] Replace demo stub with real "fetch-source" CLI flag and fetchSource API and body:
+
+ Context: Currently, the CLI’s default behavior for all unknown flags is simply logging a stub message (`Run with: [...]`). The repository’s feature plan includes a `--fetch-source` flag and a corresponding `fetchSource(url)` API in `src/lib/main.js` (see `features/FETCH_SOURCE.md`), but no real implementation exists.
+
+Desired Change:
+1. **src/lib/main.js**
+   - Export an asynchronous function `fetchSource(url: string): Promise<any>` that:
+     - Validates `url` against the array returned by `getSupportedDataSources()`.
+     - Uses `global.fetch(url)` to retrieve the JSON response and returns the parsed object.
+     - Throws a clear error if the URL is unsupported or fetch fails.
+   - Extend `main(args: string[])` to handle:
+     - `--fetch-source <url>` optionally followed by `--output-file <path>`:
+       1. Validate presence of `<url>` and that it appears in `supportedDataSources`.
+       2. Call `await fetchSource(url)`.
+       3. If `--output-file <path>` is provided, import and use `fs/promises.writeFile` to write `JSON.stringify(data, null, 2)` to disk; handle missing path or write errors.
+       4. Otherwise, `console.log(JSON.stringify(data, null, 2))`.
+       5. Exit with code `0` on success or `1` on any error (printing error messages to stderr).
+   - Preserve existing `--list-sources` and default stub behavior for other flags.
+
+2. **tests/unit/main.test.js**
+   - Add unit tests for:
+     - `fetchSource(validUrl)` resolving with sample JSON (mock `global.fetch`).
+     - `fetchSource(invalidUrl)` rejecting with the appropriate error.
+   - Add CLI integration tests for `main(["--fetch-source", validUrl])`:
+     - Spy on `console.log`, `process.exit`, and mock `fetchSource`; assert correct JSON output and exit code `0`.
+   - Add CLI integration tests for `--output-file` behavior:
+     - Mock `writeFile` successes and failures, spy on `process.exit`/`console.error`, and assert behavior.
+   - Cover missing URL, unsupported URL, missing file path, and write-error scenarios.
+
+3. **README.md**
+   - Under **Features**, add a **Fetch Source** entry describing:
+     - The `--fetch-source <url>` flag and optional `--output-file <path>`.
+     - Usage examples for printing to stdout and saving to a file.
+
+Verification:
+- Run `npm test` and ensure all new and existing tests pass.
+- Manually verify `node src/lib/main.js --fetch-source <validUrl>` prints formatted JSON.
+- Verify `node src/lib/main.js --fetch-source <validUrl> --output-file out.json` writes the file and exits silently.
+- Attempt invalid scenarios (unsupported URL, missing flags, write errors) to confirm proper error messages and exit code `1`.
+
+Restrictions:
+- Only modify `src/lib/main.js`, `tests/unit/main.test.js`, `README.md`, and `package.json` if needed for dependencies (no new files or deletions).
+- Do not introduce unnecessary abstractions or validations beyond the direct feature requirements..
+
+LLM API Usage:
+```json
+{"prompt_tokens":9172,"completion_tokens":1609,"total_tokens":10781,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":832,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
