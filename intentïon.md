@@ -7768,3 +7768,43 @@ LLM API Usage:
 
 ---2025-05-28T08:23:16Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-27T03-33Z
 
+
+## Maintain Feature at 2025-05-28T08:25:08.815Z
+
+Activity:
+
+Maintained feature LIST_SOURCES with
+
+Feature spec:
+
+# Summary
+Provide a CLI flag `--list-sources` and programmatic API `getSupportedDataSources()` to expose the list of supported public data source URLs.
+
+# Functional Requirements
+- In `src/lib/main.js`:
+  - Export `getSupportedDataSources(): string[]` returning the in-memory array of source URLs.
+  - Detect the `--list-sources` flag in `main(args)`:
+    1. When present, print `JSON.stringify(getSupportedDataSources(), null, 2)` to stdout.
+    2. Exit the process with code `0` immediately.
+  - Preserve all other CLI flags and default behavior.
+
+# Testing
+- In `tests/unit/main.test.js`:
+  - Unit test that `getSupportedDataSources()` returns the expected array.
+  - CLI integration test:
+    1. Simulate `main(["--list-sources"])`, spy on `console.log` and `process.exit`.
+    2. Assert the printed JSON equals the array and exit code is `0`.
+
+# Documentation
+- Update `README.md`:
+  - Under **Features**, add **List Sources** section with a brief summary.
+  - Under **Usage**, show how to run `node src/lib/main.js --list-sources` and sample output.
+- Create or update `docs/LIST_SOURCES.md` with the same examples and API reference.
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":75787,"completion_tokens":339,"total_tokens":76126,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
