@@ -1,45 +1,56 @@
 # Summary
 
-Add a new CLI flag `--fetch-source` and a programmatic API function `fetchSource(url)` to retrieve raw JSON data from supported public data sources. Users can print the data to stdout or write it to a file with an optional `--output-file` parameter.
+Introduce a new CLI flag `--fetch-source` and programmatic API function `fetchSource(url)` to retrieve live JSON data from supported public data sources. Users will be able to fetch and display raw data or write it to a file via an optional `--output-file` argument.
 
 # Functional Requirements
 
-- In `src/lib/main.js`:
-  1. Export an asynchronous function `fetchSource(url: string): Promise<any>` that:
-     - Validates the provided URL against `getSupportedDataSources()`.
-     - If unsupported, throws an error `Unsupported data source: <url>`.
-     - Uses the global `fetch` API to retrieve JSON and returns the parsed result.
-  2. Extend the existing `main(args: string[])` entry point to detect the `--fetch-source <url>` flag:
-     - If the URL argument is missing or starts with `--`, print `Error: URL is required for --fetch-source` to stderr and exit with code 1.
-     - After validating the URL, call `fetchSource(url)`.
-     - Detect an optional `--output-file <filePath>` argument immediately after the URL:
-       - If provided, write the fetched JSON to the file using `fs/promises.writeFile` with two-space indentation.
-       - On successful write, exit with code 0 without printing to stdout.
-       - On write failure, print the error message to stderr and exit with code 1.
-     - If no `--output-file` flag is provided, print the fetched JSON via `console.log(JSON.stringify(data, null, 2))` and exit with code 0.
-  3. Preserve all existing behavior, including the `--list-sources` flag and default demo output.
+- In **src/lib/main.js**:
+  - Export an asynchronous function:
+      ```js
+      export async function fetchSource(url: string): Promise<any> {
+        if (!getSupportedDataSources().includes(url)) {
+          throw new Error(`Unsupported data source: ${url}`);
+        }
+        const response = await fetch(url);
+        return response.json();
+      }
+      ```
+  - Extend the `main(args: string[])` entrypoint to handle:
+    - `--fetch-source <url>` followed optionally by `--output-file <path>`:
+      1. Validate a URL argument follows `--fetch-source`; if missing or starts with `--`, print an error to stderr and exit code 1.
+      2. Validate that the URL exists in the result of `getSupportedDataSources()`; if not, print an error and exit code 1.
+      3. Call `await fetchSource(url)` to retrieve JSON.
+      4. If `--output-file <path>` is present:
+         - Validate the file path; if missing, error and exit code 1.
+         - Use `import { writeFile } from 'fs/promises'` to write formatted JSON to disk.
+         - On success, exit code 0 without additional output.
+         - On write failure, print the error message and exit code 1.
+      5. If no `--output-file` flag is provided:
+         - Print `JSON.stringify(data, null, 2)` to stdout and exit code 0.
+  - Preserve existing behavior for other flags, including `--list-sources`.
 
 # CLI Usage
 
-Fetch and print data:
-```
-npm run start -- --fetch-source https://restcountries.com/v3.1/all
+Fetch and display data:
+```bash
+node src/lib/main.js --fetch-source https://restcountries.com/v3.1/all
 ```
 
 Fetch and save to a file:
-```
-npm run start -- --fetch-source https://restcountries.com/v3.1/all --output-file data.json
+```bash
+node src/lib/main.js --fetch-source https://restcountries.com/v3.1/all --output-file data.json
 ```
 
 # API
 
 ```js
-import { getSupportedDataSources, fetchSource } from '@xn-intenton-z2a/repository0-crucible';
+import { fetchSource, getSupportedDataSources } from '@xn-intenton-z2a/repository0-crucible';
 
 (async () => {
   const sources = getSupportedDataSources();
+  const url = sources[0];
   try {
-    const data = await fetchSource(sources[0]);
+    const data = await fetchSource(url);
     console.log(data);
   } catch (err) {
     console.error(err.message);
@@ -49,24 +60,22 @@ import { getSupportedDataSources, fetchSource } from '@xn-intenton-z2a/repositor
 
 # Testing
 
-- Unit Tests (in `tests/unit/main.test.js`):
-  - Stub `global.fetch` to return a mock response with a `json()` method resolving to sample data. Assert `fetchSource(validUrl)` resolves to that data and `fetch` was called correctly.
-  - Assert `fetchSource(invalidUrl)` rejects with `Unsupported data source: <invalidUrl>`.
-  - Stub `fs/promises.writeFile` to simulate success and failure:
-    - Verify write is called with the correct path and formatted JSON.
-    - Simulate rejection and assert the error is printed and process exits with code 1.
+- **Unit Tests** in `tests/unit/main.test.js`:
+  - Stub `global.fetch` to resolve with a mock response whose `json()` returns sample data. Assert that `fetchSource(validUrl)` resolves correctly and `fetch` was called with `validUrl`.
+  - Assert that calling `fetchSource(invalidUrl)` rejects with the exact error message.
+  - Stub `writeFile` to resolve or reject, and verify correct behavior and error handling when using `--output-file`.
 
-- CLI Integration Tests (in `tests/unit/main.test.js`):
-  - **Valid URL without output-file**: Spy on `console.log` and `process.exit`; run `await main(["--fetch-source", validUrl])`; assert JSON printed and exit code 0.
-  - **Valid URL with output-file**: Spy on `fs/promises.writeFile`, suppress `console.log`, spy on `process.exit`; run `await main(["--fetch-source", validUrl, "--output-file", path])`; assert write called, no stdout, and exit code 0.
-  - **Missing URL**: Spy on `console.error` and `process.exit`; run `await main(["--fetch-source"])`; assert error and exit code 1.
-  - **Unsupported URL**: Spy on `console.error` and `process.exit`; run `await main(["--fetch-source", invalidUrl])`; assert error and exit code 1.
+- **CLI Integration Tests**:
+  - **Valid URL without `--output-file`**: spy on `console.log` and `process.exit`, invoke `main(["--fetch-source", validUrl])`, assert JSON printed and exit code 0.
+  - **Valid URL with `--output-file`**: spy on `writeFile`, suppress `console.log`, invoke `main(["--fetch-source", validUrl, "--output-file", outPath])`, assert file write call, no stdout output, and exit code 0.
+  - **Missing URL**: invoke `main(["--fetch-source"])`, assert error to stderr and exit code 1.
+  - **Unsupported URL**: invoke with an unsupported URL, assert error and exit code 1.
+  - **Missing file path**: invoke `--output-file` without path, assert error and exit code 1.
+  - **Write error**: simulate write failure, assert error printed and exit code 1.
 
 # Documentation
 
-- Update `README.md`:
-  - Under **Features**, add a **Fetch Source** entry describing the CLI flag, optional `--output-file`, and summary.
-  - Under **Usage**, include examples for printing and saving JSON data.
-
-- Create `docs/FETCH_SOURCE.md`:
-  - Mirror the README content with full API reference, CLI usage, code examples, and error scenarios.
+- Update **README.md**:
+  - Under **Features**, add a **Fetch Source** entry describing the new flag, optional `--output-file`, and usage examples.
+  - Under **Usage**, include commands demonstrating both printing and saving data.
+- Create **docs/FETCH_SOURCE.md** mirroring README content, including API reference, CLI examples, and error cases.
