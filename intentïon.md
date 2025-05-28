@@ -7531,3 +7531,58 @@ LLM API Usage:
 ```
 
 ---
+## Issue to Ready Issue at 2025-05-28T06:47:16.419Z
+
+Activity:
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2772 with action enhance and updated description:
+
+Title: [Refactor] Implement --fetch-source CLI flag and fetchSource API
+
+Context:
+Currently, the CLI’s default behavior logs a stub message for unknown flags. The project plan includes a --fetch-source flag and corresponding fetchSource(url) API (see features/FETCH_SOURCE.md), but no implementation exists.
+
+Acceptance Criteria:
+
+1. API: fetchSource(url: string): Promise<any>
+   - Given a URL in getSupportedDataSources(), resolves with parsed JSON from global.fetch(url).
+   - Given an unsupported URL, rejects with Error(`Unsupported data source: ${url}`).
+   - On network or parse failure, rejects with the original fetch error.
+
+2. CLI: main(args: string[])
+   - --fetch-source <url>
+     a. Missing <url>: prints "Error: URL is required for --fetch-source" to stderr and exits code 1.
+     b. Unsupported URL: prints "Error: Unsupported data source: <url>" to stderr and exits code 1.
+     c. Valid URL: calls fetchSource(url), prints JSON.stringify(data, null, 2) to stdout, and exits code 0.
+   - --fetch-source <url> --output-file <path>
+     a. Missing <path>: prints "Error: File path required for --output-file" to stderr and exits code 1.
+     b. On write success: writes JSON to <path> using fs/promises.writeFile, exits code 0 without stdout.
+     c. On write failure: prints "Error: <message>" to stderr and exits code 1.
+
+3. Preserve existing --list-sources behavior and default stub for other flags.
+
+Testing Requirements:
+
+- Unit tests for fetchSource:
+  * Valid URL resolves to sample JSON (mock global.fetch).
+  * Invalid URL rejects with the correct error message.
+- CLI integration tests:
+  * main(["--fetch-source", validUrl]) prints JSON and exits 0.
+  * main(["--fetch-source", validUrl, "--output-file", path]) writes file and exits 0.
+  * Missing URL scenario: asserts error and exit 1.
+  * Unsupported URL scenario: asserts error and exit 1.
+  * Missing output-file path scenario: asserts error and exit 1.
+  * Write failure scenario: asserts error and exit 1.
+
+4. Documentation:
+   - Update README.md under **Features** to include **Fetch Source** with usage examples for stdout and file output.
+
+Restrictions:
+- Modify only src/lib/main.js, tests/unit/main.test.js, README.md, and package.json if needed.
+
+LLM API Usage:
+```json
+{"prompt_tokens":9623,"completion_tokens":1510,"total_tokens":11133,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":896,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
