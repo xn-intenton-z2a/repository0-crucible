@@ -1,50 +1,43 @@
 # Summary
-Enhance the fetch-source feature to support an optional output-file argument, allowing users to persist fetched JSON data to disk or print it to the console.
+Extend the existing Fetch Source feature to support an optional --output-file flag for persisting fetched JSON data to a file or printing it to stdout.
 
 # Functional Requirements
 
-In `src/lib/main.js`:
-
-- Import `writeFile` from `fs/promises`.
-- In the `main(args)` entrypoint, detect the flag `--fetch-source <url>`:
-  1. Verify a URL follows the flag; if missing or starting with `--`, print `Error: URL is required for --fetch-source` to stderr and exit code 1.
-  2. Validate that the URL is in `supportedDataSources`; if not, print `Error: Unsupported data source: <url>` to stderr and exit code 1.
-  3. Call `await fetchSource(url)` to retrieve parsed JSON data.
-  4. After fetching:
-     - If `--output-file <path>` follows the URL:
-       - Verify a file path follows; if missing or starting with `--`, print `Error: File path is required for --output-file` to stderr and exit code 1.
-       - Call `await writeFile(path, JSON.stringify(data, null, 2))`.
-       - Exit with code 0 on success.
-       - On write failure, print the error message to stderr and exit code 1.
-     - Otherwise, print `JSON.stringify(data, null, 2)` to stdout and exit code 0.
-- Preserve existing `--list-sources` behavior and default CLI stub for unknown flags.
-
-# API
-
-- `fetchSource(url: string): Promise<any>` — Validates URL is supported or throws `Error("Unsupported data source: " + url)`; uses global `fetch` to retrieve and parse JSON.
+1. In src/lib/main.js:
+   - Export async function fetchSource(url: string): Promise<any>:
+     - Validate url against getSupportedDataSources(); if unsupported, throw `Error("Unsupported data source: <url>")`.
+     - Use global fetch() to retrieve JSON and return parsed result.
+   - In main(args: string[]) entrypoint, detect `--fetch-source <url>`:
+     1. Ensure <url> is provided and supported; on error print to stderr and exit code 1.
+     2. Call `await fetchSource(url)`.
+     3. Detect optional `--output-file <path>` following URL:
+        - If provided, verify <path> is present; on error print to stderr and exit code 1.
+        - Use fs/promises.writeFile to write `JSON.stringify(data, null, 2)` to file; on success exit code 0 without stdout; on write failure print error and exit code 1.
+     4. If no --output-file, print JSON to stdout and exit code 0.
+   - Preserve existing --list-sources behavior and default CLI output.
 
 # CLI Usage
 
 ```bash
-npm run start -- --fetch-source <url> [--output-file <path>]
+# Print data to console
+npm run start -- --fetch-source <url>
+
+# Save data to file
+npm run start -- --fetch-source <url> --output-file <path>
 ```
 
 # Testing
 
-In `tests/unit/main.test.js`:
-
-- Unit tests for `fetchSource`:
-  - Mock `global.fetch` to return a `json()` response; assert `fetchSource(validUrl)` resolves to sample data and rejects when URL unsupported.
+- Unit tests (tests/unit/main.test.js):
+  - Stub global.fetch to resolve sample JSON; assert fetchSource(validUrl) resolves and rejects on unsupported URL.
+  - Mock fs/promises.writeFile to simulate success and failure; assert correct invocation and error handling for --output-file.
 - CLI integration tests:
-  - **Valid URL without output-file**: spy on `console.log` and `process.exit`; run `await main(["--fetch-source", validUrl])`; assert JSON printed and exit code 0.
-  - **Valid URL with output-file**: spy on `writeFile` and `process.exit`; suppress `console.log`; run `await main(["--fetch-source", validUrl, "--output-file", path])`; assert file write called and exit code 0.
-  - **Missing URL**: assert error and exit code 1.
-  - **Unsupported URL**: assert error and exit code 1.
-  - **Missing file path**: assert error and exit code 1.
-  - **Write failure**: simulate `writeFile` rejection; assert error and exit code 1.
+  - Valid URL without --output-file: spy console.log and process.exit; assert JSON output and exit 0.
+  - Valid URL with --output-file: spy writeFile and process.exit; suppress console.log; assert file write call and exit 0.
+  - Missing URL, unsupported URL, missing file path, write errors: assert stderr messages and exit code 1.
 
 # Documentation
 
-- Update `README.md`:
-  - Under **Features**, add **Fetch Source** section describing `--fetch-source` and `--output-file` options with examples.
-- Update or create `docs/FETCH_SOURCE.md` mirroring the README with API reference, CLI examples, and error scenarios.
+- Update README.md under **Features** with **Fetch Source** entry including optional --output-file.
+- Include usage examples for both print and file output.
+- Create or update docs/FETCH_SOURCE.md mirroring README with API reference, CLI examples, and error scenarios.
