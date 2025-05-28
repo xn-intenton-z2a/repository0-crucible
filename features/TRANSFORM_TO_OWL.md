@@ -1,82 +1,52 @@
 # Summary
 
-Extend the Transform to OWL feature to support both single-source and multi-source ontology generation, with optional file output. Users can transform a single data source into OWL JSON or merge all supported sources into one ontology.
+Extend the existing Transform to OWL feature to support writing the generated OWL JSON to a file via an optional --output-file flag in addition to printing to stdout.  This gives users flexibility to persist ontology output without piping CLI output.
 
 # Functional Requirements
 
-- Export `transformToOwl(data: any[], options?: { baseUri?: string }): any` in `src/lib/main.js`:  
-  - Wraps an array of JSON items into an OWL JSON structure with:
-    - `@context` containing `@vocab` set to `options.baseUri` plus `#` or a default base URI.
-    - `@graph` as an array of individuals where each object has an `@id` prefixed by the vocab URI and all other properties copied.
-
-- Export `buildOntologies(options?: { baseUri?: string }): Promise<any>`:
-  - Calls `getSupportedDataSources()` to get URLs.
-  - For each URL, uses `fetchSource(url)` to retrieve JSON data.
-  - Normalizes each dataset into an array and calls `transformToOwl` on it.
-  - Merges all individual `@graph` entries into one combined `@graph` under a shared `@context`.
-  - Returns the merged OWL JSON object.
-
-- In `main(args)` entrypoint:
-  - Handle `--transform-to-owl <url>` with optional `--base-uri <uri>` and `--output-file <path>`:
-    1. Validate that `<url>` is provided and in `getSupportedDataSources()`; error and exit code 1 if not.
-    2. Fetch JSON via `fetchSource(url)`, call `transformToOwl` with `{ baseUri }`.
-    3. If `--output-file` is supplied, write JSON to that file; otherwise, print formatted JSON to stdout.
-    4. Exit with code 0 on success; on any error, print to stderr and exit code 1.
-
-  - Handle `--build-ontologies` with optional `--base-uri <uri>` and `--output-file <path>` similarly:
-    1. Call `buildOntologies({ baseUri })`.
-    2. Write or print the merged ontology as above.
-
-- Preserve existing flags: `--list-sources`, `--fetch-source`, `--query-owl`, and default behavior.
+- In src/lib/main.js:
+  - Locate the handling for --transform-to-owl <url> [--base-uri <uri>].
+  - After fetching and transforming data via fetchSource and transformToOwl:
+    1. Detect an optional --output-file <filePath> argument immediately following the URL and optional --base-uri.
+    2. If --output-file is provided:
+       - Verify a file path follows; if missing or malformed, print `Error: File path is required for --output-file` to stderr and exit code 1.
+       - Write the OWL JSON to the specified file using fs/promises.writeFile with two-space indentation.
+       - On successful write, exit with code 0 without additional stdout output.
+       - On write failure, print the error message to stderr and exit code 1.
+    3. If --output-file is not provided:
+       - Print the OWL JSON via console.log(JSON.stringify(ontology, null, 2)) and exit code 0.
+  - Preserve existing transform-to-owl behavior when no output-file flag is used.
+  - Ensure other flags (--list-sources, --fetch-source, --build-ontologies, etc.) remain unaffected.
 
 # CLI Usage
 
-- Transform a single source and print:
-  ```bash
-  npm run start -- --transform-to-owl <url> [--base-uri <uri>]
-  ```
-- Transform a single source and save to file:
-  ```bash
-  npm run start -- --transform-to-owl <url> [--base-uri <uri>] --output-file ontology.json
-  ```
-- Merge all sources and print:
-  ```bash
-  npm run start -- --build-ontologies [--base-uri <uri>]
-  ```
-- Merge all sources and save to file:
-  ```bash
-  npm run start -- --build-ontologies [--base-uri <uri>] --output-file merged.json
-  ```
+```bash
+# Transform JSON from a single source and print to stdout
+npm run start -- --transform-to-owl https://restcountries.com/v3.1/all --base-uri http://example.org/ontology
+
+# Transform and save output to file
+npm run start -- --transform-to-owl https://restcountries.com/v3.1/all --base-uri http://example.org/ontology --output-file ontology.json
+``` 
 
 # API
 
-```js
-import { transformToOwl, buildOntologies } from '@xn-intenton-z2a/repository0-crucible';
-
-// Single-source transformation
-const owl = transformToOwl(dataArray, { baseUri: 'http://example.org/ontology' });
-
-// Multi-source merge
-const merged = await buildOntologies({ baseUri: 'http://example.org/ontology' });
-console.log(JSON.stringify(merged, null, 2));
-```
+- transformToOwl(data: any[], options?: { baseUri?: string }): any — unchanged, transforms raw JSON into OWL JSON.
 
 # Testing
 
-- Unit tests for `transformToOwl`:
-  - Provide sample arrays and custom base URIs; assert `@context` and `@graph` correctness.
-  - Test default behavior when `options.baseUri` is omitted.
-
-- Unit tests for `buildOntologies`:
-  - Stub `fetchSource` for multiple URLs; assert merged `@graph` length and correct `@context`.
-
-- CLI integration tests:
-  - **Single-source**: spy on `console.log`, `fs/promises.writeFile`, and `process.exit`; invoke `main([...])`; assert printed or written JSON and exit codes.
-  - **Multi-source**: same approach for `--build-ontologies` flag.
-  - Error scenarios: missing URL, unsupported URL, missing file path, write failures, exit code 1.
+- Unit tests for CLI output-file behavior:
+  - Stub fs/promises.writeFile to resolve and reject:
+    - Verify writeFile is called with correct path and formatted OWL JSON when --output-file is used.
+    - Simulate write failure and assert error is printed to stderr and process exits with code 1.
+- CLI integration tests for --transform-to-owl:
+  - **With output-file**: spy on writeFile and process.exit; run main with --transform-to-owl and --output-file; assert file write, no stdout, exit code 0.
+  - **Without output-file**: spy on console.log and process.exit; run main with only --transform-to-owl; assert JSON printed, exit code 0.
+  - **Missing file path**: run main with --transform-to-owl <url> --output-file; assert `Error: File path is required for --output-file` and exit code 1.
 
 # Documentation
 
-- Update `README.md` under **Features** with **Transform to OWL** and **Merge Ontologies** sections.
-- Provide usage examples and sample outputs in the README.
-- Create or update `docs/TRANSFORM_TO_OWL.md` mirroring the above specification with detailed examples.
+- Update README.md:
+  - In **Features**, note that --transform-to-owl supports an optional --output-file parameter.
+  - In **Usage**, include examples for both printing and file output as shown above.
+- Update docs/TRANSFORM_TO_OWL.md:
+  - Add a section describing the --output-file option with usage examples and sample commands.
