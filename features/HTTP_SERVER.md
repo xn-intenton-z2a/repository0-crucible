@@ -1,37 +1,29 @@
 # Summary
-Add a new CLI flag --serve that starts an HTTP server exposing core library functions over REST endpoints. This enables programmatic access to list-sources, fetch-source, transform-to-owl, and query-owl operations via HTTP without invoking the CLI directly.
+Add a --serve flag to run an HTTP server exposing core library functions (list-sources, fetch-source, transform-to-owl, query-owl) as REST endpoints.
 
 # Functional Requirements
 
-- In src/lib/main.js:
-  - Detect the --serve flag in the entrypoint before other flags.
-  - Parse an optional --port <number> argument; default to 3000 if not provided.
-  - When --serve is present, start an HTTP server listening on the configured port.
-  - Implement request routing:
-    - GET /sources
-      - Respond 200 with JSON array from getSupportedDataSources().
-    - GET /fetch?url=<url>
-      - Validate url query parameter; if missing respond 400 with error JSON.
-      - If url not in supportedDataSources respond 404 with error JSON.
-      - Call fetchSource(url) and respond 200 with parsed JSON or status 500 on fetch errors.
-    - GET /transform?url=<url>&baseUri=<uri>
-      - Validate url; on missing or invalid respond 400/404.
-      - Fetch data and call transformToOwl(data, { baseUri }), respond 200 with OWL JSON.
-    - GET /query?file=<path>&expr=<expression>
-      - Validate file and expr parameters; respond 400 on missing.
-      - Read file, parse JSON, call queryOntology(parsed, expr).
-      - Respond 200 with JSON array of results or 500 on errors.
-  - Handle SIGINT to gracefully shut down the server.
+In src/lib/main.js:
 
-# CLI Usage
-
-```
-npm run start -- --serve [--port <number>]
-```
+- Detect --serve before other flags in main(args).
+- Parse optional --port <number>; default port 3000.
+- When --serve is present, ignore other flags and start an HTTP server.
+- Routing:
+  - GET /sources: respond 200 with JSON array from getSupportedDataSources().
+  - GET /fetch?url=<url>: validate url param; 400 if missing, 404 if unsupported. On valid, call fetchSource(url) and respond 200 with JSON or 500 on fetch error.
+  - GET /transform?url=<url>&baseUri=<uri>: same validation, fetch data, call transformToOwl(data,{baseUri}), respond 200 with OWL JSON or appropriate error status.
+  - GET /query?file=<path>&expr=<expression>: validate both params; 400 on missing. Read and parse file, call queryOntology(parsed,expr), respond 200 with results or 500 on errors.
+- Handle SIGINT to shut down gracefully.
 
 # Testing
 
 - In tests/unit/main.test.js:
-  - Start the server on an ephemeral port (e.g., 0) and perform HTTP requests using http.get.
-  - Mock getSupportedDataSources, fetchSource, transformToOwl, and queryOntology to return sample data.
-  - Assert correct status codes, response bodies, and error handling for each endpoint.
+  - Start server on ephemeral port (0) and test each endpoint using http.get.
+  - Mock getSupportedDataSources, fetchSource, transformToOwl, queryOntology to return sample data.
+  - Verify correct status codes, response bodies, and error handling.
+
+# Documentation
+
+- Update README.md under Features: add HTTP Server section explaining --serve, default port, and endpoints.
+- Under Usage: show example curl commands for each endpoint.
+- Create docs/HTTP_SERVER.md mirroring details with examples and sample responses.
