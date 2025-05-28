@@ -1,55 +1,68 @@
 # Summary
-Add a new CLI flag `--fetch-source` and a programmatic API `fetchSource(url)` to retrieve raw JSON data from supported public data sources. This feature enables users to fetch live data without writing custom HTTP logic.
+Add a new CLI flag `--fetch-source <url>` and a programmatic API `fetchSource(url)` to retrieve live JSON data from supported public data sources.  Users can choose to print fetched data to stdout or write it to a file via an optional `--output-file <path>` argument.
 
 # Functional Requirements
 
 - In `src/lib/main.js`:
   1. Export an asynchronous function:
-     ```js
-     export async function fetchSource(url: string): Promise<any> {
-       if (!getSupportedDataSources().includes(url)) {
-         throw new Error(`Unsupported data source: ${url}`);
+       ```js
+       export async function fetchSource(url: string): Promise<any> {
+         if (!getSupportedDataSources().includes(url)) {
+           throw new Error(`Unsupported data source: ${url}`);
+         }
+         const response = await fetch(url);
+         return await response.json();
        }
-       const response = await fetch(url);
-       return await response.json();
-     }
-     ```
-  2. Extend the `main(args)` entry point to handle:
-     - `--fetch-source <url>`
-       - If the URL argument is missing or begins with `--`, print `Error: URL is required for --fetch-source` to stderr and exit with code `1`.
-       - If the URL is not in `getSupportedDataSources()`, print `Error: Unsupported data source: <url>` to stderr and exit code `1`.
-       - Otherwise, call `await fetchSource(url)`:
-         - On success, print the fetched JSON with `JSON.stringify(data, null, 2)` and exit code `0`.
-         - Catch network or parse errors, print `Error: <message>` to stderr and exit code `1`.
+       ```
+  2. Extend the `main(args)` entry point to handle `--fetch-source <url> [--output-file <path>]`:
+     - Validate the URL argument is present and supported; print an error and exit code 1 if missing or unsupported.
+     - Call `await fetchSource(url)` to retrieve JSON data.
+     - If `--output-file <path>` follows, write the fetched JSON to the specified file using `fs/promises.writeFile` with two-space indentation; on success exit code 0; on write failure print error and exit code 1.
+     - If no `--output-file` is provided, print the JSON to stdout via `console.log(JSON.stringify(data, null, 2))` and exit code 0.
   3. Preserve existing `--list-sources` behavior and default CLI output.
-
-# API
-
-- `fetchSource(url: string): Promise<any>` — Fetches and returns parsed JSON from the given supported URL or rejects if unsupported.
 
 # CLI Usage
 
 ```bash
-# Fetch JSON data from a supported source and print to console
-tnpm run start -- --fetch-source https://restcountries.com/v3.1/all
+# Print fetched data to stdout
+npm run start -- --fetch-source https://restcountries.com/v3.1/all
+
+# Save fetched data to file
+npm run start -- --fetch-source https://restcountries.com/v3.1/all --output-file data.json
+```
+
+# API
+
+```js
+import { getSupportedDataSources, fetchSource } from '@xn-intenton-z2a/repository0-crucible';
+
+(async () => {
+  const sources = getSupportedDataSources();
+  try {
+    const data = await fetchSource(sources[0]);
+    console.log(data);
+  } catch (err) {
+    console.error(err.message);
+  }
+})();
 ```
 
 # Testing
 
-- **Unit Tests** (`tests/unit/main.test.js`):
-  - Stub `global.fetch` to return a mock response with a `json()` method resolving to sample data. Assert `fetchSource(validUrl)` resolves to that data and `fetch` was called correctly.
-  - Call `fetchSource(invalidUrl)` and assert it rejects with `Unsupported data source: <invalidUrl>`.
+- **Unit Tests** in `tests/unit/main.test.js`:
+  - Stub `global.fetch` to resolve sample JSON; assert `fetchSource(validUrl)` resolves and `fetch` is called correctly.
+  - Assert `fetchSource(invalidUrl)` rejects with `Error('Unsupported data source: <invalidUrl>')`.
 - **CLI Integration Tests**:
-  - **Valid URL**:
-    - Spy on `console.log` and `process.exit`; call `await main(["--fetch-source", validUrl])`; assert JSON printed and exit code `0`.
-  - **Missing URL**:
-    - Spy on `console.error` and `process.exit`; call `await main(["--fetch-source"])`; assert error message and exit code `1`.
-  - **Unsupported URL**:
-    - Spy on `console.error` and `process.exit`; call `await main(["--fetch-source", invalidUrl])`; assert error message and exit code `1`.
+  - **Valid URL without `--output-file`**: spy on `console.log` and `process.exit`; run `await main(['--fetch-source', validUrl])`; assert JSON printed and exit code 0.
+  - **Valid URL with `--output-file`**: spy on `fs/promises.writeFile` and `process.exit`; suppress `console.log`; run `await main(['--fetch-source', validUrl, '--output-file', path])`; assert file write and exit code 0.
+  - **Missing URL**: assert error to stderr and exit code 1.
+  - **Unsupported URL**: assert error to stderr and exit code 1.
+  - **Missing file path**: assert error and exit code 1.
+  - **Write failure**: mock writeFile rejection; assert error and exit code 1.
 
 # Documentation
 
 - Update `README.md`:
-  - Under **Features**, add **Fetch Source** with summary and CLI usage example.
-- Create `docs/FETCH_SOURCE.md`:
-  - Describe the `fetchSource(url)` API, the `--fetch-source` flag, sample commands, output examples, and error scenarios.
+  - Under **Features**, add **Fetch Source** entry noting `--output-file` option.
+  - Under **Usage**, include both stdout and file-save examples.
+- Create or update `docs/FETCH_SOURCE.md` mirroring the README with full examples and API reference.
