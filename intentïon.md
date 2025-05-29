@@ -9918,3 +9918,198 @@ LLM API Usage:
 ```
 
 ---
+## Issue to Ready Issue at 2025-05-29T04:41:00.830Z
+
+Activity:
+
+Enhanced issue https://github.com/xn-intenton-z2a/repository0-crucible/issues/2773 with action close and updated description:
+
+> @xn-intenton-z2a/repository0-crucible@1.2.0-0 linting
+> eslint . tests/unit/ src/lib/ src/lib/
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-17-main.js
+  40:50  error  Parsing error: Unexpected token ,
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-17-main.test.js
+  44:50  error  Parsing error: Unexpected token ,
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-20-main.js
+  514:53  error  Make sure that using this pseudorandom number generator is safe here  sonarjs/pseudo-random
+  553:33  error  Make sure that using this pseudorandom number generator is safe here  sonarjs/pseudo-random
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-20-main.test.js
+  13:10  error  'captureConsole' is defined but never used  no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-22-main.js
+  101:10  error  Refactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed  sonarjs/cognitive-complexity
+  239:23  error  Refactor this function to reduce its Cognitive Complexity from 25 to the 15 allowed  sonarjs/cognitive-complexity
+  247:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  247:14  error  'err' is defined but never used                                                      no-unused-vars
+  267:9   error  Remove this assignment of "i"                                                        sonarjs/updated-loop-counter
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/agi-2025-04-22-main.test.js
+  249:9   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  249:16  error  'err' is defined but never used                 no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/json-schema-diff-attack-of-the-NaNs-2025-04-12-main.js
+   96:10  error    'isNaNInput' is defined but never used                                               no-unused-vars
+  119:7   error    Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  119:14  error    'e' is defined but never used                                                        no-unused-vars
+  128:24  warning  Unsafe Regular Expression                                                            security/detect-unsafe-regex
+  128:24  error    Simplify this regular expression to reduce its complexity from 24 to the 20 allowed  sonarjs/regex-complexity
+  128:81  error    Unnecessary escape character: \-                                                     no-useless-escape
+  145:16  error    Refactor this function to reduce its Cognitive Complexity from 27 to the 15 allowed  sonarjs/cognitive-complexity
+  250:10  error    Refactor this function to reduce its Cognitive Complexity from 22 to the 15 allowed  sonarjs/cognitive-complexity
+  281:7   error    Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  281:14  error    'error' is defined but never used                                                    no-unused-vars
+  343:5   error    Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  343:12  error    'err' is defined but never used                                                      no-unused-vars
+  365:23  error    Refactor this function to reduce its Cognitive Complexity from 56 to the 15 allowed  sonarjs/cognitive-complexity
+  374:17  error    Make sure that using this pseudorandom number generator is safe here                 sonarjs/pseudo-random
+  385:11  error    Either use this collection's contents or remove the collection                       sonarjs/no-unused-collection
+  397:11  error    Either use this collection's contents or remove the collection                       sonarjs/no-unused-collection
+  492:7   error    Remove this assignment of "i"                                                        sonarjs/updated-loop-counter
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/json-schema-diff-attack-of-the-NaNs-2025-04-12-main.test.js
+    3:44  error  'executePlugins' is defined but never used                                                                  no-unused-vars
+    3:44  error  Remove this unused import of 'executePlugins'                                                               sonarjs/unused-import
+   15:7   error  The body of a for-in should be wrapped in an if statement to filter unwanted properties from the prototype  guard-for-in
+  191:53  error  Refactor this code to not nest functions more than 4 levels deep                                            sonarjs/no-nested-functions
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-02-27-main.js
+  8:38  error  Parsing error: Unexpected token with
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-02-27-main.test.js
+   66:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+   66:14  error  'error' is defined but never used               no-unused-vars
+  244:55  error  Unnecessary escape character: \-                no-useless-escape
+  267:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  267:14  error  'error' is defined but never used               no-unused-vars
+  288:7   error  Handle this exception or don't catch it at all  sonarjs/no-ignored-exceptions
+  288:14  error  'error' is defined but never used               no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-07-main.js
+   61:5   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+   61:12  error  '_error' is defined but never used                                        no-unused-vars
+  132:5   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  132:12  error  '_error' is defined but never used                                        no-unused-vars
+  258:32  error  'reject' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  284:5   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  284:12  error  '_error' is defined but never used                                        no-unused-vars
+  563:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  563:14  error  '_error' is defined but never used                                        no-unused-vars
+  574:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  574:14  error  '_error' is defined but never used                                        no-unused-vars
+  625:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  625:14  error  '_error' is defined but never used                                        no-unused-vars
+  691:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  691:14  error  '_error' is defined but never used                                        no-unused-vars
+  707:7   error  Handle this exception or don't catch it at all                            sonarjs/no-ignored-exceptions
+  707:14  error  '_error' is defined but never used                                        no-unused-vars
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-07-main.test.js
+  183:37  error  Using http protocol is insecure. Use https instead                                                                                sonarjs/no-clear-text-protocols
+  377:28  error  Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service  sonarjs/slow-regex
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-13-main.js
+     6:97  error  'readdirSync' is defined but never used                                              no-unused-vars
+     6:97  error  Remove this unused import of 'readdirSync'                                           sonarjs/unused-import
+    22:7   error  '__dirname' is assigned a value but never used                                       no-unused-vars
+    62:7   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+    62:14  error  'err' is defined but never used                                                      no-unused-vars
+    77:10  error  'ensureOntologiesDir' is defined but never used                                      no-unused-vars
+   117:5   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+   117:12  error  'err' is defined but never used                                                      no-unused-vars
+   131:5   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+   131:12  error  'err' is defined but never used                                                      no-unused-vars
+   137:10  error  Refactor this function to reduce its Cognitive Complexity from 18 to the 15 allowed  sonarjs/cognitive-complexity
+   232:24  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   577:28  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   615:24  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   620:5   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+   620:12  error  'err' is defined but never used                                                      no-unused-vars
+   627:34  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   633:30  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+   645:24  error  Using http protocol is insecure. Use https instead                                   sonarjs/no-clear-text-protocols
+   679:10  error  Refactor this function to reduce its Cognitive Complexity from 46 to the 15 allowed  sonarjs/cognitive-complexity
+   697:9   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+   697:16  error  'e' is defined but never used                                                        no-unused-vars
+   783:34  error  Refactor this code to not nest functions more than 4 levels deep                     sonarjs/no-nested-functions
+   786:28  error  Refactor this code to not nest functions more than 4 levels deep                     sonarjs/no-nested-functions
+   861:3   error  Remove this redundant jump                                                           sonarjs/no-redundant-jump
+   865:10  error  Refactor this function to reduce its Cognitive Complexity from 26 to the 15 allowed  sonarjs/cognitive-complexity
+  1007:10  error  Refactor this function to reduce its Cognitive Complexity from 46 to the 15 allowed  sonarjs/cognitive-complexity
+  1025:9   error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  1025:16  error  'e' is defined but never used                                                        no-unused-vars
+  1103:28  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+  1116:32  error  Refactor this function to reduce its Cognitive Complexity from 65 to the 15 allowed  sonarjs/cognitive-complexity
+  1134:57  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1167:49  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1172:49  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1187:49  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1192:49  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1207:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1207:77  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1212:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1226:45  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1226:72  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1242:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1247:47  error  Unnecessary escape character: \'                                                     no-useless-escape
+  1509:28  error  'args' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+  1558:11  error  Handle this exception or don't catch it at all                                       sonarjs/no-ignored-exceptions
+  1558:18  error  'e' is defined but never used                                                        no-unused-vars
+  1571:25  error  'ws' is defined but never used. Allowed unused args must match /^_/u                 no-unused-vars
+  1602:16  error  Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed  sonarjs/cognitive-complexity
+
+/home/runner/work/repository0-crucible/repository0-crucible/archive/owl-builder-2025-04-13-main.test.js
+   61:10  error  'clearOntologiesDir' is defined but never used                          no-unused-vars
+  411:26  error  'code' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  431:54  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  448:30  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  472:49  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  489:31  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  506:61  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  523:30  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  547:49  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  569:31  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  612:26  error  'code' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  712:25  error  'line' is assigned a value but never used                               no-unused-vars
+  712:25  error  Remove the declaration of the unused 'line' variable                    sonarjs/no-unused-vars
+  712:25  error  Remove this useless assignment to variable "line"                       sonarjs/no-dead-store
+  731:25  error  'line' is assigned a value but never used                               no-unused-vars
+  731:25  error  Remove the declaration of the unused 'line' variable                    sonarjs/no-unused-vars
+  731:25  error  Remove this useless assignment to variable "line"                       sonarjs/no-dead-store
+  792:11  error  'serverOutput' is assigned a value but never used                       no-unused-vars
+  798:26  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+  801:19  error  'data' is assigned a value but never used                               no-unused-vars
+  811:36  error  Refactor this code to not nest functions more than 4 levels deep        sonarjs/no-nested-functions
+
+/home/runner/work/repository0-crucible/repository0-crucible/src/lib/main.js
+  6:38  error  Replace `⏎··"https://api.worldbank.org/v2/country",⏎··"https://restcountries.com/v3.1/all",⏎` with "https://api.worldbank.org/v2/country",·"https://restcountries.com/v3.1/all"  prettier/prettier
+
+/home/runner/work/repository0-crucible/repository0-crucible/tests/unit/main.test.js
+   2:9   error  Replace `⏎··supportedDataSources,⏎··getSupportedDataSources,⏎··main,⏎` with `·supportedDataSources,·getSupportedDataSources,·main·`  prettier/prettier
+  22:66  error  Replace `code` with `(code)`                                                                                                         prettier/prettier
+  30:41  error  Replace `⏎······JSON.stringify(supportedDataSources,·null,·2)⏎····` with `JSON.stringify(supportedDataSources,·null,·2)`             prettier/prettier
+  43:41  error  Replace `"Run·with:·[\"foo\",\"bar\"]"` with `'Run·with:·["foo","bar"]'`                                                             prettier/prettier
+
+✖ 271 problems (264 errors, 7 warnings)
+  8 errors and 0 warnings potentially fixable with the `--fix` option.
+comments:
+Author:github-actions[bot], Created:2025-05-29T04:37:22Z, Comment: Workflow name: flow-linting-to-issue
+Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15316336801
+Workflow event: schedule
+Workflow inputs: null
+HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/a0c04c21bf0cae6a286e79ac6c608972464debeb
+Author:github-actions[bot], Created:2025-05-29T04:37:52Z, Comment: Workflow name: flow-linting-to-issue
+Workflow run URL: https://github.com/xn-intenton-z2a/repository0-crucible/actions/runs/15316336801
+Workflow event: schedule
+Workflow inputs: null
+HEAD of main URL: https://github.com/xn-intenton-z2a/repository0-crucible/commit/a0c04c21bf0cae6a286e79ac6c608972464debeb
+
+LLM API Usage:
+```json
+{"prompt_tokens":18069,"completion_tokens":5351,"total_tokens":23420,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":832,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
