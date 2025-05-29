@@ -1,35 +1,26 @@
 # Summary
-Provide a CLI flag --list-sources and a programmatic API getSupportedDataSources() to expose the list of supported public data source URLs.
+Enhance the existing List Sources feature to include a programmatic API for refreshing configurations dynamically and improve documentation and examples.
 
 # Functional Requirements
-
 - In src/lib/main.js:
-  - Define and export getSupportedDataSources(): string[] that returns the in-memory array of source URLs.
-  - Detect --list-sources in main(args: string[]):
-    1. When present, print JSON.stringify(getSupportedDataSources(), null, 2) to stdout.
-    2. Call process.exit(0) immediately.
-  - Preserve behavior for all other flags and default output.
+  - Export an async function `refreshSupportedDataSources(configUrl: string): Promise<void>` that:
+    - Fetches JSON from `configUrl`, expecting an array of URL strings.
+    - Validates that each entry is a well-formed URL.
+    - Updates the in-memory `supportedDataSources` array with the fetched list.
+  - Extend `main(args)` to detect:
+    - `--refresh-sources <configUrl>`:
+      1. Validate `configUrl` is provided; otherwise print `Error: Config URL required for --refresh-sources` and exit with code 1.
+      2. Call `await refreshSupportedDataSources(configUrl)`.
+      3. On success, print `Sources refreshed` and exit code 0.
+      4. On failure, print the error message and exit code 1.
+  - Ensure existing `--list-sources` behavior reflects the updated list.
+
+# API
+- `getSupportedDataSources(): string[]` — returns the current list of source URLs.
+- `refreshSupportedDataSources(configUrl: string): Promise<void>` — fetches and updates the list.
 
 # CLI Usage
-
 ```bash
-node src/lib/main.js --list-sources
+# Refresh supported sources from remote config
+npm run start -- --refresh-sources https://example.com/sources.json
 ```
-
-# API Usage
-
-```js
-import { getSupportedDataSources } from '@xn-intenton-z2a/repository0-crucible';
-const sources = getSupportedDataSources();
-console.log(sources);
-```
-
-# Testing
-
-- Unit test for getSupportedDataSources(): verify it returns the exact array.
-- CLI test for --list-sources: spy on console.log and process.exit, simulate main(['--list-sources']), assert JSON output and exit code.
-
-# Documentation
-
-- Update README.md under **Features** with a List Sources entry.
-- Under **Usage**, document the CLI flag and sample output.
