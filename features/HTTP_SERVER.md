@@ -1,44 +1,28 @@
 # Summary
-Enhance the existing HTTP server feature by adding health and version endpoints for diagnostics alongside the core REST operations.
+Add a new CLI flag --serve that starts an HTTP server exposing core library functions over REST endpoints. This allows users and applications to access list-sources, fetch-source, transform-to-owl, and query-owl operations via HTTP without invoking the CLI directly.
 
 # Functional Requirements
 
-## New `/health` endpoint
-- Add a route GET /health that:
-  - Responds with status 200 and JSON `{ "status": "ok" }`.
-  - Does not require any query parameters.
+- In src/lib/main.js:
+  - Detect the --serve flag in the main(args) entrypoint before other flags.
+  - Parse an optional --port <number> argument; default to 3000 if not provided.
+  - When --serve is present, ignore other CLI flags and start an HTTP server on the configured port.
+  - Implement routing:
+    - GET /sources: respond 200 with JSON array from getSupportedDataSources().
+    - GET /fetch?url=<url>: validate url query parameter; if missing, respond 400 with error JSON; if not supported, 404; otherwise fetchSource(url) and respond 200 with JSON or 500 on errors.
+    - GET /transform?url=<url>&baseUri=<uri>: validate params; on missing or unsupported url, respond 400 or 404; otherwise fetch data and call transformToOwl(data, { baseUri }); respond 200 with OWL JSON or 500 on errors.
+    - GET /query?file=<path>&expr=<expression>: validate file and expr parameters; if missing, respond 400; read and parse file, call queryOntology(parsed, expr); respond 200 with JSON results or 500 on errors.
+  - Handle SIGINT to gracefully shut down the server.
 
-## New `/version` endpoint
-- Add a route GET /version that:
-  - Reads the library version from package.json (via a helper function or import).
-  - Responds with status 200 and JSON `{ "version": "<current version>" }`.
+# HTTP API Endpoints
 
-## Integration into existing server logic
-- In `src/lib/main.js`, within the `--serve` flag handling:
-  - Before or alongside existing routes, recognize `/health` and `/version`.
-  - Ensure these endpoints are served without interfering with other routes.
-  - No authentication is required.
+- GET /sources
+- GET /fetch?url=<url>
+- GET /transform?url=<url>&baseUri=<uri>
+- GET /query?file=<path>&expr=<expression>
 
 # Testing
 
-- Unit Tests
-  - Stub the HTTP server handlers and simulate GET requests to `/health` and `/version`:
-    1. Assert `/health` returns status 200 and body `{ status: "ok" }`.
-    2. Stub package.json version field to a test value and assert `/version` returns status 200 and correct version JSON.
-
-- Integration Tests
-  - Start the server on an ephemeral port and use `http.get` to:
-    1. Call `/health` and assert HTTP 200 and JSON content.
-    2. Call `/version` and assert HTTP 200 and JSON content matching package version.
-    3. Verify that existing endpoints (`/sources`, `/fetch`, etc.) continue to behave unchanged.
-
-# Documentation
-
-- Update `README.md` under **Features > HTTP Server**:
-  - Add entries:
-    - **GET /health** – check server health; returns `{ status: "ok" }`.
-    - **GET /version** – retrieve CLI/library version.
-
-- Update `docs/HTTP_SERVER.md`:
-  - Document the new endpoints with example `curl` commands and sample responses.
-  - Ensure the feature overview and testing guidance include the health and version endpoints.
+- Start the server on an ephemeral port and use http.get to request each endpoint.
+- Mock getSupportedDataSources, fetchSource, transformToOwl, queryOntology to return sample data.
+- Assert correct status codes, response bodies, and error handling.
