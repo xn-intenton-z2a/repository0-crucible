@@ -11707,3 +11707,67 @@ LLM API Usage:
 
 ---2025-08-01T06:23:29Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-27T03-33Z
 
+
+## Maintain Feature at 2025-08-01T06:25:36.287Z
+
+Activity:
+
+Maintained feature NONE with
+
+Feature spec:
+
+# Summary
+Develop a comprehensive CLI help command that lists all available flags, commands, and usage examples to guide users without consulting external documentation.
+
+# Functional Requirements
+
+## Help Command
+- In src/lib/main.js, before processing any other flags, detect `--help` or `-h` in the `args` array.
+- Upon detection:
+  - Read the tool name and version from package.json.
+  - Print a help message that includes:
+    - Tool name and version.
+    - A list of supported CLI flags with descriptions:
+      - `--list-sources` — List supported data source URLs.
+      - `--fetch-source <url> [--output-file <path>]` — Fetch JSON and optional file output.
+      - `--transform-to-owl <url> [--base-uri <uri>] [--output-file <path>]` — Transform JSON to OWL JSON.
+      - `--build-ontologies [--base-uri <uri>] [--output-file <path>]` — Merge sources into a single OWL.
+      - `--query-owl <file> --query <expr>` — Query an OWL JSON file.
+      - `--validate-owl <file>` — Validate OWL JSON structure.
+      - `--capital-cities` — Generate OWL JSON of capital cities.
+      - `--refresh-sources <url>` — Refresh supported sources list.
+      - `--serve [--port <num>]` — Start an HTTP server exposing APIs.
+    - Example usage lines demonstrating typical workflows:
+      ```bash
+      npm run start -- --list-sources
+      npm run start -- --fetch-source https://restcountries.com/v3.1/all
+      npm run start -- --transform-to-owl https://restcountries.com/v3.1/all --base-uri http://example.org/ontology
+      npm run start -- --build-ontologies --base-uri http://example.org/ontology
+      npm run start -- --query-owl ontology.json --query "item.id === 'USA'"
+      npm run start -- --serve --port 8080
+      ```
+  - Exit the process with code `0` immediately after printing help.
+
+# Testing
+
+- In tests/unit/main.test.js, simulate `main(["--help"])` and `main(["-h"])`:
+  - Spy on `console.log` to capture output and verify that it includes at least one flag name and one example command.
+  - Spy on `process.exit` to verify it is called with code `0`.
+
+# Documentation
+
+- Update README.md:
+  - Under **Features**, add a **Help** section describing `--help` and `-h`.
+  - Under **Usage**, include example invocation for the help command:
+    ```bash
+    node src/lib/main.js --help
+    ```
+
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":118045,"completion_tokens":653,"total_tokens":118698,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
