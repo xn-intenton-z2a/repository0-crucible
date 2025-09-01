@@ -1,45 +1,43 @@
 # Summary
-Provide a new CLI flag --export-sources and an API exportSupportedDataSources to export the current supported data source URLs list to a JSON file. This enables users to persist their configured sources for sharing or backup.
+Provide a CLI flag --export-sources and an API exportSupportedDataSources to export the current supported data source URLs list to a JSON file for sharing or backup.
 
 # Functional Requirements
+
+## API: exportSupportedDataSources
 - In src/lib/main.js:
-  - Export a function exportSupportedDataSources(outputPath: string): Promise<void> that:
-    1. Calls getSupportedDataSources() to retrieve the current list.
-    2. Writes the list as formatted JSON (2-space indent) to the specified file path using fs/promises.writeFile.
+  - Export an async function exportSupportedDataSources(outputPath: string): Promise<void> that:
+    1. Calls getSupportedDataSources() to retrieve the current list of URLs.
+    2. Uses fs/promises.writeFile to write the list as formatted JSON (2-space indent) to outputPath.
     3. Throws an error on write failure.
-  - Extend the main(args) entrypoint to detect:
-    - --export-sources <filePath>
-      1. Validate a file path follows the flag; if missing or starts with "--", print `Error: File path is required for --export-sources` to stderr and exit code 1.
-      2. Call await exportSupportedDataSources(filePath).
-      3. On success, print `Export completed` to stdout and exit code 0.
-      4. On error, print error.message to stderr and exit code 1.
-  - Ensure existing --list-sources and --refresh-sources behaviors remain unchanged.
+
+## CLI Behavior
+- Extend main(args) in src/lib/main.js to detect --export-sources <filePath>:
+  1. If filePath is missing or starts with "--", print Error: File path is required for --export-sources to stderr and exit code 1.
+  2. Call await exportSupportedDataSources(filePath).
+  3. On success, print "Export completed" to stdout and exit code 0.
+  4. On write error, print the error message to stderr and exit code 1.
+  5. Preserve existing --list-sources and --refresh-sources behavior.
 
 # CLI Usage
+
 ```bash
 npm run start -- --export-sources sources.json
 ```
 
-# API
-```js
-import { exportSupportedDataSources } from '@xn-intenton-z2a/repository0-crucible';
+# API Example
 
-(async () => {
-  try {
-    await exportSupportedDataSources('sources.json');
-    console.log('Export completed');
-  } catch (err) {
-    console.error(err.message);
-  }
-})();
+```js
+import { exportSupportedDataSources, getSupportedDataSources } from '@xn-intenton-z2a/repository0-crucible';
+
+await exportSupportedDataSources('sources.json');
+console.log(getSupportedDataSources());
 ```
 
 # Testing
-- **Unit Tests** (in tests/unit/main.test.js):
-  - Stub fs/promises.writeFile to resolve and reject.
-  - Assert exportSupportedDataSources calls writeFile with correct path and JSON content.
-  - Simulate rejection and assert error is thrown.
+
+- **Unit Tests** in tests/unit/main.test.js:
+  - Mock fs/promises.writeFile to resolve: assert writeFile is called with correct path and JSON content.
+  - Mock rejection: assert error is thrown.
 - **CLI Integration Tests**:
-  - **Valid Path**: spy on console.log and process.exit; run await main(["--export-sources","out.json"]); assert writeFile call, `Export completed` output, and exit code 0.
-  - **Missing Path**: spy on console.error and process.exit; run await main(["--export-sources"]); assert error message and exit code 1.
-  - **Write Failure**: mock writeFile rejection; assert error message and exit code 1.
+  - Valid path: spy on console.log and process.exit; run main(["--export-sources","out.json"]); assert writeFile call, "Export completed", exit code 0.
+  - Missing path: spy on console.error and process.exit; run main(["--export-sources"]); assert error and exit code 1.
