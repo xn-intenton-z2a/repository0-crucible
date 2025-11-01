@@ -13491,3 +13491,63 @@ LLM API Usage:
 
 ---2025-11-01T06:22:30Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-27T03-33Z
 
+
+## Maintain Feature at 2025-11-01T06:24:11.274Z
+
+Activity:
+
+Maintained feature TRANSFORM_SOURCE with
+
+Feature spec:
+
+# Summary
+Provide a combined CLI flag --transform-source and a programmatic API fetchAndTransform(url, options?) to fetch JSON from a supported public data source and transform it directly into OWL JSON in one step, with optional file output.
+
+# Functional Requirements
+
+## API: fetchAndTransform
+- In src/lib/main.js, export an async function:
+
+      export async function fetchAndTransform(url, options = {}) {
+        if (!getSupportedDataSources().includes(url)) {
+          throw new Error(`Unsupported data source: ${url}`)
+        }
+        const data = await fetchSource(url)
+        return transformToOwl(Array.isArray(data)? data : [data], options)
+      }
+
+- Validates the provided URL against supported sources, fetches JSON, transforms to OWL, and returns the ontology object.
+
+## CLI: --transform-source
+- In main(args):
+  1. Detect the flag --transform-source <url>.
+  2. Validate URL presence and support; if invalid, print error to stderr and exit(1).
+  3. Parse an optional --base-uri <uri> and optional --output-file <path> following the URL.
+  4. Call fetchAndTransform(url, { baseUri }).
+  5. If --output-file is provided, write JSON.stringify(ontology, null, 2) to the file and exit(0) without console output; on write error, print error and exit(1).
+  6. If no --output-file, print JSON.stringify(ontology, null, 2) to stdout and exit(0).
+  7. Preserve existing flags and behavior when --transform-source is absent.
+
+# CLI Usage
+
+```bash
+npm run start -- --transform-source <url> [--base-uri <uri>] [--output-file <path>]
+```
+
+# Testing
+
+- **Unit Tests**:
+  - Stub fetchSource and transformToOwl; assert fetchAndTransform returns correct OWL JSON and rejects on unsupported URL.
+- **CLI Integration Tests**:
+  - Valid URL: spy on console.log and process.exit for main(["--transform-source", validUrl, "--base-uri", uri]).
+  - With --output-file: spy on writeFile and process.exit; assert file write and exit code 0.
+  - Error scenarios: missing URL, unsupported URL, missing file path, write error produce stderr messages and exit code 1.
+
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":140648,"completion_tokens":568,"total_tokens":141216,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
