@@ -1,35 +1,25 @@
 # Summary
-Add a CLI flag --query-owl and a programmatic API queryOntology to load an OWL JSON file and execute simple ESJ-like expressions against its @graph.
+Add a CLI flag --query-owl and a programmatic API queryOntology to allow users to load an OWL ontology JSON file and execute ESJ-like expressions against its @graph. This feature enables interactive filtering and extraction of ontology individuals without writing custom code.
 
 # Functional Requirements
 
-## API
-Export function queryOntology(ontology: any, expression: string): any[]:
-- Ensure ontology has @graph array.
-- Evaluate the expression against each item using a safe Function constructor: new Function('item', `return ${expression}`).
-- Return an array of items for which the expression returns true.
-- Throw Error if expression evaluation fails or ontology lacks @graph.
+In src/lib/main.js:
 
-## CLI
-Extend main(args: string[]) to handle:
-- --query-owl <filePath>
-- --query <expression>
+- Export function queryOntology(ontology: any, expression: string): any[] that:
+  - Verifies the ontology object has an @graph array.
+  - Uses a safe Function constructor new Function('item', `return ${expression}`) to evaluate the expression against each item in @graph.
+  - Returns an array of items for which the expression returns truthy.
+  - Throws a descriptive error if the expression is invalid or @graph is missing.
 
-Behavior:
-1. When both flags are present, read the file at filePath with fs/promises.readFile and parse JSON.
-2. Call queryOntology(parsed, expression).
-3. Print JSON.stringify(results, null, 2) to stdout and exit with code 0.
-4. If flags or values are missing, print descriptive error to stderr and exit code 1.
-5. Catch file or parse errors and expression errors, print error.message to stderr and exit code 1.
-Preserve existing flags (--list-sources, --fetch-source, --transform-to-owl, --build-ontologies, --capital-cities, --serve).
+- Extend the main(args) entrypoint to detect:
+  - --query-owl <filePath>
+  - --query <expression>
 
-# Testing
+- CLI Workflow:
+  1. Validate both flags and their values are provided; if missing, print an error to stderr and exit code 1.
+  2. Read the JSON file at filePath with fs/promises.readFile and parse it.
+  3. Call queryOntology(parsed, expression).
+  4. Print JSON.stringify(results, null, 2) to stdout and exit code 0.
+  5. Catch file, parse, or evaluation errors, print error.message to stderr, and exit code 1.
 
-## Unit Tests
-- Provide sample ontology object with @graph; assert queryOntology returns correct filtered array.
-- Test invalid expression or missing @graph leads to Error.
-
-## CLI Integration Tests
-- Stub fs/promises.readFile to return a sample JSON string.
-- Spy on console.log and process.exit; run main(["--query-owl","file.json","--query","item.id==='1'"]); assert correct output and exit code 0.
-- Test missing flags, missing file, invalid expression: spy console.error and process.exit, assert exit code 1.
+- Preserve existing flags (--list-sources, --fetch-source, --transform-to-owl, --build-ontologies, --capital-cities, --serve, --help, etc.) and default behavior.
