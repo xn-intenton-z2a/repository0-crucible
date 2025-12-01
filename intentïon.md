@@ -13951,3 +13951,33 @@ LLM API Usage:
 
 ---2025-12-01T06:23:31Z - Archiving intentïon to branch https://github.com/xn-intenton-z2a/repository0-crucible/tree/intention-2025-05-27T03-33Z
 
+
+## Maintain Feature at 2025-12-01T06:25:06.219Z
+
+Activity:
+
+Maintained feature NONE with
+
+Feature spec:
+
+# Summary
+No new features to add. The repository's core feature set fully supports its mission of managing OWL ontologies from public data sources. The existing features cover source listing, data fetching, ontology transformation, merging, querying, validation, data export, HTTP server endpoints, CLI help, and output file support.
+
+# Rationale
+- The **List Sources** feature exposes supported data source URLs.
+- **Fetch Source** retrieves live JSON with optional file output.
+- **Transform to OWL** and **Build Ontologies** handle single and merged OWL creation.
+- **Query OWL**, **Validate OWL**, **Validate Source**, and **Refresh Sources** provide data inspection and dynamic configuration.
+- **Export Sources** backs up the source list.
+- **HTTP Server** exposes REST endpoints for all functions.
+- **CLI Help** guides usage, and **Output File** support persists any CLI JSON output.
+
+All significant capabilities are present, tested, and documented. No consolidation or deletion is required at this time.
+
+
+LLM API Usage:
+```json
+{"prompt_tokens":145533,"completion_tokens":245,"total_tokens":145778,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
