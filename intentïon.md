@@ -14135,3 +14135,15 @@ LLM API Usage:
 ```
 
 ---
+## Maintained Feature at 2025-12-29T04:40:20.582Z
+
+Activity:
+
+Maintained feature LIST_SOURCES
+
+LLM API Usage:
+```json
+{"prompt_tokens":146911,"completion_tokens":546,"total_tokens":147457,"prompt_tokens_details":{"cached_tokens":0,"audio_tokens":0},"completion_tokens_details":{"reasoning_tokens":0,"audio_tokens":0,"accepted_prediction_tokens":0,"rejected_prediction_tokens":0}}
+```
+
+---
